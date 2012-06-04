@@ -1,0 +1,60 @@
+EpiContactTrace 0.6.4
+---------------------
+
+NEW FEATURES
+
+* Updated documentation.
+
+EpiContactTrace 0.6.3
+---------------------
+
+NEW FEATURES
+
+* All documentation generated via roxygen.
+
+EpiContactTrace 0.6.2
+---------------------
+
+BUG FIXES
+
+* If movements contained duplicate contacts, they were all added.
+  Now only unique contacts are included from the contact tracing.
+
+EpiContactTrace 0.6.1
+---------------------
+
+BUG FIXES
+
+* 'plot' now works as intended for the S4 ContactTrace object
+  with only outgoing contacts
+
+EpiContactTrace 0.6.0
+---------------------
+
+NEW FEATURES
+
+* Added the method ShortestPaths
+
+* NetworkStructure gives the distance from root for
+  each node during the depth first search.
+
+
+EpiContactTrace 0.5.3
+---------------------
+
+NEW FEATURES
+
+* Added the example dataset transfers
+
+EpiContactTrace 0.5.2
+---------------------
+
+NEW FEATURES
+
+* Can now generate an 'html' report for the contact tracing using 'Report'
+
+* Can now generate a 'pdf' report for the contact tracing using 'Report'
+
+BUG FIXES
+
+* 'show' now works as intended for the S4 ContactTrace object

@@ -1,0 +1,36 @@
+Package: EpiContactTrace
+Maintainer: Stefan Widgren <stefan.widgren@sva.se>
+License: EUPL
+Title: Epidemiological tool for contact tracing.
+Type: Package
+LazyLoad: yes
+Author: Stefan Widgren <stefan.widgren@sva.se>
+    Maria Noremark <maria.noremark@sva.se>
+Description: Routines for epidemiological contact tracing
+    and visualisation of network of contacts.
+Version: 0.6.4
+Date: 2012-06-03
+Depends:
+    R(>= 2.15.0),
+    igraph,
+    plyr,
+    R2HTML,
+    graphics,
+    methods
+Suggests:
+    testthat
+Collate:
+    'Contacts.r'
+    'ContactTrace.R'
+    'EpiContactTrace-package.R'
+    'trace.R'
+    'in-degree.r'
+    'out-degree.r'
+    'ingoing-contact-chain.r'
+    'outgoing-contact-chain.r'
+    'network-summary.r'
+    'network-structure.r'
+    'plot.r'
+    'report.r'
+    'shortest-paths.r'
+    'show.r'

@@ -1,0 +1,82 @@
+\docType{methods}
+\name{NetworkStructure-methods}
+\alias{NetworkStructure}
+\alias{NetworkStructure-methods}
+\alias{NetworkStructure,Contacts-method}
+\alias{NetworkStructure,ContactTrace-method}
+\alias{NetworkStructure,list-method}
+\title{\code{NetworkStructure}}
+\value{
+  A \code{\link{data.frame}} with the following columns:
+  \describe{ \item{root}{The root of the contact tracing}
+
+  \item{inBegin}{ If the direction is ingoing, then inBegin
+  equals inBegin in \code{\link{TraceDateInterval}} else
+  NA.  }
+
+  \item{inEnd}{ If the direction is ingoing, then inEnd
+  equals inEnd in \code{\link{TraceDateInterval}} else NA.
+  }
+
+  \item{outBegin}{ If the direction is outgoing, then
+  outBegin equals outBegin in
+  \code{\link{TraceDateInterval}} else NA.  }
+
+  \item{outEnd}{ If the direction is outgoing, then outEnd
+  equals outEnd in \code{\link{TraceDateInterval}} else NA.
+  }
+
+  \item{direction}{ If the direction is ingoing, then
+  direction equals 'in' else 'out' }
+
+  \item{source}{ The source of the contacts in the depth
+  first search }
+
+  \item{destination}{ The destination of the contacts in
+  the depth first search }
+
+  \item{distance}{ The distance from the destination to
+  root in the depth first search } }
+}
+\description{
+  Methods for function \code{NetworkStructure} in package
+  \pkg{EpiContactTrace} to get the network tree structure
+  from the contact tracing.
+}
+\details{
+  The contact tracing performs a depth first search
+  starting at the root. The \code{NetworkStructure} gives
+  the distance from root at each node. The network tree
+  structure given by the depth first search is shown by
+  \code{\link{show}}.
+}
+\section{Methods}{
+  \describe{ \item{\code{signature(object = "Contacts")}}{
+  Get the network structure for the Contacts object.  }
+
+  \item{\code{signature(object = "ContactTrace")}}{ Get the
+  network structure for the ingoing and outgoing
+  \code{Contacts} of a \code{ContactTrace} object.  }
+
+  \item{\code{signature(object = "list")}}{ Get the network
+  structure for a list of \code{ContactTrace} objects. Each
+  item in the list must be a \code{ContactTrace} object.  }
+  }
+}
+\examples{
+# Load data
+data(transfers)
+
+# Perform contact tracing
+contactTrace <- Trace(movements=transfers,
+                      root=2645,
+                      tEnd='2005-10-31',
+                      days=90)
+
+NetworkStructure(contactTrace)
+}
+\seealso{
+  \code{\link{show}}.
+}
+\keyword{methods}
+

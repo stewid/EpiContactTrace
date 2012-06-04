@@ -1,0 +1,206 @@
+<<echo=false, results=tex>>=
+    SummaryTable <- function(contacts, direction, arrow) {
+        cat(sprintf('\\begin{longtable}[l]{r %s}\n', paste(rep('c r', max(contacts$distance-1L) + 1), collapse=' ')))
+        cat('\\hline\n')
+
+        for(i in seq_len(nrow(contacts))) {
+            # Pad with empty cells to the left
+            cat(paste(rep('&', 2L*(contacts$distance[i]-1L)), collapse=''))
+
+            cat(sprintf('%s & $%s$ & %s', contacts$lhs[i], arrow, contacts$rhs[i]))
+
+            # Pad with empty cells to the right
+            cat(paste(rep('&', 2L*(max(contacts$distance-1L) - (contacts$distance[i]-1L))), collapse=''))
+            cat('\\\\\n')
+        }
+
+        cat('\\hline\n')
+        cat('\\end{longtable}\n')
+    }
+@
+
+<<echo=false, results=tex>>=
+    DetailedTable <- function(contacts, direction, arrow) {
+        contacts <- contacts[order(contacts$t, contacts$id, decreasing=FALSE),]
+
+        contacts$id <- as.character(contacts$id)
+        contacts$id[is.na(contacts$id)] <- ''
+
+        contacts$n <- as.character(contacts$n)
+        contacts$n[is.na(contacts$n)] <- ''
+
+        contacts$category <- as.character(contacts$category)
+        contacts$category[is.na(contacts$category)] <- ''
+
+        # To prevent output of "data frame with 0 columns and 0 rows"
+        # collect the result
+        dummy <- ddply(contacts, c('lhs', 'rhs'), .fun=function(x) {
+            cat(sprintf('\\subsection{%s $%s$ %s}\n', x$lhs[1], arrow, x$rhs[1]))
+
+            cat('\\begin{longtable}[l]{l r r r r c r}\n')
+
+            # Header
+            cat('\\hline\n')
+            if(identical(direction, 'in')) {
+                cat('Date & Id & N & Category & Destination & & Source\\\\\n')
+            } else {
+                cat('Date & Id & N & Category & Source & & Destination\\\\\n')
+            }
+            cat('\\hline\n')
+
+            for(i in seq_len(nrow(x))) {
+                cat(sprintf('%s & %s & %s & %s & %s & $%s$ & %s\\\\\n', x$t[i],
+                                                                        x$id[i],
+                                                                        x$n[i],
+                                                                        x$category[i],
+                                                                        x$lhs[i],
+                                                                        arrow,
+                                                                        x$rhs[i]))
+            }
+
+            cat('\\hline\n')
+            cat('\\end{longtable}\n')
+
+            return(NULL)
+        })
+    }
+@
+
+\documentclass[a4paper]{article}
+
+\title{Contact Tracing\\Root: \Sexpr{.ct_env$ct@root}}
+
+\author{EpiContactTrace\\Version: \Sexpr{packageVersion('EpiContactTrace')}}
+
+\usepackage[cm]{fullpage}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\floatstyle{ruled}
+\newfloat{contacts}{thp}{lop}
+\floatname{contacts}{Contacts}
+
+\definecolor{ltgray}{gray}{0.80}
+
+\begin{document}
+
+\maketitle
+
+<<echo=FALSE, results=hide>>=
+  pdf('in-out-graph.pdf')
+  plot(.ct_env$ct, frame=TRUE)
+  dev.off()
+@
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics{in-out-graph}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\section{Summary ingoing contacts}
+
+\begin{tabular}{ l  r }
+  In begin date: & \Sexpr{.ct_env$ct@ingoingContacts@tBegin}\\
+  In end date: & \Sexpr{.ct_env$ct@ingoingContacts@tEnd}\\
+  In days: & \Sexpr{.ct_env$ct@ingoingContacts@tEnd - .ct_env$ct@ingoingContacts@tBegin}\\
+  In degree: & \Sexpr{InDegree(.ct_env$ct@ingoingContacts)}\\
+  Ingoing contact chain: & \Sexpr{IngoingContactChain(.ct_env$ct@ingoingContacts)}\\
+\end{tabular}
+
+<<echo=false, results=tex>>=
+    if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
+        # Get network structure. The distance is used for indentation.
+        ns <- NetworkStructure(.ct_env$ct@ingoingContacts)
+
+        # Rename source and destination to lhs and rhs, with respect to direction
+        names(ns)[names(ns) == 'source'] <- 'rhs'
+        names(ns)[names(ns) == 'destination'] <- 'lhs'
+
+        SummaryTable(ns, 'in', '\\leftarrow')
+    } else {
+        cat('\\noindent\n')
+        cat('\\\\\n')
+        cat('\\\\\n')
+        cat("No ingoing contacts during the search period.\n")
+    }
+@
+
+\clearpage
+
+\section{Summary outgoing contacts}
+
+\begin{tabular}{ l  r }
+  Out begin date: & \Sexpr{.ct_env$ct@outgoingContacts@tBegin}\\
+  Out end date: & \Sexpr{.ct_env$ct@outgoingContacts@tEnd}\\
+  Out days: & \Sexpr{.ct_env$ct@outgoingContacts@tEnd - .ct_env$ct@outgoingContacts@tBegin}\\
+  Out degree: & \Sexpr{OutDegree(.ct_env$ct@outgoingContacts)}\\
+  Outgoing contact chain: & \Sexpr{OutgoingContactChain(.ct_env$ct@outgoingContacts)}\\
+\end{tabular}
+
+<<echo=false, results=tex>>=
+    if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
+        # Get network structure. The distance is used for indentation.
+        ns <- NetworkStructure(.ct_env$ct@outgoingContacts)
+
+        # Rename source and destination to lhs and rhs, with respect to direction
+        names(ns)[names(ns) == 'source'] <- 'lhs'
+        names(ns)[names(ns) == 'destination'] <- 'rhs'
+
+        SummaryTable(ns, 'out', '\\rightarrow')
+    } else {
+        cat('\\noindent\n')
+        cat('\\\\\n')
+        cat('\\\\\n')
+        cat("No outgoing contacts during the search period.\n")
+    }
+@
+
+<<echo=false, results=tex>>=
+    if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
+        cat('\\clearpage\n')
+        cat('\\section{Direct ingoing contacts}\n')
+
+        df <- as(.ct_env$ct@ingoingContacts, 'data.frame')
+        names(df)[names(df) == 'source'] <- 'rhs'
+        names(df)[names(df) == 'destination'] <- 'lhs'
+
+        DetailedTable(df[df$lhs == df$root,], 'in', '\\leftarrow')
+
+        df <- df[df$lhs != df$root,]
+        if(nrow(df) > 0) {
+            cat('\\clearpage\n')
+            cat('\\section{Indirect ingoing contacts}\n')
+
+            DetailedTable(df, 'in', '\\leftarrow')
+        }
+    }
+@
+
+<<echo=false, results=tex>>=
+    if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
+        cat('\\clearpage\n')
+        cat('\\section{Direct outgoing contacts}\n')
+
+        df <- as(.ct_env$ct@outgoingContacts, 'data.frame')
+        names(df)[names(df) == 'source'] <- 'lhs'
+        names(df)[names(df) == 'destination'] <- 'rhs'
+
+        DetailedTable(df[df$lhs == df$root,], 'in', '\\rightarrow')
+
+        df <- df[df$lhs != df$root,]
+        if(nrow(df) > 0) {
+            cat('\\clearpage\n')
+            cat('\\section{Indirect outgoing contacts}\n')
+
+            DetailedTable(df, 'out', '\\rightarrow')
+        }
+    }
+@
+
+\end{document}

@@ -1,0 +1,43 @@
+\docType{methods}
+\name{plot-methods}
+\alias{plot}
+\alias{plot-methods}
+\alias{plot,Contacts-method}
+\alias{plot,ContactTrace-method}
+\title{plot,-method}
+\description{
+  The contact structure can be visualized graphically with
+  a plot. The plot gives an overview of the number of
+  ingoing and outgoing holdings connected to the root
+  holding. The black node is the root holding and all white
+  nodes represent holdings that are direct or indirect
+  holdings with ingoing contacts to root. Grey nodes
+  represent holdings that are direct or indirect holdings
+  with outgoing contacts from root.
+}
+\examples{
+# Load data
+data(transfers)
+
+# Perform contact tracing
+contactTrace <- Trace(movements=transfers,
+                      root=2645,
+                      tEnd='2005-10-31',
+                      days=90)
+
+\dontrun{
+# Plot in- and outgoing contact chain for the root 2645
+plot(contactTrace)
+}
+}
+\references{
+  \itemize{ \item Noremark, M., et al., Network analysis of
+  cattle and pig movements in Sweden: Measures relevant for
+  disease control and riskbased surveillance.  Preventive
+  Veterinary Medicine 2011, doi:
+  10.1016/j.prevetmed.2010.12.009 }
+}
+\seealso{
+  \code{\link{show}}.
+}
+
