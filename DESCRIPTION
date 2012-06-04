@@ -21,8 +21,8 @@ Suggests:
     testthat
 Collate:
     'Contacts.r'
-    'ContactTrace.R'
-    'EpiContactTrace-package.R'
+    'ContactTrace.r'
+    'EpiContactTrace-package.r'
     'trace.R'
     'in-degree.r'
     'out-degree.r'

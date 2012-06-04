@@ -16,4 +16,4 @@ To install the development version of EpiContactTrace, it's easiest to use the `
 
     # install.packages("devtools")
     library(devtools)
-    install_github("EpiContactTrace")
+    install_github("EpiContactTrace", "stewid")
