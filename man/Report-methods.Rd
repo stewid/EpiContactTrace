@@ -32,11 +32,11 @@
 \section{Methods}{
   \describe{
 
-  \item{\code{signature(object = "ContactTrace")}}{ %%
-  ~~describe this method here~~ }
+  \item{\code{signature(object = "ContactTrace")}}{
+  Generate a report for a \code{ContactTrace} object.  }
 
-  \item{\code{signature(object = "list")}}{ %% ~~describe
-  this method here~~ } }
+  \item{\code{signature(object = "list")}}{ Generate
+  reports for a list of \code{ContactTrace} obejcts.  } }
 }
 \examples{
 # Load data

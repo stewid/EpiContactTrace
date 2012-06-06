@@ -6,7 +6,7 @@
 \alias{NetworkSummary,list-method}
 \title{\code{NetworkSummary}}
 \value{
-  A \code{\link{data.frame}} with the following columns:
+  A \code{data.frame} with the following columns:
   \describe{ \item{root}{ The root of the contact tracing }
 
   \item{inBegin}{ Equals inBegin in

@@ -26,11 +26,11 @@
 ##' @section Methods: \describe{
 ##'
 ##'   \item{\code{signature(object = "ContactTrace")}}{
-##'     %% ~~describe this method here~~
+##'     Generate a report for a \code{ContactTrace} object.
 ##'   }
 ##'
 ##'   \item{\code{signature(object = "list")}}{
-##'     %% ~~describe this method here~~
+##'     Generate reports for a list of \code{ContactTrace} obejcts.
 ##'   }
 ##' }
 ##' @keywords methods

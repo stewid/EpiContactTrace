@@ -12,7 +12,7 @@
 ##' @aliases ShortestPaths ShortestPaths-methods ShortestPaths,Contacts-method
 ##' ShortestPaths,ContactTrace-method ShortestPaths,list-method
 ##' @docType methods
-##' @return A \code{\link{data.frame}} with the following columns:
+##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
 ##'     The root of the contact tracing
