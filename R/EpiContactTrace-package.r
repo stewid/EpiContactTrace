@@ -30,10 +30,17 @@
 ##' @author Stefan Widgren Maria Noremark
 ##' @section Maintainer:
 ##' Stefan Widgren <stefan.widgren@@sva.se>
-##' @references \itemize{ \item Noremark, M., et al., Network analysis of
-##' cattle and pig movements in Sweden: Measures relevant for disease control
-##' and riskbased surveillance.  Preventive Veterinary Medicine 2011, doi:
-##' 10.1016/j.prevetmed.2010.12.009 }
+##' @references \itemize{
+##'   \item Dube, C., et al., A review of network analysis terminology
+##'     and its application to foot-and-mouth disease modelling and policy
+##'     development. Transbound Emerg Dis 56 (2009) 73-85, doi:
+##'     10.1111/j.1865-1682.2008.01064.x
+##'
+##'   \item Noremark, M., et al., Network analysis
+##'     of cattle and pig movements in Sweden: Measures relevant for
+##'     disease control and riskbased surveillance.  Preventive Veterinary
+##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+##' }
 ##' @keywords package
 ##' @examples
 ##'
@@ -58,9 +65,9 @@
 ##'
 NULL
 
-##' Movements Example Data
+##' Movement Example Data
 ##'
-##' Movements data included in the package. The data contains fictitious
+##' Movement data included in the package. The data contains fictitious
 ##' example data of cattle movements during the period 2005-08-01 -- 2005-10-31.
 ##'
 ##'
@@ -69,30 +76,31 @@ NULL
 ##' @usage data(transfers)
 ##' @format A data frame with 70190 observations on the following 6 variables.
 ##' \describe{
-##'   \item{\code{source}}{
+##'   \item{source}{
 ##'     a numeric vector with the holding identifier of the source
 ##'   }
 ##'
-##'   \item{\code{destination}}{
+##'   \item{destination}{
 ##'     a numeric vector with holding identifier of the destination.
 ##'   }
 ##'
-##'   \item{\code{id}}{
+##'   \item{id}{
 ##'     a character vector with the identity of the animal.
 ##'     In this dataset an 5 character hexadecimal vector.
 ##'   }
 ##'
-##'   \item{\code{t}}{
+##'   \item{t}{
 ##'     a Date of the transfers
 ##'   }
 ##'
-##'   \item{\code{n}}{
+##'   \item{n}{
 ##'     a numeric vector with the number of animals moved.
 ##'     Always 1 in this dataset.
 ##'   }
 ##'
-##'   \item{\code{category}}{
-##'     a factor with levels \code{Cattle}
+##'   \item{category}{
+##'     a factor describing the category of the animal.
+##'     Always \code{Cattle} in this dataset.
 ##'   }
 ##' }
 ##' @keywords datasets

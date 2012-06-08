@@ -6,14 +6,15 @@
 ##' The \code{ContactTrace} class holds information for the ingoing and outgoing
 ##' contact chain for a specific root within the time window used for contact
 ##' tracing.
+##' @section Slots:
 ##' \describe{
-##'   \item{\code{root}}{
+##'   \item{root}{
 ##'     A \code{character} vector of length one with the identifier of the root.
 ##'   }
-##'   \item{\code{ingoingContacts}}{
+##'   \item{ingoingContacts}{
 ##'     A \code{Contacts} object with the contacts for the ingoing contact chain.
 ##'   }
-##'   \item{\code{outgoingContacts}}{
+##'   \item{outgoingContacts}{
 ##'     A \code{Contacts} object with the contacts for the outgoing contact chain.
 ##'   }
 ##' }

@@ -6,8 +6,8 @@
     outBegin, outEnd)
 }
 \arguments{
-  \item{movements}{a \code{\link{data.frame}} data.frame
-  with movements, see details.}
+  \item{movements}{a \code{data.frame} data.frame with
+  movements, see details.}
 
   \item{root}{vector of roots to perform contact tracing
   for.}
@@ -34,25 +34,24 @@
 }
 \details{
   The argument movements in TraceDateInterval is a
-  \code{\link{data.frame}} with the following columns:
-  \describe{
+  \code{data.frame} with the following columns: \describe{
 
-  \item{\code{source}}{ an integer or character identifier
-  of the source holding.  }
+  \item{source}{ an integer or character identifier of the
+  source holding.  }
 
-  \item{\code{destination}}{ an integer or character
-  identifier of the destination holding.  }
+  \item{destination}{ an integer or character identifier of
+  the destination holding.  }
 
-  \item{\code{t}}{ the Date of the transfer }
+  \item{t}{ the Date of the transfer }
 
-  \item{\code{id}}{ an optional character vector with the
-  identity of the animal.  }
+  \item{id}{ an optional character vector with the identity
+  of the animal.  }
 
-  \item{\code{n}}{ an optional numeric vector with the
-  number of animals moved.  }
+  \item{n}{ an optional numeric vector with the number of
+  animals moved.  }
 
-  \item{\code{category}}{ an optional character or factor
-  with category of the animal e.g. Cattle.  } }
+  \item{category}{ an optional character or factor with
+  category of the animal e.g. Cattle.  } }
 }
 \examples{
 # Load data
@@ -90,10 +89,16 @@ NetworkSummary(contactTrace)
 }
 }
 \references{
-  \itemize{ \item Noremark, M., et al., Network analysis of
-  cattle and pig movements in Sweden: Measures relevant for
+  \itemize{ \item Dube, C., et al., A review of network
+  analysis terminology and its application to
+  foot-and-mouth disease modelling and policy development.
+  Transbound Emerg Dis 56 (2009) 73-85, doi:
+  10.1111/j.1865-1682.2008.01064.x
+
+  \item Noremark, M., et al., Network analysis of cattle
+  and pig movements in Sweden: Measures relevant for
   disease control and riskbased surveillance.  Preventive
-  Veterinary Medicine 2011, doi:
+  Veterinary Medicine 99 (2011) 78-90, doi:
   10.1016/j.prevetmed.2010.12.009 }
 }
 \seealso{

@@ -1,37 +1,38 @@
 \docType{data}
 \name{transfers}
 \alias{transfers}
-\title{Movements Example Data}
+\title{Movement Example Data}
 \format{A data frame with 70190 observations on the following 6 variables.
 \describe{
-  \item{\code{source}}{
+  \item{source}{
     a numeric vector with the holding identifier of the source
   }
 
-  \item{\code{destination}}{
+  \item{destination}{
     a numeric vector with holding identifier of the destination.
   }
 
-  \item{\code{id}}{
+  \item{id}{
     a character vector with the identity of the animal.
     In this dataset an 5 character hexadecimal vector.
   }
 
-  \item{\code{t}}{
+  \item{t}{
     a Date of the transfers
   }
 
-  \item{\code{n}}{
+  \item{n}{
     a numeric vector with the number of animals moved.
     Always 1 in this dataset.
   }
 
-  \item{\code{category}}{
-    a factor with levels \code{Cattle}
+  \item{category}{
+    a factor describing the category of the animal.
+    Always \code{Cattle} in this dataset.
   }
 }}
 \description{
-  Movements data included in the package. The data contains
+  Movement data included in the package. The data contains
   fictitious example data of cattle movements during the
   period 2005-08-01 -- 2005-10-31.
 }
