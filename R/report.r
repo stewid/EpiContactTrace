@@ -16,7 +16,9 @@
 ##' tracing and getting an overview of each part of the chain. After the
 ##' summary all details of all contacts included in the contact chains is
 ##' presented, i.e. date of contact and data on individual level when
-##' available.
+##' available. To generate pdf files a TeX installation must exist to compile the
+##' latex file. The report is saved in the working directory with the name of
+##' the root as filename.
 ##'
 ##'
 ##' @name Report-methods
@@ -33,6 +35,11 @@
 ##'     Generate reports for a list of \code{ContactTrace} obejcts.
 ##'   }
 ##' }
+##' @param object the object
+##' @param format the format to use, can be either 'html' or 'pdf'. The default
+##'        is 'html'
+##' @param template the Sweave template file to use. If none is provided, the default
+##'        is used.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
 ##'     and its application to foot-and-mouth disease modelling and policy
@@ -43,7 +50,15 @@
 ##'     of cattle and pig movements in Sweden: Measures relevant for
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+##'
+##'   \item Friedrich Leisch. Sweave: Dynamic generation of
+##'     statistical reports using literate data analysis. In Wolfgang
+##'     Hardle and Bernd Ronz, editors, Compstat 2002 - Proceedings in
+##'     Computational Statistics, pages 575-580. Physica Verlag,
+##'     Heidelberg, 2002. ISBN 3-7908-1517-9.
+##'     \url{http://www.statistik.uni-muenchen.de/~leisch/Sweave/}
 ##' }
+##' @seealso Sweave, R2HTML, texi2pdf.
 ##' @keywords methods
 ##' @import R2HTML
 ##' @export
@@ -87,7 +102,7 @@ setGeneric('Report',
 
 setMethod('Report',
           signature(object = 'ContactTrace'),
-          function(object, format='html', filename=NULL, template=NULL, verbose=TRUE, clean=TRUE)
+          function(object, format='html', template=NULL)
       {
           if(any(identical(format, 'html'), identical(format, 'pdf'))) {
               if (exists('.ct_env', envir=globalenv())) {
@@ -116,7 +131,7 @@ setMethod('Report',
                   }
 
                   Sweave(template, syntax="SweaveSyntaxNoweb")
-                  tools::texi2dvi(sub('rnw$', 'tex', basename(template)), pdf=TRUE, clean=clean)
+                  tools::texi2pdf(sub('rnw$', 'tex', basename(template)), clean=TRUE)
                   file.rename(sub('rnw$', 'pdf', basename(template)), sprintf('%s.pdf', object@root))
 
                   if(identical(clean, TRUE)) {
@@ -131,7 +146,7 @@ setMethod('Report',
 
 setMethod('Report',
           signature(object = 'list'),
-          function(object, format='html', filename=NULL, template=NULL, verbose=TRUE, clean=TRUE)
+          function(object, format='html', template=NULL)
       {
           if(!all(sapply(object, function(x) length(x)) == 1)) {
               stop('Unexpected length of list')
@@ -143,9 +158,7 @@ setMethod('Report',
 
           lapply(object, function(x) Report(x,
                                             format=format,
-                                            filename=filename,
                                             template=template,
-                                            verbose=verbose,
                                             clean=clean))
 
           invisible(NULL)

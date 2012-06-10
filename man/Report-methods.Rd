@@ -5,6 +5,15 @@
 \alias{Report,ContactTrace-method}
 \alias{Report,list-method}
 \title{Generate a contact tracing \code{Report}}
+\arguments{
+  \item{object}{the object}
+
+  \item{format}{the format to use, can be either 'html' or
+  'pdf'. The default is 'html'}
+
+  \item{template}{the Sweave template file to use. If none
+  is provided, the default is used.}
+}
 \description{
   EpiContatTrace contains report templates to generate pdf-
   or html reports for the farm specific contacts. These
@@ -27,7 +36,10 @@
   overview of each part of the chain. After the summary all
   details of all contacts included in the contact chains is
   presented, i.e. date of contact and data on individual
-  level when available.
+  level when available. To generate pdf files a TeX
+  installation must exist to compile the latex file. The
+  report is saved in the working directory with the name of
+  the root as filename.
 }
 \section{Methods}{
   \describe{
@@ -82,7 +94,18 @@ Report(contactTrace)
   and pig movements in Sweden: Measures relevant for
   disease control and riskbased surveillance.  Preventive
   Veterinary Medicine 99 (2011) 78-90, doi:
-  10.1016/j.prevetmed.2010.12.009 }
+  10.1016/j.prevetmed.2010.12.009
+
+  \item Friedrich Leisch. Sweave: Dynamic generation of
+  statistical reports using literate data analysis. In
+  Wolfgang Hardle and Bernd Ronz, editors, Compstat 2002 -
+  Proceedings in Computational Statistics, pages 575-580.
+  Physica Verlag, Heidelberg, 2002. ISBN 3-7908-1517-9.
+  \url{http://www.statistik.uni-muenchen.de/~leisch/Sweave/}
+  }
+}
+\seealso{
+  Sweave, R2HTML, texi2pdf.
 }
 \keyword{methods}
 
