@@ -133,10 +133,7 @@ setMethod('Report',
                   Sweave(template, syntax="SweaveSyntaxNoweb")
                   tools::texi2pdf(sub('rnw$', 'tex', basename(template)), clean=TRUE)
                   file.rename(sub('rnw$', 'pdf', basename(template)), sprintf('%s.pdf', object@root))
-
-                  if(identical(clean, TRUE)) {
-                      unlink(sub('rnw$', 'tex', basename(template)))
-                  }
+                  unlink(sub('rnw$', 'tex', basename(template)))
               }
           }
 

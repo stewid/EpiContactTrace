@@ -1,5 +1,11 @@
 <<echo=false, results=html>>=
-    SummaryTable <- function(contacts, direction, arrow) {
+    SummaryTable <- function(contacts, direction) {
+        if(identical(direction, 'in')) {
+            arrow <- '&larr;'
+        } else {
+            arrow <- '&rarr;'
+        }
+
         cat('<table border=0>\n', file=.HTML.file)
 
         for(i in seq_len(nrow(contacts))) {
@@ -23,7 +29,13 @@
 @
 
 <<echo=false, results=html>>=
-    DetailedTable <- function(contacts, direction, arrow) {
+    DetailedTable <- function(contacts, direction) {
+        if(identical(direction, 'in')) {
+            arrow <- '&larr;'
+        } else {
+            arrow <- '&rarr;'
+        }
+
         contacts <- contacts[order(contacts$t, contacts$id, decreasing=FALSE),]
 
         contacts$id <- as.character(contacts$id)
@@ -37,16 +49,14 @@
 
         ddply(contacts, c('lhs', 'rhs'), .fun=function(x) {
             cat('<p>', file=.HTML.file)
+
+            # Create the lhs to/from rhs title and add the name of the href link
             cat(sprintf('<h3><a name="%s-%s-%s">%s %s %s</a></h3>', direction, x$lhs[1], x$rhs[1], x$lhs[1], arrow, x$rhs[1]), file=.HTML.file)
 
             cat('<table border=1>\n', file=.HTML.file)
 
             # Header
-            if(identical(direction, 'in')) {
-                cat('<tr><th>Date</th><th>Id</th><th>N</th><th>Category</th><th>Destination</th><th>&nbsp;</th><th>Source</th></tr>', file=.HTML.file)
-            } else {
-                cat('<tr><th>Date</th><th>Id</th><th>N</th><th>Category</th><th>Source</th><th>&nbsp;</th><th>Destination</th></tr>', file=.HTML.file)
-            }
+            cat('<tr><th>Date</th><th>Id</th><th>N</th><th>Category</th><th>Source</th><th>Destination</th></tr>', file=.HTML.file)
 
             for(i in seq_len(nrow(x))) {
                 cat('<tr>', file=.HTML.file)
@@ -55,9 +65,8 @@
                 cat(sprintf('<td align="right">%s</td>', x$id[i]), file=.HTML.file)
                 cat(sprintf('<td align="right">%s</td>', x$n[i]), file=.HTML.file)
                 cat(sprintf('<td align="right">%s</td>', x$category[i]), file=.HTML.file)
-                cat(sprintf('<td align="right">%s</td>', x$lhs[i]), file=.HTML.file)
-                cat(sprintf('<td align="right">%s</td>', arrow), file=.HTML.file)
-                cat(sprintf('<td align="right">%s</td>', x$rhs[i]), file=.HTML.file)
+                cat(sprintf('<td align="right">%s</td>', x$source[i]), file=.HTML.file)
+                cat(sprintf('<td align="right">%s</td>', x$destination[i]), file=.HTML.file)
 
                 cat('</tr>\n', file=.HTML.file)
             }
@@ -110,13 +119,13 @@
 <<echo=false, results=html>>=
     if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        ns <- NetworkStructure(.ct_env$ct@ingoingContacts)
+        df <- NetworkStructure(.ct_env$ct@ingoingContacts)
 
-        # Rename source and destination to lhs and rhs, with respect to direction
-        names(ns)[names(ns) == 'source'] <- 'rhs'
-        names(ns)[names(ns) == 'destination'] <- 'lhs'
+        # Add lhs and rhs, with respect to direction
+        df$rhs <- df$source
+        df$lhs <- df$destination
 
-        SummaryTable(ns, 'in', '&larr;')
+        SummaryTable(df, 'in')
     } else {
         cat("<p>No ingoing contacts during the search period.</p>\n", file=.HTML.file)
     }
@@ -139,13 +148,13 @@
 <<echo=false, results=html>>=
     if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        ns <- NetworkStructure(.ct_env$ct@outgoingContacts)
+        df <- NetworkStructure(.ct_env$ct@outgoingContacts)
 
-        # Rename source and destination to lhs and rhs, with respect to direction
-        names(ns)[names(ns) == 'source'] <- 'lhs'
-        names(ns)[names(ns) == 'destination'] <- 'rhs'
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$source
+        df$rhs <- df$destination
 
-        SummaryTable(ns, 'out', '&rarr;')
+        SummaryTable(df, 'out')
     } else {
         cat("<p>No outgoing contacts during the search period.</p>\n", file=.HTML.file)
     }
@@ -158,17 +167,19 @@
         cat('<h2>Direct ingoing contacts</h2>', file=.HTML.file)
 
         df <- as(.ct_env$ct@ingoingContacts, 'data.frame')
-        names(df)[names(df) == 'source'] <- 'rhs'
-        names(df)[names(df) == 'destination'] <- 'lhs'
 
-        DetailedTable(df[df$lhs == df$root,], 'in', '&larr;')
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$destination
+        df$rhs <- df$source
 
-        df <- df[df$lhs != df$root,]
+        DetailedTable(df[df$destination == df$root,], 'in')
+
+        df <- df[df$destination != df$root,]
         if(nrow(df) > 0) {
             cat('<hr/>', file=.HTML.file)
             cat('<h2>Indirect ingoing contacts</h2>', file=.HTML.file)
 
-            DetailedTable(df, 'in', '&larr;')
+            DetailedTable(df, 'in')
         }
     }
 @
@@ -180,17 +191,19 @@
         cat('<h2>Direct outgoing contacts</h2>', file=.HTML.file)
 
         df <- as(.ct_env$ct@outgoingContacts, 'data.frame')
-        names(df)[names(df) == 'source'] <- 'lhs'
-        names(df)[names(df) == 'destination'] <- 'rhs'
 
-        DetailedTable(df[df$lhs == df$root,], 'in', '&larr;')
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$source
+        df$rhs <- df$destination
 
-        df <- df[df$lhs != df$root,]
+        DetailedTable(df[df$source == df$root,], 'out')
+
+        df <- df[df$source != df$root,]
         if(nrow(df) > 0) {
             cat('<hr/>', file=.HTML.file)
             cat('<h2>Indirect outgoing contacts</h2>', file=.HTML.file)
 
-            DetailedTable(df, 'out', '&rarr;')
+            DetailedTable(df, 'out')
         }
     }
 @

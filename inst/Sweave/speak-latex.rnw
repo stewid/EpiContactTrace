@@ -1,5 +1,11 @@
 <<echo=false, results=tex>>=
-    SummaryTable <- function(contacts, direction, arrow) {
+    SummaryTable <- function(contacts, direction) {
+        if(identical(direction, 'in')) {
+            arrow <- '\\leftarrow'
+        } else {
+            arrow <- '\\rightarrow'
+        }
+
         cat(sprintf('\\begin{longtable}[l]{r %s}\n', paste(rep('c r', max(contacts$distance-1L) + 1), collapse=' ')))
         cat('\\hline\n')
 
@@ -20,7 +26,13 @@
 @
 
 <<echo=false, results=tex>>=
-    DetailedTable <- function(contacts, direction, arrow) {
+    DetailedTable <- function(contacts, direction) {
+        if(identical(direction, 'in')) {
+            arrow <- '\\leftarrow'
+        } else {
+            arrow <- '\\rightarrow'
+        }
+
         contacts <- contacts[order(contacts$t, contacts$id, decreasing=FALSE),]
 
         contacts$id <- as.character(contacts$id)
@@ -37,25 +49,20 @@
         dummy <- ddply(contacts, c('lhs', 'rhs'), .fun=function(x) {
             cat(sprintf('\\subsection{%s $%s$ %s}\n', x$lhs[1], arrow, x$rhs[1]))
 
-            cat('\\begin{longtable}[l]{l r r r r c r}\n')
+            cat('\\begin{longtable}[l]{l r r r r r}\n')
 
             # Header
             cat('\\hline\n')
-            if(identical(direction, 'in')) {
-                cat('Date & Id & N & Category & Destination & & Source\\\\\n')
-            } else {
-                cat('Date & Id & N & Category & Source & & Destination\\\\\n')
-            }
+            cat('Date & Id & N & Category & Source & Destination\\\\\n')
             cat('\\hline\n')
 
             for(i in seq_len(nrow(x))) {
-                cat(sprintf('%s & %s & %s & %s & %s & $%s$ & %s\\\\\n', x$t[i],
-                                                                        x$id[i],
-                                                                        x$n[i],
-                                                                        x$category[i],
-                                                                        x$lhs[i],
-                                                                        arrow,
-                                                                        x$rhs[i]))
+                cat(sprintf('%s & %s & %s & %s & %s & %s\\\\\n', x$t[i],
+                                                                 x$id[i],
+                                                                 x$n[i],
+                                                                 x$category[i],
+                                                                 x$source[i],
+                                                                 x$destination[i]))
             }
 
             cat('\\hline\n')
@@ -116,13 +123,13 @@
 <<echo=false, results=tex>>=
     if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        ns <- NetworkStructure(.ct_env$ct@ingoingContacts)
+        df <- NetworkStructure(.ct_env$ct@ingoingContacts)
 
-        # Rename source and destination to lhs and rhs, with respect to direction
-        names(ns)[names(ns) == 'source'] <- 'rhs'
-        names(ns)[names(ns) == 'destination'] <- 'lhs'
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$destination
+        df$rhs <- df$source
 
-        SummaryTable(ns, 'in', '\\leftarrow')
+        SummaryTable(df, 'in')
     } else {
         cat('\\noindent\n')
         cat('\\\\\n')
@@ -146,13 +153,13 @@
 <<echo=false, results=tex>>=
     if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        ns <- NetworkStructure(.ct_env$ct@outgoingContacts)
+        df <- NetworkStructure(.ct_env$ct@outgoingContacts)
 
-        # Rename source and destination to lhs and rhs, with respect to direction
-        names(ns)[names(ns) == 'source'] <- 'lhs'
-        names(ns)[names(ns) == 'destination'] <- 'rhs'
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$source
+        df$rhs <- df$destination
 
-        SummaryTable(ns, 'out', '\\rightarrow')
+        SummaryTable(df, 'out')
     } else {
         cat('\\noindent\n')
         cat('\\\\\n')
@@ -167,17 +174,19 @@
         cat('\\section{Direct ingoing contacts}\n')
 
         df <- as(.ct_env$ct@ingoingContacts, 'data.frame')
-        names(df)[names(df) == 'source'] <- 'rhs'
-        names(df)[names(df) == 'destination'] <- 'lhs'
 
-        DetailedTable(df[df$lhs == df$root,], 'in', '\\leftarrow')
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$destination
+        df$rhs <- df$source
 
-        df <- df[df$lhs != df$root,]
+        DetailedTable(df[df$destination == df$root,], 'in')
+
+        df <- df[df$destination != df$root,]
         if(nrow(df) > 0) {
             cat('\\clearpage\n')
             cat('\\section{Indirect ingoing contacts}\n')
 
-            DetailedTable(df, 'in', '\\leftarrow')
+            DetailedTable(df, 'in')
         }
     }
 @
@@ -188,17 +197,19 @@
         cat('\\section{Direct outgoing contacts}\n')
 
         df <- as(.ct_env$ct@outgoingContacts, 'data.frame')
-        names(df)[names(df) == 'source'] <- 'lhs'
-        names(df)[names(df) == 'destination'] <- 'rhs'
 
-        DetailedTable(df[df$lhs == df$root,], 'in', '\\rightarrow')
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$source
+        df$rhs <- df$destination
 
-        df <- df[df$lhs != df$root,]
+        DetailedTable(df[df$source == df$root,], 'out')
+
+        df <- df[df$source != df$root,]
         if(nrow(df) > 0) {
             cat('\\clearpage\n')
             cat('\\section{Indirect outgoing contacts}\n')
 
-            DetailedTable(df, 'out', '\\rightarrow')
+            DetailedTable(df, 'out')
         }
     }
 @
