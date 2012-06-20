@@ -23,7 +23,7 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @import igraph
+##' @import igraph0
 ##' @importFrom graphics plot
 ##' @export
 ##' @examples

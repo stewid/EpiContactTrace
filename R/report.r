@@ -155,8 +155,7 @@ setMethod('Report',
 
           lapply(object, function(x) Report(x,
                                             format=format,
-                                            template=template,
-                                            clean=clean))
+                                            template=template))
 
           invisible(NULL)
       }

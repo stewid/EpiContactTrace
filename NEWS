@@ -1,3 +1,14 @@
+EpiContactTrace 0.6.9
+---------------------
+
+ * Changed from igraph to igraph0 to handle the update of igraph to 0.6.
+
+BUG FIXES
+
+* Fixed bug with Report of a list of ContactTrace objects.
+  Each ContactTrace object called Report with missing parameter
+  clean.
+
 EpiContactTrace 0.6.8
 ---------------------
 
