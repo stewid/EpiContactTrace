@@ -4,6 +4,7 @@
 \alias{OutgoingContactChain-methods}
 \alias{OutgoingContactChain,Contacts-method}
 \alias{OutgoingContactChain,ContactTrace-method}
+\alias{OutgoingContactChain,data.frame-method}
 \alias{OutgoingContactChain,list-method}
 \title{\code{OutgoingContactChain}}
 \value{
@@ -17,23 +18,23 @@
   tracing.
 }
 \section{Methods}{
-  \describe{ \item{\code{signature(object = "Contacts")}}{
-  Get the OutgoingContactChain of a \code{Contacts} object
-  with outgoing direction.  }
+  \describe{ \item{\code{signature(x = "Contacts")}}{ Get
+  the OutgoingContactChain of a \code{Contacts} object with
+  outgoing direction.  }
 
-  \item{\code{signature(object = "ContactTrace")}}{ Get the
+  \item{\code{signature(x = "ContactTrace")}}{ Get the
   OutgoingContactChain of a \code{ContactTrace} object.  }
 
-  \item{\code{signature(object = "list")}}{ Get the
+  \item{\code{signature(x = "list")}}{ Get the
   OutgoingContactChain for a list of \code{ContactTrace}
   objects.  Each item in the list must be a
   \code{ContactTrace} object.  } }
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
@@ -42,12 +43,12 @@ contactTrace <- Trace(movements=transfers,
 OutgoingContactChain(contactTrace)
 
 \dontrun{
-# Perform contact tracing for all included herds
-# First extract all source and destination from the dataset
+## Perform contact tracing for all included herds
+## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
                       tEnd='2005-10-31',

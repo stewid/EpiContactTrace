@@ -4,6 +4,7 @@
 \alias{IngoingContactChain-methods}
 \alias{IngoingContactChain,Contacts-method}
 \alias{IngoingContactChain,ContactTrace-method}
+\alias{IngoingContactChain,data.frame-method}
 \alias{IngoingContactChain,list-method}
 \title{\code{IngoingContactChain}}
 \value{
@@ -17,23 +18,28 @@
   tracing.
 }
 \section{Methods}{
-  \describe{ \item{\code{signature(object = "Contacts")}}{
-  Get the IngoingContactChain of a \code{Contacts} object
-  with ingoing direction.  }
+  \describe{ \item{\code{signature(x = "Contacts")}}{ Get
+  the IngoingContactChain of a \code{Contacts} object with
+  ingoing direction.  }
 
-  \item{\code{signature(object = "ContactTrace")}}{ Get the
+  \item{\code{signature(x = "ContactTrace")}}{ Get the
   IngoingContactChain of a \code{ContactTrace} object.  }
 
-  \item{\code{signature(object = "list")}}{ Get the
+  \item{\code{signature(x = "list")}}{ Get the
+  IngoingContactChain for a list of \code{ContactTrace}
+  objects.  Each item in the list must be a
+  \code{ContactTrace} object.  }
+
+  \item{\code{signature(x = "data.frame")}}{ Get the
   IngoingContactChain for a list of \code{ContactTrace}
   objects.  Each item in the list must be a
   \code{ContactTrace} object.  } }
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
@@ -42,12 +48,12 @@ contactTrace <- Trace(movements=transfers,
 IngoingContactChain(contactTrace)
 
 \dontrun{
-# Perform contact tracing for all included herds
-# First extract all source and destination from the dataset
+## Perform contact tracing for all included herds
+## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
                       tEnd='2005-10-31',

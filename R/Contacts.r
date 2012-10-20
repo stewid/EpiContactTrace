@@ -65,19 +65,19 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements = transfers,
 ##'                       root = 2645,
 ##'                       tEnd = '2005-10-31',
 ##'                       days = 90)
 ##'
-##' # Show structure of ingoing contacts
+##' ## Show structure of ingoing contacts
 ##' str(contactTrace@@ingoingContacts)
 ##'
-##' # Show structure of ougoing contacts
+##' ## Show structure of ougoing contacts
 ##' str(contactTrace@@outgoingContacts)
 ##'
 setClass('Contacts',
@@ -147,7 +147,7 @@ setAs(from='Contacts',
 
           return(cbind(df2, df1))
       } else {
-          # No contacts, return a zero row data.frame
+          ## No contacts, return a zero row data.frame
           return(data.frame(root=character(0),
                             inBegin=as.Date(character(0)),
                             inEnd=as.Date(character(0)),

@@ -7,19 +7,20 @@
 ##' @name InDegree-methods
 ##' @aliases InDegree InDegree-methods InDegree,Contacts-method
 ##' InDegree,ContactTrace-method InDegree,list-method
+##' InDegree,data.frame-method
 ##' @docType methods
 ##' @return An integer vector.
 ##' @section Methods:
 ##' \describe{
-##'   \item{\code{signature(object = "Contacts")}}{
+##'   \item{\code{signature(x = "Contacts")}}{
 ##'     Get the InDegree of a \code{Contacts} object with ingoing direction.
 ##'   }
 ##'
-##'   \item{\code{signature(object = "ContactTrace")}}{
+##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the InDegree of a \code{ContactTrace} object.
 ##'   }
 ##'
-##'   \item{\code{signature(object = "list")}}{
+##'   \item{\code{signature(x = "list")}}{
 ##'     Get the InDegree for a list of \code{ContactTrace} objects.
 ##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
@@ -39,10 +40,10 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
@@ -51,12 +52,12 @@
 ##' InDegree(contactTrace)
 ##'
 ##' \dontrun{
-##' # Perform contact tracing for all included herds
-##' # First extract all source and destination from the dataset
+##' ## Perform contact tracing for all included herds
+##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source,
 ##'                       transfers$destination)))
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=root,
 ##'                       tEnd='2005-10-31',
@@ -66,41 +67,63 @@
 ##' }
 ##'
 setGeneric('InDegree',
-           signature = 'object',
-           function(object) standardGeneric('InDegree'))
+           signature = 'x',
+           function(x, ...) standardGeneric('InDegree'))
 
 setMethod('InDegree',
-          signature(object = 'Contacts'),
-          function (object)
+          signature(x = 'Contacts'),
+          function (x)
       {
-          if(!identical(object@direction, 'in')) {
+          if(!identical(x@direction, 'in')) {
               stop('Unable to determine InDegree for outgoing contacts')
           }
 
-          return(length(unique(object@source[object@destination==object@root])))
+          return(length(unique(x@source[x@destination==x@root])))
       }
 )
 
 setMethod('InDegree',
-          signature(object = 'ContactTrace'),
-          function (object)
+          signature(x = 'ContactTrace'),
+          function (x)
       {
-          return(InDegree(object@ingoingContacts))
+          return(InDegree(x@ingoingContacts))
       }
 )
 
 setMethod('InDegree',
-          signature(object = 'list'),
-          function(object)
+          signature(x = 'list'),
+          function(x)
       {
-          if(!all(sapply(object, function(x) length(x)) == 1)) {
+          if(!all(sapply(x, function(y) length(y)) == 1)) {
               stop('Unexpected length of list')
           }
 
-          if(!all(sapply(object, function(x) class(x)) == 'ContactTrace')) {
+          if(!all(sapply(x, function(y) class(y)) == 'ContactTrace')) {
               stop('Unexpected object in list')
           }
 
-          return(sapply(object, InDegree))
+          return(sapply(x, InDegree))
+      }
+)
+
+setMethod('InDegree',
+          signature(x = 'data.frame'),
+          function(x,
+                   root,
+                   tEnd,
+                   days)
+      {
+          if(any(missing(x),
+                 missing(root),
+                 missing(tEnd),
+                 missing(days))) {
+              stop('Missing parameters in call to InDegree')
+          }
+
+          return(NetworkSummary(x, root, tEnd, days)[, c('root',
+                                                         'inBegin',
+                                                         'inEnd',
+                                                         'inDays',
+                                                         'inDegree')])
       }
 )

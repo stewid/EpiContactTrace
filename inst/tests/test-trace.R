@@ -1,8 +1,100 @@
 context('Contact Tracing')
 
-test_that('TraceDateInterval parameter validation', {
+test_that('Missing parameters', {
     expect_that(TraceDateInterval(), throws_error('Missing parameters in call to TraceDateInterval'))
 
+    expect_that(Trace(data.frame(),
+                      tEnd='2005-10-31',
+                      days=90),
+                throws_error('Missing parameters in call to Trace'))
+
+    expect_that(Trace(data.frame(),
+                      root=1,
+                      days=90),
+                throws_error('Missing parameters in call to Trace'))
+
+    expect_that(Trace(data.frame(),
+                      root=1,
+                      tEnd='2005-10-31'),
+                throws_error('Missing parameters in call to Trace'))
+
+    expect_that(IngoingContactChain(data.frame(),
+                                    tEnd='2005-10-31',
+                                    days=90),
+                throws_error('Missing parameters in call to IngoingContactChain'))
+
+    expect_that(IngoingContactChain(data.frame(),
+                                    root=1,
+                                    days=90),
+                throws_error('Missing parameters in call to IngoingContactChain'))
+
+    expect_that(IngoingContactChain(data.frame(),
+                                    root=1,
+                                    tEnd='2005-10-31'),
+                throws_error('Missing parameters in call to IngoingContactChain'))
+
+    expect_that(OutgoingContactChain(data.frame(),
+                                     tEnd='2005-10-31',
+                                     days=90),
+                throws_error('Missing parameters in call to OutgoingContactChain'))
+
+    expect_that(OutgoingContactChain(data.frame(),
+                                     root=1,
+                                     days=90),
+                throws_error('Missing parameters in call to OutgoingContactChain'))
+
+    expect_that(OutgoingContactChain(data.frame(),
+                                     root=1,
+                                     tEnd='2005-10-31'),
+                throws_error('Missing parameters in call to OutgoingContactChain'))
+
+    expect_that(InDegree(data.frame(),
+                         tEnd='2005-10-31',
+                         days=90),
+                throws_error('Missing parameters in call to InDegree'))
+
+    expect_that(InDegree(data.frame(),
+                         root=1,
+                         days=90),
+                throws_error('Missing parameters in call to InDegree'))
+
+    expect_that(InDegree(data.frame(),
+                         root=1,
+                         tEnd='2005-10-31'),
+                throws_error('Missing parameters in call to InDegree'))
+
+    expect_that(OutDegree(data.frame(),
+                          tEnd='2005-10-31',
+                          days=90),
+                throws_error('Missing parameters in call to OutDegree'))
+
+    expect_that(OutDegree(data.frame(),
+                          root=1,
+                          days=90),
+                throws_error('Missing parameters in call to OutDegree'))
+
+    expect_that(OutDegree(data.frame(),
+                          root=1,
+                          tEnd='2005-10-31'),
+                throws_error('Missing parameters in call to OutDegree'))
+
+    expect_that(NetworkSummary(data.frame(),
+                               tEnd='2005-10-31',
+                               days=90),
+                throws_error('Missing parameters in call to NetworkSummary'))
+
+    expect_that(NetworkSummary(data.frame(),
+                               root=1,
+                               days=90),
+                throws_error('Missing parameters in call to NetworkSummary'))
+
+    expect_that(NetworkSummary(data.frame(),
+                               root=1,
+                               tEnd='2005-10-31'),
+                throws_error('Missing parameters in call to NetworkSummary'))
+})
+
+test_that('TraceDateInterval parameter validation', {
     expect_that(TraceDateInterval(movements=1:3,
                                   root=1L,
                                   inBegin=as.Date('2011-08-10'),
@@ -35,13 +127,45 @@ test_that('TraceDateInterval parameter validation', {
                                   outEnd=as.Date('2011-08-10')),
                 throws_error('movements must contain the columns source, destination and t.'))
 
-    expect_that(TraceDateInterval(movements=data.frame(source=1L, destination=2L, t='2011-08-10'),
+    expect_that(TraceDateInterval(movements=data.frame(source=1L, destination=2L, t=1),
                                   root=1L,
                                   inBegin=as.Date('2011-08-10'),
                                   inEnd=as.Date('2011-08-10'),
                                   outBegin=as.Date('2011-08-10'),
                                   outEnd=as.Date('2011-08-10')),
                 throws_error('invalid class of column t in movements'))
+
+    expect_that(TraceDateInterval(movements=data.frame(source=c(1L,NA), destination=c(2L,3L), t=c('2011-08-10', '2011-08-10')),
+                                  root=1L,
+                                  inBegin=as.Date('2011-08-10'),
+                                  inEnd=as.Date('2011-08-10'),
+                                  outBegin=as.Date('2011-08-10'),
+                                  outEnd=as.Date('2011-08-10')),
+                throws_error('source in movements contains NA'))
+
+    expect_that(TraceDateInterval(movements=data.frame(source=c(1L,2L), destination=c(2L,NA), t=c('2011-08-10', '2011-08-10')),
+                                  root=1L,
+                                  inBegin=as.Date('2011-08-10'),
+                                  inEnd=as.Date('2011-08-10'),
+                                  outBegin=as.Date('2011-08-10'),
+                                  outEnd=as.Date('2011-08-10')),
+                throws_error('destination in movements contains NA'))
+
+    expect_that(TraceDateInterval(movements=data.frame(source=c(1L,2L), destination=c(2L,3L), t=c('2011-08-10', NA)),
+                                  root=1L,
+                                  inBegin=as.Date('2011-08-10'),
+                                  inEnd=as.Date('2011-08-10'),
+                                  outBegin=as.Date('2011-08-10'),
+                                  outEnd=as.Date('2011-08-10')),
+                throws_error('t in movements contains NA'))
+
+    expect_that(TraceDateInterval(movements=data.frame(source=c(1L,2L), destination=c(2L,3L), t=c('2011-08-10', NA)),
+                                  root=1L,
+                                  inBegin=as.Date('2011-08-10'),
+                                  inEnd=as.Date('2011-08-10'),
+                                  outBegin=as.Date('2011-08-10'),
+                                  outEnd=as.Date('2011-08-10')),
+                throws_error('t in movements contains NA'))
 
     expect_that(TraceDateInterval(movements=data.frame(source=1L, destination=2L, t=as.Date('2011-08-10'), n='3'),
                                   root=1L,
@@ -306,8 +430,28 @@ test_that('Duplicate movements', {
     load(file="data/movements6.rda")
 
     ct.1 <- Trace(movements6, 2645, '2005-10-31', 90)
-    ct.2 <- Trace(as(ct.1, 'data.frame'), 2645, '2005-10-31', 90)
+    ct.1.df <- as(ct.1, 'data.frame')
 
-    expect_that(ct.2, is_identical_to(ct.1))
+    ct.2 <- Trace(ct.1.df, 2645, '2005-10-31', 90)
+    ct.2.df <- as(ct.2, 'data.frame')
+
+    ct.1.df <- ct.1.df[, c('source',
+                           'destination',
+                           't',
+                           'id',
+                           'n',
+                           'category')]
+
+    ct.2.df <- ct.2.df[, c('source',
+                           'destination',
+                           't',
+                           'id',
+                           'n',
+                           'category')]
+
+    ct.1.df <- ct.1.df[order(1:6),]
+    ct.2.df <- ct.2.df[order(1:6),]
+
+    expect_that(ct.2.df, is_identical_to(ct.1.df))
 })
 

@@ -37,10 +37,10 @@
   Stefan Widgren <stefan.widgren@sva.se>
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
@@ -49,10 +49,10 @@ contactTrace <- Trace(movements=transfers,
 show(contactTrace)
 
 \dontrun{
-# Generate an html report showing details of the contact tracing for
-# root 2645.
-# Note: Creates the files 2645.html and 2645.png in the working
-# directory.
+## Generate an html report showing details of the contact tracing for
+## root 2645.
+## Note: Creates the files 2645.html and 2645.png in the working
+## directory.
 Report(contactTrace)
 }
 }

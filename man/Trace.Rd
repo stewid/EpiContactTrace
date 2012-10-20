@@ -29,28 +29,28 @@
   after that date.
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
                       days=90)
 
-# Show result of contact tracing
+## Show result of contact tracing
 show(contactTrace)
 
 \dontrun{
-# Plot in- and outgoing contact chain
+## Plot in- and outgoing contact chain
 plot(contactTrace)
 
-# Create a network summary for all included herds
-# First extract all source and destination from the dataset
+## Create a network summary for all included herds
+## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
                       tEnd='2005-10-31',

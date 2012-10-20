@@ -8,7 +8,7 @@ Author: Stefan Widgren <stefan.widgren@sva.se>
     Maria Noremark <maria.noremark@sva.se>
 Description: Routines for epidemiological contact tracing
     and visualisation of network of contacts.
-Version: 0.6.9
+Version: 0.7.0
 Date: 2012-06-20
 Depends:
     R(>= 2.15.0),
@@ -16,7 +16,8 @@ Depends:
     plyr,
     R2HTML,
     graphics,
-    methods
+    methods,
+    Rcpp (>= 0.9.13)
 Suggests:
     testthat
 Collate:
@@ -34,3 +35,4 @@ Collate:
     'report.r'
     'shortest-paths.r'
     'show.r'
+LinkingTo: Rcpp

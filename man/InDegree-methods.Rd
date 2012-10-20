@@ -4,6 +4,7 @@
 \alias{InDegree-methods}
 \alias{InDegree,Contacts-method}
 \alias{InDegree,ContactTrace-method}
+\alias{InDegree,data.frame-method}
 \alias{InDegree,list-method}
 \title{\code{InDegree}}
 \value{
@@ -15,23 +16,22 @@
   tracing.
 }
 \section{Methods}{
-  \describe{ \item{\code{signature(object = "Contacts")}}{
-  Get the InDegree of a \code{Contacts} object with ingoing
+  \describe{ \item{\code{signature(x = "Contacts")}}{ Get
+  the InDegree of a \code{Contacts} object with ingoing
   direction.  }
 
-  \item{\code{signature(object = "ContactTrace")}}{ Get the
+  \item{\code{signature(x = "ContactTrace")}}{ Get the
   InDegree of a \code{ContactTrace} object.  }
 
-  \item{\code{signature(object = "list")}}{ Get the
-  InDegree for a list of \code{ContactTrace} objects.  Each
-  item in the list must be a \code{ContactTrace} object.  }
-  }
+  \item{\code{signature(x = "list")}}{ Get the InDegree for
+  a list of \code{ContactTrace} objects.  Each item in the
+  list must be a \code{ContactTrace} object.  } }
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
@@ -40,12 +40,12 @@ contactTrace <- Trace(movements=transfers,
 InDegree(contactTrace)
 
 \dontrun{
-# Perform contact tracing for all included herds
-# First extract all source and destination from the dataset
+## Perform contact tracing for all included herds
+## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
                       tEnd='2005-10-31',

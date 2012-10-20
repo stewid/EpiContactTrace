@@ -28,17 +28,17 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
 ##'                       days=90)
 ##'
 ##' \dontrun{
-##' # Plot in- and outgoing contact chain for the root 2645
+##' ## Plot in- and outgoing contact chain for the root 2645
 ##' plot(contactTrace)
 ##' }
 ##'
@@ -90,7 +90,7 @@ setMethod('plot',
                                      destination=x@ingoingContacts@destination,
                                      stringsAsFactors=FALSE))
 
-          # Prefix all herds except root with 'In'
+          ## Prefix all herds except root with 'In'
           tmpIn$source <- ifelse(tmpIn$source == x@ingoingContacts@root, tmpIn$source, paste('In', tmpIn$source, sep=''))
           tmpIn$destination <- ifelse(tmpIn$destination == x@ingoingContacts@root, tmpIn$destination, paste('In', tmpIn$destination, sep=''))
 
@@ -98,25 +98,25 @@ setMethod('plot',
                                       destination=x@outgoingContacts@destination,
                                       stringsAsFactors=FALSE))
 
-          # Prefix all herds except root with 'Out'
+          ## Prefix all herds except root with 'Out'
           tmpOut$source <- ifelse(tmpOut$source == x@outgoingContacts@root, tmpOut$source, paste('Out', tmpOut$source, sep=''))
           tmpOut$destination <- ifelse(tmpOut$destination == x@outgoingContacts@root, tmpOut$destination, paste('Out', tmpOut$destination, sep=''))
 
           if(nrow(tmpIn) > 0L) {
-              # In
+              ## In
               gIn <- graph.data.frame(tmpIn)
               rootIn <- which(V(gIn)$name == x@ingoingContacts@root) - 1L
               layoutIn <- layout.reingold.tilford(gIn, root=rootIn)
 
               if(nrow(tmpOut) > 0L) {
-                  # Out
+                  ## Out
                   gOut <- graph.data.frame(tmpOut)
                   rootOut <- which(V(gOut)$name == x@outgoingContacts@root) - 1L
                   layoutOut <- layout.reingold.tilford(gOut, root=rootOut)
                   layoutOut[,2] <- max(layoutOut[,2]) - layoutOut[,2]
                   layoutOut[,2] <- layoutOut[,2] - max(layoutOut[,2])
 
-                  # Combine in and out
+                  ## Combine in and out
                   g <- graph.data.frame(rbind(tmpIn, tmpOut))
                   V(g)$color <- ifelse(V(g)$name == x@ingoingContacts@root, "black", ifelse(grepl('^In', V(g)$name), "white", "gray"))
                   V(g)$label <- sub('(^In)|(^Out)', '', V(g)$name)
@@ -142,7 +142,7 @@ setMethod('plot',
                        ...)
               }
           } else if(nrow(tmpOut) > 0L) {
-              # Out
+              ## Out
               gOut <- graph.data.frame(tmpOut)
               rootOut <- which(V(gOut)$name == x@outgoingContacts@root) - 1L
               layoutOut <- layout.reingold.tilford(gOut, root=rootOut)

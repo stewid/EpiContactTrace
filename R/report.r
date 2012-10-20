@@ -64,35 +64,35 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
 ##'                       days=90)
 ##'
 ##' \dontrun{
-##' # Generate an html report showing details of the contact tracing for
-##' # root 2646.
-##' # Note: Creates the files 2645.html and 2645.png in the working
-##' # directory.
+##' ## Generate an html report showing details of the contact tracing for
+##' ## root 2646.
+##' ## Note: Creates the files 2645.html and 2645.png in the working
+##' ## directory.
 ##' Report(contactTrace)
 ##'
-##' # It's possible to generate reports for a list of ContactTrace objects.
-##' # Perform contact tracing for ten of the included herds
+##' ## It's possible to generate reports for a list of ContactTrace objects.
+##' ## Perform contact tracing for ten of the included herds
 ##' root <- sort(unique(c(transfers$source, transfers$destination)))[1:10]
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=root,
 ##'                       tEnd='2005-10-31',
 ##'                       days=90)
 ##'
-##' # Generate reports
-##' # Note: Creates the files 1.html, 2.html, ..., 10.html and
-##' # 1.png, 2.png, ..., 10.png in the working directory
+##' ## Generate reports
+##' ## Note: Creates the files 1.html, 2.html, ..., 10.html and
+##' ## 1.png, 2.png, ..., 10.png in the working directory
 ##' Report(contactTrace)
 ##' }
 ##'
@@ -109,13 +109,13 @@ setMethod('Report',
                   stop('Unable to create report. The object .ct_env already exists in .GlobalEnv')
               }
 
-              # Make sure the added environment is removed.
+              ## Make sure the added environment is removed.
               on.exit(if (exists('.ct_env', envir=globalenv())) rm('.ct_env', envir=globalenv()))
 
-              # In order to communicate with Sweave add an environment in .GlobalEnv
+              ## In order to communicate with Sweave add an environment in .GlobalEnv
               assign('.ct_env', new.env(parent=globalenv()), envir=globalenv())
 
-              # Add the ContactTrace object to the new environment
+              ## Add the ContactTrace object to the new environment
               assign('ct', object, envir=get('.ct_env', envir=globalenv()))
 
               if(identical(format, 'html')) {

@@ -54,10 +54,10 @@
   category of the animal e.g. Cattle.  } }
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- TraceDateInterval(movements=transfers,
                                   root=2645,
                                   inBegin='2005-08-01',
@@ -65,19 +65,19 @@ contactTrace <- TraceDateInterval(movements=transfers,
                                   outBegin='2005-08-01',
                                   outEnd='2005-10-31')
 
-# Show result of contact tracing
+## Show result of contact tracing
 show(contactTrace)
 
 \dontrun{
-# Plot in- and outgoing contact chain
+## Plot in- and outgoing contact chain
 plot(contactTrace)
 
-# Create a network summary for all included herds
-# First extract all source and destination from the dataset
+## Create a network summary for all included herds
+## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- TraceDateInterval(movements=transfers,
                                   root=root,
                                   inBegin='2005-08-01',

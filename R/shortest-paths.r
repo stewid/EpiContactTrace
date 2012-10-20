@@ -76,10 +76,10 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
@@ -96,7 +96,7 @@ setMethod('ShortestPaths',
           function(object)
       {
           if(identical(object@direction, 'in')) {
-              # Loop over each source and calculate minimum distance
+              ## Loop over each source and calculate minimum distance
               result <- ddply(NetworkStructure(object),c('source'), function(x) {
                   data.frame(root=object@root,
                              inBegin=object@tBegin,
@@ -109,7 +109,7 @@ setMethod('ShortestPaths',
                              stringsAsFactors=FALSE)
               })
           } else {
-              # Loop over each destination and calculate minimum distance
+              ## Loop over each destination and calculate minimum distance
               result <- ddply(NetworkStructure(object),c('destination'), function(x) {
                   data.frame(root=object@root,
                              inBegin=as.Date(as.character(NA)),

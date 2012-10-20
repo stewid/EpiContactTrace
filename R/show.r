@@ -34,10 +34,10 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
@@ -71,10 +71,10 @@ setMethod('show',
               width <- max(nchar(object@source), nchar(object@destination))
               format <- sprintf('%%s%% %is %s %% %is\n', width, arrow, width)
 
-              # Get network structure. The distance is used for indentation.
+              ## Get network structure. The distance is used for indentation.
               ns <- NetworkStructure(object)
 
-              # Rename source and destination to lhs and rhs, with respect to direction
+              ## Rename source and destination to lhs and rhs, with respect to direction
               if(identical(object@direction, 'out')) {
                   names(ns)[names(ns) == 'source'] <- 'lhs'
                   names(ns)[names(ns) == 'destination'] <- 'rhs'

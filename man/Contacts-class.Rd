@@ -49,19 +49,19 @@
   destination, t, id, n, category, level, direction, ...)}.
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements = transfers,
                       root = 2645,
                       tEnd = '2005-10-31',
                       days = 90)
 
-# Show structure of ingoing contacts
+## Show structure of ingoing contacts
 str(contactTrace@ingoingContacts)
 
-# Show structure of ougoing contacts
+## Show structure of ougoing contacts
 str(contactTrace@outgoingContacts)
 }
 \keyword{classes}

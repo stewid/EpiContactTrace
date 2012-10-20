@@ -9,20 +9,22 @@
 ##' @name OutgoingContactChain-methods
 ##' @aliases OutgoingContactChain OutgoingContactChain-methods
 ##' OutgoingContactChain,Contacts-method
-##' OutgoingContactChain,ContactTrace-method OutgoingContactChain,list-method
+##' OutgoingContactChain,ContactTrace-method
+##' OutgoingContactChain,list-method
+##' OutgoingContactChain,data.frame-method
 ##' @docType methods
 ##' @return An integer vector.
 ##' @section Methods:
 ##' \describe{
-##'   \item{\code{signature(object = "Contacts")}}{
+##'   \item{\code{signature(x = "Contacts")}}{
 ##'     Get the OutgoingContactChain of a \code{Contacts} object with outgoing direction.
 ##'   }
 ##'
-##'   \item{\code{signature(object = "ContactTrace")}}{
+##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the OutgoingContactChain of a \code{ContactTrace} object.
 ##'   }
 ##'
-##'   \item{\code{signature(object = "list")}}{
+##'   \item{\code{signature(x = "list")}}{
 ##'     Get the OutgoingContactChain for a list of \code{ContactTrace} objects.
 ##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
@@ -42,10 +44,10 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
@@ -54,12 +56,12 @@
 ##' OutgoingContactChain(contactTrace)
 ##'
 ##' \dontrun{
-##' # Perform contact tracing for all included herds
-##' # First extract all source and destination from the dataset
+##' ## Perform contact tracing for all included herds
+##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source,
 ##'                       transfers$destination)))
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=root,
 ##'                       tEnd='2005-10-31',
@@ -69,41 +71,64 @@
 ##' }
 ##'
 setGeneric('OutgoingContactChain',
-           signature = 'object',
-           function(object) standardGeneric('OutgoingContactChain'))
+           signature = 'x',
+           function(x, ...) standardGeneric('OutgoingContactChain'))
 
 setMethod('OutgoingContactChain',
-          signature(object = 'Contacts'),
-          function (object)
+          signature(x = 'Contacts'),
+          function (x)
       {
-          if(!identical(object@direction, 'out')) {
+          if(!identical(x@direction, 'out')) {
               stop('Unable to determine OutgoingContactChain for ingoing contacts')
           }
 
-          return(length(setdiff(object@destination,object@root)))
+          return(length(setdiff(x@destination,x@root)))
       }
 )
 
 setMethod('OutgoingContactChain',
-          signature(object = 'ContactTrace'),
-          function (object)
+          signature(x = 'ContactTrace'),
+          function (x)
       {
-          OutgoingContactChain(object@outgoingContacts)
+          OutgoingContactChain(x@outgoingContacts)
       }
 )
 
 setMethod('OutgoingContactChain',
-          signature(object = 'list'),
-          function(object)
+          signature(x = 'list'),
+          function(x)
       {
-          if(!all(sapply(object, function(x) length(x)) == 1)) {
+          if(!all(sapply(x, function(y) length(y)) == 1)) {
               stop('Unexpected length of list')
           }
 
-          if(!all(sapply(object, function(x) class(x)) == 'ContactTrace')) {
+          if(!all(sapply(x, function(y) class(y)) == 'ContactTrace')) {
               stop('Unexpected object in list')
           }
 
-          return(sapply(object, OutgoingContactChain))
+          return(sapply(x, OutgoingContactChain))
       }
 )
+
+setMethod('OutgoingContactChain',
+          signature(x = 'data.frame'),
+          function(x,
+                   root,
+                   tEnd,
+                   days)
+      {
+          if(any(missing(x),
+                 missing(root),
+                 missing(tEnd),
+                 missing(days))) {
+              stop('Missing parameters in call to OutgoingContactChain')
+          }
+
+          return(NetworkSummary(x, root, tEnd, days)[, c('root',
+                                                         'outBegin',
+                                                         'outEnd',
+                                                         'outDays',
+                                                         'outgoingContactChain')])
+      }
+)
+

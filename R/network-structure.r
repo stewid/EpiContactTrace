@@ -76,10 +76,10 @@
 ##' @export
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
@@ -96,24 +96,24 @@ setMethod('NetworkStructure',
           function(object)
       {
           if(length(object@source) > 0L) {
-              # Create a matrix with source, destination and distance
+              ## Create a matrix with source, destination and distance
               m <- cbind(object@source[object@index],
                          object@destination[object@index],
                          object@distance,
                          deparse.level=0)
 
-              # To be able to identify duplicate rows, create strings from rows
+              ## To be able to identify duplicate rows, create strings from rows
               tmp <- apply(m, 1, function(x) paste(x, collapse='\r'))
 
-              # Identify which rows are not identical to previous rows.
-              # row[i] != row[i-1] for all i > 1
+              ## Identify which rows are not identical to previous rows.
+              ## row[i] != row[i-1] for all i > 1
               i <- tmp[seq_len(length(tmp)-1)] != tmp[seq_len(length(tmp))[-1]]
 
-              # Select the i rows, including first row
+              ## Select the i rows, including first row
               m <- as.data.frame(m[c(TRUE, i), , drop=FALSE], stringsAsFactors=FALSE)
               names(m) <- c('source', 'destination', 'distance')
 
-              # Convert distance from character to integer
+              ## Convert distance from character to integer
               m$distance <- as.integer(m$distance)
 
               if(identical(object@direction, 'in')) {
@@ -136,7 +136,7 @@ setMethod('NetworkStructure',
 
               return(cbind(result, m))
           } else {
-              # No contacts, return a zero row data.frame
+              ## No contacts, return a zero row data.frame
               return(data.frame(root=character(0),
                                 inBegin=as.Date(character(0)),
                                 inEnd=as.Date(character(0)),

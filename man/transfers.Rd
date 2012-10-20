@@ -45,11 +45,11 @@ contactTrace <- Trace(movements=transfers,
                       days=90)
 
 \dontrun{
-# Plot in- and outgoing contact chain
+## Plot in- and outgoing contact chain
 plot(contactTrace)
 
-# Generate an html report.
-# NOTE: creates the files '2645.html' and '2645.png' in the working directory.
+## Generate an html report.
+## NOTE: creates the files '2645.html' and '2645.png' in the working directory.
 Report(contactTrace)
 }
 }

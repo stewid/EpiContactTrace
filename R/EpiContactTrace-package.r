@@ -44,10 +44,10 @@
 ##' @keywords package
 ##' @examples
 ##'
-##' # Load data
+##' ## Load data
 ##' data(transfers)
 ##'
-##' # Perform contact tracing
+##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
@@ -56,10 +56,10 @@
 ##' show(contactTrace)
 ##'
 ##' \dontrun{
-##' # Generate an html report showing details of the contact tracing for
-##' # root 2645.
-##' # Note: Creates the files 2645.html and 2645.png in the working
-##' # directory.
+##' ## Generate an html report showing details of the contact tracing for
+##' ## root 2645.
+##' ## Note: Creates the files 2645.html and 2645.png in the working
+##' ## directory.
 ##' Report(contactTrace)
 ##' }
 ##'
@@ -114,11 +114,11 @@ NULL
 ##'                       days=90)
 ##'
 ##' \dontrun{
-##' # Plot in- and outgoing contact chain
+##' ## Plot in- and outgoing contact chain
 ##' plot(contactTrace)
 ##'
-##' # Generate an html report.
-##' # NOTE: creates the files '2645.html' and '2645.png' in the working directory.
+##' ## Generate an html report.
+##' ## NOTE: creates the files '2645.html' and '2645.png' in the working directory.
 ##' Report(contactTrace)
 ##' }
 ##'

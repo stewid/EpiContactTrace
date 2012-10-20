@@ -16,17 +16,17 @@
   with outgoing contacts from root.
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
                       days=90)
 
 \dontrun{
-# Plot in- and outgoing contact chain for the root 2645
+## Plot in- and outgoing contact chain for the root 2645
 plot(contactTrace)
 }
 }

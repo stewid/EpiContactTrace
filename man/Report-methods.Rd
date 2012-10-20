@@ -51,35 +51,35 @@
   reports for a list of \code{ContactTrace} obejcts.  } }
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
                       days=90)
 
 \dontrun{
-# Generate an html report showing details of the contact tracing for
-# root 2646.
-# Note: Creates the files 2645.html and 2645.png in the working
-# directory.
+## Generate an html report showing details of the contact tracing for
+## root 2646.
+## Note: Creates the files 2645.html and 2645.png in the working
+## directory.
 Report(contactTrace)
 
-# It's possible to generate reports for a list of ContactTrace objects.
-# Perform contact tracing for ten of the included herds
+## It's possible to generate reports for a list of ContactTrace objects.
+## Perform contact tracing for ten of the included herds
 root <- sort(unique(c(transfers$source, transfers$destination)))[1:10]
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
                       tEnd='2005-10-31',
                       days=90)
 
-# Generate reports
-# Note: Creates the files 1.html, 2.html, ..., 10.html and
-# 1.png, 2.png, ..., 10.png in the working directory
+## Generate reports
+## Note: Creates the files 1.html, 2.html, ..., 10.html and
+## 1.png, 2.png, ..., 10.png in the working directory
 Report(contactTrace)
 }
 }

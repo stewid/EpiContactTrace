@@ -3,6 +3,7 @@
 \alias{NetworkSummary}
 \alias{NetworkSummary-methods}
 \alias{NetworkSummary,ContactTrace-method}
+\alias{NetworkSummary,data.frame-method}
 \alias{NetworkSummary,list-method}
 \title{\code{NetworkSummary}}
 \value{
@@ -43,21 +44,20 @@
   \code{\link{OutgoingContactChain}}.
 }
 \section{Methods}{
-  \describe{ \item{\code{signature(object =
-  "ContactTrace")}}{ Get the network summary for the
-  ingoing and outgoing \code{Contacts} of a ContactTrace
-  object.  }
+  \describe{ \item{\code{signature(x = "ContactTrace")}}{
+  Get the network summary for the ingoing and outgoing
+  \code{Contacts} of a ContactTrace object.  }
 
-  \item{\code{signature(object = "list")}}{ Get the network
+  \item{\code{signature(x = "list")}}{ Get the network
   summary for a list of \code{ContactTrace} objects.  Each
   item in the list must be a \code{ContactTrace} object.  }
   }
 }
 \examples{
-# Load data
+## Load data
 data(transfers)
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
@@ -66,12 +66,12 @@ contactTrace <- Trace(movements=transfers,
 NetworkSummary(contactTrace)
 
 \dontrun{
-# Create a network summary for all included herds
-# First extract all source and destination from the dataset
+## Create a network summary for all included herds
+## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-# Perform contact tracing
+## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
                       tEnd='2005-10-31',
