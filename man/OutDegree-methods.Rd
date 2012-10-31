@@ -2,13 +2,39 @@
 \name{OutDegree-methods}
 \alias{OutDegree}
 \alias{OutDegree-methods}
-\alias{OutDegree,Contacts-method}
 \alias{OutDegree,ContactTrace-method}
 \alias{OutDegree,data.frame-method}
 \alias{OutDegree,list-method}
 \title{\code{OutDegree}}
+\arguments{
+  \item{x}{a ContactTrace object, or a list of ContactTrace
+  objects or a \code{data.frame} with movements of animals
+  between holdings, see \code{\link{TraceDateInterval}} for
+  details.}
+
+  \item{root}{vector of roots to perform contact tracing
+  on.}
+
+  \item{tEnd}{the last date to include outgoing movements}
+
+  \item{days}{the number of previous days before tEnd to
+  include outgoing movements}
+}
 \value{
-  An integer vector.
+  A \code{data.frame} with the following columns:
+  \describe{ \item{root}{ The root of the contact tracing }
+
+  \item{outBegin}{ The first date to include outgoing
+  movements }
+
+  \item{outEnd}{ The last date to include outgoing
+  movements }
+
+  \item{outDays}{ The number of days in the interval
+  outBegin to outEnd }
+
+  \item{outDegree}{ The \code{\link{OutDegree}} of the root
+  within the time-interval } }
 }
 \description{
   The number of herds with direct movements of animals from
@@ -16,16 +42,16 @@
   tracing
 }
 \section{Methods}{
-  \describe{ \item{\code{signature(x = "Contacts")}}{ Get
-  the OutDegree of a \code{Contacts} object with outgoing
-  direction.  }
-
-  \item{\code{signature(x = "ContactTrace")}}{ Get the
-  OutDegree of a \code{ContactTrace} object.  }
+  \describe{ \item{\code{signature(x = "ContactTrace")}}{
+  Get the OutDegree of a \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "list")}}{ Get the OutDegree
   for a list of \code{ContactTrace} objects.  Each item in
-  the list must be a \code{ContactTrace} object.  } }
+  the list must be a \code{ContactTrace} object.  }
+
+  \item{\code{signature(x = "data.frame")}}{ Get the
+  OutDegree for a data.frame with movements, see examples.
+  } }
 }
 \examples{
 ## Load data
@@ -46,12 +72,10 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=root,
-                      tEnd='2005-10-31',
-                      days=90)
-
-OutDegree(contactTrace)
+result <- OutDegree(transfers,
+                    root=root,
+                    tEnd='2005-10-31',
+                    days=90)
 }
 }
 \references{
@@ -66,6 +90,9 @@ OutDegree(contactTrace)
   disease control and riskbased surveillance.  Preventive
   Veterinary Medicine 99 (2011) 78-90, doi:
   10.1016/j.prevetmed.2010.12.009 }
+}
+\seealso{
+  \code{\link{NetworkSummary}}
 }
 \keyword{methods}
 

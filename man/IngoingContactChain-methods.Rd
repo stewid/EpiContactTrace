@@ -2,13 +2,40 @@
 \name{IngoingContactChain-methods}
 \alias{IngoingContactChain}
 \alias{IngoingContactChain-methods}
-\alias{IngoingContactChain,Contacts-method}
 \alias{IngoingContactChain,ContactTrace-method}
 \alias{IngoingContactChain,data.frame-method}
 \alias{IngoingContactChain,list-method}
 \title{\code{IngoingContactChain}}
+\arguments{
+  \item{x}{a ContactTrace object, or a list of ContactTrace
+  objects or a \code{data.frame} with movements of animals
+  between holdings, see \code{\link{TraceDateInterval}} for
+  details.}
+
+  \item{root}{vector of roots to perform contact tracing
+  on.}
+
+  \item{tEnd}{the last date to include ingoing movements}
+
+  \item{days}{the number of previous days before tEnd to
+  include ingoing movements}
+}
 \value{
-  An integer vector.
+  A \code{data.frame} with the following columns:
+  \describe{ \item{root}{ The root of the contact tracing }
+
+  \item{inBegin}{ The first date to include ingoing
+  movements }
+
+  \item{inEnd}{ The last date to include ingoing movements
+  }
+
+  \item{inDays}{ The number of days in the interval inBegin
+  to inEnd }
+
+  \item{ingoingContactChain}{ The
+  \code{\link{IngoingContactChain}} of the root within the
+  time-interval } }
 }
 \description{
   The ingoing contact chain is the number of holdings in
@@ -18,12 +45,9 @@
   tracing.
 }
 \section{Methods}{
-  \describe{ \item{\code{signature(x = "Contacts")}}{ Get
-  the IngoingContactChain of a \code{Contacts} object with
-  ingoing direction.  }
-
-  \item{\code{signature(x = "ContactTrace")}}{ Get the
-  IngoingContactChain of a \code{ContactTrace} object.  }
+  \describe{ \item{\code{signature(x = "ContactTrace")}}{
+  Get the IngoingContactChain of a \code{ContactTrace}
+  object.  }
 
   \item{\code{signature(x = "list")}}{ Get the
   IngoingContactChain for a list of \code{ContactTrace}
@@ -31,9 +55,8 @@
   \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "data.frame")}}{ Get the
-  IngoingContactChain for a list of \code{ContactTrace}
-  objects.  Each item in the list must be a
-  \code{ContactTrace} object.  } }
+  IngoingContactChain for a data.frame with movements, see
+  examples.  } }
 }
 \examples{
 ## Load data
@@ -54,12 +77,10 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=root,
-                      tEnd='2005-10-31',
-                      days=90)
-
-IngoingContactChain(contactTrace)
+result <- IngoingContactChain(transfers,
+                              root=root,
+                              tEnd='2005-10-31',
+                              days=90)
 }
 }
 \references{
@@ -74,6 +95,9 @@ IngoingContactChain(contactTrace)
   disease control and riskbased surveillance.  Preventive
   Veterinary Medicine 99 (2011) 78-90, doi:
   10.1016/j.prevetmed.2010.12.009 }
+}
+\seealso{
+  \code{\link{NetworkSummary}}
 }
 \keyword{methods}
 

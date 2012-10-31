@@ -3,19 +3,45 @@
 ##' The number of herds with direct movements of animals from the root herd
 ##' during the defined time window used for tracing
 ##'
-##'
 ##' @name OutDegree-methods
-##' @aliases OutDegree OutDegree-methods OutDegree,Contacts-method
-##' OutDegree,ContactTrace-method OutDegree,list-method
-##' OutDegree,data.frame-method
+##' @aliases OutDegree
+##' @aliases OutDegree-methods
+##' @aliases OutDegree,ContactTrace-method
+##' @aliases OutDegree,list-method
+##' @aliases OutDegree,data.frame-method
 ##' @docType methods
-##' @return An integer vector.
-##' @section Methods:
+##' @seealso \code{\link{NetworkSummary}}
+##' @param x a ContactTrace object, or a list of ContactTrace objects
+##' or a \code{data.frame} with movements of animals between holdings,
+##' see \code{\link{TraceDateInterval}} for details.
+##' @param root vector of roots to perform contact tracing on.
+##' @param tEnd the last date to include outgoing movements
+##' @param days the number of previous days before tEnd to include
+##' outgoing movements
+##' @return A \code{data.frame} with the following columns:
 ##' \describe{
-##'   \item{\code{signature(x = "Contacts")}}{
-##'     Get the OutDegree of a \code{Contacts} object with outgoing direction.
+##'   \item{root}{
+##'     The root of the contact tracing
 ##'   }
 ##'
+##'   \item{outBegin}{
+##'     The first date to include outgoing movements
+##'   }
+##'
+##'   \item{outEnd}{
+##'     The last date to include outgoing movements
+##'   }
+##'
+##'   \item{outDays}{
+##'     The number of days in the interval outBegin to outEnd
+##'   }
+##'
+##'   \item{outDegree}{
+##'     The \code{\link{OutDegree}} of the root within the time-interval
+##'   }
+##' }
+##' @section Methods:
+##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the OutDegree of a \code{ContactTrace} object.
 ##'   }
@@ -23,6 +49,10 @@
 ##'   \item{\code{signature(x = "list")}}{
 ##'     Get the OutDegree for a list of \code{ContactTrace} objects.
 ##'     Each item in the list must be a \code{ContactTrace} object.
+##'   }
+##'
+##'   \item{\code{signature(x = "data.frame")}}{
+##'     Get the OutDegree for a data.frame with movements, see examples.
 ##'   }
 ##' }
 ##' @references \itemize{
@@ -58,19 +88,23 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=root,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' OutDegree(contactTrace)
+##' result <- OutDegree(transfers,
+##'                     root=root,
+##'                     tEnd='2005-10-31',
+##'                     days=90)
 ##' }
 ##'
 setGeneric('OutDegree',
            signature = 'x',
            function(x, ...) standardGeneric('OutDegree'))
 
-setMethod('OutDegree',
+## For internal use
+setGeneric('out_degree',
+           signature = 'x',
+           function(x) standardGeneric('out_degree'))
+
+## For internal use
+setMethod('out_degree',
           signature(x = 'Contacts'),
           function (x)
       {
@@ -86,7 +120,11 @@ setMethod('OutDegree',
           signature(x = 'ContactTrace'),
           function (x)
       {
-          return(OutDegree(x@outgoingContacts))
+          return(NetworkSummary(x)[, c('root',
+                                       'outBegin',
+                                       'outEnd',
+                                       'outDays',
+                                       'outDegree')])
       }
 )
 
@@ -94,15 +132,11 @@ setMethod('OutDegree',
           signature(x = 'list'),
           function(x)
       {
-          if(!all(sapply(x, function(y) length(y)) == 1)) {
-              stop('Unexpected length of list')
-          }
-
-          if(!all(sapply(x, function(y) class(y)) == 'ContactTrace')) {
-              stop('Unexpected object in list')
-          }
-
-          return(sapply(x, OutDegree))
+          return(NetworkSummary(x)[, c('root',
+                                       'outBegin',
+                                       'outEnd',
+                                       'outDays',
+                                       'outDegree')])
       }
 )
 

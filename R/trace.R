@@ -40,12 +40,10 @@
 ##' @param movements a \code{data.frame} data.frame with movements, see
 ##' details.
 ##' @param root vector of roots to perform contact tracing for.
-##' @param inBegin the last date to include ingoing movements
-##' @param inEnd the number of previous days before inEndDate to include
-##' ingoing movements
+##' @param inBegin the first date to include ingoing movements
+##' @param inEnd the last date to include ingoing movements
 ##' @param outBegin the first date to include outgoing movements
-##' @param outEnd the number of days from endStartDate to include outgoing
-##' movements
+##' @param outEnd the last date to include outgoing movements
 ##' @seealso \code{\link{Trace}}.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology

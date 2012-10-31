@@ -284,8 +284,8 @@ test_that('IngoingContactChain', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(IngoingContactChain(ct), is_identical_to(7L))
-  expect_that(OutgoingContactChain(ct), is_identical_to(0L))
+  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(7L))
+  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(0L))
 
   load(file="data/movements2.rda")
 
@@ -296,8 +296,8 @@ test_that('IngoingContactChain', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(IngoingContactChain(ct), is_identical_to(3L))
-  expect_that(OutgoingContactChain(ct), is_identical_to(0L))
+  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(3L))
+  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(0L))
 
   load(file="data/movements5.rda")
 
@@ -308,8 +308,8 @@ test_that('IngoingContactChain', {
                           outBegin = as.Date('2010-09-01'),
                           outEnd = as.Date('2010-10-01'))
 
-  expect_that(IngoingContactChain(ct), is_identical_to(1L))
-  expect_that(OutgoingContactChain(ct), is_identical_to(0L))
+  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(1L))
+  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(0L))
 })
 
 test_that('OutgoingContactChain', {
@@ -322,8 +322,8 @@ test_that('OutgoingContactChain', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-11-09'))
 
-  expect_that(IngoingContactChain(ct), is_identical_to(0L))
-  expect_that(OutgoingContactChain(ct), is_identical_to(7L))
+  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
+  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(7L))
 
   load(file="data/movements5.rda")
 
@@ -334,8 +334,33 @@ test_that('OutgoingContactChain', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(IngoingContactChain(ct), is_identical_to(0L))
-  expect_that(OutgoingContactChain(ct), is_identical_to(1L))
+  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
+  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(1L))
+
+  load(file="data/movements7.rda")
+
+  ct <- TraceDateInterval(movements7,
+                          root = 1L,
+                          inBegin = as.Date('2010-10-10'),
+                          inEnd = as.Date('2010-10-20'),
+                          outBegin = as.Date('2010-10-10'),
+                          outEnd = as.Date('2010-10-20'))
+
+  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
+  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(2L))
+
+  expect_that(NetworkSummary(movements7, 1, '2010-10-20', 10),
+              is_identical_to(data.frame(root="1",
+                                         inBegin=as.Date("2010-10-10"),
+                                         inEnd=as.Date("2010-10-20"),
+                                         inDays=10,
+                                         outBegin=as.Date("2010-10-10"),
+                                         outEnd=as.Date("2010-10-20"),
+                                         outDays=10,
+                                         inDegree=0L,
+                                         outDegree=1L,
+                                         ingoingContactChain=0L,
+                                         outgoingContactChain=2L)))
 })
 
 test_that('InDegree', {
@@ -348,8 +373,21 @@ test_that('InDegree', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(InDegree(ct), is_identical_to(1L))
-  expect_that(OutDegree(ct), is_identical_to(0L))
+  expect_that(InDegree(ct)$inDegree, is_identical_to(1L))
+  expect_that(OutDegree(ct)$outDegree, is_identical_to(0L))
+
+  ## Test with NetworkSummary
+  expect_that(NetworkSummary(movements2,
+                             root = 4,
+                             tEnd = '2010-09-01',
+                             days = 30)$inDegree,
+              is_identical_to(1L))
+
+  expect_that(NetworkSummary(movements2,
+                             root = 4,
+                             tEnd = '2010-08-31',
+                             days = 30)$outDegree,
+              is_identical_to(0L))
 
   ct <- TraceDateInterval(movements2,
                           root = 4L,
@@ -358,8 +396,21 @@ test_that('InDegree', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(InDegree(ct), is_identical_to(0L))
-  expect_that(OutDegree(ct), is_identical_to(0L))
+  expect_that(InDegree(ct)$inDegree, is_identical_to(0L))
+  expect_that(OutDegree(ct)$outDegree, is_identical_to(0L))
+
+  ## Test with NetworkSummary
+  expect_that(NetworkSummary(movements2,
+                             root = 4,
+                             tEnd = '2010-09-01',
+                             days = 5)$inDegree,
+              is_identical_to(0L))
+
+  expect_that(NetworkSummary(movements2,
+                             root = 4,
+                             tEnd = '2010-08-31',
+                             days = 30)$outDegree,
+              is_identical_to(0L))
 })
 
 test_that('OutDegree', {
@@ -372,8 +423,21 @@ test_that('OutDegree', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(InDegree(ct), is_identical_to(0L))
-  expect_that(OutDegree(ct), is_identical_to(3L))
+  expect_that(InDegree(ct)$inDegree, is_identical_to(0L))
+  expect_that(OutDegree(ct)$outDegree, is_identical_to(3L))
+
+  ## Test with NetworkSummary
+  expect_that(NetworkSummary(movements3,
+                             root = 1,
+                             tEnd = '2010-09-01',
+                             days = 30)$inDegree,
+              is_identical_to(0L))
+
+  expect_that(NetworkSummary(movements3,
+                             root = 1,
+                             tEnd = '2010-08-31',
+                             days = 30)$outDegree,
+              is_identical_to(3L))
 
   ct <- TraceDateInterval(movements3,
                           root = 1L,
@@ -382,8 +446,21 @@ test_that('OutDegree', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-16'))
 
-  expect_that(InDegree(ct), is_identical_to(0L))
-  expect_that(OutDegree(ct), is_identical_to(2L))
+  expect_that(InDegree(ct)$inDegree, is_identical_to(0L))
+  expect_that(OutDegree(ct)$outDegree, is_identical_to(2L))
+
+  ## Test with NetworkSummary
+  expect_that(NetworkSummary(movements3,
+                             root = 1,
+                             tEnd = '2010-09-01',
+                             days = 30)$inDegree,
+              is_identical_to(0L))
+
+  expect_that(NetworkSummary(movements3,
+                             root = 1,
+                             tEnd = '2010-08-16',
+                             days = 15)$outDegree,
+              is_identical_to(2L))
 })
 
 test_that('Root not in movements', {
@@ -396,8 +473,21 @@ test_that('Root not in movements', {
                           outBegin = as.Date('2010-08-01'),
                           outEnd = as.Date('2010-08-31'))
 
-  expect_that(InDegree(ct), is_identical_to(0L))
-  expect_that(OutDegree(ct), is_identical_to(0L))
+  expect_that(InDegree(ct)$inDegree, is_identical_to(0L))
+  expect_that(OutDegree(ct)$outDegree, is_identical_to(0L))
+
+  ## Test with NetworkSummary
+  expect_that(NetworkSummary(movements3,
+                             root = 15,
+                             tEnd = '2010-09-01',
+                             days = 30)$inDegree,
+              is_identical_to(0L))
+
+  expect_that(NetworkSummary(movements3,
+                             root = 15,
+                             tEnd = '2010-08-31',
+                             days = 30)$outDegree,
+              is_identical_to(0L))
 })
 
 test_that('Loops', {

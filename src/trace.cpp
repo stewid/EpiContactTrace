@@ -59,12 +59,14 @@ traceContacts(const vector<map<int, Contacts> >& data,
 	      set<int> visitedNodes,
 	      int distance,
 	      bool ingoing,
-	      vector<int>& result_rowid,
-	      vector<int>& result_distance)
+	      vector<int>& resultRowid,
+	      vector<int>& resultDistance)
 {
   visitedNodes.insert(node);
-  for(map<int, Contacts>::const_iterator it = data[node].begin();
-      it != data[node].end();
+
+  for(map<int, Contacts>::const_iterator it = data[node].begin(),
+	end = data[node].end();
+      it != end;
       ++it)
     {
       // We are not interested in going in loops or backwards in the search path
@@ -77,7 +79,7 @@ traceContacts(const vector<map<int, Contacts> >& data,
 							 tBegin,
 							 CompareContact());
 
-	  if(t_begin != it->second.end())
+	  if(t_begin != it->second.end() && t_begin->t_ <= tEnd)
 	    {
 	      // and then the upper bound, tEnd.
 	      Contacts::const_iterator t_end = upper_bound(t_begin,
@@ -90,9 +92,9 @@ traceContacts(const vector<map<int, Contacts> >& data,
 		  ++iit)
 		{
 		  // Increment with one since R vector is one-based.
-		  result_rowid.push_back(iit->rowid_ + 1);
+		  resultRowid.push_back(iit->rowid_ + 1);
 
-		  result_distance.push_back(distance);
+		  resultDistance.push_back(distance);
 		}
 
 	      if(ingoing)
@@ -104,8 +106,8 @@ traceContacts(const vector<map<int, Contacts> >& data,
 				 visitedNodes,
 				 distance + 1,
 				 ingoing,
-				 result_rowid,
-				 result_distance);
+				 resultRowid,
+				 resultDistance);
 		}
 	      else
 		{
@@ -116,8 +118,8 @@ traceContacts(const vector<map<int, Contacts> >& data,
 				 visitedNodes,
 				 distance + 1,
 				 ingoing,
-				 result_rowid,
-				 result_distance);
+				 resultRowid,
+				 resultDistance);
 		}
 	    }
 	}
@@ -193,7 +195,8 @@ SEXP traceContacts(SEXP src,
 int
 degree(const vector<map<int, Contacts> >& data,
        int node,
-       int tBegin)
+       int tBegin,
+       int tEnd)
 {
   int result = 0;
 
@@ -211,7 +214,7 @@ degree(const vector<map<int, Contacts> >& data,
 							 tBegin,
 							 CompareContact());
 
-	  if(t_begin != it->second.end())
+	  if(t_begin != it->second.end() && t_begin->t_ <= tEnd)
 	    {
 	      ++result;
 	    }
@@ -232,8 +235,9 @@ contactChain(const vector<map<int, Contacts> >& data,
 {
   visitedNodes.insert(node);
 
-  for(map<int, Contacts>::const_iterator it = data[node].begin();
-      it != data[node].end();
+  for(map<int, Contacts>::const_iterator it = data[node].begin(),
+	end = data[node].end();
+      it != end;
       ++it)
     {
       // We are not interested in going in loops or backwards in the search path
@@ -246,7 +250,7 @@ contactChain(const vector<map<int, Contacts> >& data,
 							 tBegin,
 							 CompareContact());
 
-	  if(t_begin != it->second.end())
+	  if(t_begin != it->second.end() && t_begin->t_ <= tEnd)
 	    {
 	      resultNodes.insert(it->first);
 
@@ -303,8 +307,8 @@ SEXP networkSummary(SEXP src,
 
     vector<int> ingoingContactChain;
     vector<int> outgoingContactChain;
-    vector<int> indegree;
-    vector<int> outdegree;
+    vector<int> inDegree;
+    vector<int> outDegree;
     set<int> resultNodes;
 
     for(int i=0, end=rootVec.size(); i<end; ++i)
@@ -331,17 +335,19 @@ SEXP networkSummary(SEXP src,
 
 	outgoingContactChain.push_back(resultNodes.size());
 
-	indegree.push_back(degree(lookup.first,
+	inDegree.push_back(degree(lookup.first,
 				  rootVec[i] - 1,
-				  tBeginVec[i]));
+				  tBeginVec[i],
+				  tEndVec[i]));
 
-	outdegree.push_back(degree(lookup.second,
+	outDegree.push_back(degree(lookup.second,
 				   rootVec[i] - 1,
-				   tBeginVec[i]));
+				   tBeginVec[i],
+				   tEndVec[i]));
       }
 
-    return List::create(_["inDegree"] = indegree,
-			_["outDegree"] = outdegree,
+    return List::create(_["inDegree"] = inDegree,
+			_["outDegree"] = outDegree,
 			_["ingoingContactChain"] = ingoingContactChain,
 			_["outgoingContactChain"] = outgoingContactChain);
 }

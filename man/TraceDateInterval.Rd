@@ -12,17 +12,16 @@
   \item{root}{vector of roots to perform contact tracing
   for.}
 
-  \item{inBegin}{the last date to include ingoing
+  \item{inBegin}{the first date to include ingoing
   movements}
 
-  \item{inEnd}{the number of previous days before inEndDate
-  to include ingoing movements}
+  \item{inEnd}{the last date to include ingoing movements}
 
   \item{outBegin}{the first date to include outgoing
   movements}
 
-  \item{outEnd}{the number of days from endStartDate to
-  include outgoing movements}
+  \item{outEnd}{the last date to include outgoing
+  movements}
 }
 \description{
   Contact tracing for a specied node(s) (root) during a

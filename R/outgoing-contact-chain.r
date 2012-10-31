@@ -5,21 +5,45 @@
 ##' and order of the contacts during the defined time window used for contact
 ##' tracing.
 ##'
-##'
 ##' @name OutgoingContactChain-methods
-##' @aliases OutgoingContactChain OutgoingContactChain-methods
-##' OutgoingContactChain,Contacts-method
-##' OutgoingContactChain,ContactTrace-method
-##' OutgoingContactChain,list-method
-##' OutgoingContactChain,data.frame-method
+##' @aliases OutgoingContactChain
+##' @aliases OutgoingContactChain-methods
+##' @aliases OutgoingContactChain,ContactTrace-method
+##' @aliases OutgoingContactChain,list-method
+##' @aliases OutgoingContactChain,data.frame-method
 ##' @docType methods
-##' @return An integer vector.
-##' @section Methods:
+##' @seealso \code{\link{NetworkSummary}}
+##' @param x a ContactTrace object, or a list of ContactTrace objects
+##' or a \code{data.frame} with movements of animals between holdings,
+##' see \code{\link{TraceDateInterval}} for details.
+##' @param root vector of roots to perform contact tracing on.
+##' @param tEnd the last date to include outgoing movements
+##' @param days the number of previous days before tEnd to include
+##' outgoing movements
+##' @return A \code{data.frame} with the following columns:
 ##' \describe{
-##'   \item{\code{signature(x = "Contacts")}}{
-##'     Get the OutgoingContactChain of a \code{Contacts} object with outgoing direction.
+##'   \item{root}{
+##'     The root of the contact tracing
 ##'   }
 ##'
+##'   \item{outBegin}{
+##'     The first date to include outgoing movements
+##'   }
+##'
+##'   \item{outEnd}{
+##'     The last date to include outgoing movements
+##'   }
+##'
+##'   \item{outDays}{
+##'     The number of days in the interval outBegin to outEnd
+##'   }
+##'
+##'   \item{outDegree}{
+##'     The \code{\link{OutgoingContactChain}} of the root within the time-interval
+##'   }
+##' }
+##' @section Methods:
+##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the OutgoingContactChain of a \code{ContactTrace} object.
 ##'   }
@@ -27,6 +51,10 @@
 ##'   \item{\code{signature(x = "list")}}{
 ##'     Get the OutgoingContactChain for a list of \code{ContactTrace} objects.
 ##'     Each item in the list must be a \code{ContactTrace} object.
+##'   }
+##'
+##'   \item{\code{signature(x = "data.frame")}}{
+##'     Get the OutgoingContactChain for a data.frame with movements, see examples.
 ##'   }
 ##' }
 ##' @references \itemize{
@@ -62,19 +90,23 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=root,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' OutgoingContactChain(contactTrace)
+##' result <- OutgoingContactChain(transfers,
+##'                                root=root,
+##'                                tEnd='2005-10-31',
+##'                                days=90)
 ##' }
 ##'
 setGeneric('OutgoingContactChain',
            signature = 'x',
            function(x, ...) standardGeneric('OutgoingContactChain'))
 
-setMethod('OutgoingContactChain',
+## For internal use
+setGeneric('outgoing_contact_chain',
+           signature = 'x',
+           function(x) standardGeneric('outgoing_contact_chain'))
+
+## For internal use
+setMethod('outgoing_contact_chain',
           signature(x = 'Contacts'),
           function (x)
       {
@@ -90,7 +122,11 @@ setMethod('OutgoingContactChain',
           signature(x = 'ContactTrace'),
           function (x)
       {
-          OutgoingContactChain(x@outgoingContacts)
+          return(NetworkSummary(x)[, c('root',
+                                       'outBegin',
+                                       'outEnd',
+                                       'outDays',
+                                       'outgoingContactChain')])
       }
 )
 
@@ -98,15 +134,11 @@ setMethod('OutgoingContactChain',
           signature(x = 'list'),
           function(x)
       {
-          if(!all(sapply(x, function(y) length(y)) == 1)) {
-              stop('Unexpected length of list')
-          }
-
-          if(!all(sapply(x, function(y) class(y)) == 'ContactTrace')) {
-              stop('Unexpected object in list')
-          }
-
-          return(sapply(x, OutgoingContactChain))
+          return(NetworkSummary(x)[, c('root',
+                                       'outBegin',
+                                       'outEnd',
+                                       'outDays',
+                                       'outgoingContactChain')])
       }
 )
 

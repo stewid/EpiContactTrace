@@ -1,13 +1,41 @@
-EpiContactTrace 0.6.9
+EpiContactTrace 0.7.1
 ---------------------
 
- * Changed from igraph to igraph0 to handle the update of igraph to 0.6.
+NEW FEATURES
+
+* Updated documentation
 
 BUG FIXES
 
-* Fixed bug with Report of a list of ContactTrace objects.
-  Each ContactTrace object called Report with missing parameter
-  clean.
+* Fixed bug in C++ code not checking tEnd constraint.
+
+* Fixed bug in NetworkSummary when calculating degree.
+
+EpiContactTrace 0.7.0
+---------------------
+
+NEW FEATURES
+
+* When the methods Trace, NetworkSummary, InDegree, OutDegree,
+     IngoingContactChain, OutgoingContactChain are called with the
+     arguments movements, root, tEnd and days; the measures are
+     calculated for each combination of root, tEnd and days.
+
+PERFORMANCE IMPROVEMENTS
+
+* Ongoing work to improve performance using Rcpp.
+
+EpiContactTrace 0.6.9
+---------------------
+
+NEW FEATURES
+
+* Changed from igraph to igraph0 to handle the update of igraph to 0.6.
+
+BUG FIXES
+
+* Fixed bug with Report of a list of ContactTrace objects.  Each
+  ContactTrace object called Report with missing parameter clean.
 
 EpiContactTrace 0.6.8
 ---------------------
@@ -20,6 +48,8 @@ BUG FIXES
 
 EpiContactTrace 0.6.7
 ---------------------
+
+NEW FEATURES
 
 * Removed unused parameters from Report method.
 

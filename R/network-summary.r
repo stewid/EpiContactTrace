@@ -4,11 +4,12 @@
 ##' time-window, \code{\link{InDegree}}, \code{\link{OutDegree}},
 ##' \code{\link{IngoingContactChain}} and \code{\link{OutgoingContactChain}}.
 ##'
-##'
 ##' @name NetworkSummary-methods
-##' @aliases NetworkSummary NetworkSummary-methods
-##' NetworkSummary,ContactTrace-method NetworkSummary,list-method
-##' NetworkSummary,data.frame-method
+##' @aliases NetworkSummary
+##' @aliases NetworkSummary-methods
+##' @aliases NetworkSummary,ContactTrace-method
+##' @aliases NetworkSummary,list-method
+##' @aliases NetworkSummary,data.frame-method
 ##' @docType methods
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
@@ -48,6 +49,7 @@
 ##'     The \code{\link{OutgoingContactChain}} of the contact tracing
 ##'   }
 ##' }
+##'
 ##' @section Methods:
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
@@ -59,7 +61,12 @@
 ##'     Get the network summary for a list of \code{ContactTrace} objects.
 ##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
+##'
+##'   \item{\code{signature(x = "data.frame")}}{
+##'     Get the network summary for a data.frame with movements, see examples.
+##'   }
 ##' }
+##'
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
 ##'     and its application to foot-and-mouth disease modelling and policy
@@ -89,18 +96,39 @@
 ##' NetworkSummary(contactTrace)
 ##'
 ##' \dontrun{
+##'
+##' ## When calculating the network summary for a data.frame of movements
+##' ## a data.frame for each combination of root, tEnd and days are returned.
+##' root <- c(1,2,3)
+##' tEnd <- c("2005-09-01", "2005-10-01")
+##' days <- c(30, 45)
+##'
+##' ## The network summary are calculated at the following
+##' ## 12 combinations.
+##' ## root = 1, tEnd = "2005-09-01", days = 30
+##' ## root = 1, tEnd = "2005-09-01", days = 45
+##' ## root = 1, tEnd = "2005-10-01", days = 30
+##' ## root = 1, tEnd = "2005-10-01", days = 45
+##' ## root = 2, tEnd = "2005-09-01", days = 30
+##' ## root = 2, tEnd = "2005-09-01", days = 45
+##' ## root = 2, tEnd = "2005-10-01", days = 30
+##' ## root = 2, tEnd = "2005-10-01", days = 45
+##' ## root = 3, tEnd = "2005-09-01", days = 30
+##' ## root = 3, tEnd = "2005-09-01", days = 45
+##' ## root = 3, tEnd = "2005-10-01", days = 30
+##' ## root = 3, tEnd = "2005-10-01", days = 45
+##' NetworkSummary(transfers, root, tEnd, days)
+##'
 ##' ## Create a network summary for all included herds
 ##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source,
 ##'                       transfers$destination)))
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=root,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' NetworkSummary(contactTrace)
+##' result <- NetworkSumary(transfers,
+##'                         root=root,
+##'                         tEnd='2005-10-31',
+##'                         days=90)
 ##' }
 ##'
 setGeneric('NetworkSummary',
@@ -114,12 +142,14 @@ setMethod('NetworkSummary',
           data.frame(root=x@root,
                      inBegin=x@ingoingContacts@tBegin,
                      inEnd=x@ingoingContacts@tEnd,
+                     inDays=x@ingoingContacts@tEnd - x@ingoingContacts@tBegin,
                      outBegin=x@outgoingContacts@tBegin,
                      outEnd=x@outgoingContacts@tEnd,
-                     inDegree=InDegree(x),
-                     outDegree=OutDegree(x),
-                     ingoingContactChain=IngoingContactChain(x),
-                     outgoingContactChain=OutgoingContactChain(x))
+                     outDays=x@outgoingContacts@tEnd - x@outgoingContacts@tBegin,
+                     inDegree=in_degree(x@ingoingContacts),
+                     outDegree=out_degree(x@outgoingContacts),
+                     ingoingContactChain=ingoing_contact_chain(x@ingoingContacts),
+                     outgoingContactChain=outgoing_contact_chain(x@outgoingContacts))
       }
 )
 

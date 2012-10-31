@@ -6,17 +6,45 @@
 ##'
 ##'
 ##' @name IngoingContactChain-methods
-##' @aliases IngoingContactChain IngoingContactChain-methods
-##' IngoingContactChain,Contacts-method IngoingContactChain,ContactTrace-method
-##' IngoingContactChain,list-method IngoingContactChain,data.frame-method
+##' @aliases IngoingContactChain
+##' @aliases IngoingContactChain-methods
+##' @aliases IngoingContactChain,ContactTrace-method
+##' @aliases IngoingContactChain,list-method
+##' @aliases IngoingContactChain,data.frame-method
 ##' @docType methods
-##' @return An integer vector.
-##' @section Methods:
+##' @seealso \code{\link{NetworkSummary}}
+##' @param x a ContactTrace object, or a list of ContactTrace objects
+##' or a \code{data.frame} with movements of animals between holdings,
+##' see \code{\link{TraceDateInterval}} for details.
+##' @param root vector of roots to perform contact tracing on.
+##' @param tEnd the last date to include ingoing movements
+##' @param days the number of previous days before tEnd to include
+##' ingoing movements
+##' @return A \code{data.frame} with the following columns:
 ##' \describe{
-##'   \item{\code{signature(x = "Contacts")}}{
-##'     Get the IngoingContactChain of a \code{Contacts} object with ingoing direction.
+##'   \item{root}{
+##'     The root of the contact tracing
 ##'   }
 ##'
+##'   \item{inBegin}{
+##'     The first date to include ingoing movements
+##'   }
+##'
+##'   \item{inEnd}{
+##'     The last date to include ingoing movements
+##'   }
+##'
+##'   \item{inDays}{
+##'     The number of days in the interval inBegin to inEnd
+##'   }
+##'
+##'   \item{ingoingContactChain}{
+##'     The \code{\link{IngoingContactChain}} of the root within the time-interval
+##'   }
+##' }
+##'
+##' @section Methods:
+##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the IngoingContactChain of a \code{ContactTrace} object.
 ##'   }
@@ -27,8 +55,7 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the IngoingContactChain for a list of \code{ContactTrace} objects.
-##'     Each item in the list must be a \code{ContactTrace} object.
+##'     Get the IngoingContactChain for a data.frame with movements, see examples.
 ##'   }
 ##' }
 ##' @references \itemize{
@@ -64,19 +91,23 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=root,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' IngoingContactChain(contactTrace)
+##' result <- IngoingContactChain(transfers,
+##'                               root=root,
+##'                               tEnd='2005-10-31',
+##'                               days=90)
 ##' }
 ##'
 setGeneric('IngoingContactChain',
            signature = 'x',
            function(x, ...) standardGeneric('IngoingContactChain'))
 
-setMethod('IngoingContactChain',
+## For internal use
+setGeneric('ingoing_contact_chain',
+           signature = 'x',
+           function(x) standardGeneric('ingoing_contact_chain'))
+
+## For internal use
+setMethod('ingoing_contact_chain',
           signature(x = 'Contacts'),
           function (x)
       {
@@ -92,7 +123,11 @@ setMethod('IngoingContactChain',
           signature(x = 'ContactTrace'),
           function (x)
       {
-          IngoingContactChain(x@ingoingContacts)
+          return(NetworkSummary(x)[, c('root',
+                                       'inBegin',
+                                       'inEnd',
+                                       'inDays',
+                                       'ingoingContactChain')])
       }
 )
 
@@ -100,15 +135,11 @@ setMethod('IngoingContactChain',
           signature(x = 'list'),
           function(x)
       {
-          if(!all(sapply(x, function(y) length(y)) == 1)) {
-              stop('Unexpected length of list')
-          }
-
-          if(!all(sapply(x, function(y) class(y)) == 'ContactTrace')) {
-              stop('Unexpected object in list')
-          }
-
-          return(sapply(x, IngoingContactChain))
+          return(NetworkSummary(x)[, c('root',
+                                       'inBegin',
+                                       'inEnd',
+                                       'inDays',
+                                       'ingoingContactChain')])
       }
 )
 
