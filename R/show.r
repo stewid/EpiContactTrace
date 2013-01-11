@@ -59,11 +59,11 @@ setMethod('show',
           cat(sprintf('%s days: %i\n', prefix, object@tEnd - object@tBegin))
 
           if(identical(object@direction, 'out')) {
-              cat(sprintf('%s degree: %s\n', prefix, out_degree(object)))
-              cat(sprintf('%sgoing contact chain: %i\n\n', prefix, outgoing_contact_chain(object)))
+              cat(sprintf('%s degree: %s\n', prefix, OutDegree(object)))
+              cat(sprintf('%sgoing contact chain: %i\n\n', prefix, OutgoingContactChain(object)))
           } else {
-              cat(sprintf('%s degree: %s\n', prefix, in_degree(object)))
-              cat(sprintf('%sgoing contact chain: %i\n\n', prefix, ingoing_contact_chain(object)))
+              cat(sprintf('%s degree: %s\n', prefix, InDegree(object)))
+              cat(sprintf('%sgoing contact chain: %i\n\n', prefix, IngoingContactChain(object)))
           }
 
           if(length(object@source) > 0L) {

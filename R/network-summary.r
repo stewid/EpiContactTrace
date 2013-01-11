@@ -146,10 +146,10 @@ setMethod('NetworkSummary',
                      outBegin=x@outgoingContacts@tBegin,
                      outEnd=x@outgoingContacts@tEnd,
                      outDays=x@outgoingContacts@tEnd - x@outgoingContacts@tBegin,
-                     inDegree=in_degree(x@ingoingContacts),
-                     outDegree=out_degree(x@outgoingContacts),
-                     ingoingContactChain=ingoing_contact_chain(x@ingoingContacts),
-                     outgoingContactChain=outgoing_contact_chain(x@outgoingContacts))
+                     inDegree=InDegree(x@ingoingContacts),
+                     outDegree=OutDegree(x@outgoingContacts),
+                     ingoingContactChain=IngoingContactChain(x@ingoingContacts),
+                     outgoingContactChain=OutgoingContactChain(x@outgoingContacts))
       }
 )
 

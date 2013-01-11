@@ -2,6 +2,7 @@
 \name{OutgoingContactChain-methods}
 \alias{OutgoingContactChain}
 \alias{OutgoingContactChain-methods}
+\alias{OutgoingContactChain,Contacts-method}
 \alias{OutgoingContactChain,ContactTrace-method}
 \alias{OutgoingContactChain,data.frame-method}
 \alias{OutgoingContactChain,list-method}

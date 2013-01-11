@@ -2,6 +2,7 @@
 \name{OutDegree-methods}
 \alias{OutDegree}
 \alias{OutDegree-methods}
+\alias{OutDegree,Contacts-method}
 \alias{OutDegree,ContactTrace-method}
 \alias{OutDegree,data.frame-method}
 \alias{OutDegree,list-method}

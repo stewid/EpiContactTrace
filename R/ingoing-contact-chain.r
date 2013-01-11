@@ -8,6 +8,7 @@
 ##' @name IngoingContactChain-methods
 ##' @aliases IngoingContactChain
 ##' @aliases IngoingContactChain-methods
+##' @aliases IngoingContactChain,Contacts-method
 ##' @aliases IngoingContactChain,ContactTrace-method
 ##' @aliases IngoingContactChain,list-method
 ##' @aliases IngoingContactChain,data.frame-method
@@ -101,13 +102,7 @@ setGeneric('IngoingContactChain',
            signature = 'x',
            function(x, ...) standardGeneric('IngoingContactChain'))
 
-## For internal use
-setGeneric('ingoing_contact_chain',
-           signature = 'x',
-           function(x) standardGeneric('ingoing_contact_chain'))
-
-## For internal use
-setMethod('ingoing_contact_chain',
+setMethod('IngoingContactChain',
           signature(x = 'Contacts'),
           function (x)
       {

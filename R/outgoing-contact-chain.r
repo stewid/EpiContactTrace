@@ -8,6 +8,7 @@
 ##' @name OutgoingContactChain-methods
 ##' @aliases OutgoingContactChain
 ##' @aliases OutgoingContactChain-methods
+##' @aliases OutgoingContactChain,Contacts-method
 ##' @aliases OutgoingContactChain,ContactTrace-method
 ##' @aliases OutgoingContactChain,list-method
 ##' @aliases OutgoingContactChain,data.frame-method
@@ -100,13 +101,7 @@ setGeneric('OutgoingContactChain',
            signature = 'x',
            function(x, ...) standardGeneric('OutgoingContactChain'))
 
-## For internal use
-setGeneric('outgoing_contact_chain',
-           signature = 'x',
-           function(x) standardGeneric('outgoing_contact_chain'))
-
-## For internal use
-setMethod('outgoing_contact_chain',
+setMethod('OutgoingContactChain',
           signature(x = 'Contacts'),
           function (x)
       {

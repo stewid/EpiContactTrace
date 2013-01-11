@@ -6,6 +6,7 @@
 ##' @name OutDegree-methods
 ##' @aliases OutDegree
 ##' @aliases OutDegree-methods
+##' @aliases OutDegree,Contacts-method
 ##' @aliases OutDegree,ContactTrace-method
 ##' @aliases OutDegree,list-method
 ##' @aliases OutDegree,data.frame-method
@@ -98,13 +99,7 @@ setGeneric('OutDegree',
            signature = 'x',
            function(x, ...) standardGeneric('OutDegree'))
 
-## For internal use
-setGeneric('out_degree',
-           signature = 'x',
-           function(x) standardGeneric('out_degree'))
-
-## For internal use
-setMethod('out_degree',
+setMethod('OutDegree',
           signature(x = 'Contacts'),
           function (x)
       {

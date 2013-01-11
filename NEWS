@@ -1,3 +1,19 @@
+EpiContactTrace 0.7.3
+---------------------
+
+BUG FIXES
+
+* Fixed bug in Report. InDegree were not defined for the S4 class
+  Contacts.
+
+EpiContactTrace 0.7.2
+---------------------
+
+NEW FEATURES
+
+* Improved performance in C++ code by using visited nodes more
+  efficient
+
 EpiContactTrace 0.7.1
 ---------------------
 

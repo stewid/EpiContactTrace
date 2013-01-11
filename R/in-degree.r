@@ -100,13 +100,7 @@ setGeneric('InDegree',
            signature = 'x',
            function(x, ...) standardGeneric('InDegree'))
 
-## For internal use
-setGeneric('in_degree',
-           signature = 'x',
-           function(x) standardGeneric('in_degree'))
-
-## For internal use
-setMethod('in_degree',
+setMethod('InDegree',
           signature(x = 'Contacts'),
           function(x)
       {
