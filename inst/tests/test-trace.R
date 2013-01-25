@@ -77,21 +77,6 @@ test_that('Missing parameters', {
                           root=1,
                           tEnd='2005-10-31'),
                 throws_error('Missing parameters in call to OutDegree'))
-
-    expect_that(NetworkSummary(data.frame(),
-                               tEnd='2005-10-31',
-                               days=90),
-                throws_error('Missing parameters in call to NetworkSummary'))
-
-    expect_that(NetworkSummary(data.frame(),
-                               root=1,
-                               days=90),
-                throws_error('Missing parameters in call to NetworkSummary'))
-
-    expect_that(NetworkSummary(data.frame(),
-                               root=1,
-                               tEnd='2005-10-31'),
-                throws_error('Missing parameters in call to NetworkSummary'))
 })
 
 test_that('TraceDateInterval parameter validation', {
@@ -349,14 +334,17 @@ test_that('OutgoingContactChain', {
   expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
   expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(2L))
 
-  expect_that(NetworkSummary(movements7, 1, '2010-10-20', 10),
+  expect_that(NetworkSummary(movements7,
+                             root=1,
+                             tEnd='2010-10-20',
+                             days=10),
               is_identical_to(data.frame(root="1",
                                          inBegin=as.Date("2010-10-10"),
                                          inEnd=as.Date("2010-10-20"),
-                                         inDays=10,
+                                         inDays=10L,
                                          outBegin=as.Date("2010-10-10"),
                                          outEnd=as.Date("2010-10-20"),
-                                         outDays=10,
+                                         outDays=10L,
                                          inDegree=0L,
                                          outDegree=1L,
                                          ingoingContactChain=0L,

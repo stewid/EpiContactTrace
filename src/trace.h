@@ -29,8 +29,10 @@ RcppExport SEXP networkSummary(SEXP src,
 			       SEXP dst,
 			       SEXP t,
 			       SEXP root,
-			       SEXP tBegin,
-			       SEXP tEnd,
+			       SEXP inBegin,
+			       SEXP inEnd,
+			       SEXP outBegin,
+			       SEXP outEnd,
 			       SEXP numberOfIdentifiers);
 
 class Contact {

@@ -320,16 +320,20 @@ SEXP networkSummary(SEXP src,
 		    SEXP dst,
 		    SEXP t,
 		    SEXP root,
-		    SEXP tBegin,
-		    SEXP tEnd,
+		    SEXP inBegin,
+		    SEXP inEnd,
+		    SEXP outBegin,
+		    SEXP outEnd,
 		    SEXP numberOfIdentifiers)
 {
     IntegerVector srcVec(src);
     IntegerVector dstVec(dst);
     IntegerVector tVec(t);
     IntegerVector rootVec(root);
-    IntegerVector tBeginVec(tBegin);
-    IntegerVector tEndVec(tEnd);
+    IntegerVector inBeginVec(inBegin);
+    IntegerVector inEndVec(inEnd);
+    IntegerVector outBeginVec(outBegin);
+    IntegerVector outEndVec(outEnd);
 
     ContactsLookup lookup = buildContactsLookup(srcVec,
 						dstVec,
@@ -348,8 +352,8 @@ SEXP networkSummary(SEXP src,
 
 	contactChain(lookup.first,
 		     rootVec[i] - 1,
-		     tBeginVec[i],
-		     tEndVec[i],
+		     inBeginVec[i],
+		     inEndVec[i],
 		     visitedNodesIngoing,
 		     true);
 
@@ -359,8 +363,8 @@ SEXP networkSummary(SEXP src,
 
 	contactChain(lookup.second,
 		     rootVec[i] - 1,
-		     tBeginVec[i],
-		     tEndVec[i],
+		     outBeginVec[i],
+		     outEndVec[i],
 		     visitedNodesOutgoing,
 		     false);
 
@@ -370,13 +374,13 @@ SEXP networkSummary(SEXP src,
 
 	inDegree.push_back(degree(lookup.first,
 				  rootVec[i] - 1,
-				  tBeginVec[i],
-				  tEndVec[i]));
+				  inBeginVec[i],
+				  inEndVec[i]));
 
 	outDegree.push_back(degree(lookup.second,
 				   rootVec[i] - 1,
-				   tBeginVec[i],
-				   tEndVec[i]));
+				   outBeginVec[i],
+				   outEndVec[i]));
       }
 
     return List::create(_["inDegree"] = inDegree,

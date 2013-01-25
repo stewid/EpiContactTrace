@@ -8,8 +8,8 @@ Author: Stefan Widgren <stefan.widgren@sva.se>
     Maria Noremark <maria.noremark@sva.se>
 Description: Routines for epidemiological contact tracing
     and visualisation of network of contacts.
-Version: 0.7.3
-Date: 2013-01-11
+Version: 0.7.4
+Date: 2013-01-25
 Depends:
     R(>= 2.15.1),
     igraph0,

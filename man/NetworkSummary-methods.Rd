@@ -97,11 +97,19 @@ NetworkSummary(transfers, root, tEnd, days)
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-## Perform contact tracing
-result <- NetworkSumary(transfers,
-                        root=root,
-                        tEnd='2005-10-31',
-                        days=90)
+## Perform contact tracing using tEnd and days
+result.1 <- NetworkSummary(transfers,
+                           root=root,
+                           tEnd='2005-10-31',
+                           days=90)
+
+## Perform contact tracing using inBegin, inEnd, outBegin and outEnd.
+result.2 <- NetworkSummary(transfers,
+                           root=root,
+                           inBegin=rep('2005-08-02', length(root)),
+                           inEnd=rep('2005-10-31', length(root)),
+                           outBegin=rep('2005-08-02', length(root)),
+                           outEnd=rep('2005-10-31', length(root)))
 }
 }
 \references{
