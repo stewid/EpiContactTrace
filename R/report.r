@@ -102,39 +102,39 @@ setGeneric('Report',
 
 setMethod('Report',
           signature(object = 'ContactTrace'),
-          function(object, format='html', template=NULL)
+          function(object, format=c('html', 'pdf'), template=NULL)
       {
-          if(any(identical(format, 'html'), identical(format, 'pdf'))) {
-              if (exists('.ct_env', envir=globalenv())) {
-                  stop('Unable to create report. The object .ct_env already exists in .GlobalEnv')
+          format <- match.arg(format)
+
+          if (exists('.ct_env', envir=globalenv())) {
+              stop('Unable to create report. The object .ct_env already exists in .GlobalEnv')
+          }
+
+          ## Make sure the added environment is removed.
+          on.exit(if (exists('.ct_env', envir=globalenv())) rm('.ct_env', envir=globalenv()))
+
+          ## In order to communicate with Sweave add an environment in .GlobalEnv
+          assign('.ct_env', new.env(parent=globalenv()), envir=globalenv())
+
+          ## Add the ContactTrace object to the new environment
+          assign('ct', object, envir=get('.ct_env', envir=globalenv()))
+
+          if(identical(format, 'html')) {
+              if(is.null(template)) {
+                  template <- system.file('Sweave/speak-html.rnw', package='EpiContactTrace')
               }
 
-              ## Make sure the added environment is removed.
-              on.exit(if (exists('.ct_env', envir=globalenv())) rm('.ct_env', envir=globalenv()))
-
-              ## In order to communicate with Sweave add an environment in .GlobalEnv
-              assign('.ct_env', new.env(parent=globalenv()), envir=globalenv())
-
-              ## Add the ContactTrace object to the new environment
-              assign('ct', object, envir=get('.ct_env', envir=globalenv()))
-
-              if(identical(format, 'html')) {
-                  if(is.null(template)) {
-                      template <- system.file('Sweave/speak-html.rnw', package='EpiContactTrace')
-                  }
-
-                  Sweave(template, driver=R2HTML::RweaveHTML(), syntax="SweaveSyntaxNoweb")
-                  file.rename(sub('rnw$', 'html', basename(template)), sprintf('%s.html', object@root))
-              } else {
-                  if(is.null(template)) {
-                      template <- system.file('Sweave/speak-latex.rnw', package='EpiContactTrace')
-                  }
-
-                  Sweave(template, syntax="SweaveSyntaxNoweb")
-                  tools::texi2pdf(sub('rnw$', 'tex', basename(template)), clean=TRUE)
-                  file.rename(sub('rnw$', 'pdf', basename(template)), sprintf('%s.pdf', object@root))
-                  unlink(sub('rnw$', 'tex', basename(template)))
+              Sweave(template, driver=R2HTML::RweaveHTML(), syntax="SweaveSyntaxNoweb")
+              file.rename(sub('rnw$', 'html', basename(template)), sprintf('%s.html', object@root))
+          } else {
+              if(is.null(template)) {
+                  template <- system.file('Sweave/speak-latex.rnw', package='EpiContactTrace')
               }
+
+              Sweave(template, syntax="SweaveSyntaxNoweb")
+              tools::texi2pdf(sub('rnw$', 'tex', basename(template)), clean=TRUE)
+              file.rename(sub('rnw$', 'pdf', basename(template)), sprintf('%s.pdf', object@root))
+              unlink(sub('rnw$', 'tex', basename(template)))
           }
 
           invisible(NULL)
@@ -143,8 +143,10 @@ setMethod('Report',
 
 setMethod('Report',
           signature(object = 'list'),
-          function(object, format='html', template=NULL)
+          function(object, format=c('html', 'pdf'), template=NULL)
       {
+          format <- match.arg(format)
+
           if(!all(sapply(object, function(x) length(x)) == 1)) {
               stop('Unexpected length of list')
           }

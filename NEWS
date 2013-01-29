@@ -1,3 +1,10 @@
+EpiContactTrace 0.7.5
+---------------------
+
+NEW FEATURES
+
+* Report now uses match.arg to check output format.
+
 EpiContactTrace 0.7.4
 ---------------------
 
