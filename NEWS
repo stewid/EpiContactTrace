@@ -1,3 +1,11 @@
+EpiContactTrace 0.7.6
+---------------------
+
+PERFORMANCE IMPROVEMENTS
+
+* Improved performance when calculating contact chain in C++ code by
+  counting the number of visited nodes more efficient.
+
 EpiContactTrace 0.7.5
 ---------------------
 
