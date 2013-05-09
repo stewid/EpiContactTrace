@@ -1,15 +1,21 @@
 Package: EpiContactTrace
-Maintainer: Stefan Widgren <stefan.widgren@sva.se>
-License: EUPL
 Title: Epidemiological tool for contact tracing.
-Type: Package
-LazyLoad: yes
-Author: Stefan Widgren <stefan.widgren@sva.se>
-    Maria Noremark <maria.noremark@sva.se>
-Description: Routines for epidemiological contact tracing
-    and visualisation of network of contacts.
 Version: 0.7.6
 Date: 2013-03-25
+Authors@R: c(
+    person("Maria",
+    "Noremark",
+    role = c("aut")),
+    person("Stefan",
+    "Widgren",
+    role = c("aut", "cre"),
+    email = "stefan.widgren@sva.se"))
+Description: Routines for epidemiological contact tracing
+    and visualisation of network of contacts.
+License: EUPL
+URL: https://github.com/stewid/EpiContactTrace
+Type: Package
+LazyLoad: yes
 Depends:
     R(>= 2.15.1),
     igraph0,
