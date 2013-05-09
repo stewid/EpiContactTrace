@@ -21,11 +21,11 @@
 \docType{methods}
 \name{InDegree-methods}
 \alias{InDegree}
-\alias{InDegree-methods}
 \alias{InDegree,Contacts-method}
 \alias{InDegree,ContactTrace-method}
 \alias{InDegree,data.frame-method}
 \alias{InDegree,list-method}
+\alias{InDegree-methods}
 \title{\code{InDegree}}
 \arguments{
   \item{x}{a ContactTrace object, or a list of ContactTrace

@@ -21,9 +21,9 @@
 \docType{methods}
 \name{show-methods}
 \alias{show}
-\alias{show-methods}
 \alias{show,Contacts-method}
 \alias{show,ContactTrace-method}
+\alias{show-methods}
 \title{Show}
 \description{
   Shows information of the time-window used for contact

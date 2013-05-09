@@ -21,11 +21,11 @@
 \docType{methods}
 \name{OutDegree-methods}
 \alias{OutDegree}
-\alias{OutDegree-methods}
 \alias{OutDegree,Contacts-method}
 \alias{OutDegree,ContactTrace-method}
 \alias{OutDegree,data.frame-method}
 \alias{OutDegree,list-method}
+\alias{OutDegree-methods}
 \title{\code{OutDegree}}
 \arguments{
   \item{x}{a ContactTrace object, or a list of ContactTrace

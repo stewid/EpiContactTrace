@@ -21,11 +21,11 @@
 \docType{methods}
 \name{OutgoingContactChain-methods}
 \alias{OutgoingContactChain}
-\alias{OutgoingContactChain-methods}
 \alias{OutgoingContactChain,Contacts-method}
 \alias{OutgoingContactChain,ContactTrace-method}
 \alias{OutgoingContactChain,data.frame-method}
 \alias{OutgoingContactChain,list-method}
+\alias{OutgoingContactChain-methods}
 \title{\code{OutgoingContactChain}}
 \arguments{
   \item{x}{a ContactTrace object, or a list of ContactTrace

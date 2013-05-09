@@ -21,9 +21,9 @@
 \docType{methods}
 \name{plot-methods}
 \alias{plot}
-\alias{plot-methods}
 \alias{plot,Contacts-method}
 \alias{plot,ContactTrace-method}
+\alias{plot-methods}
 \title{plot,-method}
 \description{
   The contact structure can be visualized graphically with

@@ -21,9 +21,9 @@
 \docType{methods}
 \name{Report-methods}
 \alias{Report}
-\alias{Report-methods}
 \alias{Report,ContactTrace-method}
 \alias{Report,list-method}
+\alias{Report-methods}
 \title{Generate a contact tracing \code{Report}}
 \arguments{
   \item{object}{the object}

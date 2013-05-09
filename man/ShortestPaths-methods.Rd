@@ -21,10 +21,10 @@
 \docType{methods}
 \name{ShortestPaths-methods}
 \alias{ShortestPaths}
-\alias{ShortestPaths-methods}
 \alias{ShortestPaths,Contacts-method}
 \alias{ShortestPaths,ContactTrace-method}
 \alias{ShortestPaths,list-method}
+\alias{ShortestPaths-methods}
 \title{\code{ShortestPaths}}
 \value{
   A \code{data.frame} with the following columns:

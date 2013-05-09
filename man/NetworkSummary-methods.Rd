@@ -21,10 +21,10 @@
 \docType{methods}
 \name{NetworkSummary-methods}
 \alias{NetworkSummary}
-\alias{NetworkSummary-methods}
 \alias{NetworkSummary,ContactTrace-method}
 \alias{NetworkSummary,data.frame-method}
 \alias{NetworkSummary,list-method}
+\alias{NetworkSummary-methods}
 \title{\code{NetworkSummary}}
 \value{
   A \code{data.frame} with the following columns:

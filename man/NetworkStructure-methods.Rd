@@ -21,10 +21,10 @@
 \docType{methods}
 \name{NetworkStructure-methods}
 \alias{NetworkStructure}
-\alias{NetworkStructure-methods}
 \alias{NetworkStructure,Contacts-method}
 \alias{NetworkStructure,ContactTrace-method}
 \alias{NetworkStructure,list-method}
+\alias{NetworkStructure-methods}
 \title{\code{NetworkStructure}}
 \value{
   A \code{data.frame} with the following columns:
