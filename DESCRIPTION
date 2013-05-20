@@ -1,7 +1,7 @@
 Package: EpiContactTrace
 Title: Epidemiological tool for contact tracing.
-Version: 0.7.6
-Date: 2013-03-25
+Version: 0.8.0
+Date: 2013-05-20
 Authors@R: c(
     person("Maria",
     "Noremark",
@@ -18,9 +18,11 @@ Type: Package
 LazyLoad: yes
 Depends:
     R(>= 2.15.1),
+    animation,
     igraph0,
     plyr,
     R2HTML,
+    ggmap,
     graphics,
     methods,
     Rcpp (>= 0.9.13)
@@ -41,4 +43,5 @@ Collate:
     'report.r'
     'shortest-paths.r'
     'show.r'
+    'animate.r'
 LinkingTo: Rcpp

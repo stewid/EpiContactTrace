@@ -1,3 +1,11 @@
+EpiContactTrace 0.8.0
+---------------------
+
+NEW FEATURES
+
+* Using the the animation and ggmap package, contacts can now be
+  visualized and animated.
+
 EpiContactTrace 0.7.6
 ---------------------
 
