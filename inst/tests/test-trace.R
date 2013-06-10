@@ -1,65 +1,65 @@
 context('Contact Tracing')
 
 test_that('Missing parameters', {
-    expect_that(IngoingContactChain(data.frame(),
+    expect_that(IngoingContactChain(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                                     tEnd='2005-10-31',
                                     days=90),
                 throws_error('Missing parameters in call to IngoingContactChain'))
 
-    expect_that(IngoingContactChain(data.frame(),
+    expect_that(IngoingContactChain(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                                     root=1,
                                     days=90),
-                throws_error('Missing parameters in call to IngoingContactChain'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(IngoingContactChain(data.frame(),
+    expect_that(IngoingContactChain(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                                     root=1,
                                     tEnd='2005-10-31'),
-                throws_error('Missing parameters in call to IngoingContactChain'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(OutgoingContactChain(data.frame(),
+    expect_that(OutgoingContactChain(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                                      tEnd='2005-10-31',
                                      days=90),
                 throws_error('Missing parameters in call to OutgoingContactChain'))
 
-    expect_that(OutgoingContactChain(data.frame(),
+    expect_that(OutgoingContactChain(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                                      root=1,
                                      days=90),
-                throws_error('Missing parameters in call to OutgoingContactChain'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(OutgoingContactChain(data.frame(),
+    expect_that(OutgoingContactChain(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                                      root=1,
                                      tEnd='2005-10-31'),
-                throws_error('Missing parameters in call to OutgoingContactChain'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(InDegree(data.frame(),
+    expect_that(InDegree(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                          tEnd='2005-10-31',
                          days=90),
                 throws_error('Missing parameters in call to InDegree'))
 
-    expect_that(InDegree(data.frame(),
+    expect_that(InDegree(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                          root=1,
                          days=90),
-                throws_error('Missing parameters in call to InDegree'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(InDegree(data.frame(),
+    expect_that(InDegree(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                          root=1,
                          tEnd='2005-10-31'),
-                throws_error('Missing parameters in call to InDegree'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(OutDegree(data.frame(),
+    expect_that(OutDegree(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                           tEnd='2005-10-31',
                           days=90),
                 throws_error('Missing parameters in call to OutDegree'))
 
-    expect_that(OutDegree(data.frame(),
+    expect_that(OutDegree(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                           root=1,
                           days=90),
-                throws_error('Missing parameters in call to OutDegree'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 
-    expect_that(OutDegree(data.frame(),
+    expect_that(OutDegree(data.frame(source=1L, destination=2L, t=as.Date('2011-08-10')),
                           root=1,
                           tEnd='2005-10-31'),
-                throws_error('Missing parameters in call to OutDegree'))
+                throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary'))
 })
 
 test_that('Trace parameter validation', {
