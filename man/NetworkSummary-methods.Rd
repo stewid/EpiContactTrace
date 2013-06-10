@@ -30,17 +30,13 @@
   A \code{data.frame} with the following columns:
   \describe{ \item{root}{ The root of the contact tracing }
 
-  \item{inBegin}{ Equals inBegin in
-  \code{\link{TraceDateInterval}} }
+  \item{inBegin}{ Equals inBegin in \code{\link{Trace}} }
 
-  \item{inEnd}{ Equals inEnd in
-  \code{\link{TraceDateInterval}} }
+  \item{inEnd}{ Equals inEnd in \code{\link{Trace}} }
 
-  \item{outBegin}{ Equals outBegin in
-  \code{\link{TraceDateInterval}} }
+  \item{outBegin}{ Equals outBegin in \code{\link{Trace}} }
 
-  \item{outEnd}{ Equals outEnd in
-  \code{\link{TraceDateInterval}} }
+  \item{outEnd}{ Equals outEnd in \code{\link{Trace}} }
 
   \item{inDegree}{ The \code{\link{InDegree}} of the
   contact tracing }

@@ -22,31 +22,61 @@
 \alias{Trace}
 \title{Trace Contacts.}
 \usage{
-  Trace(movements, root, tEnd, days)
+  Trace(movements, root, tEnd, days, inBegin, inEnd,
+    outBegin, outEnd)
 }
 \arguments{
-  \item{movements}{a \code{data.frame} with contacts due to
-  animal movements between holdings, see
-  \code{\link{TraceDateInterval}} for details.}
+  \item{movements}{a \code{data.frame} data.frame with
+  movements, see details.}
 
   \item{root}{vector of roots to perform contact tracing
-  on.}
+  for.}
 
   \item{tEnd}{the last date to include ingoing and outgoing
   movements}
 
   \item{days}{the number of previous days before tEnd to
   include ingoing and outgoing movements}
+
+  \item{inBegin}{the first date to include ingoing
+  movements}
+
+  \item{inEnd}{the last date to include ingoing movements}
+
+  \item{outBegin}{the first date to include outgoing
+  movements}
+
+  \item{outEnd}{the last date to include outgoing
+  movements}
 }
 \description{
   Contact tracing for a specied node(s) (root) during a
   specfied time period. The time period is divided into two
   parts, one for ingoing contacts and one for outgoing
-  contacts. For ingoing contacts the time period ends at
-  inEndDate and the number of inDays is number of previous
-  days. For outgoing contacts the time period starts at
-  outStartDate and outDays is the number of days to include
-  after that date.
+  contacts. For ingoing contacts the time period starts at
+  inBegin and ends at inEndDate.  For outgoing contacts the
+  time period starts at outBegin and ends at outEnd.
+}
+\details{
+  The argument movements in Trace is a \code{data.frame}
+  with the following columns: \describe{
+
+  \item{source}{ an integer or character identifier of the
+  source holding.  }
+
+  \item{destination}{ an integer or character identifier of
+  the destination holding.  }
+
+  \item{t}{ the Date of the transfer }
+
+  \item{id}{ an optional character vector with the identity
+  of the animal.  }
+
+  \item{n}{ an optional numeric vector with the number of
+  animals moved.  }
+
+  \item{category}{ an optional character or factor with
+  category of the animal e.g. Cattle.  } }
 }
 \examples{
 ## Load data
@@ -55,8 +85,10 @@ data(transfers)
 ## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+                      inBegin='2005-08-01',
+                      inEnd='2005-10-31',
+                      outBegin='2005-08-01',
+                      outEnd='2005-10-31')
 
 ## Show result of contact tracing
 show(contactTrace)
@@ -73,8 +105,10 @@ root <- sort(unique(c(transfers$source,
 ## Perform contact tracing
 contactTrace <- Trace(movements=transfers,
                       root=root,
-                      tEnd='2005-10-31',
-                      days=90)
+                      inBegin='2005-08-01',
+                      inEnd='2005-10-31',
+                      outBegin='2005-08-01',
+                      outEnd='2005-10-31')
 
 NetworkSummary(contactTrace)
 }
@@ -93,6 +127,6 @@ NetworkSummary(contactTrace)
   10.1016/j.prevetmed.2010.12.009 }
 }
 \seealso{
-  \code{\link{TraceDateInterval}}.
+  \code{\link{Trace}}.
 }
 

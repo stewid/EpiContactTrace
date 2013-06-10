@@ -38,19 +38,19 @@
 ##'   }
 ##'
 ##'   \item{inBegin}{
-##'     Equals inBegin in \code{\link{TraceDateInterval}}
+##'     Equals inBegin in \code{\link{Trace}}
 ##'   }
 ##'
 ##'   \item{inEnd}{
-##'     Equals inEnd in \code{\link{TraceDateInterval}}
+##'     Equals inEnd in \code{\link{Trace}}
 ##'   }
 ##'
 ##'   \item{outBegin}{
-##'     Equals outBegin in \code{\link{TraceDateInterval}}
+##'     Equals outBegin in \code{\link{Trace}}
 ##'   }
 ##'
 ##'   \item{outEnd}{
-##'     Equals outEnd in \code{\link{TraceDateInterval}}
+##'     Equals outEnd in \code{\link{Trace}}
 ##'   }
 ##'
 ##'   \item{inDegree}{
@@ -298,14 +298,10 @@ setMethod('NetworkSummary',
               n <- n.root * n.tEnd * n.days
 
               root <- rep(root, each=n.tEnd*n.days, length.out=n)
-              tEnd <- rep(tEnd, each=n.days, length.out=n)
-              days <- rep(days, each=1, length.out=n)
-              tBegin = tEnd - days
-
-              time.window <- data.frame(inBegin=tBegin,
-                                        inEnd=tEnd,
-                                        outBegin=tBegin,
-                                        outEnd=tEnd)
+              inEnd <- rep(tEnd, each=n.days, length.out=n)
+              inBegin <- inEnd - rep(days, each=1, length.out=n)
+              outEnd <- inEnd
+              outBegin <- inBegin
           } else if(all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
               ## Using tEnd and days...check that
               ## Using inBegin, inEnd, outBegin and outEnd...check that
@@ -313,104 +309,94 @@ setMethod('NetworkSummary',
               if(!all(is.null(tEnd), is.null(days))) {
                   stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary')
               }
-
-              ##
-              ## Check inBegin
-              ##
-              if(any(is.character(inBegin), is.factor(inBegin))) {
-                  inBegin <- as.Date(inBegin)
-              }
-
-              if(!identical(class(inBegin), 'Date')) {
-                  stop("'inBegin' must be a Date vector")
-              }
-
-              if(any(is.na(inBegin))) {
-                  stop('inBegin contains NA')
-              }
-
-              ##
-              ## Check inEnd
-              ##
-              if(any(is.character(inEnd), is.factor(inEnd))) {
-                  inEnd <- as.Date(inEnd)
-              }
-
-              if(!identical(class(inEnd), 'Date')) {
-                  stop("'inEnd' must be a Date vector")
-              }
-
-              if(any(is.na(inEnd))) {
-                  stop('inEnd contains NA')
-              }
-
-              ##
-              ## Check outBegin
-              ##
-              if(any(is.character(outBegin), is.factor(outBegin))) {
-                  outBegin <- as.Date(outBegin)
-              }
-
-              if(!identical(class(outBegin), 'Date')) {
-                  stop("'outBegin' must be a Date vector")
-              }
-
-              if(any(is.na(outBegin))) {
-                  stop('outBegin contains NA')
-              }
-
-              ##
-              ## Check outEnd
-              ##
-              if(any(is.character(outEnd), is.factor(outEnd))) {
-                  outEnd <- as.Date(outEnd)
-              }
-
-              if(!identical(class(outEnd), 'Date')) {
-                  stop("'outEnd' must be a Date vector")
-              }
-
-              if(any(is.na(outEnd))) {
-                  stop('outEnd contains NA')
-              }
-
-              ##
-              ## Check ranges of dates
-              ##
-              if(any(is.na(outEnd))) {
-                  stop('outEnd contains NA')
-              }
-
-              if(any(inEnd < inBegin)) {
-                  stop('inEnd < inBegin')
-              }
-
-              if(any(outEnd < outBegin)) {
-                  stop('outEnd < outBegin')
-              }
-
-              ##
-              ## Check length of vectors
-              ##
-              if(!identical(length(unique(c(length(root),
-                                            length(inBegin),
-                                            length(inEnd),
-                                            length(outBegin),
-                                            length(outEnd)))),
-                            1L)) {
-                  stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
-              }
-
-              time.window <- data.frame(inBegin=inBegin,
-                                        inEnd=inEnd,
-                                        outBegin=outBegin,
-                                        outEnd=outEnd)
           } else {
               stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to NetworkSummary')
           }
 
-          ## Arguments seems ok...go on with calculations
+          ##
+          ## Check inBegin
+          ##
+          if(any(is.character(inBegin), is.factor(inBegin))) {
+              inBegin <- as.Date(inBegin)
+          }
 
+          if(!identical(class(inBegin), 'Date')) {
+              stop("'inBegin' must be a Date vector")
+          }
+        
+          if(any(is.na(inBegin))) {
+              stop('inBegin contains NA')
+          }
+
+          ##
+          ## Check inEnd
+          ##
+          if(any(is.character(inEnd), is.factor(inEnd))) {
+              inEnd <- as.Date(inEnd)
+          }
+
+          if(!identical(class(inEnd), 'Date')) {
+              stop("'inEnd' must be a Date vector")
+          }
+
+          if(any(is.na(inEnd))) {
+              stop('inEnd contains NA')
+          }
+
+          ##
+          ## Check outBegin
+          ##
+          if(any(is.character(outBegin), is.factor(outBegin))) {
+              outBegin <- as.Date(outBegin)
+          }
+
+          if(!identical(class(outBegin), 'Date')) {
+              stop("'outBegin' must be a Date vector")
+          }
+        
+          if(any(is.na(outBegin))) {
+              stop('outBegin contains NA')
+          }
+
+          ##
+          ## Check outEnd
+          ##
+          if(any(is.character(outEnd), is.factor(outEnd))) {
+              outEnd <- as.Date(outEnd)
+          }
+
+          if(!identical(class(outEnd), 'Date')) {
+              stop("'outEnd' must be a Date vector")
+          }
+
+          if(any(is.na(outEnd))) {
+              stop('outEnd contains NA')
+          }
+
+          ##
+          ## Check ranges of dates
+          ##
+          if(any(inEnd < inBegin)) {
+              stop('inEnd < inBegin')
+          }
+          
+          if(any(outEnd < outBegin)) {
+              stop('outEnd < outBegin')
+          }
+    
+          ##
+          ## Check length of vectors
+          ##
+          if(!identical(length(unique(c(length(root),
+                                        length(inBegin),
+                                        length(inEnd),
+                                        length(outBegin),
+                                        length(outEnd)))),
+                        1L)) {
+              stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
+          }
+          
+          ## Arguments seems ok...go on with calculations
 
           ## Make sure all nodes have a valid variable name by making
           ## a factor of source and destination
@@ -424,20 +410,20 @@ setMethod('NetworkSummary',
                                 as.integer(factor(x$destination, levels=levels(nodes))),
                                 as.integer(julian(x$t)),
                                 as.integer(factor(root, levels=levels(nodes))),
-                                as.integer(julian(time.window$inBegin)),
-                                as.integer(julian(time.window$inEnd)),
-                                as.integer(julian(time.window$outBegin)),
-                                as.integer(julian(time.window$outEnd)),
+                                as.integer(julian(inBegin)),
+                                as.integer(julian(inEnd)),
+                                as.integer(julian(outBegin)),
+                                as.integer(julian(outEnd)),
                                 length(nodes),
                                 PACKAGE = "EpiContactTrace")
 
           return(data.frame(root=root,
-                            inBegin=time.window$inBegin,
-                            inEnd=time.window$inEnd,
-                            inDays=as.integer(time.window$inEnd - time.window$inBegin),
-                            outBegin=time.window$outBegin,
-                            outEnd=time.window$outEnd,
-                            outDays=as.integer(time.window$outEnd - time.window$outBegin),
+                            inBegin=inBegin,
+                            inEnd=inEnd,
+                            inDays=as.integer(inEnd - inBegin),
+                            outBegin=outBegin,
+                            outEnd=outEnd,
+                            outDays=as.integer(outEnd - outBegin),
                             inDegree=contact_chain[['inDegree']],
                             outDegree=contact_chain[['outDegree']],
                             ingoingContactChain=contact_chain[['ingoingContactChain']],

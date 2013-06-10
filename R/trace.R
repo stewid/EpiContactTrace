@@ -27,7 +27,7 @@
 ##' starts at outBegin and ends at outEnd.
 ##'
 ##'
-##' The argument movements in TraceDateInterval is a \code{data.frame}
+##' The argument movements in Trace is a \code{data.frame}
 ##' with the following columns:
 ##' \describe{
 ##'
@@ -56,10 +56,14 @@
 ##'   }
 ##' }
 ##'
-##' @usage TraceDateInterval(movements, root, inBegin, inEnd, outBegin, outEnd)
-##' @param movements a \code{data.frame} data.frame with movements, see
-##' details.
+##' @usage Trace(movements, root, tEnd, days, inBegin, inEnd, outBegin, outEnd)
+##' @param movements a \code{data.frame} data.frame with movements,
+##' see details.
 ##' @param root vector of roots to perform contact tracing for.
+##' @param tEnd the last date to include ingoing and outgoing
+##' movements
+##' @param days the number of previous days before tEnd to include
+##' ingoing and outgoing movements
 ##' @param inBegin the first date to include ingoing movements
 ##' @param inEnd the last date to include ingoing movements
 ##' @param outBegin the first date to include outgoing movements
@@ -84,12 +88,12 @@
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- TraceDateInterval(movements=transfers,
-##'                                   root=2645,
-##'                                   inBegin='2005-08-01',
-##'                                   inEnd='2005-10-31',
-##'                                   outBegin='2005-08-01',
-##'                                   outEnd='2005-10-31')
+##' contactTrace <- Trace(movements=transfers,
+##'                       root=2645,
+##'                       inBegin='2005-08-01',
+##'                       inEnd='2005-10-31',
+##'                       outBegin='2005-08-01',
+##'                       outEnd='2005-10-31')
 ##'
 ##' ## Show result of contact tracing
 ##' show(contactTrace)
@@ -104,32 +108,30 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- TraceDateInterval(movements=transfers,
-##'                                   root=root,
-##'                                   inBegin='2005-08-01',
-##'                                   inEnd='2005-10-31',
-##'                                   outBegin='2005-08-01',
-##'                                   outEnd='2005-10-31')
+##' contactTrace <- Trace(movements=transfers,
+##'                       root=root,
+##'                       inBegin='2005-08-01',
+##'                       inEnd='2005-10-31',
+##'                       outBegin='2005-08-01',
+##'                       outEnd='2005-10-31')
 ##'
 ##' NetworkSummary(contactTrace)
 ##' }
 ##'
-TraceDateInterval <- function(movements,
-                              root,
-                              inBegin,
-                              inEnd,
-                              outBegin,
-                              outEnd)
+Trace <- function(movements,
+                  root,
+                  tEnd = NULL,
+                  days = NULL,
+                  inBegin = NULL,
+                  inEnd = NULL,
+                  outBegin = NULL,
+                  outEnd = NULL)
 {
     ## Before doing any contact tracing check that arguments are ok
     ## from various perspectives.
     if(any(missing(movements),
-           missing(root),
-           missing(inBegin),
-           missing(inEnd),
-           missing(outBegin),
-           missing(outEnd))) {
-        stop('Missing parameters in call to TraceDateInterval')
+           missing(root))) {
+        stop('Missing parameters in call to Trace')
     }
 
     if(!is.data.frame(movements)) {
@@ -250,6 +252,56 @@ TraceDateInterval <- function(movements,
         stop('root contains NA')
     }
 
+    ## Check if we are using the combination of tEnd and days or
+    ## specify inBegin, inEnd, outBegin and outEnd
+    if(all(!is.null(tEnd), !is.null(days))) {
+        ## Using tEnd and days...check that
+        ## inBegin, inEnd, outBegin and outEnd is NULL
+        if(!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
+            stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace')
+        }
+
+        if(any(is.character(tEnd), is.factor(tEnd))) {
+            tEnd <- as.Date(tEnd)
+        }
+
+        if(!identical(class(tEnd), 'Date')) {
+            stop("'tEnd' must be a Date vector")
+        }
+
+        ## Test that days is a nonnegative integer the same way as binom.test test x
+        daysr <- round(days)
+        if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
+            stop("'days' must be nonnegative and integer")
+        }
+        days <- daysr
+
+        ## Make sure root, tEnd and days are unique
+        root <- unique(root)
+        tEnd <- unique(tEnd)
+        days <- unique(days)
+
+        n.root <- length(root)
+        n.tEnd <- length(tEnd)
+        n.days <- length(days)
+        n <- n.root * n.tEnd * n.days
+
+        root <- rep(root, each=n.tEnd*n.days, length.out=n)
+        inEnd <- rep(tEnd, each=n.days, length.out=n)
+        inBegin <- inEnd - rep(days, each=1, length.out=n)
+        outEnd <- inEnd
+        outBegin <- inBegin
+    } else if(all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
+        ## Using tEnd and days...check that
+        ## Using inBegin, inEnd, outBegin and outEnd...check that
+        ## tEnd and days are NULL
+        if(!all(is.null(tEnd), is.null(days))) {
+            stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace')
+        }
+    } else {
+        stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace')
+    }
+
     ##
     ## Check inBegin
     ##
@@ -258,9 +310,9 @@ TraceDateInterval <- function(movements,
     }
 
     if(!identical(class(inBegin), 'Date')) {
-        stop('inBegin must be a Date vector')
+        stop("'inBegin' must be a Date vector")
     }
-
+        
     if(any(is.na(inBegin))) {
         stop('inBegin contains NA')
     }
@@ -273,7 +325,7 @@ TraceDateInterval <- function(movements,
     }
 
     if(!identical(class(inEnd), 'Date')) {
-        stop('inEnd must be a Date vector')
+        stop("'inEnd' must be a Date vector")
     }
 
     if(any(is.na(inEnd))) {
@@ -288,9 +340,9 @@ TraceDateInterval <- function(movements,
     }
 
     if(!identical(class(outBegin), 'Date')) {
-        stop('outBegin must be a Date vector')
+        stop("'outBegin' must be a Date vector")
     }
-
+        
     if(any(is.na(outBegin))) {
         stop('outBegin contains NA')
     }
@@ -303,13 +355,16 @@ TraceDateInterval <- function(movements,
     }
 
     if(!identical(class(outEnd), 'Date')) {
-        stop('outEnd must be a Date vector')
+        stop("'outEnd' must be a Date vector")
     }
 
     if(any(is.na(outEnd))) {
         stop('outEnd contains NA')
     }
 
+    ##
+    ## Check ranges of dates
+    ##
     if(any(inEnd < inBegin)) {
         stop('inEnd < inBegin')
     }
@@ -317,7 +372,10 @@ TraceDateInterval <- function(movements,
     if(any(outEnd < outBegin)) {
         stop('outEnd < outBegin')
     }
-
+    
+    ##
+    ## Check length of vectors
+    ##
     if(!identical(length(unique(c(length(root),
                                   length(inBegin),
                                   length(inEnd),
@@ -420,117 +478,4 @@ TraceDateInterval <- function(movements,
       return(result[[1]])
 
     return(result)
-}
-
-##' Trace Contacts.
-##'
-##' Contact tracing for a specied node(s) (root) during a specfied time period.
-##' The time period is divided into two parts, one for ingoing contacts and one
-##' for outgoing contacts. For ingoing contacts the time period ends at
-##' inEndDate and the number of inDays is number of previous days. For outgoing
-##' contacts the time period starts at outStartDate and outDays is the number
-##' of days to include after that date.
-##'
-##'
-##' @usage Trace(movements, root, tEnd, days)
-##' @param movements a \code{data.frame} with contacts due to animal
-##' movements between holdings, see \code{\link{TraceDateInterval}} for
-##' details.
-##' @param root vector of roots to perform contact tracing on.
-##' @param tEnd the last date to include ingoing and outgoing movements
-##' @param days the number of previous days before tEnd to include ingoing and
-##' outgoing movements
-##' @seealso \code{\link{TraceDateInterval}}.
-##' @references \itemize{
-##'   \item Dube, C., et al., A review of network analysis terminology
-##'     and its application to foot-and-mouth disease modelling and policy
-##'     development. Transbound Emerg Dis 56 (2009) 73-85, doi:
-##'     10.1111/j.1865-1682.2008.01064.x
-##'
-##'   \item Noremark, M., et al., Network analysis
-##'     of cattle and pig movements in Sweden: Measures relevant for
-##'     disease control and riskbased surveillance.  Preventive Veterinary
-##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
-##' }
-##' @export
-##' @examples
-##'
-##' ## Load data
-##' data(transfers)
-##'
-##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' ## Show result of contact tracing
-##' show(contactTrace)
-##'
-##' \dontrun{
-##' ## Plot in- and outgoing contact chain
-##' plot(contactTrace)
-##'
-##' ## Create a network summary for all included herds
-##' ## First extract all source and destination from the dataset
-##' root <- sort(unique(c(transfers$source,
-##'                       transfers$destination)))
-##'
-##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=root,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' NetworkSummary(contactTrace)
-##' }
-##'
-Trace <- function(movements,
-                  root,
-                  tEnd,
-                  days)
-{
-    if(any(missing(movements),
-           missing(root),
-           missing(tEnd),
-           missing(days))) {
-        stop('Missing parameters in call to Trace')
-    }
-
-    if(any(is.character(tEnd), is.factor(tEnd))) {
-        tEnd <- as.Date(tEnd)
-    }
-
-    if(!identical(class(tEnd), 'Date')) {
-        stop('tEnd must be a Date vector')
-    }
-
-    ## Test that days is a nonnegative integer the same way as binom.test test x
-    daysr <- round(days)
-    if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
-        stop("'days' must be nonnegative and integer")
-    }
-    days <- daysr
-
-    ## Make sure root, tEnd and days are unique
-    root <- unique(root)
-    tEnd <- unique(tEnd)
-    days <- unique(days)
-
-    n.root <- length(root)
-    n.tEnd <- length(tEnd)
-    n.days <- length(days)
-    n <- n.root * n.tEnd * n.days
-
-    root <- rep(root, each=n.tEnd*n.days, length.out=n)
-    tEnd <- rep(tEnd, each=n.days, length.out=n)
-    days <- rep(days, each=1, length.out=n)
-    tBegin = tEnd - days
-
-    return(TraceDateInterval(movements = movements,
-                             root = root,
-                             inBegin = tBegin,
-                             inEnd = tEnd,
-                             outBegin = tBegin,
-                             outEnd = tEnd))
 }

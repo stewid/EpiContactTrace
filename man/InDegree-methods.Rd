@@ -30,8 +30,7 @@
 \arguments{
   \item{x}{a ContactTrace object, or a list of ContactTrace
   objects or a \code{data.frame} with movements of animals
-  between holdings, see \code{\link{TraceDateInterval}} for
-  details.}
+  between holdings, see \code{\link{Trace}} for details.}
 
   \item{root}{vector of roots to perform contact tracing
   on.}

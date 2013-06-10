@@ -34,7 +34,7 @@
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,
-##' see \code{\link{TraceDateInterval}} for details.
+##' see \code{\link{Trace}} for details.
 ##' @param root vector of roots to perform contact tracing on.
 ##' @param tEnd the last date to include outgoing movements
 ##' @param days the number of previous days before tEnd to include
@@ -159,20 +159,34 @@ setMethod('OutDegree',
           signature(x = 'data.frame'),
           function(x,
                    root,
-                   tEnd,
-                   days)
+                   tEnd = NULL,
+                   days = NULL,
+                   outBegin = NULL,
+                   outEnd = NULL)
       {
-          if(any(missing(x),
-                 missing(root),
-                 missing(tEnd),
-                 missing(days))) {
+          if(missing(root)) {
               stop('Missing parameters in call to OutDegree')
           }
 
-          return(NetworkSummary(x, root, tEnd, days)[, c('root',
-                                                         'outBegin',
-                                                         'outEnd',
-                                                         'outDays',
-                                                         'outDegree')])
+          if(all(is.null(tEnd), is.null(days))) {
+              inBegin <- outBegin
+              inEnd <- outBegin
+          } else {
+              inBegin <- NULL
+              inEnd <- NULL
+          }
+
+          return(NetworkSummary(x,
+                                root,
+                                tEnd,
+                                days,
+                                inBegin,
+                                inEnd,
+                                outBegin,
+                                outEnd)[, c('root',
+                                            'outBegin',
+                                            'outEnd',
+                                            'outDays',
+                                            'outDegree')])
       }
 )

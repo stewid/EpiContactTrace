@@ -31,20 +31,17 @@
   \describe{ \item{root}{The root of the contact tracing}
 
   \item{inBegin}{ If the direction is ingoing, then inBegin
-  equals inBegin in \code{\link{TraceDateInterval}} else
-  NA.  }
+  equals inBegin in \code{\link{Trace}} else NA.  }
 
   \item{inEnd}{ If the direction is ingoing, then inEnd
-  equals inEnd in \code{\link{TraceDateInterval}} else NA.
-  }
+  equals inEnd in \code{\link{Trace}} else NA.  }
 
   \item{outBegin}{ If the direction is outgoing, then
-  outBegin equals outBegin in
-  \code{\link{TraceDateInterval}} else NA.  }
+  outBegin equals outBegin in \code{\link{Trace}} else NA.
+  }
 
   \item{outEnd}{ If the direction is outgoing, then outEnd
-  equals outEnd in \code{\link{TraceDateInterval}} else NA.
-  }
+  equals outEnd in \code{\link{Trace}} else NA.  }
 
   \item{direction}{ If the direction is ingoing, then
   direction equals 'in' else 'out' }
