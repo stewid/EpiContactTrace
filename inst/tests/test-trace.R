@@ -79,7 +79,7 @@ test_that('Trace parameter validation', {
                       root=1,
                       tEnd='2005-10-31'),
                 throws_error('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace'))
-    
+
     expect_that(Trace(movements=1:3,
                       root=1L,
                       inBegin=as.Date('2011-08-10'),
@@ -531,5 +531,24 @@ test_that('Duplicate movements', {
     ct.2.df <- ct.2.df[order(1:6),]
 
     expect_that(ct.2.df, is_identical_to(ct.1.df))
+})
+
+test_that('Network summary', {
+    load(file="data/transfers.rda")
+    load(file="data/ns.rda")
+
+    root <- sort(unique(c(transfers$source,
+                          transfers$destination)))
+
+    result <- NetworkSummary(transfers,
+                             root=root,
+                             tEnd='2005-10-31',
+                             days=90)
+
+    expect_that(NetworkSummary(transfers,
+                               root=root,
+                               tEnd='2005-10-31',
+                               days=90),
+                is_identical_to(ns))
 })
 

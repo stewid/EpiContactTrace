@@ -81,6 +81,24 @@ public:
   }
 };
 
+// Help class to keep track of visited nodes.
+class VisitedNodes
+{
+public:
+  VisitedNodes(size_t numberOfIdentifiers)
+    : numberOfVisitedNodes(0),
+      visitedNodes(numberOfIdentifiers)
+  {}
+
+  int N(void) const {return numberOfVisitedNodes;}
+  void Update(int node, int tBegin, int tEnd, bool ingoing);
+  bool Visit(int node, int tBegin, int tEnd, bool ingoing);
+
+private:
+  int numberOfVisitedNodes;
+  std::vector<std::pair<bool, int> > visitedNodes;
+};
+
 typedef std::vector<Contact> Contacts;
 
 #endif
