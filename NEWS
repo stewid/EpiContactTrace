@@ -1,3 +1,12 @@
+EpiContactTrace 0.8.2
+---------------------
+
+BUGFIX
+
+* Fixed a bug that was introduced in ver 0.7.6 when calculating
+  IngoingContactChain and OutgoingContactChain using NetworkSummary.
+
+
 EpiContactTrace 0.8.0
 ---------------------
 
