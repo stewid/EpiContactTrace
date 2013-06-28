@@ -6,6 +6,11 @@ NEW FEATURES
 * inDays and outDays now returned as integer from NetworkSummary of a
   ContactTrace object.
 
+BUGFIX
+
+* Fixed a bug that was introduced in ver 0.7.6 when performing
+  contact tracing.
+
 EpiContactTrace 0.8.2
 ---------------------
 
