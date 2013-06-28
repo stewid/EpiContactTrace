@@ -170,10 +170,10 @@ setMethod('NetworkSummary',
           data.frame(root=x@root,
                      inBegin=x@ingoingContacts@tBegin,
                      inEnd=x@ingoingContacts@tEnd,
-                     inDays=x@ingoingContacts@tEnd - x@ingoingContacts@tBegin,
+                     inDays=as.integer(x@ingoingContacts@tEnd - x@ingoingContacts@tBegin),
                      outBegin=x@outgoingContacts@tBegin,
                      outEnd=x@outgoingContacts@tEnd,
-                     outDays=x@outgoingContacts@tEnd - x@outgoingContacts@tBegin,
+                     outDays=as.integer(x@outgoingContacts@tEnd - x@outgoingContacts@tBegin),
                      inDegree=InDegree(x@ingoingContacts),
                      outDegree=OutDegree(x@outgoingContacts),
                      ingoingContactChain=IngoingContactChain(x@ingoingContacts),
@@ -323,7 +323,7 @@ setMethod('NetworkSummary',
           if(!identical(class(inBegin), 'Date')) {
               stop("'inBegin' must be a Date vector")
           }
-        
+
           if(any(is.na(inBegin))) {
               stop('inBegin contains NA')
           }
@@ -353,7 +353,7 @@ setMethod('NetworkSummary',
           if(!identical(class(outBegin), 'Date')) {
               stop("'outBegin' must be a Date vector")
           }
-        
+
           if(any(is.na(outBegin))) {
               stop('outBegin contains NA')
           }
@@ -379,11 +379,11 @@ setMethod('NetworkSummary',
           if(any(inEnd < inBegin)) {
               stop('inEnd < inBegin')
           }
-          
+
           if(any(outEnd < outBegin)) {
               stop('outEnd < outBegin')
           }
-    
+
           ##
           ## Check length of vectors
           ##
@@ -395,7 +395,7 @@ setMethod('NetworkSummary',
                         1L)) {
               stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
           }
-          
+
           ## Arguments seems ok...go on with calculations
 
           ## Make sure all nodes have a valid variable name by making
