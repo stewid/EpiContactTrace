@@ -20,8 +20,53 @@
 
 ##' \code{OutDegree}
 ##'
-##' The number of herds with direct movements of animals from the root herd
-##' during the defined time window used for tracing
+##' The number of herds with direct movements of animals from the root
+##' herd during the defined time window used for tracing
+##'
+##'
+##' The time period used for \code{OutDegree} can either be specified
+##' using \code{tEnd} and \code{days} or \code{outBegin} and
+##' \code{outEnd}.
+##'
+##' If using \code{tEnd} and \code{days}, the time period for outgoing
+##' contacts ends at \code{tEnd} and starts at \code{days} prior to
+##' \code{tEnd}. The outdegree will be calculated for each combination
+##' of \code{root}, \code{tEnd} and \code{days}.
+##'
+##' An alternative way is to use \code{outBegin} and \code{outEnd}.
+##' The time period for outgoing contacts starts at outBegin and ends
+##' at outEndDate. The vectors \code{root} \code{outBegin},
+##' \code{outEnd} must have the same lengths and the outdegree will be
+##' calculated for each index of them.
+##'
+##' The movements in \code{OutDegree} is a \code{data.frame}
+##' with the following columns:
+##' \describe{
+##'
+##'   \item{source}{
+##'     an integer or character identifier of the source holding.
+##'   }
+##'
+##'   \item{destination}{
+##'     an integer or character identifier of the destination holding.
+##'   }
+##'
+##'   \item{t}{
+##'     the Date of the transfer
+##'   }
+##'
+##'   \item{id}{
+##'     an optional character vector with the identity of the animal.
+##'   }
+##'
+##'   \item{n}{
+##'     an optional numeric vector with the number of animals moved.
+##'   }
+##'
+##'   \item{category}{
+##'     an optional character or factor with category of the animal e.g. Cattle.
+##'   }
+##' }
 ##'
 ##' @name OutDegree-methods
 ##' @aliases OutDegree
@@ -73,7 +118,7 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the OutDegree for a data.frame with movements, see examples.
+##'     Get the OutDegree for a data.frame with movements, see details and examples.
 ##'   }
 ##' }
 ##' @references \itemize{
@@ -94,25 +139,35 @@
 ##' ## Load data
 ##' data(transfers)
 ##'
-##' ## Perform contact tracing
+##' ## Perform contact tracing using tEnd and days
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
-##'                       days=90)
+##'                       days=91)
 ##'
-##' OutDegree(contactTrace)
+##' ## Calculate outdegree from a ContactTrace object
+##' od.1 <- OutDegree(contactTrace)
+##'
+##' ## Calculate outdegree using tEnd and days
+##' od.2 <- OutDegree(transfers,
+##'                   root=2645,
+##'                   tEnd='2005-10-31',
+##'                   days=91)
+##'
+##' ## Check that the result is identical
+##' identical(od.1, od.2)
 ##'
 ##' \dontrun{
-##' ## Perform contact tracing for all included herds
+##' ## Calculate outdegree for all included herds
 ##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source,
 ##'                       transfers$destination)))
 ##'
-##' ## Perform contact tracing
+##' ## Calculate outdegree
 ##' result <- OutDegree(transfers,
 ##'                     root=root,
 ##'                     tEnd='2005-10-31',
-##'                     days=90)
+##'                     days=91)
 ##' }
 ##'
 setGeneric('OutDegree',
