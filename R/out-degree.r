@@ -80,10 +80,15 @@
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,
 ##' see \code{\link{Trace}} for details.
-##' @param root vector of roots to perform contact tracing on.
-##' @param tEnd the last date to include outgoing movements
+##' @param root vector of roots to calculate outdegree for.
+##' @param tEnd the last date to include outgoing movements. Defaults
+##' to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' outgoing movements
+##' outgoing movements. Defaults to \code{NULL}
+##' @param outBegin the first date to include outgoing
+##' movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing movements. Defaults
+##' to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{

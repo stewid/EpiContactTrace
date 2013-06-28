@@ -37,10 +37,16 @@
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,
 ##' see \code{\link{Trace}} for details.
-##' @param root vector of roots to perform contact tracing on.
-##' @param tEnd the last date to include outgoing movements
+##' @param root vector of roots to calculate outgoing contact chain
+##' for.
+##' @param tEnd the last date to include outgoing movements. Defaults
+##' to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' outgoing movements
+##' outgoing movements. Defaults to \code{NULL}
+##' @param outBegin the first date to include outgoing
+##' movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing movements. Defaults
+##' to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -96,25 +102,35 @@
 ##' ## Load data
 ##' data(transfers)
 ##'
-##' ## Perform contact tracing
+##' ## Perform contact tracing using tEnd and days
 ##' contactTrace <- Trace(movements=transfers,
 ##'                       root=2645,
 ##'                       tEnd='2005-10-31',
-##'                       days=90)
+##'                       days=91)
 ##'
-##' OutgoingContactChain(contactTrace)
+##' ## Calculate outgoing contact chain from a ContactTrace object
+##' oc.1 <- OutgoingContactChain(contactTrace)
+##'
+##' ## Calculate outgoing contact chain using tEnd and days
+##' oc.2 <- OutgoingContactChain(transfers,
+##'                             root=2645,
+##'                             tEnd='2005-10-31',
+##'                             days=91)
+##'
+##' ## Check that the result is identical
+##' identical(oc.1, oc.2)
 ##'
 ##' \dontrun{
-##' ## Perform contact tracing for all included herds
+##' ## Calculate outgoing contact chain for all included herds
 ##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source,
 ##'                       transfers$destination)))
 ##'
-##' ## Perform contact tracing
+##' ## Calculate outgoing contact chain
 ##' result <- OutgoingContactChain(transfers,
 ##'                                root=root,
 ##'                                tEnd='2005-10-31',
-##'                                days=90)
+##'                                days=91)
 ##' }
 ##'
 setGeneric('OutgoingContactChain',

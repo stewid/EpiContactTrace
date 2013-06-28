@@ -79,10 +79,14 @@
 ##' movements. Defaults to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
 ##' ingoing and outgoing movements. Defaults to \code{NULL}
-##' @param inBegin the first date to include ingoing movements. Defaults to \code{NULL}
-##' @param inEnd the last date to include ingoing movements. Defaults to \code{NULL}
-##' @param outBegin the first date to include outgoing movements. Defaults to \code{NULL}
-##' @param outEnd the last date to include outgoing movements. Defaults to \code{NULL}
+##' @param inBegin the first date to include ingoing
+##' movements. Defaults to \code{NULL}
+##' @param inEnd the last date to include ingoing movements. Defaults
+##' to \code{NULL}
+##' @param outBegin the first date to include outgoing
+##' movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing
+##' movements. Defaults to \code{NULL}
 ##' @seealso \code{\link{Trace}}.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
