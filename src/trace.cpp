@@ -119,20 +119,21 @@ traceContacts(const vector<map<int, Contacts> >& data,
 	      int node,
 	      int tBegin,
 	      int tEnd,
-	      VisitedNodes& visitedNodes,
+	      set<int> visitedNodes,
 	      int distance,
 	      bool ingoing,
 	      vector<int>& resultRowid,
 	      vector<int>& resultDistance)
 {
-  visitedNodes.Update(node, tBegin, tEnd, ingoing);
+  visitedNodes.insert(node);
 
   for(map<int, Contacts>::const_iterator it = data[node].begin(),
 	end = data[node].end();
       it != end;
       ++it)
     {
-      if(visitedNodes.Visit(it->first, tBegin, tEnd, ingoing)) {
+      // We are not interested in going in loops or backwards in the search path
+      if(visitedNodes.find(it->first) == visitedNodes.end()) {
 	// We are only interested in contacts within the specified time period,
 	// so first check the lower bound, tBegin
 	Contacts::const_iterator t_begin = lower_bound(it->second.begin(),
@@ -208,9 +209,6 @@ SEXP traceContacts(SEXP src,
     vector<int> resultDistance;
 
     for(int i=0, end=rootVec.size(); i<end; ++i) {
-      VisitedNodes visitedNodesIngoing(as<int>(numberOfIdentifiers));
-      VisitedNodes visitedNodesOutgoing(as<int>(numberOfIdentifiers));
-
       resultRowid.clear();
       resultDistance.clear();
 
@@ -218,7 +216,7 @@ SEXP traceContacts(SEXP src,
       		    rootVec[i] - 1,
       		    inBeginVec[i],
       		    inEndVec[i],
-      		    visitedNodesIngoing,
+      		    set<int>(),
       		    1,
       		    true,
       		    resultRowid,
@@ -234,7 +232,7 @@ SEXP traceContacts(SEXP src,
       		    rootVec[i] - 1,
       		    outBeginVec[i],
       		    outEndVec[i],
-      		    visitedNodesOutgoing,
+      		    set<int>(),
       		    1,
       		    false,
       		    resultRowid,

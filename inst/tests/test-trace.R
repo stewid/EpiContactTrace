@@ -552,3 +552,16 @@ test_that('Network summary', {
                 is_identical_to(ns))
 })
 
+test_that('Network summary using Trace', {
+    load(file="data/transfers.rda")
+
+    expect_that(NetworkSummary(Trace(transfers,
+                                     root=584,
+                                     tEnd='2005-10-31',
+                                     days=91)),
+                is_identical_to(NetworkSummary(transfers,
+                                               root=584,
+                                               tEnd='2005-10-31',
+                                               days=91)))
+})
+
