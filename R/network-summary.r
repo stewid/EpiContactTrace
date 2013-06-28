@@ -31,8 +31,9 @@
 ##'
 ##' If using \code{tEnd} and \code{days}, the time period for ingoing
 ##' and outgoing contacts ends at \code{tEnd} and starts at
-##' \code{days} prior to \code{tEnd}. The tracing will be performed
-##' for each combination of \code{root}, \code{tEnd} and \code{days}.
+##' \code{days} prior to \code{tEnd}. The network summary will be
+##' calculated for each combination of \code{root}, \code{tEnd} and
+##' \code{days}.
 ##'
 ##' An alternative way is to use \code{inBegin}, \code{inEnd},
 ##' \code{outBegin} and \code{outEnd}. The time period for ingoing
