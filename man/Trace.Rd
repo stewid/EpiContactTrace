@@ -33,31 +33,51 @@
   for.}
 
   \item{tEnd}{the last date to include ingoing and outgoing
-  movements}
+  movements. Defaults to \code{NULL}}
 
   \item{days}{the number of previous days before tEnd to
-  include ingoing and outgoing movements}
+  include ingoing and outgoing movements. Defaults to
+  \code{NULL}}
 
   \item{inBegin}{the first date to include ingoing
-  movements}
+  movements. Defaults to \code{NULL}}
 
-  \item{inEnd}{the last date to include ingoing movements}
+  \item{inEnd}{the last date to include ingoing movements.
+  Defaults to \code{NULL}}
 
   \item{outBegin}{the first date to include outgoing
-  movements}
+  movements. Defaults to \code{NULL}}
 
   \item{outEnd}{the last date to include outgoing
-  movements}
+  movements. Defaults to \code{NULL}}
 }
 \description{
   Contact tracing for a specied node(s) (root) during a
   specfied time period. The time period is divided into two
   parts, one for ingoing contacts and one for outgoing
-  contacts. For ingoing contacts the time period starts at
-  inBegin and ends at inEndDate.  For outgoing contacts the
-  time period starts at outBegin and ends at outEnd.
+  contacts.
 }
 \details{
+  The time period used for \code{Trace} can either be
+  specified using \code{tEnd} and \code{days} or
+  \code{inBegin}, \code{inEnd}, \code{outBegin} and
+  \code{outEnd}.
+
+  If using \code{tEnd} and \code{days}, the time period for
+  ingoing and outgoing contacts ends at \code{tEnd} and
+  starts at \code{days} prior to \code{tEnd}. The tracing
+  will be performed for each combination of \code{root},
+  \code{tEnd} and \code{days}.
+
+  An alternative way is to use \code{inBegin},
+  \code{inEnd}, \code{outBegin} and \code{outEnd}. The time
+  period for ingoing contacts starts at inBegin and ends at
+  inEndDate.  For outgoing contacts the time period starts
+  at outBegin and ends at outEnd. The vectors \code{root}
+  \code{inBegin}, \code{inEnd}, \code{outBegin} and
+  \code{outEnd} must have the same lengths and the tracing
+  will be performed for each index of them.
+
   The argument movements in Trace is a \code{data.frame}
   with the following columns: \describe{
 
@@ -82,35 +102,55 @@
 ## Load data
 data(transfers)
 
-## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      inBegin='2005-08-01',
-                      inEnd='2005-10-31',
-                      outBegin='2005-08-01',
-                      outEnd='2005-10-31')
+## Perform contact tracing using tEnd and days
+trace.1 <- Trace(movements=transfers,
+                 root=2645,
+                 tEnd='2005-10-31',
+                 days=91)
+
+## Perform contact tracing using inBegin, inEnd
+## outBegin and outEnd
+trace.2 <- Trace(movements=transfers,
+                 root=2645,
+                 inBegin='2005-08-01',
+                 inEnd='2005-10-31',
+                 outBegin='2005-08-01',
+                 outEnd='2005-10-31')
+
+## Check that the result is identical
+identical(trace.1, trace.2)
 
 ## Show result of contact tracing
-show(contactTrace)
+show(trace.1)
 
 \dontrun{
 ## Plot in- and outgoing contact chain
-plot(contactTrace)
+plot(trace.1)
 
 ## Create a network summary for all included herds
 ## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=root,
-                      inBegin='2005-08-01',
-                      inEnd='2005-10-31',
-                      outBegin='2005-08-01',
-                      outEnd='2005-10-31')
+## Perform contact tracing using tEnd and days.
+trace.3 <- Trace(movements=transfers,
+                 root=root,
+                 tEnd='2005-10-31',
+                 days=91)
 
-NetworkSummary(contactTrace)
+## Perform contact tracing using inBegin, inEnd
+## outBegin and outEnd
+trace.4 <- Trace(movements=transfers,
+                 root=root,
+                 inBegin=rep('2005-08-01', length(root)),
+                 inEnd=rep('2005-10-31', length(root)),
+                 outBegin=rep('2005-08-01', length(root)),
+                 outEnd=rep('2005-10-31', length(root)))
+
+## Check that the result is identical
+identical(trace.3, trace.4)
+
+NetworkSummary(trace.3)
 }
 }
 \references{

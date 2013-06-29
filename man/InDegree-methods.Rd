@@ -32,13 +32,19 @@
   objects or a \code{data.frame} with movements of animals
   between holdings, see \code{\link{Trace}} for details.}
 
-  \item{root}{vector of roots to perform contact tracing
-  on.}
+  \item{root}{vector of roots to calculate indegree for.}
 
-  \item{tEnd}{the last date to include ingoing movements}
+  \item{tEnd}{the last date to include ingoing movements.
+  Defaults to \code{NULL}}
 
   \item{days}{the number of previous days before tEnd to
-  include ingoing movements}
+  include ingoing movements. Defaults to \code{NULL}}
+
+  \item{inBegin}{the first date to include ingoing
+  movements. Defaults to \code{NULL}}
+
+  \item{inEnd}{the last date to include ingoing movements.
+  Defaults to \code{NULL}}
 }
 \value{
   A \code{data.frame} with the following columns:
@@ -61,6 +67,44 @@
   the root herd during the defined time window used for
   tracing.
 }
+\details{
+  The time period used for \code{InDegree} can either be
+  specified using \code{tEnd} and \code{days} or
+  \code{inBegin} and \code{inEnd}.
+
+  If using \code{tEnd} and \code{days}, the time period for
+  ingoing contacts ends at \code{tEnd} and starts at
+  \code{days} prior to \code{tEnd}. The indegree will be
+  calculated for each combination of \code{root},
+  \code{tEnd} and \code{days}.
+
+  An alternative way is to use \code{inBegin} and
+  \code{inEnd}.  The time period for ingoing contacts
+  starts at inBegin and ends at inEndDate. The vectors
+  \code{root} \code{inBegin}, \code{inEnd} must have the
+  same lengths and the indegree will be calculated for each
+  index of them.
+
+  The movements in \code{InDegree} is a \code{data.frame}
+  with the following columns: \describe{
+
+  \item{source}{ an integer or character identifier of the
+  source holding.  }
+
+  \item{destination}{ an integer or character identifier of
+  the destination holding.  }
+
+  \item{t}{ the Date of the transfer }
+
+  \item{id}{ an optional character vector with the identity
+  of the animal.  }
+
+  \item{n}{ an optional numeric vector with the number of
+  animals moved.  }
+
+  \item{category}{ an optional character or factor with
+  category of the animal e.g. Cattle.  } }
+}
 \section{Methods}{
   \describe{ \item{\code{signature(x = "ContactTrace")}}{
   Get the InDegree of a \code{ContactTrace} object.  }
@@ -70,32 +114,42 @@
   list must be a \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "data.frame")}}{ Get the
-  InDegree for a data.frame with movements, see examples.
-  } }
+  InDegree for a data.frame with movements, see details and
+  examples.  } }
 }
 \examples{
 ## Load data
 data(transfers)
 
-## Perform contact tracing
+## Perform contact tracing using tEnd and days
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
-                      days=90)
+                      days=91)
 
-InDegree(contactTrace)
+## Calculate indegree from a ContactTrace object
+id.1 <- InDegree(contactTrace)
+
+## Calculate indegree using tEnd and days
+id.2 <- InDegree(transfers,
+                 root=2645,
+                 tEnd='2005-10-31',
+                 days=91)
+
+## Check that the result is identical
+identical(id.1, id.2)
 
 \dontrun{
-## Perform contact tracing for all included herds
+## Calculate indegree for all included herds
 ## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
-## Perform contact tracing
+## Calculate indegree
 result <- InDegree(transfers,
                    root=root,
                    tEnd='2005-10-31',
-                   days=90)
+                   days=91)
 }
 }
 \references{

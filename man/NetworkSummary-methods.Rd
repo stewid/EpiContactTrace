@@ -59,6 +59,47 @@
   \code{\link{IngoingContactChain}} and
   \code{\link{OutgoingContactChain}}.
 }
+\details{
+  The time period used for \code{NetworkSummary} can either
+  be specified using \code{tEnd} and \code{days} or
+  \code{inBegin}, \code{inEnd}, \code{outBegin} and
+  \code{outEnd}.
+
+  If using \code{tEnd} and \code{days}, the time period for
+  ingoing and outgoing contacts ends at \code{tEnd} and
+  starts at \code{days} prior to \code{tEnd}. The network
+  summary will be calculated for each combination of
+  \code{root}, \code{tEnd} and \code{days}.
+
+  An alternative way is to use \code{inBegin},
+  \code{inEnd}, \code{outBegin} and \code{outEnd}. The time
+  period for ingoing contacts starts at inBegin and ends at
+  inEndDate.  For outgoing contacts the time period starts
+  at outBegin and ends at outEnd. The vectors \code{root}
+  \code{inBegin}, \code{inEnd}, \code{outBegin} and
+  \code{outEnd} must have the same lengths and the network
+  summary will be calculated for each index of them.
+
+  The movements in \code{NetworkSummary} is a
+  \code{data.frame} with the following columns: \describe{
+
+  \item{source}{ an integer or character identifier of the
+  source holding.  }
+
+  \item{destination}{ an integer or character identifier of
+  the destination holding.  }
+
+  \item{t}{ the Date of the transfer }
+
+  \item{id}{ an optional character vector with the identity
+  of the animal.  }
+
+  \item{n}{ an optional numeric vector with the number of
+  animals moved.  }
+
+  \item{category}{ an optional character or factor with
+  category of the animal e.g. Cattle.  } }
+}
 \section{Methods}{
   \describe{ \item{\code{signature(x = "ContactTrace")}}{
   Get the network summary for the ingoing and outgoing
@@ -70,19 +111,41 @@
 
   \item{\code{signature(x = "data.frame")}}{ Get the
   network summary for a data.frame with movements, see
-  examples.  } }
+  details and examples.  } }
 }
 \examples{
 ## Load data
 data(transfers)
 
-## Perform contact tracing
+## Perform contact tracing using tEnd and days
 contactTrace <- Trace(movements=transfers,
                       root=2645,
                       tEnd='2005-10-31',
-                      days=90)
+                      days=91)
 
-NetworkSummary(contactTrace)
+## Calculate network summary from a ContactTrace object
+ns.1 <- NetworkSummary(contactTrace)
+
+## Calculate network summary using tEnd and days
+ns.2 <- NetworkSummary(transfers,
+                       root=2645,
+                       tEnd='2005-10-31',
+                       days=91)
+
+## Check that the result is identical
+identical(ns.1, ns.2)
+
+## Calculate network summary using inBegin, inEnd
+## outBegin and outEnd
+ns.3 <- NetworkSummary(transfers,
+                       root=2645,
+                       inBegin='2005-08-01',
+                       inEnd='2005-10-31',
+                       outBegin='2005-08-01',
+                       outEnd='2005-10-31')
+
+## Check that the result is identical
+identical(ns.2, ns.3)
 
 \dontrun{
 
