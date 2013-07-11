@@ -61,8 +61,8 @@
 ##' @param map a ggmap object to use as background map, see
 ##' \code{\link[ggmap]{get_map}}.
 ##' @param interval the time interval to aggregate movements in the
-##' animation. Can be any of 'day', 'week', 'month', 'quarter' or
-##' 'year'. Defaults to 'day'.
+##' animation. Can be any of 'all', 'day', 'week', 'month', 'quarter' or
+##' 'year'. Defaults to 'all', which aggregates all movements on one map.
 ##' @param outdir the output directory for the animation, see
 ##' \code{\link[animation]{ani.options}}. Defaults to \code{getwd()}.
 ##' @param title the title of the animation in the HTML, see
@@ -74,11 +74,11 @@
 ##'     Demonstrating Statistical Methods. Journal of Statistical Software,
 ##'     53(1), 1-27.
 ##'     URL http://www.jstatsoft.org/v53/i01/
-##' 
+##'
 ##'   \item Kahle, D. and Wickham, H. Manual package 'ggmap' -
 ##'     A package for spatial visualization with Google Maps and OpenStreetMap.
 ##'     URL http://cran.r-project.org/web/packages/ggmap/ggmap.pdf
-##' 
+##'
 ##'   \item Widgren, S. and Frossling, J., Spatio-temporal evaluation of cattle
 ##'     trade in Sweden: description of a grid network visualization technique.
 ##'     Geospatial Health 5(1), 2010, pp 119-130.
@@ -91,26 +91,37 @@
 ##' \dontrun{
 ##' data(transfers)
 ##'
+##' ## First extract all source and destination from the dataset
 ##' root <- unique(c(transfers$source, transfers$destination))
+##'
+##' ## For this example, generate a random coordinate for each
+##' ## holding. Note that some coordinates might end up in water,
+##' ## but the coordinates are only for demonstrating the animation.
 ##' ngen <- length(root)
 ##' set.seed(123)
 ##' lon_min <- 13
 ##' lon_max <- 17
 ##' lat_min <- 56
 ##' lat_max <- 63
-##' 
+##'
 ##' lon <- lon_min + runif(ngen) * (lon_max - lon_min)
 ##' lat <- lat_min + runif(ngen) * (lat_max - lat_min)
 ##' coords <- data.frame(id=root, lon, lat)
 ##'
+##' ## Fetch a map over Sweden
+##' sweden <- get_map('Sweden', zoom=5)
+##'
+##' ## Select a subset of all movements to visualize
 ##' i <- sample(seq_len(nrow(transfers)), 100, replace=FALSE)
-##' Animate(transfers[i,], coords, get_map('Sweden', zoom=5), "week")
+##'
+##' ## Perform the animation and view the movements aggregated by week.
+##' Animate(transfers[i,], coords, sweden, "week")
 ##' }
-##' 
+##'
 Animate <- function(movements,
                     coords,
                     map,
-                    interval=c("day", "week", "month", "quarter", "year"),
+                    interval=c("all", "day", "week", "month", "quarter", "year"),
                     outdir=getwd(),
                     title="Animation of contacts")
 {
@@ -123,7 +134,7 @@ Animate <- function(movements,
     }
 
     interval <- match.arg(interval)
-    
+
     if(!is.data.frame(movements)) {
         stop('movements must be a data.frame')
     }
@@ -173,7 +184,10 @@ Animate <- function(movements,
     }
 
     movements <- unique(movements[, c('source', 'destination', 't')])
-    movements$t <- cut(movements$t, breaks=interval)
+    if(identical(interval, 'all'))
+        movements$t <- 'All'
+    else
+        movements$t <- cut(movements$t, breaks=interval)
 
     ##
     ## Check coordinates
@@ -192,6 +206,13 @@ Animate <- function(movements,
     movements$lon_to <- coords$lon[i]
     movements$lat_to <- coords$lat[i]
 
+    ## Remove any previous animations
+    for(file in list.files(path=file.path(outdir, 'images'),
+                           pattern='Rplot[0-9]+[.]png',
+                           full.names=TRUE)) {
+        file.remove(file)
+    }
+
     ##
     ## Generate animation
     ##
@@ -202,18 +223,18 @@ Animate <- function(movements,
                            aes_string(x='lon_from',
                                       y='lat_from',
                                       xend='lon_to',
-                                      yend='lat_to')) + 
+                                      yend='lat_to')) +
               labs(x = 'Longitude', y = 'Latitude') +
               ggtitle(t))
         ani.pause()
         invisible(NULL)
     }
-   
+
     saveHTML({par(mar = c(4, 4, 0.5, 0.5))
               d_ply(movements, ~t, .fun=create_map)},
              outdir = outdir,
              title = title,
              verbose = FALSE)
-    
+
     invisible(NULL)
 }
