@@ -6,6 +6,10 @@ NEW FEATURES
 * inDays and outDays now returned as integer from NetworkSummary of a
   ContactTrace object.
 
+* Added 'all' to interval argument in Animate to view visualize all
+  movements in one image. The default interval argument was changed
+  to 'all'.
+
 BUGFIX
 
 * Fixed a bug that was introduced in ver 0.7.6 when performing
