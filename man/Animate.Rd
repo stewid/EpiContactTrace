@@ -23,7 +23,7 @@
 \title{Animate}
 \usage{
   Animate(movements, coords, map,
-    interval = c("day", "week", "month", "quarter", "year"),
+    interval = c("all", "day", "week", "month", "quarter", "year"),
     outdir = getwd(), title = "Animation of contacts")
 }
 \arguments{
@@ -37,8 +37,9 @@
   \code{\link[ggmap]{get_map}}.}
 
   \item{interval}{the time interval to aggregate movements
-  in the animation. Can be any of 'day', 'week', 'month',
-  'quarter' or 'year'. Defaults to 'day'.}
+  in the animation. Can be any of 'all', 'day', 'week',
+  'month', 'quarter' or 'year'. Defaults to 'all', which
+  aggregates all movements on one map.}
 
   \item{outdir}{the output directory for the animation, see
   \code{\link[animation]{ani.options}}. Defaults to
@@ -80,7 +81,12 @@
 \dontrun{
 data(transfers)
 
+## First extract all source and destination from the dataset
 root <- unique(c(transfers$source, transfers$destination))
+
+## For this example, generate a random coordinate for each
+## holding. Note that some coordinates might end up in water,
+## but the coordinates are only for demonstrating the animation.
 ngen <- length(root)
 set.seed(123)
 lon_min <- 13
@@ -92,8 +98,14 @@ lon <- lon_min + runif(ngen) * (lon_max - lon_min)
 lat <- lat_min + runif(ngen) * (lat_max - lat_min)
 coords <- data.frame(id=root, lon, lat)
 
+## Fetch a map over Sweden
+sweden <- get_map('Sweden', zoom=5)
+
+## Select a subset of all movements to visualize
 i <- sample(seq_len(nrow(transfers)), 100, replace=FALSE)
-Animate(transfers[i,], coords, get_map('Sweden', zoom=5), "week")
+
+## Perform the animation and view the movements aggregated by week.
+Animate(transfers[i,], coords, sweden, "week")
 }
 }
 \references{
