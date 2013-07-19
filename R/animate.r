@@ -84,11 +84,13 @@
 ##'     Geospatial Health 5(1), 2010, pp 119-130.
 ##'     URL http://www.geospatialhealth.unina.it/articles/v5i1/gh-v5i1-12-widgren.pdf
 ##' }
-##' @import ggmap
-##' @import animation
+##' @note The packages \code{animate} and \code{ggmap} must be
+##' installed for this functionality.
 ##' @export
 ##' @examples
 ##' \dontrun{
+##' require(ggmap)
+##'
 ##' data(transfers)
 ##'
 ##' ## First extract all source and destination from the dataset
@@ -115,7 +117,7 @@
 ##' i <- sample(seq_len(nrow(transfers)), 100, replace=FALSE)
 ##'
 ##' ## Perform the animation and view the movements aggregated by week
-##' in a web-browser.
+##' ## in a web-browser.
 ##' Animate(transfers[i,], coords, sweden, "week")
 ##' }
 ##'
@@ -126,6 +128,16 @@ Animate <- function(movements,
                     outdir=getwd(),
                     title="Animation of contacts")
 {
+    ## Check that animate package is installed
+    if(!suppressMessages(suppressWarnings(require("animate", quietly=TRUE, character.only = TRUE, warn.conflicts=FALSE)))) {
+        stop("animate package required for this functionality.  Please install and try again.", call. = FALSE)
+    }
+
+    ## Check that ggmap package is installed
+    if(!suppressMessages(suppressWarnings(require("ggmap", quietly=TRUE, character.only = TRUE, warn.conflicts=FALSE)))) {
+        stop("ggmap package required for this functionality.  Please install and try again.", call. = FALSE)
+    }
+
     ## Before doing any map check that arguments are ok
     ## from various perspectives.
     if(any(missing(movements),

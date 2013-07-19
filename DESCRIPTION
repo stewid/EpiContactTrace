@@ -16,17 +16,18 @@ License: EUPL
 URL: https://github.com/stewid/EpiContactTrace
 Type: Package
 LazyLoad: yes
-Depends:
-    R(>= 2.15.1),
-    animation,
+Imports:
     igraph0,
     plyr,
     R2HTML,
-    ggmap,
+Depends:
+    R(>= 2.15.1),
     graphics,
     methods,
     Rcpp (>= 0.9.13)
 Suggests:
+    animation,
+    ggmap,
     testthat
 Collate:
     'Contacts.r'
