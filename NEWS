@@ -1,3 +1,11 @@
+EpiContactTrace 0.8.5
+---------------------
+
+NEW FEATURES
+
+* Updated DESCRIPTION to use Imports instead of Depends for igraph0,
+    plyr, R2HTML.
+
 EpiContactTrace 0.8.4
 ---------------------
 

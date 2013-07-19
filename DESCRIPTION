@@ -1,6 +1,6 @@
 Package: EpiContactTrace
 Title: Epidemiological tool for contact tracing
-Version: 0.8.4
+Version: 0.8.5
 Date: 2013-07-19
 Authors@R: c(
     person("Maria",
@@ -19,7 +19,7 @@ LazyLoad: yes
 Imports:
     igraph0,
     plyr,
-    R2HTML,
+    R2HTML
 Depends:
     R(>= 2.15.1),
     graphics,
