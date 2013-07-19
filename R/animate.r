@@ -84,7 +84,7 @@
 ##'     Geospatial Health 5(1), 2010, pp 119-130.
 ##'     URL http://www.geospatialhealth.unina.it/articles/v5i1/gh-v5i1-12-widgren.pdf
 ##' }
-##' @note The packages \code{animate} and \code{ggmap} must be
+##' @note The packages \code{animation} and \code{ggmap} must be
 ##' installed for this functionality.
 ##' @export
 ##' @examples
@@ -129,8 +129,8 @@ Animate <- function(movements,
                     title="Animation of contacts")
 {
     ## Check that animate package is installed
-    if(!suppressMessages(suppressWarnings(require("animate", quietly=TRUE, character.only = TRUE, warn.conflicts=FALSE)))) {
-        stop("animate package required for this functionality.  Please install and try again.", call. = FALSE)
+    if(!suppressMessages(suppressWarnings(require("animation", quietly=TRUE, character.only = TRUE, warn.conflicts=FALSE)))) {
+        stop("animation package required for this functionality.  Please install and try again.", call. = FALSE)
     }
 
     ## Check that ggmap package is installed

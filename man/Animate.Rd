@@ -77,8 +77,14 @@
 
   \item{lon}{ the longitude of the holding.  } }
 }
+\note{
+  The packages \code{animation} and \code{ggmap} must be
+  installed for this functionality.
+}
 \examples{
 \dontrun{
+require(ggmap)
+
 data(transfers)
 
 ## First extract all source and destination from the dataset
@@ -105,7 +111,7 @@ sweden <- get_map('Sweden', zoom=5)
 i <- sample(seq_len(nrow(transfers)), 100, replace=FALSE)
 
 ## Perform the animation and view the movements aggregated by week
-in a web-browser.
+## in a web-browser.
 Animate(transfers[i,], coords, sweden, "week")
 }
 }
