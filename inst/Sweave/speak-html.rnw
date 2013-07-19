@@ -102,23 +102,23 @@
 <html>
 
 <head>
-<title>\Sexpr{.ct_env$ct@root}</title>
+<title>\Sexpr{ReportObject()@root}</title>
 </head>
 
 <body>
 
 <h1 align='center'>Contact Tracing</h1>
-<h1 align='center'>Root: \Sexpr{.ct_env$ct@root}</h1>
+<h1 align='center'>Root: \Sexpr{ReportObject()@root}</h1>
 <h3 align='center'>EpiContactTrace</h3>
 <h3 align='center'>Version: \Sexpr{packageVersion('EpiContactTrace')}</h3>
 
 <hr/>
 
 <<echo=false, results=hide>>=
-  filename <- sprintf('%s.png', .ct_env$ct@root)
+  filename <- sprintf('%s.png', ReportObject()@root)
 
   png(filename)
-  plot(.ct_env$ct)
+  plot(ReportObject())
   dev.off()
 @
 
@@ -130,18 +130,18 @@
 
 <p>
 <table border=0>
-<tr><td>In begin date:</td><td>\Sexpr{.ct_env$ct@ingoingContacts@tBegin}</td></tr>
-<tr><td>In end date:</td><td>\Sexpr{.ct_env$ct@ingoingContacts@tEnd}</td></tr>
-<tr><td>In days:</td><td>\Sexpr{.ct_env$ct@ingoingContacts@tEnd - .ct_env$ct@ingoingContacts@tBegin}</td></tr>
-<tr><td>In degree:</td><td>\Sexpr{InDegree(.ct_env$ct@ingoingContacts)}</td></tr>
-<tr><td>Ingoing contact chain:</td><td>\Sexpr{IngoingContactChain(.ct_env$ct@ingoingContacts)}</td></tr>
+<tr><td>In begin date:</td><td>\Sexpr{ReportObject()@ingoingContacts@tBegin}</td></tr>
+<tr><td>In end date:</td><td>\Sexpr{ReportObject()@ingoingContacts@tEnd}</td></tr>
+<tr><td>In days:</td><td>\Sexpr{ReportObject()@ingoingContacts@tEnd - ReportObject()@ingoingContacts@tBegin}</td></tr>
+<tr><td>In degree:</td><td>\Sexpr{InDegree(ReportObject()@ingoingContacts)}</td></tr>
+<tr><td>Ingoing contact chain:</td><td>\Sexpr{IngoingContactChain(ReportObject()@ingoingContacts)}</td></tr>
 </table>
 </p>
 
 <<echo=false, results=html>>=
-    if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
+    if(length(ReportObject()@ingoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        df <- NetworkStructure(.ct_env$ct@ingoingContacts)
+        df <- NetworkStructure(ReportObject()@ingoingContacts)
 
         # Add lhs and rhs, with respect to direction
         df$rhs <- df$source
@@ -159,18 +159,18 @@
 
 <p>
 <table border=0>
-<tr><td>Out begin date:</td><td>\Sexpr{.ct_env$ct@outgoingContacts@tBegin}</td></tr>
-<tr><td>Out end date:</td><td>\Sexpr{.ct_env$ct@outgoingContacts@tEnd}</td></tr>
-<tr><td>Out days:</td><td>\Sexpr{.ct_env$ct@outgoingContacts@tEnd - .ct_env$ct@outgoingContacts@tBegin}</td></tr>
-<tr><td>Out degree:</td><td>\Sexpr{OutDegree(.ct_env$ct@outgoingContacts)}</td></tr>
-<tr><td>Outgoing contact chain:</td><td>\Sexpr{OutgoingContactChain(.ct_env$ct@outgoingContacts)}</td></tr>
+<tr><td>Out begin date:</td><td>\Sexpr{ReportObject()@outgoingContacts@tBegin}</td></tr>
+<tr><td>Out end date:</td><td>\Sexpr{ReportObject()@outgoingContacts@tEnd}</td></tr>
+<tr><td>Out days:</td><td>\Sexpr{ReportObject()@outgoingContacts@tEnd - ReportObject()@outgoingContacts@tBegin}</td></tr>
+<tr><td>Out degree:</td><td>\Sexpr{OutDegree(ReportObject()@outgoingContacts)}</td></tr>
+<tr><td>Outgoing contact chain:</td><td>\Sexpr{OutgoingContactChain(ReportObject()@outgoingContacts)}</td></tr>
 </table>
 </p>
 
 <<echo=false, results=html>>=
-    if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
+    if(length(ReportObject()@outgoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        df <- NetworkStructure(.ct_env$ct@outgoingContacts)
+        df <- NetworkStructure(ReportObject()@outgoingContacts)
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$source
@@ -183,12 +183,12 @@
 @
 
 <<echo=false, results=html>>=
-    if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
+    if(length(ReportObject()@ingoingContacts@source) > 0L) {
         cat('<hr/>', file=.HTML.file)
 
         cat('<h2>Direct ingoing contacts</h2>', file=.HTML.file)
 
-        df <- as(.ct_env$ct@ingoingContacts, 'data.frame')
+        df <- as(ReportObject()@ingoingContacts, 'data.frame')
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$destination
@@ -207,12 +207,12 @@
 @
 
 <<echo=false, results=html>>=
-    if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
+    if(length(ReportObject()@outgoingContacts@source) > 0L) {
         cat('<hr/>', file=.HTML.file)
 
         cat('<h2>Direct outgoing contacts</h2>', file=.HTML.file)
 
-        df <- as(.ct_env$ct@outgoingContacts, 'data.frame')
+        df <- as(ReportObject()@outgoingContacts, 'data.frame')
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$source

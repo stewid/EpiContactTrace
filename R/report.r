@@ -126,18 +126,15 @@ setMethod('Report',
       {
           format <- match.arg(format)
 
-          if (exists('.ct_env', envir=globalenv())) {
-              stop('Unable to create report. The object .ct_env already exists in .GlobalEnv')
+          if (!is.null(.ct_env$ct)) {
+              stop('Unable to create report. The ct object already exists')
           }
 
-          ## Make sure the added environment is removed.
-          on.exit(if (exists('.ct_env', envir=globalenv())) rm('.ct_env', envir=globalenv()))
+          ## Make sure the added object is removed.
+          on.exit(.ct_env$ct <- NULL)
 
-          ## In order to communicate with Sweave add an environment in .GlobalEnv
-          assign('.ct_env', new.env(parent=globalenv()), envir=globalenv())
-
-          ## Add the ContactTrace object to the new environment
-          assign('ct', object, envir=get('.ct_env', envir=globalenv()))
+          ## Add the ContactTrace object to the .ct_env environment
+          .ct_env$ct <- object
 
           if(identical(format, 'html')) {
               if(is.null(template)) {
@@ -182,3 +179,24 @@ setMethod('Report',
           invisible(NULL)
       }
 )
+
+## In order to communicate with Sweave add an environment to store the
+## current report object
+.ct_env <- new.env()
+
+##' Get current \code{ContactTrace} object when generating a report
+##'
+##' EpiContatTrace contains report templates to generate pdf- or html reports
+##' for the farm specific contacts. These reports can be useful for hands-on
+##' disease tracing in the field. The templates are used by Sweave and can be
+##' adapted by the end user. This method enables communication of the current
+##' \code{ContactTrace} object to the report.
+##'
+##'
+##' @usage ReportObject()
+##' @return The current \code{ContactTrace} object when generating a report
+##' @export
+ReportObject <- function()
+{
+    return(.ct_env$ct)
+}

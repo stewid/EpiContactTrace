@@ -95,7 +95,7 @@
 
 \documentclass[a4paper]{article}
 
-\title{Contact Tracing\\Root: \Sexpr{.ct_env$ct@root}}
+\title{Contact Tracing\\Root: \Sexpr{ReportObject()@root}}
 
 \author{EpiContactTrace\\Version: \Sexpr{packageVersion('EpiContactTrace')}}
 
@@ -118,7 +118,7 @@
 
 <<echo=FALSE, results=hide>>=
   pdf('in-out-graph.pdf')
-  plot(.ct_env$ct, frame=TRUE)
+  plot(ReportObject(), frame=TRUE)
   dev.off()
 @
 
@@ -133,17 +133,17 @@
 \section{Summary ingoing contacts}
 
 \begin{tabular}{ l  r }
-  In begin date: & \Sexpr{.ct_env$ct@ingoingContacts@tBegin}\\
-  In end date: & \Sexpr{.ct_env$ct@ingoingContacts@tEnd}\\
-  In days: & \Sexpr{.ct_env$ct@ingoingContacts@tEnd - .ct_env$ct@ingoingContacts@tBegin}\\
-  In degree: & \Sexpr{InDegree(.ct_env$ct@ingoingContacts)}\\
-  Ingoing contact chain: & \Sexpr{IngoingContactChain(.ct_env$ct@ingoingContacts)}\\
+  In begin date: & \Sexpr{ReportObject()@ingoingContacts@tBegin}\\
+  In end date: & \Sexpr{ReportObject()@ingoingContacts@tEnd}\\
+  In days: & \Sexpr{ReportObject()@ingoingContacts@tEnd - ReportObject()@ingoingContacts@tBegin}\\
+  In degree: & \Sexpr{InDegree(ReportObject()@ingoingContacts)}\\
+  Ingoing contact chain: & \Sexpr{IngoingContactChain(ReportObject()@ingoingContacts)}\\
 \end{tabular}
 
 <<echo=false, results=tex>>=
-    if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
+    if(length(ReportObject()@ingoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        df <- NetworkStructure(.ct_env$ct@ingoingContacts)
+        df <- NetworkStructure(ReportObject()@ingoingContacts)
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$destination
@@ -163,17 +163,17 @@
 \section{Summary outgoing contacts}
 
 \begin{tabular}{ l  r }
-  Out begin date: & \Sexpr{.ct_env$ct@outgoingContacts@tBegin}\\
-  Out end date: & \Sexpr{.ct_env$ct@outgoingContacts@tEnd}\\
-  Out days: & \Sexpr{.ct_env$ct@outgoingContacts@tEnd - .ct_env$ct@outgoingContacts@tBegin}\\
-  Out degree: & \Sexpr{OutDegree(.ct_env$ct@outgoingContacts)}\\
-  Outgoing contact chain: & \Sexpr{OutgoingContactChain(.ct_env$ct@outgoingContacts)}\\
+  Out begin date: & \Sexpr{ReportObject()@outgoingContacts@tBegin}\\
+  Out end date: & \Sexpr{ReportObject()@outgoingContacts@tEnd}\\
+  Out days: & \Sexpr{ReportObject()@outgoingContacts@tEnd - ReportObject()@outgoingContacts@tBegin}\\
+  Out degree: & \Sexpr{OutDegree(ReportObject()@outgoingContacts)}\\
+  Outgoing contact chain: & \Sexpr{OutgoingContactChain(ReportObject()@outgoingContacts)}\\
 \end{tabular}
 
 <<echo=false, results=tex>>=
-    if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
+    if(length(ReportObject()@outgoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
-        df <- NetworkStructure(.ct_env$ct@outgoingContacts)
+        df <- NetworkStructure(ReportObject()@outgoingContacts)
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$source
@@ -189,11 +189,11 @@
 @
 
 <<echo=false, results=tex>>=
-    if(length(.ct_env$ct@ingoingContacts@source) > 0L) {
+    if(length(ReportObject()@ingoingContacts@source) > 0L) {
         cat('\\clearpage\n')
         cat('\\section{Direct ingoing contacts}\n')
 
-        df <- as(.ct_env$ct@ingoingContacts, 'data.frame')
+        df <- as(ReportObject()@ingoingContacts, 'data.frame')
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$destination
@@ -212,11 +212,11 @@
 @
 
 <<echo=false, results=tex>>=
-    if(length(.ct_env$ct@outgoingContacts@source) > 0L) {
+    if(length(ReportObject()@outgoingContacts@source) > 0L) {
         cat('\\clearpage\n')
         cat('\\section{Direct outgoing contacts}\n')
 
-        df <- as(.ct_env$ct@outgoingContacts, 'data.frame')
+        df <- as(ReportObject()@outgoingContacts, 'data.frame')
 
         # Add lhs and rhs, with respect to direction
         df$lhs <- df$source
