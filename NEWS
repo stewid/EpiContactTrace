@@ -1,3 +1,11 @@
+EpiContactTrace 0.8.4
+---------------------
+
+NEW FEATURES
+
+* Added method ReportObject to be called from a Sweave report template
+  to get the current ContactTrace object.
+
 EpiContactTrace 0.8.3
 ---------------------
 
