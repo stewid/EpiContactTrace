@@ -104,7 +104,8 @@ sweden <- get_map('Sweden', zoom=5)
 ## Select a subset of all movements to visualize
 i <- sample(seq_len(nrow(transfers)), 100, replace=FALSE)
 
-## Perform the animation and view the movements aggregated by week.
+## Perform the animation and view the movements aggregated by week
+in a web-browser.
 Animate(transfers[i,], coords, sweden, "week")
 }
 }
