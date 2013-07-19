@@ -47,6 +47,8 @@
 
 <<echo=false, results=tex>>=
     DetailedTable <- function(contacts, direction) {
+        require(plyr)
+        
         if(identical(direction, 'in')) {
             arrow <- '\\leftarrow'
         } else {

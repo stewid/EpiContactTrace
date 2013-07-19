@@ -52,6 +52,8 @@
 
 <<echo=false, results=html>>=
     DetailedTable <- function(contacts, direction) {
+        require(plyr)
+        
         if(identical(direction, 'in')) {
             arrow <- '&larr;'
         } else {
