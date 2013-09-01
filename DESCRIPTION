@@ -1,7 +1,7 @@
 Package: EpiContactTrace
 Title: Epidemiological tool for contact tracing
-Version: 0.8.5
-Date: 2013-07-19
+Version: 0.8.6
+Date: 2013-09-01
 Authors@R: c(
     person("Maria",
     "Noremark",
@@ -17,12 +17,10 @@ URL: https://github.com/stewid/EpiContactTrace
 Type: Package
 LazyLoad: yes
 Imports:
-    igraph0,
     plyr,
     R2HTML
 Depends:
     R(>= 2.15.1),
-    graphics,
     methods,
     Rcpp (>= 0.9.13)
 Suggests:
@@ -40,7 +38,6 @@ Collate:
     'outgoing-contact-chain.r'
     'network-summary.r'
     'network-structure.r'
-    'plot.r'
     'report.r'
     'shortest-paths.r'
     'show.r'

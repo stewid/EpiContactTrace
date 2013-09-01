@@ -87,7 +87,6 @@
 ##' movements. Defaults to \code{NULL}
 ##' @param outEnd the last date to include outgoing
 ##' movements. Defaults to \code{NULL}
-##' @seealso \code{\link{Trace}}.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
 ##'     and its application to foot-and-mouth disease modelling and policy
@@ -100,7 +99,6 @@
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @export
-##' @useDynLib EpiContactTrace
 ##' @examples
 ##'
 ##' ## Load data
@@ -128,8 +126,6 @@
 ##' show(trace.1)
 ##'
 ##' \dontrun{
-##' ## Plot in- and outgoing contact chain
-##' plot(trace.1)
 ##'
 ##' ## Create a network summary for all included herds
 ##' ## First extract all source and destination from the dataset

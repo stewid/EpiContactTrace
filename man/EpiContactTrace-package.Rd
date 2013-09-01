@@ -53,6 +53,14 @@
   including dates of movements on group or individual level
   on all contacts.
 }
+\note{
+  Plots are not supported in version 0.8.6 since igraph0
+  has been archived. We intend to resolve the issue in a
+  future version. Install version 0.8.5 and igraph0
+  manually from the archive if plots are required. See
+  section 6.3 in 'R Installation and Administration' on how
+  to install packages from source.
+}
 \section{Maintainer}{
   Stefan Widgren <stefan.widgren@sva.se>
 }

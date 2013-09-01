@@ -53,7 +53,7 @@
 <<echo=false, results=html>>=
     DetailedTable <- function(contacts, direction) {
         require(plyr)
-        
+
         if(identical(direction, 'in')) {
             arrow <- '&larr;'
         } else {
@@ -113,18 +113,6 @@
 <h1 align='center'>Root: \Sexpr{ReportObject()@root}</h1>
 <h3 align='center'>EpiContactTrace</h3>
 <h3 align='center'>Version: \Sexpr{packageVersion('EpiContactTrace')}</h3>
-
-<hr/>
-
-<<echo=false, results=hide>>=
-  filename <- sprintf('%s.png', ReportObject()@root)
-
-  png(filename)
-  plot(ReportObject())
-  dev.off()
-@
-
-<img style="text-align:center;display:block;" src="\Sexpr{filename}"/>
 
 <hr/>
 

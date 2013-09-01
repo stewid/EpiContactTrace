@@ -38,7 +38,6 @@
 ##'     \code{Contacts} of a \code{ContactTrace} object.
 ##'   }
 ##' }
-##' @seealso \code{\link{plot}}.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
 ##'     and its application to foot-and-mouth disease modelling and policy

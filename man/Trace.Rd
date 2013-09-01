@@ -124,8 +124,6 @@ identical(trace.1, trace.2)
 show(trace.1)
 
 \dontrun{
-## Plot in- and outgoing contact chain
-plot(trace.1)
 
 ## Create a network summary for all included herds
 ## First extract all source and destination from the dataset
@@ -165,8 +163,5 @@ NetworkSummary(trace.3)
   disease control and riskbased surveillance.  Preventive
   Veterinary Medicine 99 (2011) 78-90, doi:
   10.1016/j.prevetmed.2010.12.009 }
-}
-\seealso{
-  \code{\link{Trace}}.
 }
 

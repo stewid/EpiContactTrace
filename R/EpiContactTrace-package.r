@@ -61,7 +61,14 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
+##' @note Plots are not supported in version 0.8.6 since igraph0 has
+##' been archived. We intend to resolve the issue in a future
+##' version. Install version 0.8.5 and igraph0 manually from the
+##' archive if plots are required. See section 6.3 in 'R Installation
+##' and Administration' on how to install packages from source.
 ##' @keywords package
+##' @import Rcpp
+##' @useDynLib EpiContactTrace
 ##' @examples
 ##'
 ##' ## Load data
@@ -126,6 +133,7 @@ NULL
 ##' @keywords datasets
 ##' @examples
 ##'
+##' \dontrun{
 ##' data(transfers)
 ##'
 ##' contactTrace <- Trace(movements=transfers,
@@ -133,13 +141,7 @@ NULL
 ##'                       tEnd='2005-10-31',
 ##'                       days=90)
 ##'
-##' \dontrun{
-##' ## Plot in- and outgoing contact chain
-##' plot(contactTrace)
-##'
-##' ## Generate an html report.
-##' ## NOTE: creates the files '2645.html' and '2645.png' in the working directory.
-##' Report(contactTrace)
+##' show(contactTrace)
 ##' }
 ##'
 NULL

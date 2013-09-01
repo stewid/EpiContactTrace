@@ -65,8 +65,5 @@ show(contactTrace)
   Veterinary Medicine 99 (2011) 78-90, doi:
   10.1016/j.prevetmed.2010.12.009 }
 }
-\seealso{
-  \code{\link{plot}}.
-}
 \keyword{methods}
 

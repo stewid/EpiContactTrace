@@ -57,6 +57,7 @@
   period 2005-08-01 -- 2005-10-31.
 }
 \examples{
+\dontrun{
 data(transfers)
 
 contactTrace <- Trace(movements=transfers,
@@ -64,13 +65,7 @@ contactTrace <- Trace(movements=transfers,
                       tEnd='2005-10-31',
                       days=90)
 
-\dontrun{
-## Plot in- and outgoing contact chain
-plot(contactTrace)
-
-## Generate an html report.
-## NOTE: creates the files '2645.html' and '2645.png' in the working directory.
-Report(contactTrace)
+show(contactTrace)
 }
 }
 \keyword{datasets}

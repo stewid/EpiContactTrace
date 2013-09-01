@@ -48,7 +48,7 @@
 <<echo=false, results=tex>>=
     DetailedTable <- function(contacts, direction) {
         require(plyr)
-        
+
         if(identical(direction, 'in')) {
             arrow <- '\\leftarrow'
         } else {
@@ -117,18 +117,6 @@
 \begin{document}
 
 \maketitle
-
-<<echo=FALSE, results=hide>>=
-  pdf('in-out-graph.pdf')
-  plot(ReportObject(), frame=TRUE)
-  dev.off()
-@
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics{in-out-graph}
-\end{center}
-\end{figure}
 
 \clearpage
 
