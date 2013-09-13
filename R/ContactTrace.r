@@ -59,9 +59,9 @@
 ##' str(contactTrace)
 ##'
 setClass('ContactTrace',
-         representation(root = 'character',
-                        ingoingContacts = 'Contacts',
-                        outgoingContacts = 'Contacts'))
+         slots = c(root = 'character',
+                   ingoingContacts = 'Contacts',
+                   outgoingContacts = 'Contacts'))
 
 setAs(from='ContactTrace',
       to='data.frame',
@@ -71,5 +71,3 @@ setAs(from='ContactTrace',
                    as(from@outgoingContacts, 'data.frame')))
   }
 )
-
-

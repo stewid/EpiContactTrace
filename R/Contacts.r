@@ -101,18 +101,18 @@
 ##' str(contactTrace@@outgoingContacts)
 ##'
 setClass('Contacts',
-         representation(root = 'character',
-                        tBegin = 'Date',
-                        tEnd = 'Date',
-                        source = 'character',
-                        destination = 'character',
-                        t = 'Date',
-                        id = 'character',
-                        n = 'numeric',
-                        category = 'character',
-                        index = 'integer',
-                        distance = 'integer',
-                        direction = 'character'),
+         slots = c(root = 'character',
+                   tBegin = 'Date',
+                   tEnd = 'Date',
+                   source = 'character',
+                   destination = 'character',
+                   t = 'Date',
+                   id = 'character',
+                   n = 'numeric',
+                   category = 'character',
+                   index = 'integer',
+                   distance = 'integer',
+                   direction = 'character'),
          validity = function(object) {
              retval <- NULL
 
@@ -184,4 +184,3 @@ setAs(from='Contacts',
       }
   }
 )
-
