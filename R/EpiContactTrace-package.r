@@ -68,6 +68,7 @@
 ##' and Administration' on how to install packages from source.
 ##' @keywords package
 ##' @import Rcpp
+##' @import methods
 ##' @useDynLib EpiContactTrace
 ##' @examples
 ##'
