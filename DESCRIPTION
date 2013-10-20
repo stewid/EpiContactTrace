@@ -1,6 +1,6 @@
 Package: EpiContactTrace
 Title: Epidemiological tool for contact tracing
-Version: 0.8.6
+Version: 0.8.7
 Date: 2013-09-01
 Authors@R: c(
     person("Maria",

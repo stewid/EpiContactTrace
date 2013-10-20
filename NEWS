@@ -1,3 +1,11 @@
+EpiContactTrace 0.8.7
+---------------------
+
+BUG FIXES
+
+* Changed argument representation to slots in setClass for the two S4
+  classes ContactTrace and Contacts.
+
 EpiContactTrace 0.8.6
 ---------------------
 
