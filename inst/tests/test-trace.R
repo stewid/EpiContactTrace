@@ -527,8 +527,22 @@ test_that('Duplicate movements', {
                            'n',
                            'category')]
 
-    ct.1.df <- ct.1.df[order(1:6),]
-    ct.2.df <- ct.2.df[order(1:6),]
+    ct.1.df <- ct.1.df[order(ct.1.df$source,
+                             ct.1.df$destination,
+                             ct.1.df$t,
+                             ct.1.df$id,
+                             ct.1.df$n,
+                             ct.1.df$category),]
+
+    ct.2.df <- ct.2.df[order(ct.2.df$source,
+                             ct.2.df$destination,
+                             ct.2.df$t,
+                             ct.2.df$id,
+                             ct.2.df$n,
+                             ct.2.df$category),]
+
+    rownames(ct.1.df) <- NULL
+    rownames(ct.2.df) <- NULL
 
     expect_that(ct.2.df, is_identical_to(ct.1.df))
 })
