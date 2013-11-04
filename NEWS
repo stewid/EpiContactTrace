@@ -1,10 +1,20 @@
-EpiContactTrace 0.8.7
+EpiContactTrace 0.8.8
 ---------------------
 
 BUG FIXES
 
+* Fixed failing test case 'Duplicate movements'
+
+* Fixed NOTE not importing 'methods' from R CMD check
+
+
+EpiContactTrace 0.8.7
+---------------------
+
+NOTE
+
 * Changed argument representation to slots in setClass for the two S4
-  classes ContactTrace and Contacts.
+  classes ContactTrace and Contacts. The package now requires R>=3.0.0
 
 EpiContactTrace 0.8.6
 ---------------------
