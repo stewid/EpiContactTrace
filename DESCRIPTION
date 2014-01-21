@@ -20,7 +20,7 @@ Imports:
     plyr,
     R2HTML
 Depends:
-    R(>= 3.0.0),
+    R(>= 3.0.2),
     methods,
     Rcpp (>= 0.9.13)
 Suggests:
