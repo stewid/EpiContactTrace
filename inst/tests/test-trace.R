@@ -26,98 +26,6 @@ test_that('Direction', {
   expect_that(ct@outgoingContacts@direction, is_identical_to('out'))
 })
 
-test_that('IngoingContactChain', {
-  load(file="data/movements1.rda")
-
-  ct <- Trace(movements1,
-              root = 8L,
-              inBegin = as.Date('2010-08-22'),
-              inEnd = as.Date('2010-10-01'),
-              outBegin = as.Date('2010-08-01'),
-              outEnd = as.Date('2010-08-31'))
-
-  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(7L))
-  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(0L))
-
-  load(file="data/movements2.rda")
-
-  ct <- Trace(movements2,
-              root = 4L,
-              inBegin = as.Date('2010-07-22'),
-              inEnd = as.Date('2010-08-21'),
-              outBegin = as.Date('2010-08-01'),
-              outEnd = as.Date('2010-08-31'))
-
-  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(3L))
-  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(0L))
-
-  load(file="data/movements5.rda")
-
-  ct <- Trace(movements5,
-              root = 1L,
-              inBegin = as.Date('2010-08-02'),
-              inEnd = as.Date('2010-09-01'),
-              outBegin = as.Date('2010-09-01'),
-              outEnd = as.Date('2010-10-01'))
-
-  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(1L))
-  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(0L))
-})
-
-test_that('OutgoingContactChain', {
-  load(file="data/movements4.rda")
-
-  ct <- Trace(movements4,
-              root = 1L,
-              inBegin = as.Date('2010-08-02'),
-              inEnd = as.Date('2010-09-01'),
-              outBegin = as.Date('2010-08-01'),
-              outEnd = as.Date('2010-11-09'))
-
-  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
-  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(7L))
-
-  load(file="data/movements5.rda")
-
-  ct <- Trace(movements5,
-              root = 1L,
-              inBegin = as.Date('2010-07-02'),
-              inEnd = as.Date('2010-08-01'),
-              outBegin = as.Date('2010-08-01'),
-              outEnd = as.Date('2010-08-31'))
-
-  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
-  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(1L))
-
-  load(file="data/movements7.rda")
-
-  ct <- Trace(movements7,
-              root = 1L,
-              inBegin = as.Date('2010-10-10'),
-              inEnd = as.Date('2010-10-20'),
-              outBegin = as.Date('2010-10-10'),
-              outEnd = as.Date('2010-10-20'))
-
-  expect_that(IngoingContactChain(ct)$ingoingContactChain, is_identical_to(0L))
-  expect_that(OutgoingContactChain(ct)$outgoingContactChain, is_identical_to(2L))
-
-  expect_that(NetworkSummary(movements7,
-                             root=1,
-                             tEnd='2010-10-20',
-                             days=10),
-              is_identical_to(data.frame(root="1",
-                                         inBegin=as.Date("2010-10-10"),
-                                         inEnd=as.Date("2010-10-20"),
-                                         inDays=10L,
-                                         outBegin=as.Date("2010-10-10"),
-                                         outEnd=as.Date("2010-10-20"),
-                                         outDays=10L,
-                                         inDegree=0L,
-                                         outDegree=1L,
-                                         ingoingContactChain=0L,
-                                         outgoingContactChain=2L)))
-})
-
 test_that('InDegree', {
   load(file="data/movements2.rda")
 
@@ -345,4 +253,3 @@ test_that('Network summary using Trace', {
                                                tEnd='2005-10-31',
                                                days=91)))
 })
-
