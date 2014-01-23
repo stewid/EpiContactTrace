@@ -16,7 +16,7 @@ at https://github.com/stewid/EpiContactTrace.
 To install the latest release on CRAN
 
 ```
-install.packages(EpiContactTrace')
+install.packages("EpiContactTrace")
 ```
 
 To install the development version of EpiContactTrace, it's easiest to use the `devtools` package:
