@@ -25,8 +25,7 @@ Depends:
     Rcpp (>= 0.9.13)
 Suggests:
     animation,
-    ggmap,
-    testthat
+    ggmap
 Collate:
     'Contacts.r'
     'ContactTrace.r'
