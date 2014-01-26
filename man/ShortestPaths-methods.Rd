@@ -1,29 +1,9 @@
-% Copyright 2013 Stefan Widgren and Maria Noremark,
-% National Veterinary Institute, Sweden
-%
-% Licensed under the EUPL, Version 1.1 or - as soon they
-% will be approved by the European Commission - subsequent
-% versions of the EUPL (the "Licence");
-% You may not use this work except in compliance with the
-% Licence.
-% You may obtain a copy of the Licence at:
-%
-% http://ec.europa.eu/idabc/eupl
-%
-% Unless required by applicable law or agreed to in
-% writing, software distributed under the Licence is
-% distributed on an "AS IS" basis,
-% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-% express or implied.
-% See the Licence for the specific language governing
-% permissions and limitations under the Licence.
-
 \docType{methods}
 \name{ShortestPaths-methods}
 \alias{ShortestPaths}
 \alias{ShortestPaths,Contacts-method}
 \alias{ShortestPaths,ContactTrace-method}
-\alias{ShortestPaths,list-method}
+\alias{ShortestPaths,data.frame-method}
 \alias{ShortestPaths-methods}
 \title{\code{ShortestPaths}}
 \value{
@@ -46,11 +26,11 @@
   \item{direction}{ If the direction is ingoing, then
   direction equals 'in' else 'out' }
 
-  \item{source}{ The source of the contacts in the depth
-  first search }
+  \item{source}{ The source of the contact at distance from
+  root }
 
-  \item{destination}{ The destination of the contacts in
-  the depth first search }
+  \item{destination}{ The destination of the contact at
+  distance from root }
 
   \item{distance}{ The shortest distance from/to root in
   the depth first search } }
@@ -77,12 +57,13 @@
   shortest paths for the ingoing and outgoing
   \code{Contacts} of a \code{ContactTrace} object.  }
 
-  \item{\code{signature(object = "list")}}{ Get the
-  shortest paths for a list of \code{ContactTrace} objects.
-  Each item in the list must be a \code{ContactTrace}
-  object.  } }
+  \item{\code{signature(x = "data.frame")}}{ Get the
+  shortest paths for a data.frame with movements, see
+  details and examples.  } }
 }
 \examples{
+\dontrun{
+
 ## Load data
 data(transfers)
 
@@ -93,6 +74,14 @@ contactTrace <- Trace(movements=transfers,
                       days=90)
 
 ShortestPaths(contactTrace)
+
+## Calculate shortest paths for all included herds
+## First extract all source and destination from the dataset
+root <- sort(unique(c(transfers$source, transfers$destination)))
+
+sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
+
+}
 }
 \seealso{
   \code{\link{show}} and \code{\link{NetworkStructure}}.
