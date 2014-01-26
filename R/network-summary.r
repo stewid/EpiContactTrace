@@ -152,6 +152,7 @@
 ##' @export
 ##' @useDynLib EpiContactTrace
 ##' @examples
+##' \dontrun{
 ##'
 ##' ## Load data
 ##' data(transfers)
@@ -185,8 +186,6 @@
 ##'
 ##' ## Check that the result is identical
 ##' identical(ns.2, ns.3)
-##'
-##' \dontrun{
 ##'
 ##' ## When calculating the network summary for a data.frame of movements
 ##' ## a data.frame for each combination of root, tEnd and days are returned.

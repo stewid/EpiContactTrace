@@ -95,6 +95,7 @@
 ##' @import plyr
 ##' @export
 ##' @examples
+##' \dontrun{
 ##'
 ##' ## Load data
 ##' data(transfers)
@@ -106,6 +107,7 @@
 ##'                       days=90)
 ##'
 ##' NetworkStructure(contactTrace)
+##' }
 ##'
 setGeneric('NetworkStructure',
            signature = 'object',

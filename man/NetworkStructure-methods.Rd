@@ -61,6 +61,8 @@
   }
 }
 \examples{
+\dontrun{
+
 ## Load data
 data(transfers)
 
@@ -71,6 +73,7 @@ contactTrace <- Trace(movements=transfers,
                       days=90)
 
 NetworkStructure(contactTrace)
+}
 }
 \seealso{
   \code{\link{show}}.

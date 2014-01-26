@@ -79,6 +79,8 @@
   category of the animal e.g. Cattle.  } }
 }
 \examples{
+\dontrun{
+
 ## Load data
 data(transfers)
 
@@ -102,8 +104,6 @@ identical(trace.1, trace.2)
 
 ## Show result of contact tracing
 show(trace.1)
-
-\dontrun{
 
 ## Create a network summary for all included herds
 ## First extract all source and destination from the dataset

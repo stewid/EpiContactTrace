@@ -52,6 +52,7 @@
 ##' @keywords methods
 ##' @export
 ##' @examples
+##' \dontrun{
 ##'
 ##' ## Load data
 ##' data(transfers)
@@ -63,6 +64,7 @@
 ##'                       days=90)
 ##'
 ##' show(contactTrace)
+##'}
 ##'
 setMethod('show',
           signature(object = 'Contacts'),

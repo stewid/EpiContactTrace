@@ -140,6 +140,7 @@
 ##' @keywords methods
 ##' @export
 ##' @examples
+##' \dontrun{
 ##'
 ##' ## Load data
 ##' data(transfers)
@@ -162,7 +163,6 @@
 ##' ## Check that the result is identical
 ##' identical(id.1, id.2)
 ##'
-##' \dontrun{
 ##' ## Calculate indegree for all included herds
 ##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source,

@@ -21,6 +21,8 @@
   of a \code{ContactTrace} object.  } }
 }
 \examples{
+\dontrun{
+
 ## Load data
 data(transfers)
 
@@ -31,6 +33,7 @@ contactTrace <- Trace(movements=transfers,
                       days=90)
 
 show(contactTrace)
+}
 }
 \references{
   \itemize{ \item Dube, C., et al., A review of network

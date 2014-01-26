@@ -100,6 +100,7 @@
 ##' }
 ##' @export
 ##' @examples
+##' \dontrun{
 ##'
 ##' ## Load data
 ##' data(transfers)
@@ -124,8 +125,6 @@
 ##'
 ##' ## Show result of contact tracing
 ##' show(trace.1)
-##'
-##' \dontrun{
 ##'
 ##' ## Create a network summary for all included herds
 ##' ## First extract all source and destination from the dataset

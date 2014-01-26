@@ -59,6 +59,8 @@
   reports for a list of \code{ContactTrace} obejcts.  } }
 }
 \examples{
+\dontrun{
+
 ## Load data
 data(transfers)
 
@@ -68,7 +70,6 @@ contactTrace <- Trace(movements=transfers,
                       tEnd='2005-10-31',
                       days=90)
 
-\dontrun{
 ## Generate an html report showing details of the contact tracing for
 ## root 2646.
 ## Note: Creates the files 2645.html and 2645.png in the working

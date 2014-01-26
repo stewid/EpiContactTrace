@@ -104,6 +104,8 @@
   details and examples.  } }
 }
 \examples{
+\dontrun{
+
 ## Load data
 data(transfers)
 
@@ -125,7 +127,6 @@ ic.2 <- IngoingContactChain(transfers,
 ## Check that the result is identical
 identical(ic.1, ic.2)
 
-\dontrun{
 ## Calculate ingoing contact chain for all included herds
 ## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source,
