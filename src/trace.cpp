@@ -80,10 +80,10 @@ VisitedNodes::Visit(int node, int tBegin, int tEnd, bool ingoing)
 typedef pair<vector<map<int, Contacts> >, vector<map<int, Contacts> > > ContactsLookup;
 
 static ContactsLookup
-buildContactsLookup(IntegerVector const& srcVec,
-		    IntegerVector const& dstVec,
-		    IntegerVector const& tVec,
-		    int numberOfIdentifiers)
+buildContactsLookup(const SEXP src,
+		    const SEXP dst,
+		    const SEXP t,
+		    const size_t numberOfIdentifiers)
 {
     // Lookup for ingoing contacts
     vector<map<int, Contacts> > ingoing(numberOfIdentifiers);
@@ -94,24 +94,32 @@ buildContactsLookup(IntegerVector const& srcVec,
     // first: julian time, second: original rowid
     vector<pair<int, int> > rowid;
 
+    if (R_NilValue == src
+        || R_NilValue == dst
+        || R_NilValue == t
+        || INTSXP != TYPEOF(src)
+        || INTSXP != TYPEOF(dst)
+        || INTSXP != TYPEOF(t))
+        Rf_error("Unable to build contacts lookup");
+
     // The contacts must be sorted by t.
-    int n = tVec.size();
-    rowid.reserve(n);
-    for(int i=0;i<n;++i) {
-        rowid.push_back(make_pair(tVec[i], i));
+    size_t len = LENGTH(t);
+    rowid.reserve(len);
+    for(size_t i=0;i<len;++i) {
+        rowid.push_back(make_pair(INTEGER(t)[i], i));
     }
 
     sort(rowid.begin(), rowid.end(), compareT);
 
-    for(int i=0;i<n;++i) {
+    for(size_t i=0;i<len;++i) {
         int j = rowid[i].second;
 
         // Decrement with one since std::vector is zero-based
-        int zb_src = srcVec[j] - 1;
-        int zb_dst = dstVec[j] - 1;
+        int zb_src = INTEGER(src)[j] - 1;
+        int zb_dst = INTEGER(dst)[j] - 1;
 
-        ingoing[zb_dst][zb_src].push_back(Contact(j, zb_src, tVec[j]));
-        outgoing[zb_src][zb_dst].push_back(Contact(j, zb_dst, tVec[j]));
+        ingoing[zb_dst][zb_src].push_back(Contact(j, zb_src, INTEGER(t)[j]));
+        outgoing[zb_src][zb_dst].push_back(Contact(j, zb_dst, INTEGER(t)[j]));
     }
 
     return make_pair(ingoing, outgoing);
@@ -125,7 +133,7 @@ shortestPaths(const vector<map<int, Contacts> >& data,
 	      set<int> visitedNodes,
 	      const int distance,
 	      const bool ingoing,
-              map<int, pair<int, int> >& resultDistanceEx)
+              map<int, pair<int, int> >& result)
 {
     visitedNodes.insert(node);
 
@@ -146,12 +154,12 @@ shortestPaths(const vector<map<int, Contacts> >& data,
                 int t0, t1;
 
                 map<int, pair<int, int> >::iterator distance_it =
-                    resultDistanceEx.find(it->first);
-                if(distance_it == resultDistanceEx.end()) {
-                    resultDistanceEx[it->first].first = distance;
+                    result.find(it->first);
+                if(distance_it == result.end()) {
+                    result[it->first].first = distance;
 
                     // Increment with one since R vector is one-based.
-                    resultDistanceEx[it->first].second = t_begin->rowid_ + 1;
+                    result[it->first].second = t_begin->rowid_ + 1;
                 }  else if (distance < distance_it->second.first) {
                     distance_it->second.first = distance;
 
@@ -181,44 +189,48 @@ shortestPaths(const vector<map<int, Contacts> >& data,
                               visitedNodes,
                               distance + 1,
                               ingoing,
-                              resultDistanceEx);
+                              result);
             }
         }
     }
 }
 
-SEXP shortestPaths(SEXP src,
-		   SEXP dst,
-		   SEXP t,
-		   SEXP root,
-		   SEXP inBegin,
-		   SEXP inEnd,
-		   SEXP outBegin,
-		   SEXP outEnd,
-		   SEXP numberOfIdentifiers)
+SEXP shortestPaths(const SEXP src,
+		   const SEXP dst,
+		   const SEXP t,
+		   const SEXP root,
+		   const SEXP inBegin,
+		   const SEXP inEnd,
+		   const SEXP outBegin,
+		   const SEXP outEnd,
+		   const SEXP numberOfIdentifiers)
 {
-    IntegerVector srcVec(src);
-    IntegerVector dstVec(dst);
-    IntegerVector tVec(t);
-    IntegerVector rootVec(root);
-    IntegerVector inBeginVec(inBegin);
-    IntegerVector inEndVec(inEnd);
-    IntegerVector outBeginVec(outBegin);
-    IntegerVector outEndVec(outEnd);
+    if (R_NilValue == root
+        || R_NilValue == inBegin
+        || R_NilValue == inEnd
+        || R_NilValue == outBegin
+        || R_NilValue == outEnd
+        || R_NilValue == numberOfIdentifiers
+        || INTSXP != TYPEOF(root)
+        || INTSXP != TYPEOF(inBegin)
+        || INTSXP != TYPEOF(inEnd)
+        || INTSXP != TYPEOF(outBegin)
+        || INTSXP != TYPEOF(outEnd)
+        || INTSXP != TYPEOF(numberOfIdentifiers)
+        || 1 != LENGTH(numberOfIdentifiers))
+        Rf_error("Unable to calculate shortest paths");
 
-    ContactsLookup lookup = buildContactsLookup(srcVec,
-						dstVec,
-						tVec,
-						as<int>(numberOfIdentifiers));
+    ContactsLookup lookup =
+        buildContactsLookup(src, dst, t, INTEGER(numberOfIdentifiers)[0]);
 
-    size_t n = rootVec.size();
+    size_t len = LENGTH(root);
     vector<int> inRowid;
     vector<int> outRowid;
     vector<int> inDistance;
     vector<int> outDistance;
     vector<int> inIndex;
     vector<int> outIndex;
-    for(size_t i=0; i<n; ++i) {
+    for(size_t i=0; i<len; ++i) {
         // Key: node, Value: first: distance, second: original rowid
         map<int, pair<int, int> > ingoingShortestPaths;
 
@@ -226,9 +238,9 @@ SEXP shortestPaths(SEXP src,
         map<int, pair<int, int> > outgoingShortestPaths;
 
         shortestPaths(lookup.first,
-                      rootVec[i] - 1,
-                      inBeginVec[i],
-                      inEndVec[i],
+                      INTEGER(root)[i] - 1,
+                      INTEGER(inBegin)[i],
+                      INTEGER(inEnd)[i],
                       set<int>(),
                       1,
                       true,
@@ -244,9 +256,9 @@ SEXP shortestPaths(SEXP src,
         }
 
         shortestPaths(lookup.second,
-                      rootVec[i] - 1,
-                      outBeginVec[i],
-                      outEndVec[i],
+                      INTEGER(root)[i] - 1,
+                      INTEGER(outBegin)[i],
+                      INTEGER(outEnd)[i],
                       set<int>(),
                       1,
                       false,
@@ -272,12 +284,12 @@ SEXP shortestPaths(SEXP src,
 
 static void
 traceContacts(const vector<map<int, Contacts> >& data,
-	      int node,
-	      int tBegin,
-	      int tEnd,
+	      const int node,
+	      const int tBegin,
+	      const int tEnd,
 	      set<int> visitedNodes,
-	      int distance,
-	      bool ingoing,
+	      const int distance,
+	      const bool ingoing,
 	      vector<int>& resultRowid,
 	      vector<int>& resultDistance)
 {
@@ -335,42 +347,46 @@ traceContacts(const vector<map<int, Contacts> >& data,
     }
 }
 
-SEXP traceContacts(SEXP src,
-		   SEXP dst,
-		   SEXP t,
-		   SEXP root,
-		   SEXP inBegin,
-		   SEXP inEnd,
-		   SEXP outBegin,
-		   SEXP outEnd,
-		   SEXP numberOfIdentifiers)
+SEXP traceContacts(const SEXP src,
+		   const SEXP dst,
+		   const SEXP t,
+		   const SEXP root,
+		   const SEXP inBegin,
+		   const SEXP inEnd,
+		   const SEXP outBegin,
+		   const SEXP outEnd,
+		   const SEXP numberOfIdentifiers)
 {
-    IntegerVector srcVec(src);
-    IntegerVector dstVec(dst);
-    IntegerVector tVec(t);
-    IntegerVector rootVec(root);
-    IntegerVector inBeginVec(inBegin);
-    IntegerVector inEndVec(inEnd);
-    IntegerVector outBeginVec(outBegin);
-    IntegerVector outEndVec(outEnd);
+    if (R_NilValue == root
+        || R_NilValue == inBegin
+        || R_NilValue == inEnd
+        || R_NilValue == outBegin
+        || R_NilValue == outEnd
+        || R_NilValue == numberOfIdentifiers
+        || INTSXP != TYPEOF(root)
+        || INTSXP != TYPEOF(inBegin)
+        || INTSXP != TYPEOF(inEnd)
+        || INTSXP != TYPEOF(outBegin)
+        || INTSXP != TYPEOF(outEnd)
+        || INTSXP != TYPEOF(numberOfIdentifiers)
+        || 1 != LENGTH(numberOfIdentifiers))
+        Rf_error("Unable to trace contacts");
 
-    ContactsLookup lookup = buildContactsLookup(srcVec,
-						dstVec,
-						tVec,
-						as<int>(numberOfIdentifiers));
+    ContactsLookup lookup =
+        buildContactsLookup(src, dst, t, INTEGER(numberOfIdentifiers)[0]);
 
     List result;
     vector<int> resultRowid;
     vector<int> resultDistance;
 
-    for(int i=0, end=rootVec.size(); i<end; ++i) {
+    for(size_t i=0, end=LENGTH(root); i<end; ++i) {
         resultRowid.clear();
         resultDistance.clear();
 
         traceContacts(lookup.first,
-                      rootVec[i] - 1,
-                      inBeginVec[i],
-                      inEndVec[i],
+                      INTEGER(root)[i] - 1,
+                      INTEGER(inBegin)[i],
+                      INTEGER(inEnd)[i],
                       set<int>(),
                       1,
                       true,
@@ -384,9 +400,9 @@ SEXP traceContacts(SEXP src,
         resultDistance.clear();
 
         traceContacts(lookup.second,
-                      rootVec[i] - 1,
-                      outBeginVec[i],
-                      outEndVec[i],
+                      INTEGER(root)[i] - 1,
+                      INTEGER(outBegin)[i],
+                      INTEGER(outEnd)[i],
                       set<int>(),
                       1,
                       false,
@@ -402,9 +418,9 @@ SEXP traceContacts(SEXP src,
 
 static int
 degree(const vector<map<int, Contacts> >& data,
-       int node,
-       int tBegin,
-       int tEnd)
+       const int node,
+       const int tBegin,
+       const int tEnd)
 {
     int result = 0;
 
@@ -432,11 +448,11 @@ degree(const vector<map<int, Contacts> >& data,
 
 static void
 contactChain(const vector<map<int, Contacts> >& data,
-	     int node,
-	     int tBegin,
-	     int tEnd,
+	     const int node,
+	     const int tBegin,
+	     const int tEnd,
 	     VisitedNodes& visitedNodes,
-	     bool ingoing)
+	     const bool ingoing)
 {
     visitedNodes.Update(node, tBegin, tEnd, ingoing);
 
@@ -475,50 +491,54 @@ contactChain(const vector<map<int, Contacts> >& data,
     }
 }
 
-SEXP networkSummary(SEXP src,
-		    SEXP dst,
-		    SEXP t,
-		    SEXP root,
-		    SEXP inBegin,
-		    SEXP inEnd,
-		    SEXP outBegin,
-		    SEXP outEnd,
-		    SEXP numberOfIdentifiers)
+SEXP networkSummary(const SEXP src,
+		    const SEXP dst,
+		    const SEXP t,
+		    const SEXP root,
+		    const SEXP inBegin,
+		    const SEXP inEnd,
+		    const SEXP outBegin,
+		    const SEXP outEnd,
+		    const SEXP numberOfIdentifiers)
 {
-    IntegerVector srcVec(src);
-    IntegerVector dstVec(dst);
-    IntegerVector tVec(t);
-    IntegerVector rootVec(root);
-    IntegerVector inBeginVec(inBegin);
-    IntegerVector inEndVec(inEnd);
-    IntegerVector outBeginVec(outBegin);
-    IntegerVector outEndVec(outEnd);
+    if (R_NilValue == root
+        || R_NilValue == inBegin
+        || R_NilValue == inEnd
+        || R_NilValue == outBegin
+        || R_NilValue == outEnd
+        || R_NilValue == numberOfIdentifiers
+        || INTSXP != TYPEOF(root)
+        || INTSXP != TYPEOF(inBegin)
+        || INTSXP != TYPEOF(inEnd)
+        || INTSXP != TYPEOF(outBegin)
+        || INTSXP != TYPEOF(outEnd)
+        || INTSXP != TYPEOF(numberOfIdentifiers)
+        || 1 != LENGTH(numberOfIdentifiers))
+        Rf_error("Unable to calculate network summary");
 
-    ContactsLookup lookup = buildContactsLookup(srcVec,
-						dstVec,
-						tVec,
-						as<int>(numberOfIdentifiers));
+    ContactsLookup lookup =
+        buildContactsLookup(src, dst, t, INTEGER(numberOfIdentifiers)[0]);
 
     vector<int> ingoingContactChain;
     vector<int> outgoingContactChain;
     vector<int> inDegree;
     vector<int> outDegree;
 
-    for(int i=0, end=rootVec.size(); i<end; ++i) {
-        VisitedNodes visitedNodesIngoing(as<int>(numberOfIdentifiers));
-        VisitedNodes visitedNodesOutgoing(as<int>(numberOfIdentifiers));
+    for(size_t i=0, end=LENGTH(root); i<end; ++i) {
+        VisitedNodes visitedNodesIngoing(INTEGER(numberOfIdentifiers)[0]);
+        VisitedNodes visitedNodesOutgoing(INTEGER(numberOfIdentifiers)[0]);
 
         contactChain(lookup.first,
-                     rootVec[i] - 1,
-                     inBeginVec[i],
-                     inEndVec[i],
+                     INTEGER(root)[i] - 1,
+                     INTEGER(inBegin)[i],
+                     INTEGER(inEnd)[i],
                      visitedNodesIngoing,
                      true);
 
         contactChain(lookup.second,
-                     rootVec[i] - 1,
-                     outBeginVec[i],
-                     outEndVec[i],
+                     INTEGER(root)[i] - 1,
+                     INTEGER(outBegin)[i],
+                     INTEGER(outEnd)[i],
                      visitedNodesOutgoing,
                      false);
 
@@ -526,14 +546,14 @@ SEXP networkSummary(SEXP src,
         outgoingContactChain.push_back(visitedNodesOutgoing.N() - 1);
 
         inDegree.push_back(degree(lookup.first,
-                                  rootVec[i] - 1,
-                                  inBeginVec[i],
-                                  inEndVec[i]));
+                                  INTEGER(root)[i] - 1,
+                                  INTEGER(inBegin)[i],
+                                  INTEGER(inEnd)[i]));
 
         outDegree.push_back(degree(lookup.second,
-                                   rootVec[i] - 1,
-                                   outBeginVec[i],
-                                   outEndVec[i]));
+                                   INTEGER(root)[i] - 1,
+                                   INTEGER(outBegin)[i],
+                                   INTEGER(outEnd)[i]));
     }
 
     return List::create(_["inDegree"] = inDegree,
