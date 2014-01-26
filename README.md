@@ -26,3 +26,9 @@ use the `devtools` package:
 library(devtools)
 install_github("EpiContactTrace", "stewid")
 ```
+
+License
+-------
+
+The `EpiContactTrace` package is licensed under the European Union
+Public Licence (EUPL) http://ec.europa.eu/idabc/eupl
