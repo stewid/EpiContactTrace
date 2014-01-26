@@ -1,4 +1,4 @@
-// Copyright 2013 Stefan Widgren and Maria Noremark,
+// Copyright 2013-2014 Stefan Widgren and Maria Noremark,
 // National Veterinary Institute, Sweden
 //
 // Licensed under the EUPL, Version 1.1 or - as soon they
@@ -54,6 +54,16 @@ RcppExport SEXP networkSummary(SEXP src,
 			       SEXP outBegin,
 			       SEXP outEnd,
 			       SEXP numberOfIdentifiers);
+
+RcppExport SEXP shortestPaths(SEXP src,
+                              SEXP dst,
+                              SEXP t,
+                              SEXP root,
+                              SEXP inBegin,
+                              SEXP inEnd,
+                              SEXP outBegin,
+                              SEXP outEnd,
+                              SEXP numberOfIdentifiers);
 
 class Contact {
 public:

@@ -1,4 +1,4 @@
-// Copyright 2013 Stefan Widgren and Maria Noremark,
+// Copyright 2013-2014 Stefan Widgren and Maria Noremark,
 // National Veterinary Institute, Sweden
 //
 // Licensed under the EUPL, Version 1.1 or - as soon they
@@ -112,6 +112,159 @@ buildContactsLookup(IntegerVector const& srcVec,
     }
 
   return make_pair(ingoing, outgoing);
+}
+
+static void
+shortestPaths(const vector<map<int, Contacts> >& data,
+	      const int node,
+	      const int tBegin,
+	      const int tEnd,
+	      set<int> visitedNodes,
+	      const int distance,
+	      const bool ingoing,
+              map<int, pair<int, int> >& resultDistanceEx)
+{
+    visitedNodes.insert(node);
+
+    for(map<int, Contacts>::const_iterator it = data[node].begin(),
+            end = data[node].end(); it != end; ++it)
+    {
+        // We are not interested in going in loops or backwards in the
+        // search path
+        if(visitedNodes.find(it->first) == visitedNodes.end()) {
+            // We are only interested in contacts within the specified
+            // time period, so first check the lower bound, tBegin
+            Contacts::const_iterator t_begin = lower_bound(it->second.begin(),
+                                                           it->second.end(),
+                                                           tBegin,
+                                                           CompareContact());
+
+            if(t_begin != it->second.end() && t_begin->t_ <= tEnd) {
+                int t0, t1;
+
+                map<int, pair<int, int> >::iterator distance_it =
+                    resultDistanceEx.find(it->first);
+                if(distance_it == resultDistanceEx.end()) {
+                    resultDistanceEx[it->first].first = distance;
+
+                    // Increment with one since R vector is one-based.
+                    resultDistanceEx[it->first].second = t_begin->rowid_ + 1;
+                }  else if (distance < distance_it->second.first) {
+                    distance_it->second.first = distance;
+
+                    // Increment with one since R vector is one-based.
+                    distance_it->second.second = t_begin->rowid_ + 1;
+                }
+
+                if(ingoing) {
+                    // and then the upper bound, tEnd.
+                    Contacts::const_iterator t_end =
+                        upper_bound(t_begin,
+                                    it->second.end(),
+                                    tEnd,
+                                    CompareContact());
+
+                    t0 = tBegin;
+                    t1 = (t_end-1)->t_;
+                } else {
+                    t0 = t_begin->t_;
+                    t1 = tEnd;
+                }
+
+                shortestPaths(data,
+                              it->first,
+                              t0,
+                              t1,
+                              visitedNodes,
+                              distance + 1,
+                              ingoing,
+                              resultDistanceEx);
+            }
+        }
+    }
+}
+
+SEXP shortestPaths(SEXP src,
+		   SEXP dst,
+		   SEXP t,
+		   SEXP root,
+		   SEXP inBegin,
+		   SEXP inEnd,
+		   SEXP outBegin,
+		   SEXP outEnd,
+		   SEXP numberOfIdentifiers)
+{
+    IntegerVector srcVec(src);
+    IntegerVector dstVec(dst);
+    IntegerVector tVec(t);
+    IntegerVector rootVec(root);
+    IntegerVector inBeginVec(inBegin);
+    IntegerVector inEndVec(inEnd);
+    IntegerVector outBeginVec(outBegin);
+    IntegerVector outEndVec(outEnd);
+
+    ContactsLookup lookup = buildContactsLookup(srcVec,
+						dstVec,
+						tVec,
+						as<int>(numberOfIdentifiers));
+
+    size_t n = rootVec.size();
+    vector<int> inRowid;
+    vector<int> outRowid;
+    vector<int> inDistance;
+    vector<int> outDistance;
+    vector<int> inIndex;
+    vector<int> outIndex;
+    for(size_t i=0; i<n; ++i) {
+        // Key: node, Value: first: distance, second: original rowid
+        map<int, pair<int, int> > ingoingShortestPaths;
+
+        // Key: node, Value: first: distance, second: original rowid
+        map<int, pair<int, int> > outgoingShortestPaths;
+
+        shortestPaths(lookup.first,
+                      rootVec[i] - 1,
+                      inBeginVec[i],
+                      inEndVec[i],
+                      set<int>(),
+                      1,
+                      true,
+                      ingoingShortestPaths);
+
+        for(map<int, pair<int, int> >::const_iterator it =
+                ingoingShortestPaths.begin();
+            it!=ingoingShortestPaths.end(); ++it)
+        {
+            inDistance.push_back(it->second.first);
+            inRowid.push_back(it->second.second);
+            inIndex.push_back(i+1);
+        }
+
+        shortestPaths(lookup.second,
+                      rootVec[i] - 1,
+                      outBeginVec[i],
+                      outEndVec[i],
+                      set<int>(),
+                      1,
+                      false,
+                      outgoingShortestPaths);
+
+        for(map<int, pair<int, int> >::const_iterator it =
+                outgoingShortestPaths.begin();
+            it!=outgoingShortestPaths.end(); ++it)
+        {
+            outDistance.push_back(it->second.first);
+            outRowid.push_back(it->second.second);
+            outIndex.push_back(i+1);
+        }
+    }
+
+    return List::create(_["inDistance"]  = inDistance,
+			_["inRowid"]     = inRowid,
+			_["inIndex"]     = inIndex,
+                        _["outDistance"] = outDistance,
+			_["outRowid"]    = outRowid,
+			_["outIndex"]    = outIndex);
 }
 
 void
@@ -388,4 +541,3 @@ SEXP networkSummary(SEXP src,
 			_["ingoingContactChain"] = ingoingContactChain,
 			_["outgoingContactChain"] = outgoingContactChain);
 }
-
