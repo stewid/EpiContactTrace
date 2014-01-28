@@ -395,26 +395,46 @@ setMethod('ShortestPaths',
                       length(nodes),
                       PACKAGE = "EpiContactTrace")
 
-          result <- rbind(cbind(root        = root[sp$inIndex],
-                                inBegin     = inBegin[sp$inIndex],
-                                inEnd       = inEnd[sp$inIndex],
-                                outBegin    = as.Date(NA_character_),
-                                outEnd      = as.Date(NA_character_),
-                                direction   = 'in',
-                                x[sp$inRowid, c('source', 'destination')],
-                                distance    = sp$inDistance,
-                                stringsAsFactors=FALSE),
-                          cbind(root        = root[sp$outIndex],
-                                inBegin     = as.Date(NA_character_),
-                                inEnd       = as.Date(NA_character_),
-                                outBegin    = outBegin[sp$outIndex],
-                                outEnd      = outEnd[sp$outIndex],
-                                direction   = 'out',
-                                x[sp$outRowid, c('source', 'destination')],
-                                distance    = sp$outDistance,
-                                stringsAsFactors=FALSE))
+          result <- NULL
+          if(length(sp$inIndex)) {
+              result <- data.frame(root        = root[sp$inIndex],
+                                   inBegin     = inBegin[sp$inIndex],
+                                   inEnd       = inEnd[sp$inIndex],
+                                   outBegin    = as.Date(NA_character_),
+                                   outEnd      = as.Date(NA_character_),
+                                   direction   = 'in',
+                                   x[sp$inRowid, c('source', 'destination')],
+                                   distance    = sp$inDistance,
+                                   stringsAsFactors=FALSE)
+          }
 
-          rownames(result) <- NULL
+          if(length(sp$outIndex)) {
+              result <- rbind(result,
+                              data.frame(root        = root[sp$outIndex],
+                                         inBegin     = as.Date(NA_character_),
+                                         inEnd       = as.Date(NA_character_),
+                                         outBegin    = outBegin[sp$outIndex],
+                                         outEnd      = outEnd[sp$outIndex],
+                                         direction   = 'out',
+                                         x[sp$outRowid, c('source', 'destination')],
+                                         distance    = sp$outDistance,
+                                         stringsAsFactors=FALSE))
+          }
+
+          if(is.null(result)) {
+              result <- data.frame(root        = character(0),
+                                   inBegin     = as.Date(character(0)),
+                                   inEnd       = as.Date(character(0)),
+                                   outBegin    = as.Date(character(0)),
+                                   outEnd      = as.Date(character(0)),
+                                   direction   = character(0),
+                                   source      = character(0),
+                                   destination = character(0),
+                                   distance    = integer(0),
+                                   stringsAsFactors=FALSE)
+          } else {
+              rownames(result) <- NULL
+          }
 
           return(result)
      }
