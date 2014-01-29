@@ -4,7 +4,6 @@
 \alias{OutDegree,Contacts-method}
 \alias{OutDegree,ContactTrace-method}
 \alias{OutDegree,data.frame-method}
-\alias{OutDegree,list-method}
 \alias{OutDegree-methods}
 \title{\code{OutDegree}}
 \arguments{
@@ -88,10 +87,6 @@
 \section{Methods}{
   \describe{ \item{\code{signature(x = "ContactTrace")}}{
   Get the OutDegree of a \code{ContactTrace} object.  }
-
-  \item{\code{signature(x = "list")}}{ Get the OutDegree
-  for a list of \code{ContactTrace} objects.  Each item in
-  the list must be a \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "data.frame")}}{ Get the
   OutDegree for a data.frame with movements, see details

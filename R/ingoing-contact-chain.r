@@ -74,7 +74,6 @@
 ##' @aliases IngoingContactChain-methods
 ##' @aliases IngoingContactChain,Contacts-method
 ##' @aliases IngoingContactChain,ContactTrace-method
-##' @aliases IngoingContactChain,list-method
 ##' @aliases IngoingContactChain,data.frame-method
 ##' @docType methods
 ##' @seealso \code{\link{NetworkSummary}}
@@ -118,11 +117,6 @@
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the IngoingContactChain of a \code{ContactTrace} object.
-##'   }
-##'
-##'   \item{\code{signature(x = "list")}}{
-##'     Get the IngoingContactChain for a list of \code{ContactTrace} objects.
-##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
@@ -198,18 +192,6 @@ setMethod('IngoingContactChain',
 setMethod('IngoingContactChain',
           signature(x = 'ContactTrace'),
           function (x)
-      {
-          return(NetworkSummary(x)[, c('root',
-                                       'inBegin',
-                                       'inEnd',
-                                       'inDays',
-                                       'ingoingContactChain')])
-      }
-)
-
-setMethod('IngoingContactChain',
-          signature(x = 'list'),
-          function(x)
       {
           return(NetworkSummary(x)[, c('root',
                                        'inBegin',

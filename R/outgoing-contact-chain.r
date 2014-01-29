@@ -30,7 +30,6 @@
 ##' @aliases OutgoingContactChain-methods
 ##' @aliases OutgoingContactChain,Contacts-method
 ##' @aliases OutgoingContactChain,ContactTrace-method
-##' @aliases OutgoingContactChain,list-method
 ##' @aliases OutgoingContactChain,data.frame-method
 ##' @docType methods
 ##' @seealso \code{\link{NetworkSummary}}
@@ -73,11 +72,6 @@
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the OutgoingContactChain of a \code{ContactTrace} object.
-##'   }
-##'
-##'   \item{\code{signature(x = "list")}}{
-##'     Get the OutgoingContactChain for a list of \code{ContactTrace} objects.
-##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
@@ -152,18 +146,6 @@ setMethod('OutgoingContactChain',
 setMethod('OutgoingContactChain',
           signature(x = 'ContactTrace'),
           function (x)
-      {
-          return(NetworkSummary(x)[, c('root',
-                                       'outBegin',
-                                       'outEnd',
-                                       'outDays',
-                                       'outgoingContactChain')])
-      }
-)
-
-setMethod('OutgoingContactChain',
-          signature(x = 'list'),
-          function(x)
       {
           return(NetworkSummary(x)[, c('root',
                                        'outBegin',

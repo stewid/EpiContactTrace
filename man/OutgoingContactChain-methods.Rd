@@ -4,7 +4,6 @@
 \alias{OutgoingContactChain,Contacts-method}
 \alias{OutgoingContactChain,ContactTrace-method}
 \alias{OutgoingContactChain,data.frame-method}
-\alias{OutgoingContactChain,list-method}
 \alias{OutgoingContactChain-methods}
 \title{\code{OutgoingContactChain}}
 \arguments{
@@ -54,11 +53,6 @@
   \describe{ \item{\code{signature(x = "ContactTrace")}}{
   Get the OutgoingContactChain of a \code{ContactTrace}
   object.  }
-
-  \item{\code{signature(x = "list")}}{ Get the
-  OutgoingContactChain for a list of \code{ContactTrace}
-  objects.  Each item in the list must be a
-  \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "data.frame")}}{ Get the
   OutgoingContactChain for a data.frame with movements, see

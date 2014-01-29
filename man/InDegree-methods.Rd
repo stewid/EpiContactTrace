@@ -4,7 +4,6 @@
 \alias{InDegree,Contacts-method}
 \alias{InDegree,ContactTrace-method}
 \alias{InDegree,data.frame-method}
-\alias{InDegree,list-method}
 \alias{InDegree-methods}
 \title{\code{InDegree}}
 \arguments{
@@ -88,10 +87,6 @@
 \section{Methods}{
   \describe{ \item{\code{signature(x = "ContactTrace")}}{
   Get the InDegree of a \code{ContactTrace} object.  }
-
-  \item{\code{signature(x = "list")}}{ Get the InDegree for
-  a list of \code{ContactTrace} objects.  Each item in the
-  list must be a \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "data.frame")}}{ Get the
   InDegree for a data.frame with movements, see details and

@@ -92,7 +92,6 @@
 ##' }
 ##' @seealso \code{\link{show}}.
 ##' @keywords methods
-##' @import plyr
 ##' @export
 ##' @examples
 ##' \dontrun{
@@ -179,21 +178,5 @@ setMethod('NetworkStructure',
       {
           return(rbind(NetworkStructure(object@ingoingContacts),
                        NetworkStructure(object@outgoingContacts)))
-      }
-)
-
-setMethod('NetworkStructure',
-          signature(object = 'list'),
-          function(object)
-      {
-          if(!all(sapply(object, function(x) length(x)) == 1)) {
-              stop('Unexpected length of list')
-          }
-
-          if(!all(sapply(object, function(x) class(x)) == 'ContactTrace')) {
-              stop('Unexpected object in list')
-          }
-
-          return(ldply(object, NetworkStructure)[,-1])
       }
 )

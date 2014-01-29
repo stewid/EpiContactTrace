@@ -72,18 +72,12 @@
 ##' @aliases InDegree-methods
 ##' @aliases InDegree,Contacts-method
 ##' @aliases InDegree,ContactTrace-method
-##' @aliases InDegree,list-method
 ##' @aliases InDegree,data.frame-method
 ##' @docType methods
 ##' @section Methods:
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the InDegree of a \code{ContactTrace} object.
-##'   }
-##'
-##'   \item{\code{signature(x = "list")}}{
-##'     Get the InDegree for a list of \code{ContactTrace} objects.
-##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
@@ -194,18 +188,6 @@ setMethod('InDegree',
 setMethod('InDegree',
           signature(x = 'ContactTrace'),
           function (x)
-      {
-          return(NetworkSummary(x)[, c('root',
-                                       'inBegin',
-                                       'inEnd',
-                                       'inDays',
-                                       'inDegree')])
-      }
-)
-
-setMethod('InDegree',
-          signature(x = 'list'),
-          function(x)
       {
           return(NetworkSummary(x)[, c('root',
                                        'inBegin',

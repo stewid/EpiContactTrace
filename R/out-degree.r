@@ -73,7 +73,6 @@
 ##' @aliases OutDegree-methods
 ##' @aliases OutDegree,Contacts-method
 ##' @aliases OutDegree,ContactTrace-method
-##' @aliases OutDegree,list-method
 ##' @aliases OutDegree,data.frame-method
 ##' @docType methods
 ##' @seealso \code{\link{NetworkSummary}}
@@ -115,11 +114,6 @@
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the OutDegree of a \code{ContactTrace} object.
-##'   }
-##'
-##'   \item{\code{signature(x = "list")}}{
-##'     Get the OutDegree for a list of \code{ContactTrace} objects.
-##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
@@ -194,18 +188,6 @@ setMethod('OutDegree',
 setMethod('OutDegree',
           signature(x = 'ContactTrace'),
           function (x)
-      {
-          return(NetworkSummary(x)[, c('root',
-                                       'outBegin',
-                                       'outEnd',
-                                       'outDays',
-                                       'outDegree')])
-      }
-)
-
-setMethod('OutDegree',
-          signature(x = 'list'),
-          function(x)
       {
           return(NetworkSummary(x)[, c('root',
                                        'outBegin',

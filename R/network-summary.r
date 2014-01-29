@@ -76,7 +76,6 @@
 ##' @aliases NetworkSummary
 ##' @aliases NetworkSummary-methods
 ##' @aliases NetworkSummary,ContactTrace-method
-##' @aliases NetworkSummary,list-method
 ##' @aliases NetworkSummary,data.frame-method
 ##' @docType methods
 ##' @return A \code{data.frame} with the following columns:
@@ -125,11 +124,6 @@
 ##'     \code{Contacts} of a ContactTrace object.
 ##'   }
 ##'
-##'   \item{\code{signature(x = "list")}}{
-##'     Get the network summary for a list of \code{ContactTrace} objects.
-##'     Each item in the list must be a \code{ContactTrace} object.
-##'   }
-##'
 ##'   \item{\code{signature(x = "data.frame")}}{
 ##'     Get the network summary for a data.frame with movements,
 ##'     see details and examples.
@@ -148,7 +142,6 @@
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @keywords methods
-##' @import plyr
 ##' @export
 ##' @useDynLib EpiContactTrace
 ##' @examples
@@ -248,22 +241,6 @@ setMethod('NetworkSummary',
                      outDegree=OutDegree(x@outgoingContacts),
                      ingoingContactChain=IngoingContactChain(x@ingoingContacts),
                      outgoingContactChain=OutgoingContactChain(x@outgoingContacts))
-      }
-)
-
-setMethod('NetworkSummary',
-          signature(x = 'list'),
-          function(x)
-      {
-          if(!all(sapply(x, function(y) length(y)) == 1)) {
-              stop('Unexpected length of list')
-          }
-
-          if(!all(sapply(x, function(y) class(y)) == 'ContactTrace')) {
-              stop('Unexpected object in list')
-          }
-
-          return(ldply(x, NetworkSummary)[,-1])
       }
 )
 

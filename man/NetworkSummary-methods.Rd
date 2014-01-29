@@ -3,7 +3,6 @@
 \alias{NetworkSummary}
 \alias{NetworkSummary,ContactTrace-method}
 \alias{NetworkSummary,data.frame-method}
-\alias{NetworkSummary,list-method}
 \alias{NetworkSummary-methods}
 \title{\code{NetworkSummary}}
 \value{
@@ -84,10 +83,6 @@
   \describe{ \item{\code{signature(x = "ContactTrace")}}{
   Get the network summary for the ingoing and outgoing
   \code{Contacts} of a ContactTrace object.  }
-
-  \item{\code{signature(x = "list")}}{ Get the network
-  summary for a list of \code{ContactTrace} objects.  Each
-  item in the list must be a \code{ContactTrace} object.  }
 
   \item{\code{signature(x = "data.frame")}}{ Get the
   network summary for a data.frame with movements, see
