@@ -40,3 +40,32 @@ out.2 <- sp.2[sp.2$direction == 'out', c('destination', 'distance')]
 out.1 <- out.1[order(out.1$destination, out.1$distance),]
 out.2 <- out.2[order(out.2$destination, out.2$distance),]
 stopifnot(identical(out.1, out.2))
+
+##
+## Case 2
+##
+sp.in.exp <- structure(list(root = c("100", "100", "100", "100", "100"),
+                            source = c("54", "262", "356", "357", "358"),
+                            distance = c(1L, 1L, 1L, 1L, 1L)),
+                       .Names = c("root", "source", "distance"),
+                       row.names = c(NA, -5L),
+                       class = "data.frame")
+sp.in <- ShortestPaths(Trace(movements=transfers, root=100, tEnd='2005-10-31', days=90))
+sp.in <- sp.in[sp.in$direction == 'in', c('root', 'source', 'distance')]
+sp.in <- sp.in[order(as.numeric(sp.in$source)),]
+rownames(sp.in) <- NULL
+stopifnot(identical(sp.in, sp.in.exp))
+
+sp.out.exp <- structure(list(
+    root = c("100", "100", "100", "100", "100", "100",
+        "100", "100", "100", "100", "100", "100", "100", "100"),
+    destination = c("101", "357", "358", "2508", "8239", "8243",
+        "8327", "8356", "8388", "8420", "8991", "9003", "9087", "9110"),
+    distance = c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L)),
+                        .Names = c("root", "destination", "distance"),
+                        row.names = c(NA, -14L), class = "data.frame")
+sp.out <- ShortestPaths(Trace(movements=transfers, root=100, tEnd='2005-10-31', days=90))
+sp.out <- sp.out[sp.out$direction == 'out', c('root', 'destination', 'distance')]
+sp.out <- sp.out[order(as.numeric(sp.out$destination)),]
+rownames(sp.out) <- NULL
+stopifnot(identical(sp.out, sp.out.exp))
