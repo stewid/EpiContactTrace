@@ -1,3 +1,19 @@
+EpiContactTrace
+---------------------
+
+CHANGES
+
+* Removed usage of testthat when testing the package.
+
+* Removed list methods for ContactTrace objects. When calculating
+  measures for several roots, the purpose is to use methods that work
+  directly on the data.frame with movements.
+
+PERFORMANCE IMPROVEMENTS
+
+* Improved performance when calculating ShortestPaths on a data.frame
+  of movements.
+
 EpiContactTrace 0.8.8
 ---------------------
 
