@@ -26,6 +26,34 @@
 using namespace Rcpp;
 using namespace std;
 
+static int
+check_arguments(const SEXP src,
+                const SEXP dst,
+                const SEXP t,
+                const SEXP root,
+                const SEXP inBegin,
+                const SEXP inEnd,
+                const SEXP outBegin,
+                const SEXP outEnd,
+                const SEXP numberOfIdentifiers)
+{
+    if (R_NilValue == root
+        || R_NilValue == inBegin
+        || R_NilValue == inEnd
+        || R_NilValue == outBegin
+        || R_NilValue == outEnd
+        || R_NilValue == numberOfIdentifiers
+        || INTSXP != TYPEOF(root)
+        || INTSXP != TYPEOF(inBegin)
+        || INTSXP != TYPEOF(inEnd)
+        || INTSXP != TYPEOF(outBegin)
+        || INTSXP != TYPEOF(outEnd)
+        || INTSXP != TYPEOF(numberOfIdentifiers)
+        || 1 != LENGTH(numberOfIdentifiers))
+        return 1;
+    return 0;
+}
+
 // Help method to sort contacts by julian time
 bool
 compareT(pair<int, int> const& t1,
@@ -80,9 +108,10 @@ VisitedNodes::Visit(int node, int tBegin, int tEnd, bool ingoing)
 typedef pair<vector<map<int, Contacts> >, vector<map<int, Contacts> > > ContactsLookup;
 
 static ContactsLookup
-buildContactsLookup(const SEXP src,
-		    const SEXP dst,
-		    const SEXP t,
+buildContactsLookup(const int *src,
+		    const int *dst,
+		    const int *t,
+                    const size_t len,
 		    const size_t numberOfIdentifiers)
 {
     // Lookup for ingoing contacts
@@ -94,19 +123,13 @@ buildContactsLookup(const SEXP src,
     // first: julian time, second: original rowid
     vector<pair<int, int> > rowid;
 
-    if (R_NilValue == src
-        || R_NilValue == dst
-        || R_NilValue == t
-        || INTSXP != TYPEOF(src)
-        || INTSXP != TYPEOF(dst)
-        || INTSXP != TYPEOF(t))
+    if (NULL == src || NULL == dst || NULL == t)
         Rf_error("Unable to build contacts lookup");
 
     // The contacts must be sorted by t.
-    size_t len = LENGTH(t);
     rowid.reserve(len);
     for(size_t i=0;i<len;++i) {
-        rowid.push_back(make_pair(INTEGER(t)[i], i));
+        rowid.push_back(make_pair(t[i], i));
     }
 
     sort(rowid.begin(), rowid.end(), compareT);
@@ -115,11 +138,11 @@ buildContactsLookup(const SEXP src,
         int j = rowid[i].second;
 
         // Decrement with one since std::vector is zero-based
-        int zb_src = INTEGER(src)[j] - 1;
-        int zb_dst = INTEGER(dst)[j] - 1;
+        int zb_src = src[j] - 1;
+        int zb_dst = dst[j] - 1;
 
-        ingoing[zb_dst][zb_src].push_back(Contact(j, zb_src, INTEGER(t)[j]));
-        outgoing[zb_src][zb_dst].push_back(Contact(j, zb_dst, INTEGER(t)[j]));
+        ingoing[zb_dst][zb_src].push_back(Contact(j, zb_src, t[j]));
+        outgoing[zb_src][zb_dst].push_back(Contact(j, zb_dst, t[j]));
     }
 
     return make_pair(ingoing, outgoing);
@@ -205,23 +228,16 @@ SEXP shortestPaths(const SEXP src,
 		   const SEXP outEnd,
 		   const SEXP numberOfIdentifiers)
 {
-    if (R_NilValue == root
-        || R_NilValue == inBegin
-        || R_NilValue == inEnd
-        || R_NilValue == outBegin
-        || R_NilValue == outEnd
-        || R_NilValue == numberOfIdentifiers
-        || INTSXP != TYPEOF(root)
-        || INTSXP != TYPEOF(inBegin)
-        || INTSXP != TYPEOF(inEnd)
-        || INTSXP != TYPEOF(outBegin)
-        || INTSXP != TYPEOF(outEnd)
-        || INTSXP != TYPEOF(numberOfIdentifiers)
-        || 1 != LENGTH(numberOfIdentifiers))
+    if(check_arguments(src, dst, t, root, inBegin, inEnd,
+                       outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to calculate shortest paths");
 
     ContactsLookup lookup =
-        buildContactsLookup(src, dst, t, INTEGER(numberOfIdentifiers)[0]);
+        buildContactsLookup(INTEGER(src),
+                            INTEGER(dst),
+                            INTEGER(t),
+                            LENGTH(t),
+                            INTEGER(numberOfIdentifiers)[0]);
 
     size_t len = LENGTH(root);
     vector<int> inRowid;
@@ -357,23 +373,16 @@ SEXP traceContacts(const SEXP src,
 		   const SEXP outEnd,
 		   const SEXP numberOfIdentifiers)
 {
-    if (R_NilValue == root
-        || R_NilValue == inBegin
-        || R_NilValue == inEnd
-        || R_NilValue == outBegin
-        || R_NilValue == outEnd
-        || R_NilValue == numberOfIdentifiers
-        || INTSXP != TYPEOF(root)
-        || INTSXP != TYPEOF(inBegin)
-        || INTSXP != TYPEOF(inEnd)
-        || INTSXP != TYPEOF(outBegin)
-        || INTSXP != TYPEOF(outEnd)
-        || INTSXP != TYPEOF(numberOfIdentifiers)
-        || 1 != LENGTH(numberOfIdentifiers))
+    if(check_arguments(src, dst, t, root, inBegin, inEnd,
+                       outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to trace contacts");
 
     ContactsLookup lookup =
-        buildContactsLookup(src, dst, t, INTEGER(numberOfIdentifiers)[0]);
+        buildContactsLookup(INTEGER(src),
+                            INTEGER(dst),
+                            INTEGER(t),
+                            LENGTH(t),
+                            INTEGER(numberOfIdentifiers)[0]);
 
     List result;
     vector<int> resultRowid;
@@ -501,23 +510,16 @@ SEXP networkSummary(const SEXP src,
 		    const SEXP outEnd,
 		    const SEXP numberOfIdentifiers)
 {
-    if (R_NilValue == root
-        || R_NilValue == inBegin
-        || R_NilValue == inEnd
-        || R_NilValue == outBegin
-        || R_NilValue == outEnd
-        || R_NilValue == numberOfIdentifiers
-        || INTSXP != TYPEOF(root)
-        || INTSXP != TYPEOF(inBegin)
-        || INTSXP != TYPEOF(inEnd)
-        || INTSXP != TYPEOF(outBegin)
-        || INTSXP != TYPEOF(outEnd)
-        || INTSXP != TYPEOF(numberOfIdentifiers)
-        || 1 != LENGTH(numberOfIdentifiers))
+    if(check_arguments(src, dst, t, root, inBegin, inEnd,
+                       outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to calculate network summary");
 
     ContactsLookup lookup =
-        buildContactsLookup(src, dst, t, INTEGER(numberOfIdentifiers)[0]);
+        buildContactsLookup(INTEGER(src),
+                            INTEGER(dst),
+                            INTEGER(t),
+                            LENGTH(t),
+                            INTEGER(numberOfIdentifiers)[0]);
 
     vector<int> ingoingContactChain;
     vector<int> outgoingContactChain;
