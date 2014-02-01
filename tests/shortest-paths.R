@@ -34,11 +34,15 @@ in.1 <- sp.1[sp.1$direction == 'in', c('source', 'distance')]
 in.2 <- sp.2[sp.2$direction == 'in', c('source', 'distance')]
 in.1 <- in.1[order(in.1$source, in.1$distance),]
 in.2 <- in.2[order(in.2$source, in.2$distance),]
+rownames(in.1) <- NULL
+rownames(in.2) <- NULL
 stopifnot(identical(in.1, in.2))
 out.1 <- sp.1[sp.1$direction == 'out', c('destination', 'distance')]
 out.2 <- sp.2[sp.2$direction == 'out', c('destination', 'distance')]
 out.1 <- out.1[order(out.1$destination, out.1$distance),]
 out.2 <- out.2[order(out.2$destination, out.2$distance),]
+rownames(out.1) <- NULL
+rownames(out.2) <- NULL
 stopifnot(identical(out.1, out.2))
 
 ##

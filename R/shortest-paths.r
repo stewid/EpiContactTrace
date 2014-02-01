@@ -31,7 +31,6 @@
 ##' @name ShortestPaths-methods
 ##' @aliases ShortestPaths
 ##' @aliases ShortestPaths-methods
-##' @aliases ShortestPaths,Contacts-method
 ##' @aliases ShortestPaths,ContactTrace-method
 ##' @aliases ShortestPaths,data.frame-method
 ##' @docType methods
@@ -79,10 +78,6 @@
 ##' }
 ##' @section Methods: \describe{
 ##'
-##'   \item{\code{signature(object = "Contacts")}}{
-##'     Get the shortest paths for the Contacts object.
-##'   }
-##'
 ##'   \item{\code{signature(object = "ContactTrace")}}{
 ##'     Get the shortest paths for the ingoing and outgoing
 ##'     \code{Contacts} of a \code{ContactTrace} object.
@@ -95,7 +90,6 @@
 ##' }
 ##' @seealso \code{\link{show}} and \code{\link{NetworkStructure}}.
 ##' @keywords methods
-##' @import plyr
 ##' @export
 ##' @examples
 ##' \dontrun{
@@ -124,55 +118,35 @@ setGeneric('ShortestPaths',
            function(x, ...) standardGeneric('ShortestPaths'))
 
 setMethod('ShortestPaths',
-          signature(x = 'Contacts'),
-          function(x)
-      {
-          if(identical(x@direction, 'in')) {
-              ## Loop over each source and calculate minimum distance
-              result <- ddply(NetworkStructure(x),c('source'), function(y) {
-                  data.frame(root=x@root,
-                             inBegin=x@tBegin,
-                             inEnd=x@tEnd,
-                             outBegin=as.Date(as.character(NA)),
-                             outEnd=as.Date(as.character(NA)),
-                             direction='in',
-                             distance=min(y$distance),
-                             destination=as.character(NA),
-                             stringsAsFactors=FALSE)
-              })
-          } else {
-              ## Loop over each destination and calculate minimum distance
-              result <- ddply(NetworkStructure(x),c('destination'), function(y) {
-                  data.frame(root=x@root,
-                             inBegin=as.Date(as.character(NA)),
-                             inEnd=as.Date(as.character(NA)),
-                             outBegin=x@tBegin,
-                             outEnd=x@tEnd,
-                             direction='out',
-                             distance=min(y$distance),
-                             source=as.character(NA),
-                             stringsAsFactors=FALSE)
-              })
-          }
-
-          return(result[, c('root',
-                            'inBegin',
-                            'inEnd',
-                            'outBegin',
-                            'outEnd',
-                            'direction',
-                            'source',
-                            'destination',
-                            'distance')])
-      }
- )
-
-setMethod('ShortestPaths',
           signature(x = 'ContactTrace'),
           function(x)
       {
-          return(rbind(ShortestPaths(x@ingoingContacts),
-                       ShortestPaths(x@outgoingContacts)))
+          ns <- NetworkStructure(x)
+          ns.in <- ns[ns$direction == "in",]
+          ns.out <- ns[ns$direction == "out",]
+
+          result <- NULL
+          if(nrow(ns.in)) {
+              ns.in <- ns.in[order(ns.in$distance, ns.in$source),]
+              ns.in <- ns.in[!duplicated(ns.in$source),]
+              ns.in$destination <- NA_character_
+              result <- ns.in
+          }
+
+          if(nrow(ns.out)) {
+              ns.out <- ns.out[order(ns.out$distance, ns.out$destination),]
+              ns.out <- ns.out[!duplicated(ns.out$destination),]
+              ns.out$source <- NA_character_
+              result <- rbind(result, ns.out)
+          }
+
+          if(is.null(result)) {
+              result <- ns
+          } else {
+              rownames(result) <- NULL
+          }
+
+          return(result)
       }
 )
 
@@ -230,8 +204,9 @@ setMethod('ShortestPaths',
           if(any(is.factor(root), is.integer(root))) {
               root <- as.character(root)
           } else if(is.numeric(root)) {
-              ## root is supposed to be a character or integer identifier
-              ## so test that root is a integer the same way as binom.test test x
+              ## root is supposed to be a character or integer
+              ## identifier so test that root is a integer the same
+              ## way as binom.test test x
               rootr <- round(root)
               if(any(max(abs(root - rootr) > 1e-07))) {
                   stop("'root' must be an integer or character")
@@ -259,7 +234,8 @@ setMethod('ShortestPaths',
                   stop("'tEnd' must be a Date vector")
               }
 
-              ## Test that days is a nonnegative integer the same way as binom.test test x
+              ## Test that days is a nonnegative integer the same way
+              ## as binom.test test x
               daysr <- round(days)
               if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
                   stop("'days' must be nonnegative and integer")
@@ -403,7 +379,8 @@ setMethod('ShortestPaths',
                                    outBegin    = as.Date(NA_character_),
                                    outEnd      = as.Date(NA_character_),
                                    direction   = 'in',
-                                   x[sp$inRowid, c('source', 'destination')],
+                                   source      = x$source[sp$inRowid],
+                                   destination = NA_character_,
                                    distance    = sp$inDistance,
                                    stringsAsFactors=FALSE)
           }
@@ -416,7 +393,8 @@ setMethod('ShortestPaths',
                                          outBegin    = outBegin[sp$outIndex],
                                          outEnd      = outEnd[sp$outIndex],
                                          direction   = 'out',
-                                         x[sp$outRowid, c('source', 'destination')],
+                                         source      = NA_character_,
+                                         destination = x$destination[sp$outRowid],
                                          distance    = sp$outDistance,
                                          stringsAsFactors=FALSE))
           }

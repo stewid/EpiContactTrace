@@ -1,7 +1,6 @@
 \docType{methods}
 \name{ShortestPaths-methods}
 \alias{ShortestPaths}
-\alias{ShortestPaths,Contacts-method}
 \alias{ShortestPaths,ContactTrace-method}
 \alias{ShortestPaths,data.frame-method}
 \alias{ShortestPaths-methods}
@@ -49,9 +48,6 @@
 }
 \section{Methods}{
   \describe{
-
-  \item{\code{signature(object = "Contacts")}}{ Get the
-  shortest paths for the Contacts object.  }
 
   \item{\code{signature(object = "ContactTrace")}}{ Get the
   shortest paths for the ingoing and outgoing
