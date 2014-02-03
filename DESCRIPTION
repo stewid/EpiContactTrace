@@ -40,5 +40,6 @@ Collate:
     'shortest-paths.r'
     'show.r'
     'animate.r'
+    'tree.r'
     'plot.r'
 LinkingTo: Rcpp

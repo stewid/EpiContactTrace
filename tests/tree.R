@@ -30,16 +30,8 @@ library(EpiContactTrace)
 tree <- structure(list(
     node = c("O", "E", "F", "N", "A", "D", "G", "M", "B", "C", "H", "I", "J", "K", "L"),
     parent = c(NA, "O", "O", "O", "E", "E", "N", "N", "D", "D", "M", "M", "M", "M", "M"),
-    level = c(0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3),
-    x = c(NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_,
-        NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_,
-        NA_real_, NA_real_),
-    y = c(NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_,
-        NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_,
-        NA_real_, NA_real_),
-    prelim = c(NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_,
-        NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_),
-    modifier = c(NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_,
-    NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_)),
-                  .Names = c("node", "parent", "level", "x", "y", "prelim", "modifier"),
+    level = c(0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3)),
+                  .Names = c("node", "parent", "level"),
                   row.names = c(NA, -15L), class = "data.frame")
+
+EpiContactTrace:::position_tree(tree)
