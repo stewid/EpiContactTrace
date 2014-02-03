@@ -41,21 +41,13 @@ build_tree <- function(network_structure)
     root_node <- data.frame(node = root[1],
                             parent = NA_character_,
                             level = 0,
-                            x = NA_real_,
-                            y = NA_real_,
-                            prelim = NA_real_,
-                            modifier = NA_real_,
                             stringsAsFactors = FALSE)
 
     if(nrow(tree.in)) {
         i <- order(tree.in$distance, tree.in$source)
         tree.in <- tree.in[i, c('source', 'distance')]
         tree.in <- tree.in[!duplicated(tree.in$source),]
-        tree.in$x <- NA_real_
-        tree.in$y <- NA_real_
         tree.in$parent <- NA_character_
-        tree.in$modifier <- NA_real_
-        tree.in$prelim <- NA_real_
         colnames(tree.in)[1:2] <- c('node', 'level')
         tree.in <- tree.in[, colnames(root_node)]
 
@@ -85,11 +77,7 @@ build_tree <- function(network_structure)
         i <- order(tree.out$distance, tree.out$destination)
         tree.out <- tree.out[i, c('destination', 'distance')]
         tree.out <- tree.out[!duplicated(tree.out$destination),]
-        tree.out$x <- NA_real_
-        tree.out$y <- NA_real_
         tree.out$parent <- NA_character_
-        tree.out$modifier <- NA_real_
-        tree.out$prelim <- NA_real_
         colnames(tree.out)[1:2] <- c('node', 'level')
         tree.out <- tree.out[, colnames(root_node)]
 
