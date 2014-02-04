@@ -293,7 +293,7 @@ position_tree <- function(tree,
                     sibling_separation +
                     mean_node_size(left_sibling(node, level), i))
 
-                tree$modifier <<- tree$prelim[i] - mid_point
+                tree$modifier[i] <<- tree$prelim[i] - mid_point
 
                 apportion(node, level)
             } else {
