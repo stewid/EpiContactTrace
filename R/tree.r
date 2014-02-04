@@ -183,13 +183,12 @@ position_tree <- function(tree,
     }
 
     left_neighbor <- function(node, level) {
-        ## Check if there are any more nodes at this level.
-        i <- which(tree$level == level)
-        if(length(i) > 1) {
-            if(has_left_sibling(node, level)) {
-                return(left_sibling(node_level))
-            }
-        }
+        n <- tree$node[tree$level == level]
+        stopifnot(node %in% n)
+        i <- which(node == n)
+        stopifnot(identical(length(i), 1L))
+        if(i[1] > 1)
+            return(n[i[1]-1])
         return(NULL)
     }
 
