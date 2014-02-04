@@ -146,7 +146,60 @@ position_tree <- function(tree,
             ancestor_left_most <- left_most
             ancestor_neighbor <- neighbor
 
-            stop('Not implemented')
+            for(i in seq_len(compare_depth)) {
+                j <- node_index(ancestor_left_most, ???)
+                k <- node_index(ancestor_neighbor, ???)
+
+                ancestor_left_most <- tree$parent[j]
+                ancestor_neighbor <- tree$parent[k]
+                right_modsum <- right_modsum + tree$modifier[j]
+                left_modsum <- left_modsum + tree$modifier[k]
+            }
+
+            ## Find the move_distance, and apply it to Node's subtree.
+            ## Add appropriate portions to smaller interior subtrees.
+            move_distance <- ((tree$prelim[node_index(neighbor, ???)] +
+                               left_modsum +
+                               subtree_separation +
+                               mean_node_size(left_most, neighbor)) -
+                              (tree$prelim[node_index(left_most, ???)] +
+                               right_modsum))
+
+            if(move_distance > 0) {
+                ## Count interior sibling subtrees in left siblings
+                temp_node <- node
+                left_siblings <- 0
+
+                while(all(!is.null(temp_node),
+                          !identical(temp_node, ancestor_neighbor))) {
+                    left_siblings <- left_siblings + 1
+                    temp_node <- left_sibling(temp_node, ???)
+                }
+
+                if(!is.null(temp_node)) {
+                    ## Apply portions to appropriate leftsibling
+                    ## subtrees
+                    portion <- move_distance / left_siblings
+                    temp_node <- node
+
+                    while(???) {
+                        i <- node_index(temp_node, ???)
+                        tree$prelim[i] <<- tree$prelim[i] + move_distance
+                        tree$modifier[i] <<- tree$modifier[i] + move_distance
+                        move_distance <- move_distance - portion
+                        temp_node <- left_sibling(temp_node, ???)
+                    }
+                } else {
+                    return(NULL)
+                }
+            }
+
+            compare_depth <- compare_depth + 1
+            if(is_leaf(left_most)) {
+                left_most <- get_left_most(node, 0, compare_depth)
+            } else {
+                left_most <- first_child(left_most)
+            }
         }
     }
 
