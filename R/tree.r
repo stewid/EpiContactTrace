@@ -114,6 +114,8 @@ build_tree <- function(network_structure)
 ##' @param sibling_separation
 ##' @param x_top_adjustment
 ##' @param y_top_adjustemnt
+##' @param left_size
+##' @param right_size
 ##' @keywords internal
 ##' @references \itemize{
 ##'   \item John Q. Walker II, A node positioning algorithm for general tress.\cr
@@ -123,7 +125,9 @@ position_tree <- function(tree,
                           sibling_separation=4,
                           level_separation=1,
                           x_top_adjustment=0,
-                          y_top_adjustment=0)
+                          y_top_adjustment=0,
+                          left_size=1,
+                          right_size=1)
 {
     ## Clean up the positioning of small sibling subtrees
     apportion <- function(node, level) {
@@ -178,25 +182,13 @@ position_tree <- function(tree,
         return(i[1])
     }
 
-    left_size <- function(node) {
-        return(2)
-    }
-
-    right_size <- function(node) {
-        return(2)
-    }
-
     left_neighbor <- function(node, level) {
-        prelim <- tree$prelim[tree$level == level]
-        i <- which(tree$prelim[node_index(node, level)] == prelim)
-        browser()
-        stopifnot(identical(length(i), 1L))
-        if(i[1] > 1) {
-            prelim <- prelim[i[1]-1]
-            i <- which(tree$prelim == prelim & tree$level == level)
-            stop('Not implemented')
-            stopifnot(identical(length(i), 1L))
-            return(i)
+        ## Check if there are any more nodes at this level.
+        i <- which(tree$level == level)
+        if(length(i) > 1) {
+            if(has_left_sibling(node, level)) {
+                return(left_sibling(node_level))
+            }
         }
         return(NULL)
     }
@@ -207,9 +199,9 @@ position_tree <- function(tree,
     mean_node_size <- function(left_node, right_node) {
         node_size <- 0
         if(!is.null(left_node))
-            node_size <- node_size + right_size(left_node)
+            node_size <- node_size + right_size
         if(!is.null(right_node))
-            node_size <- node_size + left_size(right_node)
+            node_size <- node_size + left_size
         return(node_size)
     }
 
