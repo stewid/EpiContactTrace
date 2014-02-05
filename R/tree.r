@@ -123,6 +123,7 @@ build_tree <- function(network_structure)
 ##'}
 position_tree <- function(tree,
                           sibling_separation=4,
+                          subtree_separation=4,
                           level_separation=1,
                           x_top_adjustment=0,
                           y_top_adjustment=0,
@@ -131,10 +132,9 @@ position_tree <- function(tree,
 {
     ## Clean up the positioning of small sibling subtrees
     apportion <- function(node) {
-        return(NULL)
         left_most <- first_child(node)
         neighbor <- left_neighbor(left_most)
-        compare_depth <- 1
+        compare_depth <- 1L
         depth_to_stop <- max(tree$level) - node_level(node)
 
         while(all(!is.null(left_most),
@@ -183,7 +183,7 @@ position_tree <- function(tree,
                     portion <- move_distance / left_siblings
                     temp_node <- node
 
-                    while(stop('Fix')) {
+                    while(identical(temp_node, ancestor_neighbor)) {
                         i <- node_index(temp_node)
                         tree$prelim[i] <<- tree$prelim[i] + move_distance
                         tree$modifier[i] <<- tree$modifier[i] + move_distance
@@ -197,11 +197,13 @@ position_tree <- function(tree,
 
             compare_depth <- compare_depth + 1
             if(is_leaf(left_most)) {
-                left_most <- get_left_most(node, 0, compare_depth)
+                left_most <- get_left_most(node, compare_depth)
             } else {
                 left_most <- first_child(left_most)
             }
         }
+
+        return(NULL)
     }
 
     ##
@@ -217,6 +219,25 @@ position_tree <- function(tree,
             return(children[1])
         }
         return(NULL)
+    }
+
+    get_left_most <- function(node, depth) {
+        if(node_level(node) >= depth) {
+            return(node)
+        } else if(is_leaf(node)) {
+            return(NULL)
+        } else {
+            right_most <- first_child(node)
+            left_most <- get_left_most(right_most, depth)
+
+            while(all(is.null(left_most),
+                      has_right_sibling(right_most))) {
+                right_most <- right_sibling(right_most)
+                left_most <- get_left_most(right_most, depth)
+            }
+
+            return(left_most)
+        }
     }
 
     has_child <- function(node) {
