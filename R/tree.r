@@ -130,11 +130,12 @@ position_tree <- function(tree,
                           right_size=1)
 {
     ## Clean up the positioning of small sibling subtrees
-    apportion <- function(node, level) {
-        left_most <- first_child(node, level)
-        neighbor <- left_neighbor(left_most, level + 1)
+    apportion <- function(node) {
+        return(NULL)
+        left_most <- first_child(node)
+        neighbor <- left_neighbor(left_most)
         compare_depth <- 1
-        depth_to_stop <- max(tree$level) - level
+        depth_to_stop <- max(tree$level) - node_level(node)
 
         while(all(!is.null(left_most),
                   !is.null(neighbor),
@@ -147,8 +148,8 @@ position_tree <- function(tree,
             ancestor_neighbor <- neighbor
 
             for(i in seq_len(compare_depth)) {
-                j <- node_index(ancestor_left_most, ???)
-                k <- node_index(ancestor_neighbor, ???)
+                j <- node_index(ancestor_left_most)
+                k <- node_index(ancestor_neighbor)
 
                 ancestor_left_most <- tree$parent[j]
                 ancestor_neighbor <- tree$parent[k]
@@ -158,11 +159,11 @@ position_tree <- function(tree,
 
             ## Find the move_distance, and apply it to Node's subtree.
             ## Add appropriate portions to smaller interior subtrees.
-            move_distance <- ((tree$prelim[node_index(neighbor, ???)] +
+            move_distance <- ((tree$prelim[node_index(neighbor)] +
                                left_modsum +
                                subtree_separation +
                                mean_node_size(left_most, neighbor)) -
-                              (tree$prelim[node_index(left_most, ???)] +
+                              (tree$prelim[node_index(left_most)] +
                                right_modsum))
 
             if(move_distance > 0) {
@@ -173,7 +174,7 @@ position_tree <- function(tree,
                 while(all(!is.null(temp_node),
                           !identical(temp_node, ancestor_neighbor))) {
                     left_siblings <- left_siblings + 1
-                    temp_node <- left_sibling(temp_node, ???)
+                    temp_node <- left_sibling(temp_node)
                 }
 
                 if(!is.null(temp_node)) {
@@ -182,12 +183,12 @@ position_tree <- function(tree,
                     portion <- move_distance / left_siblings
                     temp_node <- node
 
-                    while(???) {
-                        i <- node_index(temp_node, ???)
+                    while(stop('Fix')) {
+                        i <- node_index(temp_node)
                         tree$prelim[i] <<- tree$prelim[i] + move_distance
                         tree$modifier[i] <<- tree$modifier[i] + move_distance
                         move_distance <- move_distance - portion
-                        temp_node <- left_sibling(temp_node, ???)
+                        temp_node <- left_sibling(temp_node)
                     }
                 } else {
                     return(NULL)
@@ -206,37 +207,35 @@ position_tree <- function(tree,
     ##
     ## Help functions to work with nodes
     ##
-    is_leaf <- function(node, level) {
-        if(level < max(tree$level))
-            return(!any(tree$parent == node & tree$level == (level+1)))
-        return(TRUE)
+    is_leaf <- function(node) {
+        return(!has_child(node))
     }
 
-    first_child <- function(node, level) {
-        stopifnot(level < max(tree$level))
-        children <- tree$node[tree$parent == node & tree$level == (level+1)]
-        stopifnot(length(children)>0)
-        return(children[1])
-    }
-
-    has_child <- function(node, level) {
-        if(level < max(tree$level)) {
-            children <- tree$node[tree$parent == node &
-                                  tree$level == (level+1)]
-            return(length(children)>0)
+    first_child <- function(node) {
+        children <- tree$node[!is.na(tree$parent) & (tree$parent == node)]
+        if(length(children)>0) {
+            return(children[1])
         }
-        return(FALSE)
+        return(NULL)
     }
 
-    node_index <- function(node, level) {
+    has_child <- function(node) {
+        return(!is.null(first_child(node)))
+    }
+
+    node_index <- function(node) {
         ## Deterimine row index to the node
-        i <- which(tree$node == node & tree$level == level)
+        i <- which(tree$node == node)
         stopifnot(identical(length(i), 1L))
         return(i[1])
     }
 
-    left_neighbor <- function(node, level) {
-        n <- tree$node[tree$level == level]
+    node_level <- function(node) {
+        return(tree$level[node_index(node)])
+    }
+
+    left_neighbor <- function(node) {
+        n <- tree$node[tree$level == node_level(node)]
         stopifnot(node %in% n)
         i <- which(node == n)
         stopifnot(identical(length(i), 1L))
@@ -260,44 +259,44 @@ position_tree <- function(tree,
     ##
     ## Help functions to work with siblings
     ##
-    siblings <- function(node, level) {
-        i <- node_index(node, level)
+    siblings <- function(node) {
+        i <- node_index(node)
         parent <- tree$parent[i]
         if(is.na(parent)) {
             ## Check that node is root
-            stopifnot(identical(level, 0))
+            stopifnot(identical(node_level(node), 0L))
             siblings <- node
         } else {
-            siblings <- tree$node[tree$parent == tree$parent[i] &
-                                  tree$level == level]
+            siblings <- tree$node[!is.na(tree$parent) &
+                                  (tree$parent == parent)]
         }
         stopifnot(node %in% siblings)
         return(siblings)
     }
 
-    has_left_sibling <- function(node, level) {
-        return(!is.null(left_sibling(node, level)))
+    has_left_sibling <- function(node) {
+        return(!is.null(left_sibling(node)))
     }
 
-    has_right_sibling <- function(node, level) {
-        return(!is.null(right_sibling(node, level)))
+    has_right_sibling <- function(node) {
+        return(!is.null(right_sibling(node)))
     }
 
-    left_sibling <- function(node, level) {
-        s <- siblings(node, level)
+    left_sibling <- function(node) {
+        s <- siblings(node)
         i <- which(node == s)
         stopifnot(identical(length(i), 1L))
         if(i[1] > 1)
-            return(node_index(s[i[1]-1], level))
+            return(s[i[1]-1])
         return(NULL)
     }
 
-    right_sibling <- function(node, level) {
-        s <- siblings(node, level)
+    right_sibling <- function(node) {
+        s <- siblings(node)
         i <- which(node == s)
         stopifnot(identical(length(i), 1L))
         if(i[1] < length(s))
-            return(node_index(s[i[1]+1], level))
+            return(s[i[1]+1])
         return(NULL)
     }
 
@@ -305,22 +304,22 @@ position_tree <- function(tree,
     ## (held in column prelim). In addition, internal nodes are given
     ## modifiers, which will be used to move their offspring to the
     ## right (held in column modifier).
-    first_walk <- function(node, level) {
-        i <- node_index(node, level)
+    first_walk <- function(node) {
+        i <- node_index(node)
 
         ## Set the default modifier value.
         tree$modifier[i] <<- 0
 
-        if(is_leaf(node, level)) {
-            if(has_left_sibling(node, level)) {
+        if(is_leaf(node)) {
+            if(has_left_sibling(node)) {
                 ## Determine the preliminary x-coordinate based on:
                 ##  - the preliminary x-coordinate of the left sibling,
                 ##  - the separation between sibling nodes, and
                 ##  - the mean size of left sibling and current node.
                 tree$prelim[i] <<- (
-                    tree$prelim[left_sibling(node, level)] +
+                    tree$prelim[node_index(left_sibling(node))] +
                     sibling_separation +
-                    mean_node_size(left_sibling(node, level), i))
+                    mean_node_size(left_sibling(node), node))
             } else {
                 ## No sibling on the left to worry about.
                 tree$prelim[i] <<- 0
@@ -328,26 +327,26 @@ position_tree <- function(tree,
         } else {
             ## This node is not a leaf, so call this procedure
             ## recursively for each of its offspring.
-            right_most <- first_child(node, level)
+            right_most <- first_child(node)
             left_most <- right_most
-            first_walk(left_most, level+1)
-            while(has_right_sibling(right_most, level+1)) {
-                right_most <- tree$node[right_sibling(right_most, level+1)]
-                first_walk(right_most, level+1)
+            first_walk(left_most)
+            while(has_right_sibling(right_most)) {
+                right_most <- tree$node[node_index(right_sibling(right_most))]
+                first_walk(right_most)
             }
 
-            mid_point <- (tree$prelim[node_index(left_most, level+1)] +
-                          tree$prelim[node_index(right_most, level+1)]) / 2
+            mid_point <- (tree$prelim[node_index(left_most)] +
+                          tree$prelim[node_index(right_most)]) / 2
 
-            if(has_left_sibling(node, level)) {
+            if(has_left_sibling(node)) {
                 tree$prelim[i] <<- (
-                    tree$prelim[left_sibling(node, level)] +
+                    tree$prelim[node_index(left_sibling(node))] +
                     sibling_separation +
-                    mean_node_size(left_sibling(node, level), i))
+                    mean_node_size(left_sibling(node), node))
 
                 tree$modifier[i] <<- tree$prelim[i] - mid_point
 
-                apportion(node, level)
+                apportion(node)
             } else {
                 tree$prelim[i] <<- mid_point
             }
@@ -370,7 +369,7 @@ position_tree <- function(tree,
     ## accumulated and applied to every node.
     second_walk <- function(node, level, modsum) {
         if(level <= max(tree$level)) {
-            i <- node_index(node, level)
+            i <- node_index(node)
 
             x_temp <- x_top_adjustment + tree$prelim[i] + modsum
             y_temp <- y_top_adjustment + (level * level_separation)
@@ -407,12 +406,13 @@ position_tree <- function(tree,
         return(result)
     }
 
+    tree$level <- as.integer(tree$level)
     tree$x <- NA_real_
     tree$y <- NA_real_
     tree$prelim <- NA_real_
     tree$modifier <- NA_real_
 
-    first_walk(tree$node[1], 0)
+    first_walk(tree$node[1])
     ## second_walk(tree$node[1], 0, 0)
 
     return(tree)
