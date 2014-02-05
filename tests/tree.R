@@ -35,7 +35,7 @@ tree <- structure(list(
                   row.names = c(NA, -15L), class = "data.frame")
 tree.exp <- structure(list(
     node = c("O", "E", "F", "N", "A", "D", "G", "M", "B", "C", "H", "I", "J", "K", "L"),
-    prelim =c(13.5, 3, 9, 15, 0, 6, 0, 6, 0, 6, 0, 6, 12, 18, 24)),
+    prelim = c(13.5, 3, 13.5, 24, 0, 6, 0, 6, 0, 6, 0, 6, 12, 18, 24)),
     .Names = c("node", "prelim"), row.names = c(NA, -15L), class = "data.frame")
 tree.obs <- EpiContactTrace:::position_tree(tree)
 str(tree.obs)
