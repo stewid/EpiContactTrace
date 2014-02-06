@@ -192,7 +192,7 @@ position_tree <- function(tree,
 
             compare_depth <- compare_depth + 1L
             if(is_leaf(left_most)) {
-                left_most <- get_left_most(node, compare_depth)
+                left_most <- get_left_most(node, 0L, compare_depth)
             } else {
                 left_most <- first_child(left_most)
             }
@@ -216,19 +216,19 @@ position_tree <- function(tree,
         return(NULL)
     }
 
-    get_left_most <- function(node, depth) {
-        if(node_level(node) >= depth) {
+    get_left_most <- function(node, level, depth) {
+        if(level >= depth) {
             return(node)
         } else if(is_leaf(node)) {
             return(NULL)
         } else {
             right_most <- first_child(node)
-            left_most <- get_left_most(right_most, depth)
+            left_most <- get_left_most(right_most, level + 1L, depth)
 
             while(all(is.null(left_most),
                       has_right_sibling(right_most))) {
                 right_most <- right_sibling(right_most)
-                left_most <- get_left_most(right_most, depth)
+                left_most <- get_left_most(right_most, level + 1L, depth)
             }
 
             return(left_most)
