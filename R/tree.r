@@ -135,7 +135,7 @@ position_tree <- function(tree,
         left_most <- first_child(node)
         neighbor <- left_neighbor(left_most)
         compare_depth <- 1L
-        depth_to_stop <- max(tree$level) - node_level(node)
+        depth_to_stop <- max_depth() - node_level(node)
 
         while(all(!is.null(left_most),
                   !is.null(neighbor),
@@ -266,6 +266,10 @@ position_tree <- function(tree,
         return(p[1])
     }
 
+    max_depth <- function() {
+        return(max(tree$level))
+    }
+
     ## This function returns the mean size of the two passed
     ## nodes. It adds the size of the right half of lefthand node
     ## to the left half of righthand node.
@@ -365,7 +369,8 @@ position_tree <- function(tree,
         ## Set the default modifier value.
         set_modifier(node, 0)
 
-        if(is_leaf(node)) {
+        if(any(is_leaf(node),
+               node_level(node) == max_depth())) {
             if(has_left_sibling(node)) {
                 ## Determine the preliminary x-coordinate based on:
                 ##  - the preliminary x-coordinate of the left sibling,
@@ -422,7 +427,7 @@ position_tree <- function(tree,
     ## field. In this second pass down the tree, modifiers are
     ## accumulated and applied to every node.
     second_walk <- function(node, level, modsum) {
-        if(level <= max(tree$level)) {
+        if(level <= max_depth()) {
             x_temp <- x_top_adjustment + prelim(node) + modsum
             y_temp <- y_top_adjustment + node_level(node) * level_separation
 
