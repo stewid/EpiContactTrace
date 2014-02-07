@@ -109,7 +109,7 @@ build_tree <- function(network_structure)
 ##' Position nodes in a tree
 ##'
 ##' This function determines the coordinates for each node in a
-##' tree. A pointer to the apex node of the tree is passed as
+##' tree.
 ##' @param tree
 ##' @param sibling_separation
 ##' @param x_top_adjustment
@@ -179,7 +179,7 @@ position_tree <- function(tree,
                     portion <- move_distance / left_siblings
                     temp_node <- node
 
-                    while(identical(temp_node, ancestor_neighbor)) {
+                    while(!identical(temp_node, ancestor_neighbor)) {
                         set_prelim(temp_node, prelim(temp_node) + move_distance)
                         set_modifier(temp_node, modifier(temp_node) + move_distance)
                         move_distance <- move_distance - portion
@@ -196,6 +196,7 @@ position_tree <- function(tree,
             } else {
                 left_most <- first_child(left_most)
             }
+            neighbor <- left_neighbor(left_most)
         }
 
         return(NULL)
@@ -251,12 +252,14 @@ position_tree <- function(tree,
     }
 
     left_neighbor <- function(node) {
-        n <- tree$node[tree$level == node_level(node)]
-        stopifnot(node %in% n)
-        i <- which(node == n)
-        stopifnot(identical(length(i), 1L))
-        if(i[1] > 1)
-            return(n[i[1]-1])
+        if(!is.null(node)) {
+            n <- tree$node[tree$level == node_level(node)]
+            stopifnot(node %in% n)
+            i <- which(node == n)
+            stopifnot(identical(length(i), 1L))
+            if(i[1] > 1)
+                return(n[i[1]-1])
+        }
         return(NULL)
     }
 
