@@ -29,7 +29,7 @@ Collate:
     'Contacts.r'
     'ContactTrace.r'
     'EpiContactTrace-package.r'
-    'trace.R'
+    'trace.r'
     'in-degree.r'
     'out-degree.r'
     'ingoing-contact-chain.r'
