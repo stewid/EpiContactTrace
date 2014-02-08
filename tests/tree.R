@@ -34,9 +34,13 @@ tree <- structure(list(
                   .Names = c("node", "parent", "level"),
                   row.names = c(NA, -15L), class = "data.frame")
 tree.exp <- structure(list(
-    node = c("O", "E", "F", "N", "A", "D", "G", "M", "B", "C", "H", "I", "J", "K", "L"),
-    prelim = c(13.5, 3, 13.5, 24, 0, 6, 0, 6, 0, 6, 0, 6, 12, 18, 24)),
-    .Names = c("node", "prelim"), row.names = c(NA, -15L), class = "data.frame")
+    node = c("O", "E",  "F", "N", "A", "D", "G", "M", "B", "C", "H", "I", "J", "K", "L"),
+    parent = c(NA, "O", "O", "O", "E", "E", "N", "N", "D", "D", "M", "M", "M", "M", "M"),
+    level = c(0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3),
+    x =  c(0, -10.5, 0, 10.5, -13.5, -7.5, 7.5, 13.5, -10.5, -4.5, 1.5, 7.5, 13.5, 19.5, 25.5),
+    y = c(0, -1, -1, -1, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3)),
+    .Names = c("node", "parent", "level", "x", "y"), row.names = c(NA, -15L), class = "data.frame")
 tree.obs <- EpiContactTrace:::position_tree(tree)
+tree.obs$level <- as.numeric(tree.obs$level)
 str(tree.obs)
-stopifnot(identical(tree.obs[,c('node', 'prelim')], tree.exp))
+stopifnot(identical(tree.obs, tree.exp))

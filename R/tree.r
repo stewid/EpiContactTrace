@@ -111,24 +111,38 @@ build_tree <- function(network_structure)
 ##' This function determines the coordinates for each node in a
 ##' tree.
 ##' @param tree
-##' @param sibling_separation
-##' @param x_top_adjustment
-##' @param y_top_adjustemnt
-##' @param left_size
-##' @param right_size
+##' @param x The x coordinate of the root node
+##' @param y The y coordinate of the root node
+##' @param orientation The orientation of the tree. \code{North}, the
+##' root is at the top. \code{South}, the root is at the
+##' bottom. \code{East}, the root is at the left. \code{West}, th root
+##' is at the right.
+##' @param sibling_separation The minimum distance between adjacent
+##' siblings of the tree
+##' @param subtree_separation The minimum distance between adjacent
+##' subtrees of a tree.
+##' @param level_separation The fixed distance between adjacent levels
+##' of the tree.
+##' @param left_size The left size of a node.
+##' @param right_size The right size of a node.
+##' @param top_size  The top size of a node.
+##' @param bottom_size The bottom size of a node.
 ##' @keywords internal
 ##' @references \itemize{
 ##'   \item John Q. Walker II, A node positioning algorithm for general tress.\cr
 ##'   \url{http://www.cs.unc.edu/techreports/89-034.pdf}
 ##'}
 position_tree <- function(tree,
-                          sibling_separation=4,
-                          subtree_separation=4,
-                          level_separation=1,
-                          x_top_adjustment=0,
-                          y_top_adjustment=0,
-                          left_size=1,
-                          right_size=1)
+                          x = 0,
+                          y = 0,
+                          orientation = c("North", "South", "East", "West"),
+                          sibling_separation = 4,
+                          subtree_separation = 4,
+                          level_separation = 1,
+                          left_size = 1,
+                          right_size = 1,
+                          top_size = 1,
+                          bottom_size = 1)
 {
     ## Clean up the positioning of small sibling subtrees
     apportion <- function(node) {
@@ -269,20 +283,51 @@ position_tree <- function(tree,
         return(p[1])
     }
 
+    root <- function() {
+        return(tree$node[1])
+    }
+
     max_depth <- function() {
         return(max(tree$level))
     }
 
-    ## This function returns the mean size of the two passed
-    ## nodes. It adds the size of the right half of lefthand node
-    ## to the left half of righthand node.
+    ##
+    ## Help functions to work with the size of nodes
+    ##
     mean_node_size <- function(left_node, right_node) {
         node_size <- 0
-        if(!is.null(left_node))
-            node_size <- node_size + right_size
-        if(!is.null(right_node))
-            node_size <- node_size + left_size
+
+        if(any(identical(orientation, "North"),
+               identical(orientation, "South"))) {
+            if(!is.null(left_node))
+                node_size <- node_size + get_right_size(left_node)
+            if(!is.null(right_node))
+                node_size <- node_size + get_left_size(right_node)
+        } else if(any(identical(orientation, "East"),
+                      identical(orientation, "West"))) {
+            if(!is.null(left_node))
+                node_size <- node_size + get_top_size(left_node)
+            if(!is.null(right_node))
+                node_size <- node_size + get_bottom_size(right_node)
+        }
+
         return(node_size)
+    }
+
+    get_left_size <- function(node) {
+        return(tree$left_size[node_index(node)])
+    }
+
+    get_right_size <- function(node) {
+        return(tree$right_size[node_index(node)])
+    }
+
+    get_top_size <- function(node) {
+        return(tree$top_size[node_index(node)])
+    }
+
+    get_bottom_size <- function(node) {
+        return(tree$bottom_size[node_index(node)])
     }
 
     ##
@@ -304,20 +349,12 @@ position_tree <- function(tree,
         tree$modifier[node_index(node)] <<- modifier
     }
 
-    x <- function(node) {
-        return(tree$x[node_index(node)])
-    }
-
     set_x <- function(node, x) {
         tree$x[node_index(node)] <<- x
     }
 
-    y <- function(node) {
-        return(tree$y[node_indey(node)])
-    }
-
     set_y <- function(node, y) {
-        tree$y[node_indey(node)] <<- y
+        tree$y[node_index(node)] <<- y
     }
 
     ##
@@ -429,51 +466,68 @@ position_tree <- function(tree,
     ## remembers the distance to the provisional place in a modifier
     ## field. In this second pass down the tree, modifiers are
     ## accumulated and applied to every node.
-    second_walk <- function(node, level, modsum) {
-        if(level <= max_depth()) {
-            x_temp <- x_top_adjustment + prelim(node) + modsum
-            y_temp <- y_top_adjustment + node_level(node) * level_separation
+    second_walk <- function(node, modsum) {
+        if(node_level(node) <= max_depth()) {
+            if(identical(orientation, "North")) {
+                x_temp <- x + prelim(node) + modsum
+                y_temp <- y - node_level(node) * level_separation
+            } else if(identical(orientation, "South")) {
+                x_temp <- x + prelim(node) + modsum
+                y_temp <- y + node_level(node) * level_separation
+            } else if(identical(orientation, "East")) {
+                x_temp <- x - node_level(node) * level_separation
+                y_temp <- y + prelim(node) + modsum
+            } else if(identical(orientation, "West")) {
+                x_temp <- x + node_level(node) * level_separation
+                y_temp <- y + prelim(node) + modsum
+            } else {
+                stop('Undefined orientation')
+            }
 
             ## Check that x_temp and y_temp are of the proper size.
             if(check_extents_range(x_temp, y_temp)) {
                 set_x(node, x_temp)
                 set_y(node, y_temp)
-                result <- TRUE
 
                 if(has_child(node)) {
                     ## Apply the modifier value for this node to
                     ## all its offspring.
-                    result <- second_walk(first_child(node),
-                                          level + 1,
-                                          modsum + modifier(node))
+                    second_walk(first_child(node), modsum + modifier(node))
                 }
 
-                if(all(identical(result, TRUE),
-                       has_right_sibling(node, level))) {
-                    node <- tree$node[right_sibling(node, level)]
-                    result <- second_walk(node, level, modsum)
+                if(has_right_sibling(node)) {
+                    second_walk(right_sibling(node), modsum)
                 }
             } else {
-                ## Continuing would put the tree outside of the
-                ## drawable extents range.
-                result <- FALSE
+                stop('Tree outside drawable extents range')
             }
-        } else {
-            ## We are at a level deeper than what we want to draw.
-            result <- TRUE
         }
 
-        return(result)
+        return(NULL)
     }
 
+    orientation <- match.arg(orientation)
     tree$level <- as.integer(tree$level)
     tree$x <- NA_real_
     tree$y <- NA_real_
     tree$prelim <- NA_real_
     tree$modifier <- NA_real_
+    tree$left_size <- left_size
+    tree$right_size <- right_size
+    tree$top_size <- top_size
+    tree$bottom_size <- bottom_size
 
-    first_walk(tree$node[1])
-    ## second_walk(tree$node[1], 0, 0)
+    first_walk(root())
 
-    return(tree)
+    if(any(identical(orientation, "North"),
+           identical(orientation, "South"))) {
+        x <- x - prelim(root())
+    } else if(any(identical(orientation, "East"),
+                  identical(orientation, "West"))) {
+        y <- y - prelim(root())
+    }
+
+    second_walk(root(), 0)
+
+    return(tree[, c('node', 'parent', 'level', 'x', 'y')])
 }
