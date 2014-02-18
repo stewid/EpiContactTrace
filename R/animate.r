@@ -244,7 +244,7 @@ Animate <- function(movements,
     }
 
     saveHTML({par(mar = c(4, 4, 0.5, 0.5))
-              d_ply(movements, ~t, .fun=create_map)},
+              by(movements, movements$t, create_map)},
              outdir = outdir,
              title = title,
              verbose = FALSE)
