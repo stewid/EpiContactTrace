@@ -64,7 +64,7 @@
 ##'
 setMethod('plot',
           signature(x = 'ContactTrace'),
-          function(x, ...)
+          function(x, style='default',...)
       {
           ns <- NetworkStructure(x)
           tree <- build_tree(ns)
@@ -104,6 +104,32 @@ setMethod('plot',
               }
           }
 
+          make.square<-function(input.df){  
+            output<-data.frame(x0=NA, x1=NA, y0=NA, y1=NA)
+            for(i in 1:nrow(input.df)){
+              output[(((i-1)*3)+1),'x0']<-input.df[i,'x0']
+              output[(((i-1)*3)+1),'y0']<-input.df[i,'y0']
+              output[(((i-1)*3)+1),'x1']<-input.df[i,'x0']
+              output[(((i-1)*3)+1),'y1']<-((input.df[i,'y0'])+(input.df[i,'y1']))/2
+              
+              output[(((i-1)*3)+2),'x0']<-input.df[i,'x0']
+              output[(((i-1)*3)+2),'y0']<-((input.df[i,'y0'])+(input.df[i,'y1']))/2
+              output[(((i-1)*3)+2),'x1']<-input.df[i,'x1']
+              output[(((i-1)*3)+2),'y1']<-((input.df[i,'y0'])+(input.df[i,'y1']))/2
+              
+              output[(((i-1)*3)+3),'x0']<-input.df[i,'x1']
+              output[(((i-1)*3)+3),'y0']<-((input.df[i,'y0'])+(input.df[i,'y1']))/2
+              output[(((i-1)*3)+3),'x1']<-input.df[i,'x1']
+              output[(((i-1)*3)+3),'y1']<-input.df[i,'y1']
+            }  
+            return(output)
+          }
+          
+          if(style=='square'){
+            edges_in<-make.square(edges_in)
+            edges_out<-make.square(edges_out)
+          }
+          
           if(!is.null(vertices)) {
               plot(y~x, data = vertices, frame.plot = FALSE, axes = FALSE,
                    ann = FALSE, type = "n")
