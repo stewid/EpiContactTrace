@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/stewid/EpiContactTrace.png)](https://travis-ci.org/stewid/EpiContactTrace)
+
 # EpiContactTrace
 
 EpiContactTrace is a package for facilitating livestock contact tracing

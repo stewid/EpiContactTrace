@@ -1,0 +1,18 @@
+citHeader("To cite EpiContactTrace in publications, please use:")
+
+citEntry(entry = "Article",
+  author       = "Noremark, Maria and Widgren, Stefan",
+  title        = "EpiContactTrace: an R-package for contact tracing during livestock disease outbreaks and for risk-based surveillance",
+  journal      = "BMC Veterinary Research",
+  year         = "2014",
+  number       = "1",
+  pages        = "71",
+  volume       = "10",
+  doi          = "10.1186/1746-6148-10-71",
+  url          = "http://www.biomedcentral.com/1746-6148/10/71",
+  textVersion  =
+  paste("Noremark, M.; Widgren, S.",
+        "EpiContactTrace: an R-package for contact tracing during livestock disease outbreaks and for risk-based surveillance.",
+        "BMC Veterinary Research, 2014, 10:71,",
+        "URL http://www.biomedcentral.com/1746-6148/10/71")
+)
