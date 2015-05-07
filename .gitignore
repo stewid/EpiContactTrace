@@ -1,2 +1,6 @@
-/src/EpiContactTrace.so
-/src/trace.o
+*.so
+*.o
+*.dll
+*.Rproj
+/src-i386/
+/src-x64/
