@@ -18,6 +18,205 @@
 ## See the Licence for the specific language governing
 ## permissions and limitations under the Licence.
 
+html_summary_table <- function(contacts, direction) {
+    if(identical(direction, "in")) {
+        arrow <- "&larr;"
+    } else {
+        arrow <- "&rarr;"
+    }
+
+    lines <- "<table border=0>"
+
+    for(i in seq_len(nrow(contacts))) {
+        lines <- c(lines, "<tr>")
+
+        ## Pad with empty cells to the left
+        lines <- c(lines,
+                   paste(rep("<td>&nbsp;</td>", 2L*(contacts$distance[i]-1L)), collapse = ""),
+                   sprintf('<td align="right">%s</td>', contacts$lhs[i]),
+                   sprintf('<td align="right"><a href="#%s-%s-%s">%s</a></td>',
+                           direction, contacts$lhs[i], contacts$rhs[i], arrow),
+                   sprintf('<td align="right">%s</td>', contacts$rhs[i]))
+
+        ## Pad with empty cells to the right
+        lines <- c(lines,
+                   paste(rep("<td>&nbsp;</td>",
+                             2L*(max(contacts$distance-1L) - (contacts$distance[i]-1L))),
+                         collapse = ""))
+
+        lines <- c(lines, "</tr>")
+    }
+
+    lines <- c(lines, "</table>")
+
+    lines
+}
+
+html_detailed_table <- function(contacts, direction) {
+    if(identical(direction, "in")) {
+        arrow <- "&larr;"
+    } else {
+        arrow <- "&rarr;"
+    }
+
+    contacts <- contacts[order(contacts$t, contacts$id, decreasing = FALSE),]
+
+    contacts$id <- as.character(contacts$id)
+    contacts$id[is.na(contacts$id)] <- "&nbsp;"
+
+    contacts$n <- as.character(contacts$n)
+    contacts$n[is.na(contacts$n)] <- "&nbsp;"
+
+    contacts$category <- as.character(contacts$category)
+    contacts$category[is.na(contacts$category)] <- "&nbsp;"
+
+    as.character(unlist(by(contacts, sprintf("%s - %s", contacts$lhs, contacts$rhs), function(x) {
+        lines <- "<p>"
+
+        ## Create the lhs to/from rhs title and add the name of the href link
+        lines <- c(lines,
+                   sprintf('<h3><a name="%s-%s-%s">%s %s %s</a></h3>', direction,
+                           x$lhs[1], x$rhs[1], x$lhs[1], arrow, x$rhs[1]),
+                   "<table border=1>",
+                   "<tr><th>Date</th><th>Id</th><th>N</th><th>Category</th><th>Source</th><th>Destination</th></tr>")
+
+        for(i in seq_len(nrow(x))) {
+            lines <- c(lines,
+                       "<tr>",
+                       sprintf('<td align="right">%s</td>', x$t[i]),
+                       sprintf('<td align="right">%s</td>', x$id[i]),
+                       sprintf('<td align="right">%s</td>', x$n[i]),
+                       sprintf('<td align="right">%s</td>', x$category[i]),
+                       sprintf('<td align="right">%s</td>', x$source[i]),
+                       sprintf('<td align="right">%s</td>', x$destination[i]),
+                       "</tr>")
+        }
+
+        lines <- c(lines,
+                   "</table>",
+                   "</p>")
+
+        lines
+    })))
+}
+
+html_report <- function(x)
+{
+    lines <- c("<html>",
+               "<head>",
+               sprintf("<title>%s</title>", x@root),
+               "</head>",
+               "<body>",
+               "<h1 align='center'>Contact Tracing</h1>",
+               sprintf("<h1 align='center'>Root: %s</h1>", x@root),
+               "<h3 align='center'>EpiContactTrace</h3>",
+               sprintf("<h3 align='center'>Version: %s</h3>", packageVersion("EpiContactTrace")),
+               "<hr/>",
+               "<h2>Summary ingoing contacts</h2>",
+               "<p>",
+               "<table border=0>",
+               sprintf("<tr><td>In begin date:</td><td>%s</td></tr>", x@ingoingContacts@tBegin),
+               sprintf("<tr><td>In end date:</td><td>%s</td></tr>", x@ingoingContacts@tEnd),
+               sprintf("<tr><td>In days:</td><td>%i</td></tr>", x@ingoingContacts@tEnd - x@ingoingContacts@tBegin),
+               sprintf("<tr><td>In degree:</td><td>%i</td></tr>", InDegree(x@ingoingContacts)),
+               sprintf("<tr><td>Ingoing contact chain:</td><td>%i</td></tr>", IngoingContactChain(x@ingoingContacts)),
+               "</table>",
+               "</p>")
+
+    if(length(x@ingoingContacts@source) > 0L) {
+        ## Get network structure. The distance is used for indentation.
+        df <- NetworkStructure(x@ingoingContacts)
+
+        ## Add lhs and rhs, with respect to direction
+        df$rhs <- df$source
+        df$lhs <- df$destination
+
+        lines <- c(lines, html_summary_table(df, "in"))
+    } else {
+        lines <- c(lines, "<p>No ingoing contacts during the search period.</p>")
+    }
+
+    lines <- c(lines,
+               "<hr/>",
+               "<h2>Summary outgoing contacts</h2>",
+               "<p>",
+               "<table border=0>",
+               sprintf("<tr><td>Out begin date:</td><td>%s</td></tr>", x@outgoingContacts@tBegin),
+               sprintf("<tr><td>Out end date:</td><td>%s</td></tr>", x@outgoingContacts@tEnd),
+               sprintf("<tr><td>Out days:</td><td>%i</td></tr>", x@outgoingContacts@tEnd - x@outgoingContacts@tBegin),
+               sprintf("<tr><td>Out degree:</td><td>%i</td></tr>", OutDegree(x@outgoingContacts)),
+               sprintf("<tr><td>Outgoing contact chain:</td><td>%i</td></tr>", OutgoingContactChain(x@outgoingContacts)),
+               "</table>",
+               "</p>")
+
+    if(length(x@outgoingContacts@source) > 0L) {
+        ## Get network structure. The distance is used for indentation.
+        df <- NetworkStructure(x@outgoingContacts)
+
+        ## Add lhs and rhs, with respect to direction
+        df$lhs <- df$source
+        df$rhs <- df$destination
+
+        lines <- c(lines, html_summary_table(df, "out"))
+    } else {
+        lines <- c(lines, "<p>No outgoing contacts during the search period.</p>")
+    }
+
+    if(length(x@ingoingContacts@source) > 0L) {
+        lines <- c(lines,
+                   "<hr/>",
+                   "<h2>Direct ingoing contacts</h2>")
+
+        df <- as(x@ingoingContacts, "data.frame")
+
+        # Add lhs and rhs, with respect to direction
+        df$lhs <- df$destination
+        df$rhs <- df$source
+
+        lines <- c(lines,
+                   html_detailed_table(df[df$destination == df$root,], "in"))
+
+        df <- df[df$destination != df$root,]
+        if(nrow(df) > 0) {
+            lines <- c(lines,
+                       "<hr/>",
+                       "<h2>Indirect ingoing contacts</h2>",
+                       html_detailed_table(df, "in"))
+        }
+    }
+
+    if(length(x@outgoingContacts@source) > 0L) {
+        lines <- c(lines,
+                   "<hr/>",
+                   "<h2>Direct outgoing contacts</h2>")
+
+        df <- as(x@outgoingContacts, "data.frame")
+
+        ## Add lhs and rhs, with respect to direction
+        df$lhs <- df$source
+        df$rhs <- df$destination
+
+        html_detailed_table(df[df$source == df$root,], "out")
+
+        df <- df[df$source != df$root,]
+        if(nrow(df) > 0) {
+            lines <- c(lines,
+                       "<hr/>",
+                       "<h2>Indirect outgoing contacts</h2>",
+                       html_detailed_table(df, "out"))
+        }
+    }
+
+    lines <- c(lines,
+               "<hr/>",
+               sprintf("<h5>Generated %s by EpiContactTrace version %s</h5>\n",
+                       Sys.time(), packageVersion("EpiContactTrace")),
+               "</body>",
+               "</html>")
+
+    lines
+}
+
 ##' Generate a contact tracing \code{Report}
 ##'
 ##' EpiContatTrace contains report templates to generate pdf- or html reports
@@ -85,7 +284,6 @@
 ##' archive if plots are required. See section 6.3 in 'R Installation
 ##' and Administration' on how to install packages from source.
 ##' @keywords methods
-##' @import R2HTML
 ##' @export
 ##' @examples
 ##' \dontrun{
@@ -121,18 +319,18 @@
 ##' Report(contactTrace)
 ##' }
 ##'
-setGeneric('Report',
-           signature = 'object',
-           function(object, ...) standardGeneric('Report'))
+setGeneric("Report",
+           signature = "object",
+           function(object, ...) standardGeneric("Report"))
 
-setMethod('Report',
-          signature(object = 'ContactTrace'),
-          function(object, format=c('html', 'pdf'), template=NULL)
+setMethod("Report",
+          signature(object = "ContactTrace"),
+          function(object, format=c("html", "pdf"), template=NULL)
       {
           format <- match.arg(format)
 
           if (!is.null(.ct_env$ct)) {
-              stop('Unable to create report. The ct object already exists')
+              stop("Unable to create report. The ct object already exists")
           }
 
           ## Make sure the added object is removed.
@@ -141,22 +339,17 @@ setMethod('Report',
           ## Add the ContactTrace object to the .ct_env environment
           .ct_env$ct <- object
 
-          if(identical(format, 'html')) {
-              if(is.null(template)) {
-                  template <- system.file('Sweave/speak-html.rnw', package='EpiContactTrace')
-              }
-
-              Sweave(template, driver=R2HTML::RweaveHTML(), syntax="SweaveSyntaxNoweb")
-              file.rename(sub('rnw$', 'html', basename(template)), sprintf('%s.html', object@root))
+          if(identical(format, "html")) {
+              writeLines(html_report(object), con = sprintf("%s.html", object@root))
           } else {
               if(is.null(template)) {
-                  template <- system.file('Sweave/speak-latex.rnw', package='EpiContactTrace')
+                  template <- system.file("Sweave/speak-latex.rnw", package="EpiContactTrace")
               }
 
               Sweave(template, syntax="SweaveSyntaxNoweb")
-              tools::texi2pdf(sub('rnw$', 'tex', basename(template)), clean=TRUE)
-              file.rename(sub('rnw$', 'pdf', basename(template)), sprintf('%s.pdf', object@root))
-              unlink(sub('rnw$', 'tex', basename(template)))
+              tools::texi2pdf(sub("rnw$", "tex", basename(template)), clean=TRUE)
+              file.rename(sub("rnw$", "pdf", basename(template)), sprintf("%s.pdf", object@root))
+              unlink(sub("rnw$", "tex", basename(template)))
           }
 
           invisible(NULL)
