@@ -129,12 +129,12 @@ Animate <- function(movements,
                     title="Animation of contacts")
 {
     ## Check that animate package is installed
-    if(!suppressMessages(suppressWarnings(require("animation", quietly=TRUE, character.only = TRUE, warn.conflicts=FALSE)))) {
+    if(!requireNamespace("animation", quietly = TRUE)) {
         stop("animation package required for this functionality.  Please install and try again.", call. = FALSE)
     }
 
     ## Check that ggmap package is installed
-    if(!suppressMessages(suppressWarnings(require("ggmap", quietly=TRUE, character.only = TRUE, warn.conflicts=FALSE)))) {
+    if(!requireNamespace("ggmap", quietly = TRUE)) {
         stop("ggmap package required for this functionality.  Please install and try again.", call. = FALSE)
     }
 
