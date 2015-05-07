@@ -163,18 +163,18 @@ setMethod('Report',
       }
 )
 
-setMethod('Report',
-          signature(object = 'list'),
-          function(object, format=c('html', 'pdf'), template=NULL)
+setMethod("Report",
+          signature(object = "list"),
+          function(object, format=c("html", "pdf"), template=NULL)
       {
           format <- match.arg(format)
 
           if(!all(sapply(object, function(x) length(x)) == 1)) {
-              stop('Unexpected length of list')
+              stop("Unexpected length of list")
           }
 
-          if(!all(sapply(object, function(x) class(x)) == 'ContactTrace')) {
-              stop('Unexpected object in list')
+          if(!all(sapply(object, function(x) class(x)) == "ContactTrace")) {
+              stop("Unexpected object in list")
           }
 
           lapply(object, function(x) Report(x,
