@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/stewid/EpiContactTrace.png)](https://travis-ci.org/stewid/EpiContactTrace)
+[![Build Status](https://travis-ci.org/stewid/EpiContactTrace.svg)](https://travis-ci.org/stewid/EpiContactTrace)
+[![Build status](https://ci.appveyor.com/api/projects/status/2xpa13qi4s2gxso4?svg=true)](https://ci.appveyor.com/project/stewid/epicontacttrace)
 
 # EpiContactTrace
 
