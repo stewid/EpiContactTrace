@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/stewid/EpiContactTrace.svg)](https://travis-ci.org/stewid/EpiContactTrace)
 [![Build status](https://ci.appveyor.com/api/projects/status/2xpa13qi4s2gxso4?svg=true)](https://ci.appveyor.com/project/stewid/epicontacttrace)
 [![CRAN status](http://www.r-pkg.org/badges/version/EpiContactTrace)](http://cran.r-project.org/web/packages/EpiContactTrace/index.html)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/last-month/EpiContactTrace)](http://cran.r-project.org/web/packages/EpiContactTrace/index.html)
 
 # EpiContactTrace
 
