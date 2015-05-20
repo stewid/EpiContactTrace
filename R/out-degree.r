@@ -68,17 +68,16 @@
 ##'   }
 ##' }
 ##'
-##' @name OutDegree-methods
-##' @aliases OutDegree
-##' @aliases OutDegree-methods
-##' @aliases OutDegree,Contacts-method
-##' @aliases OutDegree,ContactTrace-method
-##' @aliases OutDegree,data.frame-method
+##' @rdname OutDegree-methods
 ##' @docType methods
+##' @keywords methods
+##' @include Contacts.r
+##' @include ContactTrace.r
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,
 ##' see \code{\link{Trace}} for details.
+##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate outdegree for.
 ##' @param tEnd the last date to include outgoing movements. Defaults
 ##' to \code{NULL}
@@ -131,8 +130,6 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'
@@ -168,11 +165,12 @@
 ##'                     tEnd='2005-10-31',
 ##'                     days=91)
 ##' }
-##'
 setGeneric('OutDegree',
            signature = 'x',
            function(x, ...) standardGeneric('OutDegree'))
 
+##' @rdname OutDegree-methods
+##' @export
 setMethod('OutDegree',
           signature(x = 'Contacts'),
           function (x)
@@ -185,6 +183,8 @@ setMethod('OutDegree',
       }
 )
 
+##' @rdname OutDegree-methods
+##' @export
 setMethod('OutDegree',
           signature(x = 'ContactTrace'),
           function (x)
@@ -197,6 +197,8 @@ setMethod('OutDegree',
       }
 )
 
+##' @rdname OutDegree-methods
+##' @export
 setMethod('OutDegree',
           signature(x = 'data.frame'),
           function(x,
