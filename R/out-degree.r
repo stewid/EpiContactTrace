@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2015 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -165,18 +165,18 @@
 ##'                     tEnd='2005-10-31',
 ##'                     days=91)
 ##' }
-setGeneric('OutDegree',
-           signature = 'x',
-           function(x, ...) standardGeneric('OutDegree'))
+setGeneric("OutDegree",
+           signature = "x",
+           function(x, ...) standardGeneric("OutDegree"))
 
 ##' @rdname OutDegree-methods
 ##' @export
-setMethod('OutDegree',
-          signature(x = 'Contacts'),
+setMethod("OutDegree",
+          signature(x = "Contacts"),
           function (x)
       {
-          if(!identical(x@direction, 'out')) {
-              stop('Unable to determine OutDegree for ingoing contacts')
+          if(!identical(x@direction, "out")) {
+              stop("Unable to determine OutDegree for ingoing contacts")
           }
 
           return(length(unique(x@destination[x@source==x@root])))
@@ -185,22 +185,22 @@ setMethod('OutDegree',
 
 ##' @rdname OutDegree-methods
 ##' @export
-setMethod('OutDegree',
-          signature(x = 'ContactTrace'),
+setMethod("OutDegree",
+          signature(x = "ContactTrace"),
           function (x)
       {
-          return(NetworkSummary(x)[, c('root',
-                                       'outBegin',
-                                       'outEnd',
-                                       'outDays',
-                                       'outDegree')])
+          return(NetworkSummary(x)[, c("root",
+                                       "outBegin",
+                                       "outEnd",
+                                       "outDays",
+                                       "outDegree")])
       }
 )
 
 ##' @rdname OutDegree-methods
 ##' @export
-setMethod('OutDegree',
-          signature(x = 'data.frame'),
+setMethod("OutDegree",
+          signature(x = "data.frame"),
           function(x,
                    root,
                    tEnd = NULL,
@@ -209,7 +209,7 @@ setMethod('OutDegree',
                    outEnd = NULL)
       {
           if(missing(root)) {
-              stop('Missing parameters in call to OutDegree')
+              stop("Missing parameters in call to OutDegree")
           }
 
           if(all(is.null(tEnd), is.null(days))) {
@@ -227,10 +227,10 @@ setMethod('OutDegree',
                                 inBegin,
                                 inEnd,
                                 outBegin,
-                                outEnd)[, c('root',
-                                            'outBegin',
-                                            'outEnd',
-                                            'outDays',
-                                            'outDegree')])
+                                outEnd)[, c("root",
+                                            "outBegin",
+                                            "outEnd",
+                                            "outDays",
+                                            "outDegree")])
       }
 )
