@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2015 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -67,13 +67,11 @@
 ##'   }
 ##' }
 ##'
-##' @name InDegree-methods
-##' @aliases InDegree
-##' @aliases InDegree-methods
-##' @aliases InDegree,Contacts-method
-##' @aliases InDegree,ContactTrace-method
-##' @aliases InDegree,data.frame-method
+##' @rdname InDegree-methods
 ##' @docType methods
+##' @keywords methods
+##' @include Contacts.r
+##' @include ContactTrace.r
 ##' @section Methods:
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{
@@ -88,6 +86,7 @@
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,
 ##' see \code{\link{Trace}} for details.
+##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate indegree for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
 ##' to \code{NULL}
@@ -131,8 +130,6 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'

@@ -24,20 +24,20 @@ Suggests:
     animation,
     ggmap
 Collate:
-    'Contacts.r'
     'ContactTrace.r'
+    'Contacts.r'
     'EpiContactTrace-package.r'
-    'trace.r'
+    'animate.r'
     'in-degree.r'
-    'out-degree.r'
     'ingoing-contact-chain.r'
-    'outgoing-contact-chain.r'
-    'network-summary.r'
     'network-structure.r'
+    'network-summary.r'
+    'out-degree.r'
+    'outgoing-contact-chain.r'
+    'plot.r'
     'report.r'
     'shortest-paths.r'
     'show.r'
-    'animate.r'
+    'trace.r'
     'tree.r'
-    'plot.r'
 LinkingTo: Rcpp
