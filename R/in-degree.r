@@ -168,37 +168,42 @@
 ##'                    tEnd='2005-10-31',
 ##'                    days=91)
 ##' }
-##'
-setGeneric('InDegree',
-           signature = 'x',
-           function(x, ...) standardGeneric('InDegree'))
+setGeneric("InDegree",
+           signature = "x",
+           function(x, ...) standardGeneric("InDegree"))
 
-setMethod('InDegree',
-          signature(x = 'Contacts'),
+##' @rdname InDegree-methods
+##' @export
+setMethod("InDegree",
+          signature(x = "Contacts"),
           function(x)
       {
-          if(!identical(x@direction, 'in')) {
-              stop('Unable to determine InDegree for outgoing contacts')
+          if(!identical(x@direction, "in")) {
+              stop("Unable to determine InDegree for outgoing contacts")
           }
 
           return(length(unique(x@source[x@destination==x@root])))
       }
 )
 
-setMethod('InDegree',
-          signature(x = 'ContactTrace'),
+##' @rdname InDegree-methods
+##' @export
+setMethod("InDegree",
+          signature(x = "ContactTrace"),
           function (x)
       {
-          return(NetworkSummary(x)[, c('root',
-                                       'inBegin',
-                                       'inEnd',
-                                       'inDays',
-                                       'inDegree')])
+          return(NetworkSummary(x)[, c("root",
+                                       "inBegin",
+                                       "inEnd",
+                                       "inDays",
+                                       "inDegree")])
       }
 )
 
-setMethod('InDegree',
-          signature(x = 'data.frame'),
+##' @rdname InDegree-methods
+##' @export
+setMethod("InDegree",
+          signature(x = "data.frame"),
           function(x,
                    root,
                    tEnd = NULL,
@@ -207,7 +212,7 @@ setMethod('InDegree',
                    inEnd = NULL)
       {
           if(missing(root)) {
-              stop('Missing parameters in call to InDegree')
+              stop("Missing parameters in call to InDegree")
           }
 
           if(all(is.null(tEnd), is.null(days))) {
@@ -225,10 +230,10 @@ setMethod('InDegree',
                                 inBegin,
                                 inEnd,
                                 outBegin,
-                                outEnd)[, c('root',
-                                            'inBegin',
-                                            'inEnd',
-                                            'inDays',
-                                            'inDegree')])
+                                outEnd)[, c("root",
+                                            "inBegin",
+                                            "inEnd",
+                                            "inDays",
+                                            "inDegree")])
       }
 )
