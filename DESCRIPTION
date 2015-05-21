@@ -3,13 +3,9 @@ Title: Epidemiological tool for contact tracing
 Version: 0.8.8.99
 Date: 2013-11-04
 Authors@R: c(
-    person("Maria",
-    "Noremark",
-    role = c("aut")),
-    person("Stefan",
-    "Widgren",
-    role = c("aut", "cre"),
-    email = "stefan.widgren@sva.se"))
+    person("Maria", "Noremark", role = c("aut")),
+    person("Stefan", "Widgren", role = c("aut", "cre"),
+     email = "stefan.widgren@gmail.com"))
 Description: Routines for epidemiological contact tracing
     and visualisation of network of contacts.
 License: EUPL
