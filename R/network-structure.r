@@ -29,11 +29,13 @@
 ##' network tree structure given by the depth first search is shown by
 ##' \code{\link{show}}.
 ##'
-##' @name NetworkStructure-methods
-##' @aliases NetworkStructure NetworkStructure-methods
-##' NetworkStructure,Contacts-method NetworkStructure,ContactTrace-method
-##' NetworkStructure,list-method
+##' @rdname NetworkStructure-methods
 ##' @docType methods
+##' @keywords methods
+##' @include Contacts.r
+##' @include ContactTrace.r
+##' @param object A \code{\linkS4class{Contacts}} or
+##' \code{linkS4class{ContactTrace}} object.
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{The root of the contact tracing}
@@ -91,8 +93,6 @@
 ##'   }
 ##' }
 ##' @seealso \code{\link{show}}.
-##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'
@@ -107,11 +107,12 @@
 ##'
 ##' NetworkStructure(contactTrace)
 ##' }
-##'
 setGeneric('NetworkStructure',
            signature = 'object',
            function(object) standardGeneric('NetworkStructure'))
 
+##' @rdname NetworkStructure-methods
+##' @export
 setMethod('NetworkStructure',
           signature(object = 'Contacts'),
           function(object)
@@ -172,6 +173,8 @@ setMethod('NetworkStructure',
       }
 )
 
+##' @rdname NetworkStructure-methods
+##' @export
 setMethod('NetworkStructure',
           signature(object='ContactTrace'),
           function(object)
