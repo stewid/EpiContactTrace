@@ -124,18 +124,18 @@
 ##'                                days=91)
 ##' }
 ##'
-setGeneric('OutgoingContactChain',
-           signature = 'x',
-           function(x, ...) standardGeneric('OutgoingContactChain'))
+setGeneric("OutgoingContactChain",
+           signature = "x",
+           function(x, ...) standardGeneric("OutgoingContactChain"))
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
-setMethod('OutgoingContactChain',
-          signature(x = 'Contacts'),
+setMethod("OutgoingContactChain",
+          signature(x = "Contacts"),
           function (x)
       {
-          if(!identical(x@direction, 'out')) {
-              stop('Unable to determine OutgoingContactChain for ingoing contacts')
+          if(!identical(x@direction, "out")) {
+              stop("Unable to determine OutgoingContactChain for ingoing contacts")
           }
 
           return(length(setdiff(x@destination,x@root)))
@@ -144,22 +144,22 @@ setMethod('OutgoingContactChain',
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
-setMethod('OutgoingContactChain',
-          signature(x = 'ContactTrace'),
+setMethod("OutgoingContactChain",
+          signature(x = "ContactTrace"),
           function (x)
       {
-          return(NetworkSummary(x)[, c('root',
-                                       'outBegin',
-                                       'outEnd',
-                                       'outDays',
-                                       'outgoingContactChain')])
+          return(NetworkSummary(x)[, c("root",
+                                       "outBegin",
+                                       "outEnd",
+                                       "outDays",
+                                       "outgoingContactChain")])
       }
 )
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
-setMethod('OutgoingContactChain',
-          signature(x = 'data.frame'),
+setMethod("OutgoingContactChain",
+          signature(x = "data.frame"),
           function(x,
                    root,
                    tEnd = NULL,
@@ -168,7 +168,7 @@ setMethod('OutgoingContactChain',
                    outEnd = NULL)
       {
           if(missing(root)) {
-              stop('Missing parameters in call to OutgoingContactChain')
+              stop("Missing parameters in call to OutgoingContactChain")
           }
 
           if(all(is.null(tEnd), is.null(days))) {
@@ -186,10 +186,10 @@ setMethod('OutgoingContactChain',
                                 inBegin,
                                 inEnd,
                                 outBegin,
-                                outEnd)[, c('root',
-                                            'outBegin',
-                                            'outEnd',
-                                            'outDays',
-                                            'outgoingContactChain')])
+                                outEnd)[, c("root",
+                                            "outBegin",
+                                            "outEnd",
+                                            "outDays",
+                                            "outgoingContactChain")])
       }
 )
