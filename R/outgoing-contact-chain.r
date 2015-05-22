@@ -25,17 +25,16 @@
 ##' and order of the contacts during the defined time window used for contact
 ##' tracing.
 ##'
-##' @name OutgoingContactChain-methods
-##' @aliases OutgoingContactChain
-##' @aliases OutgoingContactChain-methods
-##' @aliases OutgoingContactChain,Contacts-method
-##' @aliases OutgoingContactChain,ContactTrace-method
-##' @aliases OutgoingContactChain,data.frame-method
+##' @rdname OutgoingContactChain-methods
 ##' @docType methods
+##' @keywords methods
+##' @include Contacts.r
+##' @include ContactTrace.r
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,
 ##' see \code{\link{Trace}} for details.
+##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate outgoing contact chain
 ##' for.
 ##' @param tEnd the last date to include outgoing movements. Defaults
@@ -89,8 +88,6 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'
@@ -131,6 +128,8 @@ setGeneric('OutgoingContactChain',
            signature = 'x',
            function(x, ...) standardGeneric('OutgoingContactChain'))
 
+##' @rdname OutgoingContactChain-methods
+##' @export
 setMethod('OutgoingContactChain',
           signature(x = 'Contacts'),
           function (x)
@@ -143,6 +142,8 @@ setMethod('OutgoingContactChain',
       }
 )
 
+##' @rdname OutgoingContactChain-methods
+##' @export
 setMethod('OutgoingContactChain',
           signature(x = 'ContactTrace'),
           function (x)
@@ -155,6 +156,8 @@ setMethod('OutgoingContactChain',
       }
 )
 
+##' @rdname OutgoingContactChain-methods
+##' @export
 setMethod('OutgoingContactChain',
           signature(x = 'data.frame'),
           function(x,
