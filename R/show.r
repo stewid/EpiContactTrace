@@ -27,6 +27,13 @@
 ##' @name show-methods
 ##' @aliases show show-methods show,Contacts-method show,ContactTrace-method
 ##' @docType methods
+##' @keywords methods
+##' @export
+##' @include Contacts.r
+##' @include ContactTrace.r
+##' @param object The \code{\linkS4class{Contacts}} or
+##' \code{\linkS4class{ContactTrace}} \code{object}
+##' @return None (invisible 'NULL').
 ##' @section Methods: \describe{
 ##'
 ##'   \item{\code{signature(object = "Contacts")}}{
@@ -49,8 +56,6 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'

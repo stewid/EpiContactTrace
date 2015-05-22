@@ -10,6 +10,13 @@
 \usage{
 \S4method{show}{Contacts}(object)
 }
+\arguments{
+\item{object}{The \code{\linkS4class{Contacts}} or
+\code{\linkS4class{ContactTrace}} \code{object}}
+}
+\value{
+None (invisible 'NULL').
+}
 \description{
 Shows information of the time-window used for contact tracing and summary of
 network parameters. It also visualize the contact structure.
