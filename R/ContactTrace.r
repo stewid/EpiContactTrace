@@ -40,6 +40,7 @@
 ##' }
 ##' @name ContactTrace-class
 ##' @docType class
+##' @include Contacts.r
 ##' @section Objects from the Class: Objects can be created by calls of the
 ##' form \code{new("ContactTrace",root, ingoingContacts, outgoingContacts,...)}
 ##' @keywords classes
@@ -57,7 +58,6 @@
 ##'
 ##' ## Show structure
 ##' str(contactTrace)
-##'
 setClass('ContactTrace',
          slots = c(root = 'character',
                    ingoingContacts = 'Contacts',

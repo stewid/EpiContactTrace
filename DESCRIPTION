@@ -20,8 +20,8 @@ Suggests:
     animation,
     ggmap
 Collate:
-    'ContactTrace.r'
     'Contacts.r'
+    'ContactTrace.r'
     'EpiContactTrace-package.r'
     'animate.r'
     'in-degree.r'
