@@ -28,12 +28,27 @@
 ##' The network tree structure given by the depth first search is shown by
 ##' \code{\link{show}}.
 ##'
-##' @name ShortestPaths-methods
-##' @aliases ShortestPaths
-##' @aliases ShortestPaths-methods
-##' @aliases ShortestPaths,ContactTrace-method
-##' @aliases ShortestPaths,data.frame-method
+##' @rdname ShortestPaths-methods
 ##' @docType methods
+##' @keywords methods
+##' @include ContactTrace.r
+##' @param x a \code{\linkS4class{ContactTrace}} object, or a
+##' \code{data.frame} with movements of animals between holdings, see
+##' \code{\link{Trace}} for details.
+##' @param ... Additional arguments to the method
+##' @param root vector of roots to calculate shortest path for.
+##' @param tEnd the last date to include ingoing movements. Defaults
+##' to \code{NULL}
+##' @param days the number of previous days before tEnd to include
+##' ingoing movements. Defaults to \code{NULL}
+##' @param inBegin the first date to include ingoing
+##' movements. Defaults to \code{NULL}
+##' @param inEnd the last date to include ingoing movements. Defaults
+##' to \code{NULL}
+##' @param outBegin the first date to include outgoing
+##' movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing movements. Defaults
+##' to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -89,8 +104,6 @@
 ##'   }
 ##' }
 ##' @seealso \code{\link{show}} and \code{\link{NetworkStructure}}.
-##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'
@@ -112,11 +125,12 @@
 ##' sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
 ##'
 ##' }
-##'
 setGeneric('ShortestPaths',
            signature = 'x',
            function(x, ...) standardGeneric('ShortestPaths'))
 
+##' @rdname ShortestPaths-methods
+##' @export
 setMethod('ShortestPaths',
           signature(x = 'ContactTrace'),
           function(x)
@@ -150,6 +164,8 @@ setMethod('ShortestPaths',
       }
 )
 
+##' @rdname ShortestPaths-methods
+##' @export
 setMethod('ShortestPaths',
           signature(x = 'data.frame'),
           function(x,
