@@ -31,6 +31,9 @@
 ##' @name plot-methods
 ##' @aliases plot plot-methods plot,ContactTrace-method
 ##' @docType methods
+##' @param x The \code{\linkS4class{ContactTrace}} object to plot
+##' @param y Not used
+##' @param ... Additional arguments affecting the plot
 ##' @seealso \code{\link{show}}.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
@@ -44,6 +47,7 @@
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @importFrom graphics plot
+##' @include ContactTrace.r
 ##' @export
 ##' @examples
 ##' \dontrun{

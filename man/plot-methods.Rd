@@ -9,6 +9,13 @@
 \usage{
 \S4method{plot}{ContactTrace}(x, y, ...)
 }
+\arguments{
+\item{x}{The \code{\linkS4class{ContactTrace}} object to plot}
+
+\item{y}{Not used}
+
+\item{...}{Additional arguments affecting the plot}
+}
 \description{
 The contact structure can be visualized graphically with a plot. The plot
 gives an overview of the number of ingoing and outgoing holdings connected
