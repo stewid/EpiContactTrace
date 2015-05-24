@@ -65,9 +65,8 @@
 ##' plot(contactTrace)
 ##'
 ##' }
-##'
-setMethod('plot',
-          signature(x = 'ContactTrace'),
+setMethod("plot",
+          signature(x = "ContactTrace"),
           function(x, ...)
       {
           ns <- NetworkStructure(x)
