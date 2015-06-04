@@ -4,7 +4,8 @@
 \alias{Trace}
 \title{Trace Contacts.}
 \usage{
-Trace(movements, root, tEnd, days, inBegin, inEnd, outBegin, outEnd)
+Trace(movements, root, tEnd = NULL, days = NULL, inBegin = NULL,
+  inEnd = NULL, outBegin = NULL, outEnd = NULL)
 }
 \arguments{
 \item{movements}{a \code{data.frame} data.frame with movements,

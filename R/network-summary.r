@@ -72,12 +72,25 @@
 ##'   }
 ##' }
 ##'
-##' @name NetworkSummary-methods
-##' @aliases NetworkSummary
-##' @aliases NetworkSummary-methods
-##' @aliases NetworkSummary,ContactTrace-method
-##' @aliases NetworkSummary,data.frame-method
+##' @rdname NetworkSummary-methods
 ##' @docType methods
+##' @param x a ContactTrace object or a \code{data.frame} with
+##' movements of animals between holdings, see \code{\link{Trace}} for
+##' details.
+##' @param ... Additional arguments to the method
+##' @param root vector of roots to calculate network summary for.
+##' @param tEnd the last date to include ingoing movements. Defaults
+##' to \code{NULL}
+##' @param days the number of previous days before tEnd to include
+##' ingoing movements. Defaults to \code{NULL}
+##' @param inBegin the first date to include ingoing
+##' movements. Defaults to \code{NULL}
+##' @param inEnd the last date to include ingoing movements. Defaults
+##' to \code{NULL}
+##' @param outBegin the first date to include outgoing
+##' movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing movements. Defaults
+##' to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -142,7 +155,6 @@
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @keywords methods
-##' @export
 ##' @useDynLib EpiContactTrace
 ##' @examples
 ##' \dontrun{
@@ -221,11 +233,12 @@
 ##'                            outBegin=rep('2005-08-02', length(root)),
 ##'                            outEnd=rep('2005-10-31', length(root)))
 ##' }
-##'
 setGeneric('NetworkSummary',
            signature = 'x',
            function(x, ...) standardGeneric('NetworkSummary'))
 
+##' @rdname NetworkSummary-methods
+##' @export
 setMethod('NetworkSummary',
           signature(x = 'ContactTrace'),
           function(x)
@@ -244,6 +257,8 @@ setMethod('NetworkSummary',
       }
 )
 
+##' @rdname NetworkSummary-methods
+##' @export
 setMethod('NetworkSummary',
           signature(x = 'data.frame'),
           function(x,

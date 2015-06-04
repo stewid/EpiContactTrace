@@ -240,7 +240,7 @@ html_report <- function(x)
 ##' the root as filename.
 ##'
 ##'
-##' @name Report-methods
+##' @rdname Report-methods
 ##' @aliases Report Report-methods Report,ContactTrace-method
 ##' Report,list-method
 ##' @docType methods
@@ -251,10 +251,11 @@ html_report <- function(x)
 ##'   }
 ##'
 ##'   \item{\code{signature(object = "list")}}{
-##'     Generate reports for a list of \code{ContactTrace} obejcts.
+##'     Generate reports for a list of \code{ContactTrace} objects.
 ##'   }
 ##' }
 ##' @param object the object
+##' @param ... Additional arguments to the method
 ##' @param format the format to use, can be either 'html' or 'pdf'. The default
 ##'        is 'html'
 ##' @param template the Sweave template file to use. If none is provided, the default
@@ -284,7 +285,6 @@ html_report <- function(x)
 ##' archive if plots are required. See section 6.3 in 'R Installation
 ##' and Administration' on how to install packages from source.
 ##' @keywords methods
-##' @export
 ##' @examples
 ##' \dontrun{
 ##'
@@ -323,9 +323,11 @@ setGeneric("Report",
            signature = "object",
            function(object, ...) standardGeneric("Report"))
 
+##' @rdname Report-methods
+##' @export
 setMethod("Report",
           signature(object = "ContactTrace"),
-          function(object, format=c("html", "pdf"), template=NULL)
+          function(object, format = c("html", "pdf"), template = NULL)
       {
           format <- match.arg(format)
 
@@ -356,9 +358,11 @@ setMethod("Report",
       }
 )
 
+##' @rdname Report-methods
+##' @export
 setMethod("Report",
           signature(object = "list"),
-          function(object, format=c("html", "pdf"), template=NULL)
+          function(object, format = c("html", "pdf"), template = NULL)
       {
           format <- match.arg(format)
 
@@ -391,7 +395,6 @@ setMethod("Report",
 ##' \code{ContactTrace} object to the report.
 ##'
 ##'
-##' @usage ReportObject()
 ##' @return The current \code{ContactTrace} object when generating a report
 ##' @export
 ReportObject <- function()

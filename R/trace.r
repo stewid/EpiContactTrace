@@ -71,7 +71,6 @@
 ##'   }
 ##' }
 ##'
-##' @usage Trace(movements, root, tEnd, days, inBegin, inEnd, outBegin, outEnd)
 ##' @param movements a \code{data.frame} data.frame with movements,
 ##' see details.
 ##' @param root vector of roots to perform contact tracing for.
