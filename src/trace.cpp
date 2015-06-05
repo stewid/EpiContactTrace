@@ -1,4 +1,4 @@
-// Copyright 2013-2014 Stefan Widgren and Maria Noremark,
+// Copyright 2013-2015 Stefan Widgren and Maria Noremark,
 // National Veterinary Institute, Sweden
 //
 // Licensed under the EUPL, Version 1.1 or - as soon they
@@ -26,7 +26,7 @@
 using namespace Rcpp;
 using namespace std;
 
-RcppExport SEXP traceContacts(SEXP src,
+extern "C" SEXP traceContacts(SEXP src,
 			      SEXP dst,
 			      SEXP t,
 			      SEXP root,
@@ -36,7 +36,7 @@ RcppExport SEXP traceContacts(SEXP src,
 			      SEXP outEnd,
 			      SEXP numberOfIdentifiers);
 
-RcppExport SEXP networkSummary(SEXP src,
+extern "C" SEXP networkSummary(SEXP src,
 			       SEXP dst,
 			       SEXP t,
 			       SEXP root,
@@ -46,7 +46,7 @@ RcppExport SEXP networkSummary(SEXP src,
 			       SEXP outEnd,
 			       SEXP numberOfIdentifiers);
 
-RcppExport SEXP shortestPaths(SEXP src,
+extern "C" SEXP shortestPaths(SEXP src,
                               SEXP dst,
                               SEXP t,
                               SEXP root,
