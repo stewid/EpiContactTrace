@@ -21,10 +21,86 @@
 #include <algorithm>
 #include <utility>
 #include <vector>
-#include "trace.h"
+#include <Rcpp.h>
 
 using namespace Rcpp;
 using namespace std;
+
+RcppExport SEXP traceContacts(SEXP src,
+			      SEXP dst,
+			      SEXP t,
+			      SEXP root,
+			      SEXP inBegin,
+			      SEXP inEnd,
+			      SEXP outBegin,
+			      SEXP outEnd,
+			      SEXP numberOfIdentifiers);
+
+RcppExport SEXP networkSummary(SEXP src,
+			       SEXP dst,
+			       SEXP t,
+			       SEXP root,
+			       SEXP inBegin,
+			       SEXP inEnd,
+			       SEXP outBegin,
+			       SEXP outEnd,
+			       SEXP numberOfIdentifiers);
+
+RcppExport SEXP shortestPaths(SEXP src,
+                              SEXP dst,
+                              SEXP t,
+                              SEXP root,
+                              SEXP inBegin,
+                              SEXP inEnd,
+                              SEXP outBegin,
+                              SEXP outEnd,
+                              SEXP numberOfIdentifiers);
+
+class Contact {
+public:
+  Contact(int rowid, int identifier, int t)
+    : rowid_(rowid), identifier_(identifier), t_(t)
+  {
+  }
+
+  int rowid_;
+  int identifier_;
+  int t_;
+};
+
+class CompareContact
+{
+public:
+  bool operator()(const Contact& c, int t)
+  {
+    return c.t_ < t;
+  }
+
+  bool operator()(int t, const Contact& c)
+  {
+    return t < c.t_;
+  }
+};
+
+// Help class to keep track of visited nodes.
+class VisitedNodes
+{
+public:
+  VisitedNodes(size_t numberOfIdentifiers)
+    : numberOfVisitedNodes(0),
+      visitedNodes(numberOfIdentifiers)
+  {}
+
+  int N(void) const {return numberOfVisitedNodes;}
+  void Update(int node, int tBegin, int tEnd, bool ingoing);
+  bool Visit(int node, int tBegin, int tEnd, bool ingoing);
+
+private:
+  int numberOfVisitedNodes;
+  std::vector<std::pair<bool, int> > visitedNodes;
+};
+
+typedef std::vector<Contact> Contacts;
 
 static int
 check_arguments(const SEXP src,
