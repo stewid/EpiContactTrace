@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <utility>
 #include <vector>
+#include <Rinternals.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
@@ -337,12 +338,44 @@ SEXP shortestPaths(const SEXP src,
         }
     }
 
-    return List::create(_["inDistance"]  = inDistance,
-			_["inRowid"]     = inRowid,
-			_["inIndex"]     = inIndex,
-                        _["outDistance"] = outDistance,
-			_["outRowid"]    = outRowid,
-			_["outIndex"]    = outIndex);
+    SEXP result, names, vec;
+    PROTECT(result = allocVector(VECSXP, 6));
+    PROTECT(names = allocVector(STRSXP, 6));
+
+    SET_VECTOR_ELT(result, 0, vec = allocVector(INTSXP, inDistance.size()));
+    for (size_t i = 0; i < inDistance.size(); ++i)
+        INTEGER(vec)[i] = inDistance[i];
+    SET_STRING_ELT(names,  0, mkChar("inDistance"));
+
+    SET_VECTOR_ELT(result, 1, vec = allocVector(INTSXP, inRowid.size()));
+    for (size_t i = 0; i < inRowid.size(); ++i)
+        INTEGER(vec)[i] = inRowid[i];
+    SET_STRING_ELT(names,  1, mkChar("inRowid"));
+
+    SET_VECTOR_ELT(result, 2, vec = allocVector(INTSXP, inIndex.size()));
+    for (size_t i = 0; i < inIndex.size(); ++i)
+        INTEGER(vec)[i] = inIndex[i];
+    SET_STRING_ELT(names,  2, mkChar("inIndex"));
+
+    SET_VECTOR_ELT(result, 3, vec = allocVector(INTSXP, outDistance.size()));
+    for (size_t i = 0; i < outDistance.size(); ++i)
+        INTEGER(vec)[i] = outDistance[i];
+    SET_STRING_ELT(names,  3, mkChar("outDistance"));
+
+    SET_VECTOR_ELT(result, 4, vec = allocVector(INTSXP, outRowid.size()));
+    for (size_t i = 0; i < outRowid.size(); ++i)
+        INTEGER(vec)[i] = outRowid[i];
+    SET_STRING_ELT(names,  4, mkChar("outRowid"));
+
+    SET_VECTOR_ELT(result, 5, vec = allocVector(INTSXP, outIndex.size()));
+    for (size_t i = 0; i < outIndex.size(); ++i)
+        INTEGER(vec)[i] = outIndex[i];
+    SET_STRING_ELT(names,  5, mkChar("outIndex"));
+
+    setAttrib(result, R_NamesSymbol, names);
+    UNPROTECT(2);
+
+    return result;
 }
 
 static void
