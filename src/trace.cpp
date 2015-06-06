@@ -640,8 +640,32 @@ SEXP networkSummary(const SEXP src,
                                    INTEGER(outEnd)[i]));
     }
 
-    return List::create(_["inDegree"] = inDegree,
-			_["outDegree"] = outDegree,
-			_["ingoingContactChain"] = ingoingContactChain,
-			_["outgoingContactChain"] = outgoingContactChain);
+    SEXP result, names, vec;
+    PROTECT(result = allocVector(VECSXP, 4));
+    PROTECT(names = allocVector(STRSXP, 4));
+
+    SET_VECTOR_ELT(result, 0, vec = allocVector(INTSXP, inDegree.size()));
+    for (size_t i = 0; i < inDegree.size(); ++i)
+        INTEGER(vec)[i] = inDegree[i];
+    SET_STRING_ELT(names,  0, mkChar("inDegree"));
+
+    SET_VECTOR_ELT(result, 1, vec = allocVector(INTSXP, outDegree.size()));
+    for (size_t i = 0; i < outDegree.size(); ++i)
+        INTEGER(vec)[i] = outDegree[i];
+    SET_STRING_ELT(names,  1, mkChar("outDegree"));
+
+    SET_VECTOR_ELT(result, 2, vec = allocVector(INTSXP, ingoingContactChain.size()));
+    for (size_t i = 0; i < ingoingContactChain.size(); ++i)
+        INTEGER(vec)[i] = ingoingContactChain[i];
+    SET_STRING_ELT(names,  2, mkChar("ingoingContactChain"));
+
+    SET_VECTOR_ELT(result, 3, vec = allocVector(INTSXP, outgoingContactChain.size()));
+    for (size_t i = 0; i < outgoingContactChain.size(); ++i)
+        INTEGER(vec)[i] = outgoingContactChain[i];
+    SET_STRING_ELT(names,  3, mkChar("outgoingContactChain"));
+
+    setAttrib(result, R_NamesSymbol, names);
+    UNPROTECT(2);
+
+    return result;
 }
