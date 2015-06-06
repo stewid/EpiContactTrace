@@ -25,36 +25,6 @@
 
 using namespace Rcpp;
 
-extern "C" SEXP traceContacts(SEXP src,
-			      SEXP dst,
-			      SEXP t,
-			      SEXP root,
-			      SEXP inBegin,
-			      SEXP inEnd,
-			      SEXP outBegin,
-			      SEXP outEnd,
-			      SEXP numberOfIdentifiers);
-
-extern "C" SEXP networkSummary(SEXP src,
-			       SEXP dst,
-			       SEXP t,
-			       SEXP root,
-			       SEXP inBegin,
-			       SEXP inEnd,
-			       SEXP outBegin,
-			       SEXP outEnd,
-			       SEXP numberOfIdentifiers);
-
-extern "C" SEXP shortestPaths(SEXP src,
-                              SEXP dst,
-                              SEXP t,
-                              SEXP root,
-                              SEXP inBegin,
-                              SEXP inEnd,
-                              SEXP outBegin,
-                              SEXP outEnd,
-                              SEXP numberOfIdentifiers);
-
 class Contact {
 public:
   Contact(int rowid, int identifier, int t)
@@ -294,6 +264,7 @@ shortestPaths(const std::vector<std::map<int, Contacts> >& data,
     }
 }
 
+extern "C"
 SEXP shortestPaths(const SEXP src,
 		   const SEXP dst,
 		   const SEXP t,
@@ -439,6 +410,7 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
     }
 }
 
+extern "C"
 SEXP traceContacts(const SEXP src,
 		   const SEXP dst,
 		   const SEXP t,
@@ -576,6 +548,7 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
     }
 }
 
+extern "C"
 SEXP networkSummary(const SEXP src,
 		    const SEXP dst,
 		    const SEXP t,
