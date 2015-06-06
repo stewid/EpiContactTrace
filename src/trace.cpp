@@ -19,12 +19,11 @@
 // permissions and limitations under the Licence.
 
 #include <algorithm>
+#include <map>
+#include <set>
 #include <utility>
 #include <vector>
 #include <Rinternals.h>
-#include <Rcpp.h>
-
-using namespace Rcpp;
 
 class Contact {
 public:

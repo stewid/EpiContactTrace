@@ -67,7 +67,6 @@
 ##' archive if plots are required. See section 6.3 in 'R Installation
 ##' and Administration' on how to install packages from source.
 ##' @keywords package
-##' @import Rcpp
 ##' @import methods
 ##' @useDynLib EpiContactTrace
 ##' @examples
