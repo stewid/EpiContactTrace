@@ -22,7 +22,6 @@ Collate:
     'Contacts.r'
     'ContactTrace.r'
     'EpiContactTrace-package.r'
-    'animate.r'
     'in-degree.r'
     'ingoing-contact-chain.r'
     'network-structure.r'
