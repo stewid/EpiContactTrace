@@ -15,9 +15,6 @@ LazyLoad: yes
 Depends:
     R(>= 3.0.2),
     methods
-Suggests:
-    animation,
-    ggmap
 Collate:
     'Contacts.r'
     'ContactTrace.r'
