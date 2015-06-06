@@ -465,11 +465,12 @@ SEXP traceContacts(const SEXP src,
                             LENGTH(t),
                             INTEGER(numberOfIdentifiers)[0]);
 
-    List result;
+    SEXP result, vec;
     std::vector<int> resultRowid;
     std::vector<int> resultDistance;
 
-    for(size_t i=0, end=LENGTH(root); i<end; ++i) {
+    PROTECT(result = allocVector(VECSXP, 4 * LENGTH(root)));
+    for(size_t i = 0, end = LENGTH(root); i < end; ++i) {
         resultRowid.clear();
         resultDistance.clear();
 
@@ -483,8 +484,13 @@ SEXP traceContacts(const SEXP src,
                       resultRowid,
                       resultDistance);
 
-        result.push_back(resultRowid);
-        result.push_back(resultDistance);
+        SET_VECTOR_ELT(result, 4 * i, vec = allocVector(INTSXP, resultRowid.size()));
+        for (size_t j = 0; j < resultRowid.size(); ++j)
+            INTEGER(vec)[j] = resultRowid[j];
+
+        SET_VECTOR_ELT(result, 4 * i + 1, vec = allocVector(INTSXP, resultDistance.size()));
+        for (size_t j = 0; j < resultDistance.size(); ++j)
+            INTEGER(vec)[j] = resultDistance[j];
 
         resultRowid.clear();
         resultDistance.clear();
@@ -499,9 +505,16 @@ SEXP traceContacts(const SEXP src,
                       resultRowid,
                       resultDistance);
 
-        result.push_back(resultRowid);
-        result.push_back(resultDistance);
+        SET_VECTOR_ELT(result, 4 * i + 2, vec = allocVector(INTSXP, resultRowid.size()));
+        for (size_t j = 0; j < resultRowid.size(); ++j)
+            INTEGER(vec)[j] = resultRowid[j];
+
+        SET_VECTOR_ELT(result, 4 * i + 3, vec = allocVector(INTSXP, resultDistance.size()));
+        for (size_t j = 0; j < resultDistance.size(); ++j)
+            INTEGER(vec)[j] = resultDistance[j];
     }
+
+    UNPROTECT(1);
 
     return result;
 }
