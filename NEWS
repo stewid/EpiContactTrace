@@ -16,6 +16,10 @@ CHANGES
   measures for several roots, the purpose is to use methods that work
   directly on the data.frame with movements.
 
+* Updated maintainer email
+
+* Changed 'Title' field in DESCRIPTION to title case
+
 PERFORMANCE IMPROVEMENTS
 
 * Improved performance when calculating ShortestPaths on a data.frame
