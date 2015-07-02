@@ -12,8 +12,12 @@ License: EUPL
 URL: https://github.com/stewid/EpiContactTrace
 Type: Package
 LazyLoad: yes
-Depends: R(>= 3.0.2)
-Imports: graphics, methods
+Depends:
+    R(>= 3.0.2)
+Imports:
+    graphics,
+    methods,
+    utils
 Collate:
     'Contacts.r'
     'ContactTrace.r'
