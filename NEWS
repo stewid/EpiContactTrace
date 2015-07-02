@@ -1,7 +1,14 @@
-EpiContactTrace
+EpiContactTrace 0.9.0
 ---------------------
 
 CHANGES
+
+* Removed Animate method to pass the CRAN checks. Install version
+  0.8.8 manually from the archive if that method is required. See
+  section 6.3 in 'R Installation and Administration' on how to install
+  packages from source.
+
+* Removed dependencies to plyr, R2HTML and Rcpp.
 
 * Removed usage of testthat when testing the package.
 
