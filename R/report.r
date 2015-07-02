@@ -285,6 +285,7 @@ html_report <- function(x)
 ##' archive if plots are required. See section 6.3 in 'R Installation
 ##' and Administration' on how to install packages from source.
 ##' @keywords methods
+##' @importFrom utils packageVersion
 ##' @examples
 ##' \dontrun{
 ##'
