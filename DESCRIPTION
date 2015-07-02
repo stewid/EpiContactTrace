@@ -1,7 +1,7 @@
 Package: EpiContactTrace
 Title: Epidemiological Tool for Contact Tracing
-Version: 0.8.8.99
-Date: 2013-11-04
+Version: 0.9.0
+Date: 2015-07-02
 Authors@R: c(
     person("Maria", "Noremark", role = c("aut")),
     person("Stefan", "Widgren", role = c("aut", "cre"),
