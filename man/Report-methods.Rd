@@ -121,7 +121,7 @@ Report(contactTrace)
 }
 }
 \seealso{
-Sweave, R2HTML, texi2pdf.
+Sweave, texi2pdf.
 }
 \keyword{methods}
 
