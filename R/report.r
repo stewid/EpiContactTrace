@@ -278,14 +278,16 @@ html_report <- function(x)
 ##'     Heidelberg, 2002. ISBN 3-7908-1517-9.
 ##'     \url{http://www.statistik.uni-muenchen.de/~leisch/Sweave/}
 ##' }
-##' @seealso Sweave, R2HTML, texi2pdf.
+##' @seealso Sweave, texi2pdf.
 ##' @note Plots are not supported in version 0.8.6 since igraph0 has
 ##' been archived. We intend to resolve the issue in a future
 ##' version. Install version 0.8.5 and igraph0 manually from the
 ##' archive if plots are required. See section 6.3 in 'R Installation
 ##' and Administration' on how to install packages from source.
 ##' @keywords methods
+##' @importFrom tools texi2pdf
 ##' @importFrom utils packageVersion
+##' @importFrom utils Sweave
 ##' @examples
 ##' \dontrun{
 ##'
@@ -349,7 +351,7 @@ setMethod("Report",
                   template <- system.file("Sweave/speak-latex.rnw", package="EpiContactTrace")
               }
 
-              Sweave(template, syntax="SweaveSyntaxNoweb")
+              utils::Sweave(template, syntax="SweaveSyntaxNoweb")
               tools::texi2pdf(sub("rnw$", "tex", basename(template)), clean=TRUE)
               file.rename(sub("rnw$", "pdf", basename(template)), sprintf("%s.pdf", object@root))
               unlink(sub("rnw$", "tex", basename(template)))
