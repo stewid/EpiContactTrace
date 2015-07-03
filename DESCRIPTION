@@ -17,6 +17,7 @@ Depends:
 Imports:
     graphics,
     methods,
+    tools,
     utils
 Collate:
     'Contacts.r'
