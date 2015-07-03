@@ -239,10 +239,10 @@ shortestPaths(const std::vector<std::map<int, Contacts> >& data,
                 if(ingoing) {
                     // and then the upper bound, tEnd.
                     Contacts::const_iterator t_end =
-                        upper_bound(t_begin,
-                                    it->second.end(),
-                                    tEnd,
-                                    CompareContact());
+                        std::upper_bound(t_begin,
+                                         it->second.end(),
+                                         tEnd,
+                                         CompareContact());
 
                     t0 = tBegin;
                     t1 = (t_end-1)->t_;
@@ -398,19 +398,21 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
         if(visitedNodes.find(it->first) == visitedNodes.end()) {
             // We are only interested in contacts within the specified
             // time period, so first check the lower bound, tBegin
-            Contacts::const_iterator t_begin = lower_bound(it->second.begin(),
-                                                           it->second.end(),
-                                                           tBegin,
-                                                           CompareContact());
+            Contacts::const_iterator t_begin =
+                std::lower_bound(it->second.begin(),
+                                 it->second.end(),
+                                 tBegin,
+                                 CompareContact());
 
             if(t_begin != it->second.end() && t_begin->t_ <= tEnd) {
                 int t0, t1;
 
                 // and then the upper bound, tEnd.
-                Contacts::const_iterator t_end = upper_bound(t_begin,
-                                                             it->second.end(),
-                                                             tEnd,
-                                                             CompareContact());
+                Contacts::const_iterator t_end =
+                    std::upper_bound(t_begin,
+                                     it->second.end(),
+                                     tEnd,
+                                     CompareContact());
 
                 for(Contacts::const_iterator iit=t_begin; iit!=t_end; ++iit) {
                     // Increment with one since R vector is one-based.
@@ -534,10 +536,11 @@ degree(const std::vector<std::map<int, Contacts> >& data,
         if(node != it->first) {
             // We are only interested in contacts within the specified
             // time period, so first check the lower bound, tBegin
-            Contacts::const_iterator t_begin = lower_bound(it->second.begin(),
-                                                           it->second.end(),
-                                                           tBegin,
-                                                           CompareContact());
+            Contacts::const_iterator t_begin =
+                std::lower_bound(it->second.begin(),
+                                 it->second.end(),
+                                 tBegin,
+                                 CompareContact());
 
             if(t_begin != it->second.end() && t_begin->t_ <= tEnd) {
                 ++result;
@@ -564,20 +567,22 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
         if(visitedNodes.Visit(it->first, tBegin, tEnd, ingoing)) {
             // We are only interested in contacts within the specified
             // time period, so first check the lower bound, tBegin
-            Contacts::const_iterator t_begin = lower_bound(it->second.begin(),
-                                                           it->second.end(),
-                                                           tBegin,
-                                                           CompareContact());
+            Contacts::const_iterator t_begin =
+                std::lower_bound(it->second.begin(),
+                                 it->second.end(),
+                                 tBegin,
+                                 CompareContact());
 
             if(t_begin != it->second.end() && t_begin->t_ <= tEnd) {
                 int t0, t1;
 
                 if(ingoing) {
                     // and then the upper bound, tEnd.
-                    Contacts::const_iterator t_end = upper_bound(t_begin,
-                                                                 it->second.end(),
-                                                                 tEnd,
-                                                                 CompareContact());
+                    Contacts::const_iterator t_end =
+                        std::upper_bound(t_begin,
+                                         it->second.end(),
+                                         tEnd,
+                                         CompareContact());
 
                     t0 = tBegin;
                     t1 = (t_end-1)->t_;
