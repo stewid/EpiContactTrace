@@ -1,3 +1,10 @@
+EpiContactTrace 0.9.1
+---------------------
+
+BUG FIXES
+
+* Fixed build failure on the Solaris platform.
+
 EpiContactTrace 0.9.0
 ---------------------
 
