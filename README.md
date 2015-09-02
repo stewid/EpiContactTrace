@@ -29,7 +29,7 @@ use the `devtools` package:
 ```
 # install.packages("devtools")
 library(devtools)
-install_github("EpiContactTrace", "stewid")
+install_github("stewid/EpiContactTrace")
 ```
 
 License
