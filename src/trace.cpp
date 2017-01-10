@@ -173,13 +173,13 @@ buildContactsLookup(const int *src,
 
     // The contacts must be sorted by t.
     rowid.reserve(len);
-    for(size_t i=0;i<len;++i) {
+    for (size_t i=0;i<len;++i) {
         rowid.push_back(std::make_pair(t[i], i));
     }
 
     sort(rowid.begin(), rowid.end(), compareT);
 
-    for(size_t i=0;i<len;++i) {
+    for (size_t i=0;i<len;++i) {
         int j = rowid[i].second;
 
         // Decrement with one since std::vector is zero-based
@@ -205,7 +205,7 @@ shortestPaths(const std::vector<std::map<int, Contacts> >& data,
 {
     visitedNodes.insert(node);
 
-    for(std::map<int, Contacts>::const_iterator it = data[node].begin(),
+    for (std::map<int, Contacts>::const_iterator it = data[node].begin(),
             end = data[node].end(); it != end; ++it)
     {
         // We are not interested in going in loops or backwards in the
@@ -293,7 +293,7 @@ SEXP shortestPaths(const SEXP src,
     std::vector<int> outDistance;
     std::vector<int> inIndex;
     std::vector<int> outIndex;
-    for(size_t i=0; i<len; ++i) {
+    for (size_t i=0; i<len; ++i) {
         // Key: node, Value: first: distance, second: original rowid
         std::map<int, std::pair<int, int> > ingoingShortestPaths;
 
@@ -309,7 +309,7 @@ SEXP shortestPaths(const SEXP src,
                       true,
                       ingoingShortestPaths);
 
-        for(std::map<int, std::pair<int, int> >::const_iterator it =
+        for (std::map<int, std::pair<int, int> >::const_iterator it =
                 ingoingShortestPaths.begin();
             it!=ingoingShortestPaths.end(); ++it)
         {
@@ -327,7 +327,7 @@ SEXP shortestPaths(const SEXP src,
                       false,
                       outgoingShortestPaths);
 
-        for(std::map<int, std::pair<int, int> >::const_iterator it =
+        for (std::map<int, std::pair<int, int> >::const_iterator it =
                 outgoingShortestPaths.begin();
             it!=outgoingShortestPaths.end(); ++it)
         {
@@ -390,7 +390,7 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
 {
     visitedNodes.insert(node);
 
-    for(std::map<int, Contacts>::const_iterator it = data[node].begin(),
+    for (std::map<int, Contacts>::const_iterator it = data[node].begin(),
             end = data[node].end(); it != end; ++it)
     {
         // We are not interested in going in loops or backwards in the
@@ -414,7 +414,7 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
                                      tEnd,
                                      CompareContact());
 
-                for(Contacts::const_iterator iit=t_begin; iit!=t_end; ++iit) {
+                for (Contacts::const_iterator iit=t_begin; iit!=t_end; ++iit) {
                     // Increment with one since R vector is one-based.
                     resultRowid.push_back(iit->rowid_ + 1);
 
@@ -471,7 +471,7 @@ SEXP traceContacts(const SEXP src,
     std::vector<int> resultDistance;
 
     PROTECT(result = allocVector(VECSXP, 4 * LENGTH(root)));
-    for(size_t i = 0, end = LENGTH(root); i < end; ++i) {
+    for (size_t i = 0, end = LENGTH(root); i < end; ++i) {
         resultRowid.clear();
         resultDistance.clear();
 
@@ -528,7 +528,7 @@ degree(const std::vector<std::map<int, Contacts> >& data,
 {
     int result = 0;
 
-    for(std::map<int, Contacts>::const_iterator it = data[node].begin();
+    for (std::map<int, Contacts>::const_iterator it = data[node].begin();
         it != data[node].end();
         ++it)
     {
@@ -561,7 +561,7 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
 {
     visitedNodes.Update(node, tBegin, tEnd, ingoing);
 
-    for(std::map<int, Contacts>::const_iterator it = data[node].begin(),
+    for (std::map<int, Contacts>::const_iterator it = data[node].begin(),
             end = data[node].end(); it != end; ++it)
     {
         if (visitedNodes.Visit(it->first, tBegin, tEnd, ingoing)) {
@@ -625,7 +625,7 @@ SEXP networkSummary(const SEXP src,
     std::vector<int> inDegree;
     std::vector<int> outDegree;
 
-    for(size_t i=0, end=LENGTH(root); i<end; ++i) {
+    for (size_t i=0, end=LENGTH(root); i<end; ++i) {
         VisitedNodes visitedNodesIngoing(INTEGER(numberOfIdentifiers)[0]);
         VisitedNodes visitedNodesOutgoing(INTEGER(numberOfIdentifiers)[0]);
 
