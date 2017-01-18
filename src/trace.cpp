@@ -37,36 +37,65 @@ public:
   int t_;
 };
 
-class CompareContact
-{
+class CompareContact {
 public:
-  bool operator()(const Contact& c, int t)
-  {
-    return c.t_ < t;
-  }
+    bool operator()(const Contact& c, int t) {
+        return c.t_ < t;
+    }
 
-  bool operator()(int t, const Contact& c)
-  {
-    return t < c.t_;
-  }
+    bool operator()(int t, const Contact& c) {
+        return t < c.t_;
+    }
 };
 
 // Help class to keep track of visited nodes.
-class VisitedNodes
-{
+class VisitedNodes {
 public:
-  VisitedNodes(size_t numberOfIdentifiers)
-    : numberOfVisitedNodes(0),
-      visitedNodes(numberOfIdentifiers)
-  {}
+    VisitedNodes(size_t numberOfIdentifiers)
+        : numberOfVisitedNodes(0),
+          visitedNodes(numberOfIdentifiers)
+        {}
 
-  int N(void) const {return numberOfVisitedNodes;}
-  void Update(int node, int tBegin, int tEnd, bool ingoing);
-  bool Visit(int node, int tBegin, int tEnd, bool ingoing);
+    int N(void) const {
+        return numberOfVisitedNodes;
+    }
+
+    void Update(int node, int tBegin, int tEnd, bool ingoing) {
+        if (visitedNodes[node].first) {
+            if (ingoing) {
+                if (tEnd > visitedNodes[node].second) {
+                    visitedNodes[node].second = tEnd;
+                }
+            } else if (tBegin < visitedNodes[node].second) {
+                visitedNodes[node].second = tBegin;
+            }
+        } else {
+            visitedNodes[node].first = true;
+            numberOfVisitedNodes++;
+            if (ingoing)
+                visitedNodes[node].second = tEnd;
+            else
+                visitedNodes[node].second = tBegin;
+        }
+    }
+
+    bool Visit(int node, int tBegin, int tEnd, bool ingoing) {
+        if (visitedNodes[node].first) {
+            if (ingoing) {
+                if (tEnd <= visitedNodes[node].second) {
+                    return false;
+                }
+            } else if (tBegin >= visitedNodes[node].second) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 private:
-  int numberOfVisitedNodes;
-  std::vector<std::pair<bool, int> > visitedNodes;
+    int numberOfVisitedNodes;
+    std::vector<std::pair<bool, int> > visitedNodes;
 };
 
 typedef std::vector<Contact> Contacts;
@@ -104,48 +133,6 @@ bool
 compareT(std::pair<int, int> const& t1, std::pair<int, int> const& t2)
 {
     return t1.first < t2.first;
-}
-
-// Help class to keep track of visited nodes.
-// class VisitedNodes
-void
-VisitedNodes::Update(int node, int tBegin, int tEnd, bool ingoing)
-{
-    if (visitedNodes[node].first) {
-        if (ingoing) {
-            if (tEnd > visitedNodes[node].second) {
-                visitedNodes[node].second = tEnd;
-            }
-        }
-        else if (tBegin < visitedNodes[node].second) {
-            visitedNodes[node].second = tBegin;
-        }
-    }
-    else {
-        visitedNodes[node].first = true;
-        numberOfVisitedNodes++;
-        if (ingoing)
-            visitedNodes[node].second = tEnd;
-        else
-            visitedNodes[node].second = tBegin;
-    }
-}
-
-bool
-VisitedNodes::Visit(int node, int tBegin, int tEnd, bool ingoing)
-{
-    if (visitedNodes[node].first) {
-        if (ingoing) {
-            if (tEnd <= visitedNodes[node].second) {
-                return false;
-            }
-        }
-        else if (tBegin >= visitedNodes[node].second) {
-            return false;
-        }
-    }
-
-    return true;
 }
 
 // Lookup of ingoing and outgoing conatcts
