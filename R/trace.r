@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2017 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -17,6 +17,18 @@
 ## express or implied.
 ## See the Licence for the specific language governing
 ## permissions and limitations under the Licence.
+
+##' Check if wholenumbers
+##'
+##' Check that all values are wholenumbers, see example in integer {base}
+##' @param x Value to check
+##' @param tol Tolerance of the check
+##' @return logical vector
+##' @keywords internal
+is_wholenumber <- function(x, tol = .Machine$double.eps^0.5)
+{
+    abs(x - round(x)) < tol
+}
 
 ##' Trace Contacts.
 ##'
@@ -72,25 +84,27 @@
 ##' }
 ##'
 ##' @param movements a \code{data.frame} data.frame with movements,
-##' see details.
+##'     see details.
 ##' @param root vector of roots to perform contact tracing for.
 ##' @param tEnd the last date to include ingoing and outgoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' ingoing and outgoing movements. Defaults to \code{NULL}
+##'     ingoing and outgoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param outBegin the first date to include outgoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param outEnd the last date to include outgoing
-##' movements. Defaults to \code{NULL}
-##' @references \itemize{
-##'   \item Dube, C., et al., A review of network analysis terminology
-##'     and its application to foot-and-mouth disease modelling and policy
-##'     development. Transbound Emerg Dis 56 (2009) 73-85, doi:
-##'     10.1111/j.1865-1682.2008.01064.x
+##'     movements. Defaults to \code{NULL}
+##' @param maxDistance stop contact tracing at maxDistance (inclusive)
+##'     from root. Default is \code{NULL} i.e. don't use the
+##'     maxDistance stop criteria.
+##' @references \itemize{ \item Dube, C., et al., A review of network
+##'     analysis terminology and its application to foot-and-mouth
+##'     disease modelling and policy development. Transbound Emerg Dis
+##'     56 (2009) 73-85, doi: 10.1111/j.1865-1682.2008.01064.x
 ##'
 ##'   \item Noremark, M., et al., Network analysis
 ##'     of cattle and pig movements in Sweden: Measures relevant for
@@ -158,7 +172,8 @@ Trace <- function(movements,
                   inBegin = NULL,
                   inEnd = NULL,
                   outBegin = NULL,
-                  outEnd = NULL)
+                  outEnd = NULL,
+                  maxDistance = NULL)
 {
     ## Before doing any contact tracing check that arguments are ok
     ## from various perspectives.
@@ -418,6 +433,19 @@ Trace <- function(movements,
         stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
     }
 
+    ##
+    ## Check maxDistance
+    ##
+    if (is.null(maxDistance)) {
+        maxDistance <- 0L
+    } else if (!is.numeric(maxDistance)) {
+        stop("'maxDistance' must be an integer")
+    }
+
+    if (!is_wholenumber(maxDistance)) {
+        stop("'maxDistance' must be an integer")
+    }
+
     ## Arguments seems ok...go on with contact tracing
 
     ## Make sure all nodes have a valid variable name by making
@@ -437,6 +465,7 @@ Trace <- function(movements,
                             as.integer(julian(outBegin)),
                             as.integer(julian(outEnd)),
                             length(nodes),
+                            as.integer(maxDistance),
                             PACKAGE = "EpiContactTrace")
 
     result <- lapply(seq_len(length(root)), function(i) {

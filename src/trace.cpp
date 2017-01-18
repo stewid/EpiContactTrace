@@ -1,4 +1,4 @@
-// Copyright 2013-2015 Stefan Widgren and Maria Noremark,
+// Copyright 2013-2017 Stefan Widgren and Maria Noremark,
 // National Veterinary Institute, Sweden
 //
 // Licensed under the EUPL, Version 1.1 or - as soon they
@@ -373,7 +373,8 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
 	      const int distance,
 	      const bool ingoing,
 	      std::vector<int>& resultRowid,
-	      std::vector<int>& resultDistance)
+	      std::vector<int>& resultDistance,
+              const int maxDistance)
 {
     visitedNodes.insert(node);
 
@@ -408,11 +409,13 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
                     resultDistance.push_back(distance);
                 }
 
+                if (maxDistance > 0 && maxDistance >= distance)
+                    continue;
+
                 if (ingoing) {
                     t0 = tBegin;
                     t1 = (t_end-1)->t_;
-                }
-                else {
+                } else {
                     t0 = t_begin->t_;
                     t1 = tEnd;
                 }
@@ -425,7 +428,8 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
                               distance + 1,
                               ingoing,
                               resultRowid,
-                              resultDistance);
+                              resultDistance,
+                              maxDistance);
             }
         }
     }
@@ -440,11 +444,13 @@ SEXP traceContacts(const SEXP src,
 		   const SEXP inEnd,
 		   const SEXP outBegin,
 		   const SEXP outEnd,
-		   const SEXP numberOfIdentifiers)
+		   const SEXP numberOfIdentifiers,
+                   const SEXP maxDistance)
 {
-    if (check_arguments(src, dst, t, root, inBegin, inEnd,
-                       outBegin, outEnd, numberOfIdentifiers))
+    if (check_arguments(src, dst, t, root, inBegin, inEnd, outBegin, outEnd,
+                        numberOfIdentifiers)) {
         Rf_error("Unable to trace contacts");
+    }
 
     ContactsLookup lookup =
         buildContactsLookup(INTEGER(src),
@@ -470,7 +476,8 @@ SEXP traceContacts(const SEXP src,
                       1,
                       true,
                       resultRowid,
-                      resultDistance);
+                      resultDistance,
+                      INTEGER(maxDistance)[0]);
 
         SET_VECTOR_ELT(result, 4 * i, vec = allocVector(INTSXP, resultRowid.size()));
         for (size_t j = 0; j < resultRowid.size(); ++j)
@@ -491,7 +498,8 @@ SEXP traceContacts(const SEXP src,
                       1,
                       false,
                       resultRowid,
-                      resultDistance);
+                      resultDistance,
+                      INTEGER(maxDistance)[0]);
 
         SET_VECTOR_ELT(result, 4 * i + 2, vec = allocVector(INTSXP, resultRowid.size()));
         for (size_t j = 0; j < resultRowid.size(); ++j)
@@ -573,8 +581,7 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
 
                     t0 = tBegin;
                     t1 = (t_end-1)->t_;
-                }
-                else {
+                } else {
                     t0 = t_begin->t_;
                     t1 = tEnd;
                 }
