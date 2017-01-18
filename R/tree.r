@@ -1,4 +1,4 @@
-## Copyright 2013-2014 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2017 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -110,9 +110,9 @@ build_tree <- function(network_structure)
 ##'
 ##' This function determines the coordinates for each node in a
 ##' tree.
-##' @param tree
-##' @param x The x coordinate of the root node
-##' @param y The y coordinate of the root node
+##' @param tree The tree with nodes to position.
+##' @param x The x coordinate of the root node.
+##' @param y The y coordinate of the root node.
 ##' @param orientation The orientation of the tree. \code{North}, the
 ##' root is at the top. \code{South}, the root is at the
 ##' bottom. \code{East}, the root is at the left. \code{West}, th root
