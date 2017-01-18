@@ -34,3 +34,4 @@ Collate:
     'show.r'
     'trace.r'
     'tree.r'
+RoxygenNote: 5.0.1
