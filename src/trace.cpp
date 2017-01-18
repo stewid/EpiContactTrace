@@ -409,7 +409,7 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
                     resultDistance.push_back(distance);
                 }
 
-                if (maxDistance > 0 && maxDistance >= distance)
+                if (maxDistance > 0 && distance >= maxDistance)
                     continue;
 
                 if (ingoing) {
