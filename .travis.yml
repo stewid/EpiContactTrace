@@ -6,6 +6,18 @@ os:
   - linux
   - osx
 
+r_packages:
+  - covr
+
+after_failure:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cat /home/travis/build/stewid/EpiContactTrace/EpiContactTrace.Rcheck/00install.out; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then cat /Users/travis/build/stewid/EpiContactTrace/EpiContactTrace.Rcheck/00install.out; fi
+
+after_success:
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then Rscript -e 'library(covr); coveralls()'; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cat /home/travis/build/stewid/EpiContactTrace/EpiContactTrace.Rcheck/00install.out; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then cat /Users/travis/build/stewid/EpiContactTrace/EpiContactTrace.Rcheck/00install.out; fi
+
 notifications:
   email:
     on_success: change
