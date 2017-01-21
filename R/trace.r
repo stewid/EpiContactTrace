@@ -438,12 +438,13 @@ Trace <- function(movements,
     ##
     if (is.null(maxDistance)) {
         maxDistance <- 0L
-    } else if (!is.numeric(maxDistance)) {
-        stop("'maxDistance' must be an integer")
     }
 
-    if (!is_wholenumber(maxDistance)) {
-        stop("'maxDistance' must be an integer")
+    if (!all(identical(is.numeric(maxDistance), TRUE),
+             identical(length(maxDistance), 1L),
+             identical(is_wholenumber(maxDistance), TRUE),
+             as.integer(maxDistance) >= 0L)) {
+        stop("'maxDistance' must be an integer >= 0")
     }
 
     ## Arguments seems ok...go on with contact tracing
