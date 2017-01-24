@@ -276,7 +276,6 @@ html_report <- function(x)
 ##'     Hardle and Bernd Ronz, editors, Compstat 2002 - Proceedings in
 ##'     Computational Statistics, pages 575-580. Physica Verlag,
 ##'     Heidelberg, 2002. ISBN 3-7908-1517-9.
-##'     \url{http://www.statistik.uni-muenchen.de/~leisch/Sweave/}
 ##' }
 ##' @seealso Sweave, texi2pdf.
 ##' @note Plots are not supported in version 0.8.6 since igraph0 has
