@@ -1,3 +1,12 @@
+EpiContactTrace 0.10.0
+---------------------
+
+IMPROVEMENTS
+
+Added the 'maxDistance' argument to the 'Trace' method to stop contact
+tracing at 'maxDistance' (inclusive) from the root node.  Default is
+‘NULL’ i.e. to not use the 'maxDistance' stop criteria.
+
 EpiContactTrace 0.9.1
 ---------------------
 
