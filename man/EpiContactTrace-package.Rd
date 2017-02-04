@@ -2,8 +2,8 @@
 % Please edit documentation in R/EpiContactTrace-package.r
 \docType{package}
 \name{EpiContactTrace-package}
-\alias{EpiContactTrace}
 \alias{EpiContactTrace-package}
+\alias{EpiContactTrace}
 \title{Epidemiological tool for contact tracing.}
 \description{
 Routines for epidemiological contact tracing and visualisation of network
@@ -41,6 +41,7 @@ and Administration' on how to install packages from source.
 
 Stefan Widgren <stefan.widgren@sva.se>
 }
+
 \examples{
 
 ## Load data
@@ -63,9 +64,6 @@ Report(contactTrace)
 }
 
 }
-\author{
-Stefan Widgren Maria Noremark
-}
 \references{
 \itemize{
   \item Dube, C., et al., A review of network analysis terminology
@@ -79,5 +77,7 @@ Stefan Widgren Maria Noremark
     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 }
 }
+\author{
+Stefan Widgren Maria Noremark
+}
 \keyword{package}
-

@@ -109,6 +109,7 @@ The network tree structure given by the depth first search is shown by
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -135,4 +136,3 @@ sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
 \code{\link{show}} and \code{\link{NetworkStructure}}.
 }
 \keyword{methods}
-

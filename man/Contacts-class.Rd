@@ -70,6 +70,7 @@ during the contact tracing.
 form \code{new("Contacts", root, startDate, days, source, destination, t,
 id, n, category, level, direction, ...)}.
 }
+
 \examples{
 
 ## Load data
@@ -89,4 +90,3 @@ str(contactTrace@outgoingContacts)
 
 }
 \keyword{classes}
-

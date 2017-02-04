@@ -3,8 +3,8 @@
 \docType{methods}
 \name{InDegree}
 \alias{InDegree}
-\alias{InDegree,ContactTrace-method}
 \alias{InDegree,Contacts-method}
+\alias{InDegree,ContactTrace-method}
 \alias{InDegree,data.frame-method}
 \title{\code{InDegree}}
 \usage{
@@ -122,6 +122,7 @@ with the following columns:
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -175,4 +176,3 @@ result <- InDegree(transfers,
 \code{\link{NetworkSummary}}
 }
 \keyword{methods}
-

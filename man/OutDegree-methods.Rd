@@ -3,8 +3,8 @@
 \docType{methods}
 \name{OutDegree}
 \alias{OutDegree}
-\alias{OutDegree,ContactTrace-method}
 \alias{OutDegree,Contacts-method}
+\alias{OutDegree,ContactTrace-method}
 \alias{OutDegree,data.frame-method}
 \title{\code{OutDegree}}
 \usage{
@@ -123,6 +123,7 @@ with the following columns:
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -176,4 +177,3 @@ result <- OutDegree(transfers,
 \code{\link{NetworkSummary}}
 }
 \keyword{methods}
-

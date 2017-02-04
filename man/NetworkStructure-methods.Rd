@@ -3,8 +3,8 @@
 \docType{methods}
 \name{NetworkStructure}
 \alias{NetworkStructure}
-\alias{NetworkStructure,ContactTrace-method}
 \alias{NetworkStructure,Contacts-method}
+\alias{NetworkStructure,ContactTrace-method}
 \title{\code{NetworkStructure}}
 \usage{
 NetworkStructure(object)
@@ -88,6 +88,7 @@ network tree structure given by the depth first search is shown by
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -107,4 +108,3 @@ NetworkStructure(contactTrace)
 \code{\link{show}}.
 }
 \keyword{methods}
-

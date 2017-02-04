@@ -3,8 +3,8 @@
 \docType{methods}
 \name{OutgoingContactChain}
 \alias{OutgoingContactChain}
-\alias{OutgoingContactChain,ContactTrace-method}
 \alias{OutgoingContactChain,Contacts-method}
+\alias{OutgoingContactChain,ContactTrace-method}
 \alias{OutgoingContactChain,data.frame-method}
 \title{\code{OutgoingContactChain}}
 \usage{
@@ -81,6 +81,7 @@ tracing.
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -135,4 +136,3 @@ result <- OutgoingContactChain(transfers,
 \code{\link{NetworkSummary}}
 }
 \keyword{methods}
-

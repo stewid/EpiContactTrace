@@ -3,8 +3,8 @@
 \docType{methods}
 \name{IngoingContactChain}
 \alias{IngoingContactChain}
-\alias{IngoingContactChain,ContactTrace-method}
 \alias{IngoingContactChain,Contacts-method}
+\alias{IngoingContactChain,ContactTrace-method}
 \alias{IngoingContactChain,data.frame-method}
 \title{\code{IngoingContactChain}}
 \usage{
@@ -126,6 +126,7 @@ with the following columns: \describe{
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -179,4 +180,3 @@ result <- IngoingContactChain(transfers,
 \code{\link{NetworkSummary}}
 }
 \keyword{methods}
-

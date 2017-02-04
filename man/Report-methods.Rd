@@ -3,9 +3,11 @@
 \docType{methods}
 \name{Report}
 \alias{Report}
+\alias{Report-methods}
 \alias{Report,ContactTrace-method}
 \alias{Report,list-method}
-\alias{Report-methods}
+\alias{Report,ContactTrace-method}
+\alias{Report,list-method}
 \title{Generate a contact tracing \code{Report}}
 \usage{
 Report(object, ...)
@@ -66,6 +68,7 @@ and Administration' on how to install packages from source.
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -124,4 +127,3 @@ Report(contactTrace)
 Sweave, texi2pdf.
 }
 \keyword{methods}
-

@@ -2,10 +2,10 @@
 % Please edit documentation in R/show.r
 \docType{methods}
 \name{show-methods}
-\alias{show}
-\alias{show,ContactTrace-method}
-\alias{show,Contacts-method}
 \alias{show-methods}
+\alias{show}
+\alias{show,Contacts-method}
+\alias{show,ContactTrace-method}
 \title{Show}
 \usage{
 \S4method{show}{Contacts}(object)
@@ -34,6 +34,7 @@ network parameters. It also visualize the contact structure.
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -63,4 +64,3 @@ show(contactTrace)
 }
 }
 \keyword{methods}
-

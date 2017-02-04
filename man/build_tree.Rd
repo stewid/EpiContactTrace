@@ -20,4 +20,3 @@ there are no in- or outgoing contacts.
 Build a graph tree from the NetworkStructure
 }
 \keyword{internal}
-

@@ -16,4 +16,3 @@ disease tracing in the field. The templates are used by Sweave and can be
 adapted by the end user. This method enables communication of the current
 \code{ContactTrace} object to the report.
 }
-

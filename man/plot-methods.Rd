@@ -2,9 +2,9 @@
 % Please edit documentation in R/plot.r
 \docType{methods}
 \name{plot-methods}
+\alias{plot-methods}
 \alias{plot}
 \alias{plot,ContactTrace-method}
-\alias{plot-methods}
 \title{plot,-method}
 \usage{
 \S4method{plot}{ContactTrace}(x, y, ...)
@@ -57,4 +57,3 @@ plot(contactTrace)
 \seealso{
 \code{\link{show}}.
 }
-

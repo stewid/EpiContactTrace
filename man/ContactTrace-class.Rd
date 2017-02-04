@@ -31,6 +31,7 @@ tracing.
  Objects can be created by calls of the
 form \code{new("ContactTrace",root, ingoingContacts, outgoingContacts,...)}
 }
+
 \examples{
 
 ## Load data
@@ -46,4 +47,3 @@ contactTrace <- Trace(movements = transfers,
 str(contactTrace)
 }
 \keyword{classes}
-

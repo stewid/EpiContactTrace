@@ -148,6 +148,7 @@ with the following columns:
   }
 }
 }
+
 \examples{
 \dontrun{
 
@@ -240,4 +241,3 @@ result.2 <- NetworkSummary(transfers,
 }
 }
 \keyword{methods}
-
