@@ -24,6 +24,8 @@
 #include <utility>
 #include <vector>
 #include <Rinternals.h>
+#include <R_ext/Rdynload.h>
+#include <R_ext/Visibility.h>
 
 class Contact {
 public:
@@ -181,14 +183,14 @@ buildContactsLookup(const int *src,
 }
 
 static void
-shortestPaths(const std::vector<std::map<int, Contacts> >& data,
-	      const int node,
-	      const int tBegin,
-	      const int tEnd,
-	      std::set<int> visitedNodes,
-	      const int distance,
-	      const bool ingoing,
-              std::map<int, std::pair<int, int> >& result)
+doShortestPaths(const std::vector<std::map<int, Contacts> >& data,
+                const int node,
+                const int tBegin,
+                const int tEnd,
+                std::set<int> visitedNodes,
+                const int distance,
+                const bool ingoing,
+                std::map<int, std::pair<int, int> >& result)
 {
     visitedNodes.insert(node);
 
@@ -238,14 +240,14 @@ shortestPaths(const std::vector<std::map<int, Contacts> >& data,
                     t1 = tEnd;
                 }
 
-                shortestPaths(data,
-                              it->first,
-                              t0,
-                              t1,
-                              visitedNodes,
-                              distance + 1,
-                              ingoing,
-                              result);
+                doShortestPaths(data,
+                                it->first,
+                                t0,
+                                t1,
+                                visitedNodes,
+                                distance + 1,
+                                ingoing,
+                                result);
             }
         }
     }
@@ -287,14 +289,14 @@ SEXP shortestPaths(const SEXP src,
         // Key: node, Value: first: distance, second: original rowid
         std::map<int, std::pair<int, int> > outgoingShortestPaths;
 
-        shortestPaths(lookup.first,
-                      INTEGER(root)[i] - 1,
-                      INTEGER(inBegin)[i],
-                      INTEGER(inEnd)[i],
-                      std::set<int>(),
-                      1,
-                      true,
-                      ingoingShortestPaths);
+        doShortestPaths(lookup.first,
+                        INTEGER(root)[i] - 1,
+                        INTEGER(inBegin)[i],
+                        INTEGER(inEnd)[i],
+                        std::set<int>(),
+                        1,
+                        true,
+                        ingoingShortestPaths);
 
         for (std::map<int, std::pair<int, int> >::const_iterator it =
                 ingoingShortestPaths.begin();
@@ -305,14 +307,14 @@ SEXP shortestPaths(const SEXP src,
             inIndex.push_back(i+1);
         }
 
-        shortestPaths(lookup.second,
-                      INTEGER(root)[i] - 1,
-                      INTEGER(outBegin)[i],
-                      INTEGER(outEnd)[i],
-                      std::set<int>(),
-                      1,
-                      false,
-                      outgoingShortestPaths);
+        doShortestPaths(lookup.second,
+                        INTEGER(root)[i] - 1,
+                        INTEGER(outBegin)[i],
+                        INTEGER(outEnd)[i],
+                        std::set<int>(),
+                        1,
+                        false,
+                        outgoingShortestPaths);
 
         for (std::map<int, std::pair<int, int> >::const_iterator it =
                 outgoingShortestPaths.begin();
@@ -365,16 +367,16 @@ SEXP shortestPaths(const SEXP src,
 }
 
 static void
-traceContacts(const std::vector<std::map<int, Contacts> >& data,
-	      const int node,
-	      const int tBegin,
-	      const int tEnd,
-	      std::set<int> visitedNodes,
-	      const int distance,
-	      const bool ingoing,
-	      std::vector<int>& resultRowid,
-	      std::vector<int>& resultDistance,
-              const int maxDistance)
+doTraceContacts(const std::vector<std::map<int, Contacts> >& data,
+                const int node,
+                const int tBegin,
+                const int tEnd,
+                std::set<int> visitedNodes,
+                const int distance,
+                const bool ingoing,
+                std::vector<int>& resultRowid,
+                std::vector<int>& resultDistance,
+                const int maxDistance)
 {
     visitedNodes.insert(node);
 
@@ -420,16 +422,16 @@ traceContacts(const std::vector<std::map<int, Contacts> >& data,
                     t1 = tEnd;
                 }
 
-                traceContacts(data,
-                              it->first,
-                              t0,
-                              t1,
-                              visitedNodes,
-                              distance + 1,
-                              ingoing,
-                              resultRowid,
-                              resultDistance,
-                              maxDistance);
+                doTraceContacts(data,
+                                it->first,
+                                t0,
+                                t1,
+                                visitedNodes,
+                                distance + 1,
+                                ingoing,
+                                resultRowid,
+                                resultDistance,
+                                maxDistance);
             }
         }
     }
@@ -468,16 +470,16 @@ SEXP traceContacts(const SEXP src,
         resultRowid.clear();
         resultDistance.clear();
 
-        traceContacts(lookup.first,
-                      INTEGER(root)[i] - 1,
-                      INTEGER(inBegin)[i],
-                      INTEGER(inEnd)[i],
-                      std::set<int>(),
-                      1,
-                      true,
-                      resultRowid,
-                      resultDistance,
-                      INTEGER(maxDistance)[0]);
+        doTraceContacts(lookup.first,
+                        INTEGER(root)[i] - 1,
+                        INTEGER(inBegin)[i],
+                        INTEGER(inEnd)[i],
+                        std::set<int>(),
+                        1,
+                        true,
+                        resultRowid,
+                        resultDistance,
+                        INTEGER(maxDistance)[0]);
 
         SET_VECTOR_ELT(result, 4 * i, vec = allocVector(INTSXP, resultRowid.size()));
         for (size_t j = 0; j < resultRowid.size(); ++j)
@@ -490,16 +492,16 @@ SEXP traceContacts(const SEXP src,
         resultRowid.clear();
         resultDistance.clear();
 
-        traceContacts(lookup.second,
-                      INTEGER(root)[i] - 1,
-                      INTEGER(outBegin)[i],
-                      INTEGER(outEnd)[i],
-                      std::set<int>(),
-                      1,
-                      false,
-                      resultRowid,
-                      resultDistance,
-                      INTEGER(maxDistance)[0]);
+        doTraceContacts(lookup.second,
+                        INTEGER(root)[i] - 1,
+                        INTEGER(outBegin)[i],
+                        INTEGER(outEnd)[i],
+                        std::set<int>(),
+                        1,
+                        false,
+                        resultRowid,
+                        resultDistance,
+                        INTEGER(maxDistance)[0]);
 
         SET_VECTOR_ELT(result, 4 * i + 2, vec = allocVector(INTSXP, resultRowid.size()));
         for (size_t j = 0; j < resultRowid.size(); ++j)
@@ -679,4 +681,23 @@ SEXP networkSummary(const SEXP src,
     UNPROTECT(2);
 
     return result;
+}
+
+static const R_CallMethodDef callMethods[] =
+{
+    {"networkSummary", (DL_FUNC) &networkSummary, 9},
+    {"shortestPaths", (DL_FUNC) &shortestPaths, 9},
+    {"traceContacts", (DL_FUNC) &traceContacts, 10},
+    {NULL, NULL, 0}
+};
+
+/** Register routines to R
+ * @param info Information about the DLL being loaded
+ */
+void attribute_visible
+R_init_EpiContactTrace(DllInfo *info)
+{
+    R_registerRoutines(info, NULL, callMethods, NULL, NULL);
+    R_useDynamicSymbols(info, FALSE);
+    R_forceSymbols(info, TRUE);
 }
