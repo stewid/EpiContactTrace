@@ -1,6 +1,11 @@
 EpiContactTrace 0.10.0.9000
 ---------------------------
 
+BUG FIXES
+
+* Added missing calls to 'R_forceSymbols' and 'R_useDynamicSymbols' in
+  the C init function.
+
 EpiContactTrace 0.10.0
 ---------------------
 
