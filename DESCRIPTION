@@ -9,6 +9,7 @@ Description: Routines for epidemiological contact tracing
     and visualisation of network of contacts.
 License: EUPL
 URL: https://github.com/stewid/EpiContactTrace
+BugReports: https://github.com/stewid/EpiContactTrace/issues
 Type: Package
 LazyData: true
 Depends:
