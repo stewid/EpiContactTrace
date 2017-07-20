@@ -68,7 +68,7 @@
 ##' and Administration' on how to install packages from source.
 ##' @keywords package
 ##' @import methods
-##' @useDynLib EpiContactTrace
+##' @useDynLib EpiContactTrace, .registration=TRUE
 ##' @examples
 ##'
 ##' ## Load data
