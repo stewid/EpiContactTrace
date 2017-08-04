@@ -1,6 +1,9 @@
 EpiContactTrace 0.11.0.9000
 ---------------------------
 
+BUG FIXES
+
+* Fix format of authors in CITATION file.
 
 EpiContactTrace 0.11.0
 ----------------------
