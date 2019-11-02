@@ -1,4 +1,4 @@
-## Copyright 2013-2017 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -31,9 +31,9 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 
 ##' Trace Contacts.
 ##'
-##' Contact tracing for a specied node(s) (root) during a specfied time period.
-##' The time period is divided into two parts, one for ingoing contacts and one
-##' for outgoing contacts.
+##' Contact tracing for a specied node(s) (root) during a specfied
+##' time period.  The time period is divided into two parts, one for
+##' ingoing contacts and one for outgoing contacts.
 ##'
 ##'
 ##' The time period used for \code{Trace} can either be specified
@@ -112,31 +112,29 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 ##' }
 ##' @export
 ##' @examples
-##' \dontrun{
-##'
 ##' ## Load data
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing using tEnd and days
-##' trace.1 <- Trace(movements=transfers,
-##'                  root=2645,
-##'                  tEnd='2005-10-31',
-##'                  days=91)
+##' trace_1 <- Trace(movements = transfers,
+##'                  root = 2645,
+##'                  tEnd = "2005-10-31",
+##'                  days = 91)
 ##'
 ##' ## Perform contact tracing using inBegin, inEnd
 ##' ## outBegin and outEnd
-##' trace.2 <- Trace(movements=transfers,
-##'                  root=2645,
-##'                  inBegin='2005-08-01',
-##'                  inEnd='2005-10-31',
-##'                  outBegin='2005-08-01',
-##'                  outEnd='2005-10-31')
+##' trace_2 <- Trace(movements = transfers,
+##'                  root = 2645,
+##'                  inBegin = "2005-08-01",
+##'                  inEnd = "2005-10-31",
+##'                  outBegin = "2005-08-01",
+##'                  outEnd = "2005-10-31")
 ##'
 ##' ## Check that the result is identical
-##' identical(trace.1, trace.2)
+##' identical(trace_1, trace_2)
 ##'
 ##' ## Show result of contact tracing
-##' show(trace.1)
+##' show(trace_1)
 ##'
 ##' ## Create a network summary for all included herds
 ##' ## First extract all source and destination from the dataset
@@ -144,26 +142,24 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 ##'                       transfers$destination)))
 ##'
 ##' ## Perform contact tracing using tEnd and days.
-##' trace.3 <- Trace(movements=transfers,
-##'                  root=root,
-##'                  tEnd='2005-10-31',
-##'                  days=91)
+##' trace_3 <- Trace(movements = transfers,
+##'                  root = root,
+##'                  tEnd = "2005-10-31",
+##'                  days = 91)
 ##'
 ##' ## Perform contact tracing using inBegin, inEnd
 ##' ## outBegin and outEnd
-##' trace.4 <- Trace(movements=transfers,
-##'                  root=root,
-##'                  inBegin=rep('2005-08-01', length(root)),
-##'                  inEnd=rep('2005-10-31', length(root)),
-##'                  outBegin=rep('2005-08-01', length(root)),
-##'                  outEnd=rep('2005-10-31', length(root)))
+##' trace_4 <- Trace(movements = transfers,
+##'                  root = root,
+##'                  inBegin = rep("2005-08-01", length(root)),
+##'                  inEnd = rep("2005-10-31", length(root)),
+##'                  outBegin=rep("2005-08-01", length(root)),
+##'                  outEnd=rep("2005-10-31", length(root)))
 ##'
 ##' ## Check that the result is identical
-##' identical(trace.3, trace.4)
+##' identical(trace_3, trace_4)
 ##'
-##' NetworkSummary(trace.3)
-##' }
-##'
+##' NetworkSummary(trace_3)
 Trace <- function(movements,
                   root,
                   tEnd = NULL,
@@ -175,8 +171,7 @@ Trace <- function(movements,
                   maxDistance = NULL) {
     ## Before doing any contact tracing check that arguments are ok
     ## from various perspectives.
-    if (any(missing(movements),
-           missing(root))) {
+    if (any(missing(movements), missing(root))) {
         stop("Missing parameters in call to Trace")
     }
 
@@ -204,7 +199,8 @@ Trace <- function(movements,
     ##
     ## Check movements$destination
     ##
-    if (any(is.factor(movements$destination), is.integer(movements$destination))) {
+    if (any(is.factor(movements$destination),
+            is.integer(movements$destination))) {
         movements$destination <- as.character(movements$destination)
     } else if (!is.character(movements$destination)) {
         stop("invalid class of column destination in movements")
@@ -249,7 +245,8 @@ Trace <- function(movements,
     }
 
     if ("category" %in% names(movements)) {
-        if (any(is.factor(movements$category), is.integer(movements$category))) {
+        if (any(is.factor(movements$category),
+                is.integer(movements$category))) {
             movements$category <- as.character(movements$category)
         } else if (!is.character(movements$category)) {
             stop("invalid class of column category in movements")
@@ -282,8 +279,9 @@ Trace <- function(movements,
     if (any(is.factor(root), is.integer(root))) {
         root <- as.character(root)
     } else if (is.numeric(root)) {
-        ## root is supposed to be a character or integer identifier
-        ## so test that root is a integer the same way as binom.test test x
+        ## root is supposed to be a character or integer identifier so
+        ## test that root is a integer the same way as binom.test test
+        ## x
         rootr <- round(root)
         if (any(max(abs(root - rootr) > 1e-07))) {
             stop("'root' must be an integer or character")
@@ -301,10 +299,12 @@ Trace <- function(movements,
     ## Check if we are using the combination of tEnd and days or
     ## specify inBegin, inEnd, outBegin and outEnd
     if (all(!is.null(tEnd), !is.null(days))) {
-        ## Using tEnd and days...check that
-        ## inBegin, inEnd, outBegin and outEnd is NULL
-        if (!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
-            stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace")
+        ## Using tEnd and days...check that inBegin, inEnd, outBegin
+        ## and outEnd is NULL
+        if (!all(is.null(inBegin), is.null(inEnd),
+                 is.null(outBegin), is.null(outEnd))) {
+            stop("Use either tEnd and days or inBegin, inEnd, ",
+                 "outBegin and outEnd in call to Trace")
         }
 
         if (any(is.character(tEnd), is.factor(tEnd))) {
@@ -315,7 +315,8 @@ Trace <- function(movements,
             stop("'tEnd' must be a Date vector")
         }
 
-        ## Test that days is a nonnegative integer the same way as binom.test test x
+        ## Test that days is a nonnegative integer the same way as
+        ## binom.test test x
         daysr <- round(days)
         if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
             stop("'days' must be nonnegative and integer")
@@ -327,25 +328,27 @@ Trace <- function(movements,
         tEnd <- unique(tEnd)
         days <- unique(days)
 
-        n.root <- length(root)
-        n.tEnd <- length(tEnd)
-        n.days <- length(days)
-        n <- n.root * n.tEnd * n.days
+        n_root <- length(root)
+        n_tEnd <- length(tEnd)
+        n_days <- length(days)
+        n <- n_root * n_tEnd * n_days
 
-        root <- rep(root, each=n.tEnd*n.days, length.out=n)
-        inEnd <- rep(tEnd, each=n.days, length.out=n)
-        inBegin <- inEnd - rep(days, each=1, length.out=n)
+        root <- rep(root, each = n_tEnd * n_days, length.out = n)
+        inEnd <- rep(tEnd, each = n_days, length.out = n)
+        inBegin <- inEnd - rep(days, each = 1, length.out = n)
         outEnd <- inEnd
         outBegin <- inBegin
-    } else if (all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
-        ## Using tEnd and days...check that
-        ## Using inBegin, inEnd, outBegin and outEnd...check that
-        ## tEnd and days are NULL
+    } else if (all(!is.null(inBegin), !is.null(inEnd),
+                   !is.null(outBegin), !is.null(outEnd))) {
+        ## Using tEnd and days...check that Using inBegin, inEnd,
+        ## outBegin and outEnd...check that tEnd and days are NULL
         if (!all(is.null(tEnd), is.null(days))) {
-            stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace")
+            stop("Use either tEnd and days or inBegin, inEnd, ",
+                 "outBegin and outEnd in call to Trace")
         }
     } else {
-        stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace")
+        stop("Use either tEnd and days or inBegin, inEnd, ",
+             "outBegin and outEnd in call to Trace")
     }
 
     ##
@@ -455,10 +458,13 @@ Trace <- function(movements,
 
 
     trace_contacts <- .Call("traceContacts",
-                            as.integer(factor(movements$source, levels = levels(nodes))),
-                            as.integer(factor(movements$destination, levels = levels(nodes))),
+                            as.integer(factor(movements$source,
+                                              levels = levels(nodes))),
+                            as.integer(factor(movements$destination,
+                                              levels = levels(nodes))),
                             as.integer(julian(movements$t)),
-                            as.integer(factor(root, levels = levels(nodes))),
+                            as.integer(factor(root,
+                                              levels = levels(nodes))),
                             as.integer(julian(inBegin)),
                             as.integer(julian(inEnd)),
                             as.integer(julian(outBegin)),
@@ -468,7 +474,7 @@ Trace <- function(movements,
                             PACKAGE = "EpiContactTrace")
 
     result <- lapply(seq_len(length(root)), function(i) {
-        j <- (i-1) * 4
+        j <- (i - 1) * 4
 
         ## Extract data from contact tracing
         contacts_all <- movements[trace_contacts[[j + 1]], ]
@@ -478,11 +484,12 @@ Trace <- function(movements,
         ## make sure we have unique contacts
         contacts <- unique(contacts_all)
 
-        ## Create an index to contacts, so that the result matrix can be reconstructed
-        ## from the contacts, combined with index and distance
-        ## contacts_all <- cbind(contacts[index,], distance)
-        index <- match(apply(contacts_all, 1, function(x) paste(x, collapse="\r")),
-                       apply(contacts, 1, function(x) paste(x, collapse="\r")))
+        ## Create an index to contacts, so that the result matrix can
+        ## be reconstructed from the contacts, combined with index and
+        ## distance contacts_all <- cbind(contacts[index,], distance)
+        index <- match(
+            apply(contacts_all, 1, function(x) paste(x, collapse = "\r")),
+            apply(contacts, 1, function(x) paste(x, collapse = "\r")))
 
         ingoingContacts <- new("Contacts",
                                root = root[i],
@@ -502,15 +509,16 @@ Trace <- function(movements,
         contacts_all <- movements[trace_contacts[[j + 3]], ]
         distance <- trace_contacts[[j + 4]]
 
-        ## Since the algorithm might visit the same node more than once
-        ## make sure we have unique contacts
+        ## Since the algorithm might visit the same node more than
+        ## once make sure we have unique contacts
         contacts <- unique(contacts_all)
 
-        ## Create an index to contacts, so that the result matrix can be reconstructed
-        ## from the contacts, combined with index and distance
-        ## contacts_all <- cbind(contacts[index,], distance)
-        index <- match(apply(contacts_all, 1, function(x) paste(x, collapse="\r")),
-                       apply(contacts, 1, function(x) paste(x, collapse="\r")))
+        ## Create an index to contacts, so that the result matrix can
+        ## be reconstructed from the contacts, combined with index and
+        ## distance contacts_all <- cbind(contacts[index,], distance)
+        index <- match(
+            apply(contacts_all, 1, function(x) paste(x, collapse = "\r")),
+            apply(contacts, 1, function(x) paste(x, collapse = "\r")))
 
         outgoingContacts <- new("Contacts",
                                 root = root[i],
@@ -532,11 +540,14 @@ Trace <- function(movements,
                    outgoingContacts = outgoingContacts))
     })
 
-    ## Name each list item with ContactTrace objects to the name of the ContactTrace root.
-    names(result) <-  sapply(result, function(listItem) listItem@ingoingContacts@root)
+    ## Name each list item with ContactTrace objects to the name of
+    ## the ContactTrace root.
+    names(result) <- sapply(result, function(listItem) {
+        listItem@ingoingContacts@root
+    })
 
     if (identical(length(result), 1L))
       return(result[[1]])
 
-    return(result)
+    result
 }

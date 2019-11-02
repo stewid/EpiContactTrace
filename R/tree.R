@@ -61,7 +61,7 @@ build_tree <- function(network_structure) {
                     dst <- root
                 }
 
-                stopifnot(length(dst)>0)
+                stopifnot(length(dst) > 0)
                 tree_in$parent[tree_in$level == lev
                                & tree_in$node == src] <- dst[1]
             }
@@ -91,7 +91,7 @@ build_tree <- function(network_structure) {
                     src <- root
                 }
 
-                stopifnot(length(src)>0)
+                stopifnot(length(src) > 0)
                 tree_out$parent[tree_out$level == lev
                                 & tree_out$node == dst] <- src[1]
             }
