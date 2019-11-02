@@ -23,26 +23,30 @@
 ##' Class to handle contact tracing.
 ##'
 ##'
-##' The \code{ContactTrace} class holds information for the ingoing and outgoing
-##' contact chain for a specific root within the time window used for contact
-##' tracing.
+##' The \code{ContactTrace} class holds information for the ingoing
+##' and outgoing contact chain for a specific root within the time
+##' window used for contact tracing.
 ##' @section Slots:
 ##' \describe{
 ##'   \item{root}{
-##'     A \code{character} vector of length one with the identifier of the root.
+##'     A \code{character} vector of length one with the identifier of
+##'     the root.
 ##'   }
 ##'   \item{ingoingContacts}{
-##'     A \code{Contacts} object with the contacts for the ingoing contact chain.
+##'     A \code{Contacts} object with the contacts for the ingoing
+##'     contact chain.
 ##'   }
 ##'   \item{outgoingContacts}{
-##'     A \code{Contacts} object with the contacts for the outgoing contact chain.
+##'     A \code{Contacts} object with the contacts for the outgoing
+##'     contact chain.
 ##'   }
 ##' }
 ##' @name ContactTrace-class
 ##' @docType class
 ##' @include Contacts.r
-##' @section Objects from the Class: Objects can be created by calls of the
-##' form \code{new("ContactTrace",root, ingoingContacts, outgoingContacts,...)}
+##' @section Objects from the Class: Objects can be created by calls
+##'     of the form \code{new("ContactTrace",root, ingoingContacts,
+##'     outgoingContacts,...)}
 ##' @keywords classes
 ##' @export
 ##' @examples
