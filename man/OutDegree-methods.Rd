@@ -119,7 +119,8 @@ with the following columns:
   }
 
   \item{\code{signature(x = "data.frame")}}{
-    Get the OutDegree for a data.frame with movements, see details and examples.
+    Get the OutDegree for a data.frame with movements, see details
+    and examples.
   }
 }
 }

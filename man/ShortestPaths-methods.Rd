@@ -86,14 +86,15 @@ A \code{data.frame} with the following columns:
 }
 }
 \description{
-Methods for function \code{ShortestPaths} in package \pkg{EpiContactTrace}
-to get the shortest distance from/to the root given by the contact tracing.
+Methods for function \code{ShortestPaths} in package
+\pkg{EpiContactTrace} to get the shortest distance from/to the
+root given by the contact tracing.
 }
 \details{
-The contact tracing performs a depth first search starting at the root. The
-\code{ShortestPaths} gives the shortest distance from root at each node.
-The network tree structure given by the depth first search is shown by
-\code{\link{show}}.
+The contact tracing performs a depth first search starting at the
+root. The \code{ShortestPaths} gives the shortest distance from
+root at each node.  The network tree structure given by the depth
+first search is shown by \code{\link{show}}.
 }
 \section{Methods}{
  \describe{
@@ -117,10 +118,10 @@ The network tree structure given by the depth first search is shown by
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
 ShortestPaths(contactTrace)
 
@@ -128,7 +129,7 @@ ShortestPaths(contactTrace)
 ## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source, transfers$destination)))
 
-sp <- ShortestPaths(transfers, root=root, tEnd="2005-10-31", days=90)
+sp <- ShortestPaths(transfers, root = root, tEnd = "2005-10-31", days = 90)
 
 }
 }
