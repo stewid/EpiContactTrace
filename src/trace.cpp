@@ -1,4 +1,4 @@
-// Copyright 2013-2017 Stefan Widgren and Maria Noremark,
+// Copyright 2013-2019 Stefan Widgren and Maria Noremark,
 // National Veterinary Institute, Sweden
 //
 // Licensed under the EUPL, Version 1.1 or - as soon they
@@ -17,6 +17,9 @@
 // express or implied.
 // See the Licence for the specific language governing
 // permissions and limitations under the Licence.
+
+#define R_NO_REMAP
+#define STRICT_R_HEADERS
 
 #include <algorithm>
 #include <map>
@@ -327,40 +330,40 @@ SEXP shortestPaths(const SEXP src,
     }
 
     SEXP result, names, vec;
-    PROTECT(result = allocVector(VECSXP, 6));
-    PROTECT(names = allocVector(STRSXP, 6));
+    PROTECT(result = Rf_allocVector(VECSXP, 6));
+    PROTECT(names = Rf_allocVector(STRSXP, 6));
 
-    SET_VECTOR_ELT(result, 0, vec = allocVector(INTSXP, inDistance.size()));
+    SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, inDistance.size()));
     for (size_t i = 0; i < inDistance.size(); ++i)
         INTEGER(vec)[i] = inDistance[i];
-    SET_STRING_ELT(names,  0, mkChar("inDistance"));
+    SET_STRING_ELT(names,  0, Rf_mkChar("inDistance"));
 
-    SET_VECTOR_ELT(result, 1, vec = allocVector(INTSXP, inRowid.size()));
+    SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, inRowid.size()));
     for (size_t i = 0; i < inRowid.size(); ++i)
         INTEGER(vec)[i] = inRowid[i];
-    SET_STRING_ELT(names,  1, mkChar("inRowid"));
+    SET_STRING_ELT(names,  1, Rf_mkChar("inRowid"));
 
-    SET_VECTOR_ELT(result, 2, vec = allocVector(INTSXP, inIndex.size()));
+    SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, inIndex.size()));
     for (size_t i = 0; i < inIndex.size(); ++i)
         INTEGER(vec)[i] = inIndex[i];
-    SET_STRING_ELT(names,  2, mkChar("inIndex"));
+    SET_STRING_ELT(names,  2, Rf_mkChar("inIndex"));
 
-    SET_VECTOR_ELT(result, 3, vec = allocVector(INTSXP, outDistance.size()));
+    SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, outDistance.size()));
     for (size_t i = 0; i < outDistance.size(); ++i)
         INTEGER(vec)[i] = outDistance[i];
-    SET_STRING_ELT(names,  3, mkChar("outDistance"));
+    SET_STRING_ELT(names,  3, Rf_mkChar("outDistance"));
 
-    SET_VECTOR_ELT(result, 4, vec = allocVector(INTSXP, outRowid.size()));
+    SET_VECTOR_ELT(result, 4, vec = Rf_allocVector(INTSXP, outRowid.size()));
     for (size_t i = 0; i < outRowid.size(); ++i)
         INTEGER(vec)[i] = outRowid[i];
-    SET_STRING_ELT(names,  4, mkChar("outRowid"));
+    SET_STRING_ELT(names,  4, Rf_mkChar("outRowid"));
 
-    SET_VECTOR_ELT(result, 5, vec = allocVector(INTSXP, outIndex.size()));
+    SET_VECTOR_ELT(result, 5, vec = Rf_allocVector(INTSXP, outIndex.size()));
     for (size_t i = 0; i < outIndex.size(); ++i)
         INTEGER(vec)[i] = outIndex[i];
-    SET_STRING_ELT(names,  5, mkChar("outIndex"));
+    SET_STRING_ELT(names,  5, Rf_mkChar("outIndex"));
 
-    setAttrib(result, R_NamesSymbol, names);
+    Rf_setAttrib(result, R_NamesSymbol, names);
     UNPROTECT(2);
 
     return result;
@@ -465,7 +468,7 @@ SEXP traceContacts(const SEXP src,
     std::vector<int> resultRowid;
     std::vector<int> resultDistance;
 
-    PROTECT(result = allocVector(VECSXP, 4 * LENGTH(root)));
+    PROTECT(result = Rf_allocVector(VECSXP, 4 * LENGTH(root)));
     for (size_t i = 0, end = LENGTH(root); i < end; ++i) {
         resultRowid.clear();
         resultDistance.clear();
@@ -481,11 +484,11 @@ SEXP traceContacts(const SEXP src,
                         resultDistance,
                         INTEGER(maxDistance)[0]);
 
-        SET_VECTOR_ELT(result, 4 * i, vec = allocVector(INTSXP, resultRowid.size()));
+        SET_VECTOR_ELT(result, 4 * i, vec = Rf_allocVector(INTSXP, resultRowid.size()));
         for (size_t j = 0; j < resultRowid.size(); ++j)
             INTEGER(vec)[j] = resultRowid[j];
 
-        SET_VECTOR_ELT(result, 4 * i + 1, vec = allocVector(INTSXP, resultDistance.size()));
+        SET_VECTOR_ELT(result, 4 * i + 1, vec = Rf_allocVector(INTSXP, resultDistance.size()));
         for (size_t j = 0; j < resultDistance.size(); ++j)
             INTEGER(vec)[j] = resultDistance[j];
 
@@ -503,11 +506,11 @@ SEXP traceContacts(const SEXP src,
                         resultDistance,
                         INTEGER(maxDistance)[0]);
 
-        SET_VECTOR_ELT(result, 4 * i + 2, vec = allocVector(INTSXP, resultRowid.size()));
+        SET_VECTOR_ELT(result, 4 * i + 2, vec = Rf_allocVector(INTSXP, resultRowid.size()));
         for (size_t j = 0; j < resultRowid.size(); ++j)
             INTEGER(vec)[j] = resultRowid[j];
 
-        SET_VECTOR_ELT(result, 4 * i + 3, vec = allocVector(INTSXP, resultDistance.size()));
+        SET_VECTOR_ELT(result, 4 * i + 3, vec = Rf_allocVector(INTSXP, resultDistance.size()));
         for (size_t j = 0; j < resultDistance.size(); ++j)
             INTEGER(vec)[j] = resultDistance[j];
     }
@@ -654,30 +657,30 @@ SEXP networkSummary(const SEXP src,
     }
 
     SEXP result, names, vec;
-    PROTECT(result = allocVector(VECSXP, 4));
-    PROTECT(names = allocVector(STRSXP, 4));
+    PROTECT(result = Rf_allocVector(VECSXP, 4));
+    PROTECT(names = Rf_allocVector(STRSXP, 4));
 
-    SET_VECTOR_ELT(result, 0, vec = allocVector(INTSXP, inDegree.size()));
+    SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, inDegree.size()));
     for (size_t i = 0; i < inDegree.size(); ++i)
         INTEGER(vec)[i] = inDegree[i];
-    SET_STRING_ELT(names,  0, mkChar("inDegree"));
+    SET_STRING_ELT(names,  0, Rf_mkChar("inDegree"));
 
-    SET_VECTOR_ELT(result, 1, vec = allocVector(INTSXP, outDegree.size()));
+    SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, outDegree.size()));
     for (size_t i = 0; i < outDegree.size(); ++i)
         INTEGER(vec)[i] = outDegree[i];
-    SET_STRING_ELT(names,  1, mkChar("outDegree"));
+    SET_STRING_ELT(names,  1, Rf_mkChar("outDegree"));
 
-    SET_VECTOR_ELT(result, 2, vec = allocVector(INTSXP, ingoingContactChain.size()));
+    SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, ingoingContactChain.size()));
     for (size_t i = 0; i < ingoingContactChain.size(); ++i)
         INTEGER(vec)[i] = ingoingContactChain[i];
-    SET_STRING_ELT(names,  2, mkChar("ingoingContactChain"));
+    SET_STRING_ELT(names,  2, Rf_mkChar("ingoingContactChain"));
 
-    SET_VECTOR_ELT(result, 3, vec = allocVector(INTSXP, outgoingContactChain.size()));
+    SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, outgoingContactChain.size()));
     for (size_t i = 0; i < outgoingContactChain.size(); ++i)
         INTEGER(vec)[i] = outgoingContactChain[i];
-    SET_STRING_ELT(names,  3, mkChar("outgoingContactChain"));
+    SET_STRING_ELT(names,  3, Rf_mkChar("outgoingContactChain"));
 
-    setAttrib(result, R_NamesSymbol, names);
+    Rf_setAttrib(result, R_NamesSymbol, names);
     UNPROTECT(2);
 
     return result;
