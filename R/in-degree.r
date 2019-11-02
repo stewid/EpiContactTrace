@@ -176,7 +176,7 @@ setMethod("InDegree",
               stop("Unable to determine InDegree for outgoing contacts")
           }
 
-          return(length(unique(x@source[x@destination==x@root])))
+          return(length(unique(x@source[x@destination == x@root])))
       }
 )
 

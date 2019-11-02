@@ -243,17 +243,17 @@ setMethod("NetworkSummary",
           signature(x = "ContactTrace"),
           function(x)
       {
-          data.frame(root=x@root,
-                     inBegin=x@ingoingContacts@tBegin,
-                     inEnd=x@ingoingContacts@tEnd,
-                     inDays=as.integer(x@ingoingContacts@tEnd - x@ingoingContacts@tBegin),
-                     outBegin=x@outgoingContacts@tBegin,
-                     outEnd=x@outgoingContacts@tEnd,
-                     outDays=as.integer(x@outgoingContacts@tEnd - x@outgoingContacts@tBegin),
-                     inDegree=InDegree(x@ingoingContacts),
-                     outDegree=OutDegree(x@outgoingContacts),
-                     ingoingContactChain=IngoingContactChain(x@ingoingContacts),
-                     outgoingContactChain=OutgoingContactChain(x@outgoingContacts))
+          data.frame(root = x@root,
+                     inBegin = x@ingoingContacts@tBegin,
+                     inEnd = x@ingoingContacts@tEnd,
+                     inDays = as.integer(x@ingoingContacts@tEnd - x@ingoingContacts@tBegin),
+                     outBegin = x@outgoingContacts@tBegin,
+                     outEnd = x@outgoingContacts@tEnd,
+                     outDays = as.integer(x@outgoingContacts@tEnd - x@outgoingContacts@tBegin),
+                     inDegree = InDegree(x@ingoingContacts),
+                     outDegree = OutDegree(x@outgoingContacts),
+                     ingoingContactChain = IngoingContactChain(x@ingoingContacts),
+                     outgoingContactChain = OutgoingContactChain(x@outgoingContacts))
       }
 )
 
@@ -359,9 +359,9 @@ setMethod("NetworkSummary",
               n.days <- length(days)
               n <- n.root * n.tEnd * n.days
 
-              root <- rep(root, each=n.tEnd*n.days, length.out=n)
-              inEnd <- rep(tEnd, each=n.days, length.out=n)
-              inBegin <- inEnd - rep(days, each=1, length.out=n)
+              root <- rep(root, each = n.tEnd * n.days, length.out=n)
+              inEnd <- rep(tEnd, each = n.days, length.out = n)
+              inBegin <- inEnd - rep(days, each = 1, length.out = n)
               outEnd <- inEnd
               outBegin <- inBegin
           } else if(all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
@@ -468,10 +468,10 @@ setMethod("NetworkSummary",
 
           ## Call networkSummary in EpiContactTrace.dll
           contact_chain<- .Call("networkSummary",
-                                as.integer(factor(x$source, levels=levels(nodes))),
-                                as.integer(factor(x$destination, levels=levels(nodes))),
+                                as.integer(factor(x$source, levels = levels(nodes))),
+                                as.integer(factor(x$destination, levels = levels(nodes))),
                                 as.integer(julian(x$t)),
-                                as.integer(factor(root, levels=levels(nodes))),
+                                as.integer(factor(root, levels = levels(nodes))),
                                 as.integer(julian(inBegin)),
                                 as.integer(julian(inEnd)),
                                 as.integer(julian(outBegin)),
@@ -479,16 +479,16 @@ setMethod("NetworkSummary",
                                 length(nodes),
                                 PACKAGE = "EpiContactTrace")
 
-          return(data.frame(root=root,
-                            inBegin=inBegin,
-                            inEnd=inEnd,
-                            inDays=as.integer(inEnd - inBegin),
-                            outBegin=outBegin,
-                            outEnd=outEnd,
-                            outDays=as.integer(outEnd - outBegin),
-                            inDegree=contact_chain[["inDegree"]],
-                            outDegree=contact_chain[["outDegree"]],
-                            ingoingContactChain=contact_chain[["ingoingContactChain"]],
-                            outgoingContactChain=contact_chain[["outgoingContactChain"]]))
+          return(data.frame(root = root,
+                            inBegin = inBegin,
+                            inEnd = inEnd,
+                            inDays = as.integer(inEnd - inBegin),
+                            outBegin = outBegin,
+                            outEnd = outEnd,
+                            outDays = as.integer(outEnd - outBegin),
+                            inDegree = contact_chain[["inDegree"]],
+                            outDegree = contact_chain[["outDegree"]],
+                            ingoingContactChain = contact_chain[["ingoingContactChain"]],
+                            outgoingContactChain = contact_chain[["outgoingContactChain"]]))
      }
 )
