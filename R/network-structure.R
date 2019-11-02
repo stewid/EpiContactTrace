@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -132,7 +132,8 @@ setMethod("NetworkStructure",
 
               ## Identify which rows are not identical to previous
               ## rows.  row[i] != row[i-1] for all i > 1
-              i <- tmp[seq_len(length(tmp) - 1)] != tmp[seq_len(length(tmp))[-1]]
+              i <- tmp[seq_len(length(tmp) - 1)] !=
+                  tmp[seq_len(length(tmp))[-1]]
 
               ## Select the i rows, including first row
               m <- as.data.frame(m[c(TRUE, i), , drop = FALSE],

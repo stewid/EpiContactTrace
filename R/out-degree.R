@@ -1,4 +1,4 @@
-## Copyright 2013-2015 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -116,7 +116,8 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the OutDegree for a data.frame with movements, see details and examples.
+##'     Get the OutDegree for a data.frame with movements, see details
+##'     and examples.
 ##'   }
 ##' }
 ##' @references \itemize{
