@@ -28,8 +28,8 @@
 ##' @rdname OutgoingContactChain-methods
 ##' @docType methods
 ##' @keywords methods
-##' @include Contacts.r
-##' @include ContactTrace.r
+##' @include Contacts.R
+##' @include ContactTrace.R
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##' or a \code{data.frame} with movements of animals between holdings,

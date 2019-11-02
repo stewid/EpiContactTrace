@@ -66,8 +66,8 @@
 ##' @rdname InDegree-methods
 ##' @docType methods
 ##' @keywords methods
-##' @include Contacts.r
-##' @include ContactTrace.r
+##' @include Contacts.R
+##' @include ContactTrace.R
 ##' @section Methods:
 ##' \describe{
 ##'   \item{\code{signature(x = "ContactTrace")}}{

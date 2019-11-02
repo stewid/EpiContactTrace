@@ -32,8 +32,8 @@
 ##' @rdname NetworkStructure-methods
 ##' @docType methods
 ##' @keywords methods
-##' @include Contacts.r
-##' @include ContactTrace.r
+##' @include Contacts.R
+##' @include ContactTrace.R
 ##' @param object A \code{\linkS4class{Contacts}} or
 ##' \code{linkS4class{ContactTrace}} object.
 ##' @return A \code{data.frame} with the following columns:

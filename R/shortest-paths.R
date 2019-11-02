@@ -31,7 +31,7 @@
 ##' @rdname ShortestPaths-methods
 ##' @docType methods
 ##' @keywords methods
-##' @include ContactTrace.r
+##' @include ContactTrace.R
 ##' @param x a \code{\linkS4class{ContactTrace}} object, or a
 ##' \code{data.frame} with movements of animals between holdings, see
 ##' \code{\link{Trace}} for details.

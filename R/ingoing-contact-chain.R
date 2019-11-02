@@ -73,8 +73,8 @@
 ##' @rdname IngoingContactChain-methods
 ##' @docType methods
 ##' @keywords methods
-##' @include Contacts.r
-##' @include ContactTrace.r
+##' @include Contacts.R
+##' @include ContactTrace.R
 ##' @seealso \code{\link{NetworkSummary}}
 ##'
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
