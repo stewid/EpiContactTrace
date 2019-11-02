@@ -128,12 +128,12 @@ setClass("Contacts",
                            length(object@id),
                            length(object@n),
                            length(object@category)))
-             if(!identical(length(l), 1L)) {
+             if (!identical(length(l), 1L)) {
                  retval <- paste0("Lengths of source, destination, t, id, ",
                                   "n and category should have equal length")
              }
 
-             if(is.null(retval)) {
+             if (is.null(retval)) {
                  return(TRUE)
              }
 
@@ -145,7 +145,7 @@ setAs(from = "Contacts",
       to = "data.frame",
       def = function(from)
   {
-      if(length(from@source) > 0L) {
+      if (length(from@source) > 0L) {
           df1 <- data.frame(source = from@source,
                             destination = from@destination,
                             t = from@t,
@@ -154,7 +154,7 @@ setAs(from = "Contacts",
                             category = from@category,
                             stringsAsFactors = FALSE)
 
-          if(identical(from@direction, "in")) {
+          if (identical(from@direction, "in")) {
               df2 <- data.frame(root = from@root,
                                 inBegin = from@tBegin,
                                 inEnd = from@tEnd,

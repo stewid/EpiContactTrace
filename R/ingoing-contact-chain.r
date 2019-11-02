@@ -182,7 +182,7 @@ setMethod("IngoingContactChain",
           signature(x = "Contacts"),
           function (x)
       {
-          if(!identical(x@direction, "in")) {
+          if (!identical(x@direction, "in")) {
               stop("Unable to determine IngoingContactChain ",
                    "for outgoing contacts")
           }
@@ -216,11 +216,11 @@ setMethod("IngoingContactChain",
                    inBegin = NULL,
                    inEnd = NULL)
       {
-          if(missing(root)) {
+          if (missing(root)) {
               stop("Missing parameters in call to IngoingContactChain")
           }
 
-          if(all(is.null(tEnd), is.null(days))) {
+          if (all(is.null(tEnd), is.null(days))) {
               outBegin <- inBegin
               outEnd <- inBegin
           } else {

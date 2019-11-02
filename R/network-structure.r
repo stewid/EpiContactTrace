@@ -120,7 +120,7 @@ setMethod("NetworkStructure",
           signature(object = "Contacts"),
           function(object)
       {
-          if(length(object@source) > 0L) {
+          if (length(object@source) > 0L) {
               ## Create a matrix with source, destination and distance
               m <- cbind(object@source[object@index],
                          object@destination[object@index],
@@ -143,7 +143,7 @@ setMethod("NetworkStructure",
               ## Convert distance from character to integer
               m$distance <- as.integer(m$distance)
 
-              if(identical(object@direction, "in")) {
+              if (identical(object@direction, "in")) {
                   result <- data.frame(root = object@root,
                                        inBegin = object@tBegin,
                                        inEnd = object@tEnd,
