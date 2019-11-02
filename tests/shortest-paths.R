@@ -80,4 +80,4 @@ sp_out <- sp_out[sp_out$direction == "out",
 
 sp_out <- sp_out[order(as.numeric(sp_out$destination)), ]
 rownames(sp_out) <- NULL
-stopifnot(identical(sp_out, sp_out.exp))
+stopifnot(identical(sp_out, sp_out_exp))
