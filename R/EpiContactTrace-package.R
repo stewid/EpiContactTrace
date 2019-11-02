@@ -61,11 +61,6 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @note Plots are not supported in version 0.8.6 since igraph0 has
-##' been archived. We intend to resolve the issue in a future
-##' version. Install version 0.8.5 and igraph0 manually from the
-##' archive if plots are required. See section 6.3 in 'R Installation
-##' and Administration' on how to install packages from source.
 ##' @keywords package
 ##' @import methods
 ##' @useDynLib EpiContactTrace, .registration=TRUE
@@ -132,16 +127,10 @@ NULL
 ##' }
 ##' @keywords datasets
 ##' @examples
-##'
-##' \dontrun{
 ##' data(transfers)
 ##'
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
-##'
-##' show(contactTrace)
-##' }
-##'
+##' Trace(movements = transfers,
+##'       root = 2645,
+##'       tEnd = "2005-10-31",
+##'       days = 90)
 NULL

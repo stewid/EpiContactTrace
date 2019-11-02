@@ -41,17 +41,11 @@ Movement data included in the package. The data contains fictitious
 example data of cattle movements during the period 2005-08-01 -- 2005-10-31.
 }
 \examples{
-
-\dontrun{
 data(transfers)
 
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
-
-show(contactTrace)
-}
-
+Trace(movements = transfers,
+      root = 2645,
+      tEnd = "2005-10-31",
+      days = 90)
 }
 \keyword{datasets}

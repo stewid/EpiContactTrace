@@ -110,7 +110,7 @@ trace_2 <- Trace(movements = transfers,
 identical(trace_1, trace_2)
 
 ## Show result of contact tracing
-show(trace_1)
+trace_1
 
 ## Create a network summary for all included herds
 ## First extract all source and destination from the dataset
@@ -134,8 +134,6 @@ trace_4 <- Trace(movements = transfers,
 
 ## Check that the result is identical
 identical(trace_3, trace_4)
-
-NetworkSummary(trace_3)
 }
 \references{
 \itemize{ \item Dube, C., et al., A review of network

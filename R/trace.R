@@ -134,7 +134,7 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 ##' identical(trace_1, trace_2)
 ##'
 ##' ## Show result of contact tracing
-##' show(trace_1)
+##' trace_1
 ##'
 ##' ## Create a network summary for all included herds
 ##' ## First extract all source and destination from the dataset
@@ -158,8 +158,6 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 ##'
 ##' ## Check that the result is identical
 ##' identical(trace_3, trace_4)
-##'
-##' NetworkSummary(trace_3)
 Trace <- function(movements,
                   root,
                   tEnd = NULL,
