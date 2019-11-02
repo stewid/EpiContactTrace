@@ -79,7 +79,7 @@ setMethod("plot",
           edges_out <- NULL
 
           if (!is.null(tree$ingoing)) {
-              tree$ingoing <- position_tree(tree$ingoing, orientation="South")
+              tree$ingoing <- position_tree(tree$ingoing, orientation = "South")
               tree$ingoing$bg <- ifelse(tree$ingoing$level > 0, "white", "black")
               tree$ingoing$pch <- 21
               vertices <- tree$ingoing
@@ -115,12 +115,12 @@ setMethod("plot",
 
               if (!is.null(edges_in)) {
                   arrows(edges_in$x0, edges_in$y0, edges_in$x1, edges_in$y1,
-                         length=0)
+                         length = 0)
               }
 
               if (!is.null(edges_out)) {
                   arrows(edges_out$x0, edges_out$y0, edges_out$x1, edges_out$y1,
-                         length=0)
+                         length = 0)
               }
 
               points(vertices$x, vertices$y, cex = 2, bg = vertices$bg,

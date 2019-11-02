@@ -268,9 +268,9 @@ setMethod("ShortestPaths",
               n.days <- length(days)
               n <- n.root * n.tEnd * n.days
 
-              root <- rep(root, each=n.tEnd*n.days, length.out=n)
-              inEnd <- rep(tEnd, each=n.days, length.out=n)
-              inBegin <- inEnd - rep(days, each=1, length.out=n)
+              root <- rep(root, each = n.tEnd * n.days, length.out = n)
+              inEnd <- rep(tEnd, each = n.days, length.out = n)
+              inBegin <- inEnd - rep(days, each = 1, length.out = n)
               outEnd <- inEnd
               outBegin <- inBegin
           } else if (all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
@@ -376,10 +376,10 @@ setMethod("ShortestPaths",
                                       root)))
 
           sp <- .Call("shortestPaths",
-                      as.integer(factor(x$source, levels=levels(nodes))),
-                      as.integer(factor(x$destination, levels=levels(nodes))),
+                      as.integer(factor(x$source, levels = levels(nodes))),
+                      as.integer(factor(x$destination, levels = levels(nodes))),
                       as.integer(julian(x$t)),
-                      as.integer(factor(root, levels=levels(nodes))),
+                      as.integer(factor(root, levels = levels(nodes))),
                       as.integer(julian(inBegin)),
                       as.integer(julian(inEnd)),
                       as.integer(julian(outBegin)),
@@ -398,7 +398,7 @@ setMethod("ShortestPaths",
                                    source      = x$source[sp$inRowid],
                                    destination = NA_character_,
                                    distance    = sp$inDistance,
-                                   stringsAsFactors=FALSE)
+                                   stringsAsFactors = FALSE)
           }
 
           if (length(sp$outIndex)) {
@@ -412,7 +412,7 @@ setMethod("ShortestPaths",
                                          source      = NA_character_,
                                          destination = x$destination[sp$outRowid],
                                          distance    = sp$outDistance,
-                                         stringsAsFactors=FALSE))
+                                         stringsAsFactors = FALSE))
           }
 
           if (is.null(result)) {
@@ -425,7 +425,7 @@ setMethod("ShortestPaths",
                                    source      = character(0),
                                    destination = character(0),
                                    distance    = integer(0),
-                                   stringsAsFactors=FALSE)
+                                   stringsAsFactors = FALSE)
           } else {
               rownames(result) <- NULL
           }

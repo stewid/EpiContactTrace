@@ -179,7 +179,7 @@ setMethod("OutDegree",
               stop("Unable to determine OutDegree for ingoing contacts")
           }
 
-          return(length(unique(x@destination[x@source==x@root])))
+          return(length(unique(x@destination[x@source == x@root])))
       }
 )
 

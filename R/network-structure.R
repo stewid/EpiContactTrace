@@ -124,7 +124,7 @@ setMethod("NetworkStructure",
               m <- cbind(object@source[object@index],
                          object@destination[object@index],
                          object@distance,
-                         deparse.level=0)
+                         deparse.level = 0)
 
               ## To be able to identify duplicate rows, create strings
               ## from rows

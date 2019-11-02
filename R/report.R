@@ -32,7 +32,7 @@ html_summary_table <- function(contacts, direction) {
 
         ## Pad with empty cells to the left
         lines <- c(lines,
-                   paste(rep("<td>&nbsp;</td>", 2L*(contacts$distance[i]-1L)), collapse = ""),
+                   paste(rep("<td>&nbsp;</td>", 2L * (contacts$distance[i] - 1L)), collapse = ""),
                    sprintf('<td align="right">%s</td>', contacts$lhs[i]),
                    sprintf('<td align="right"><a href="#%s-%s-%s">%s</a></td>',
                            direction, contacts$lhs[i], contacts$rhs[i], arrow),
@@ -41,7 +41,7 @@ html_summary_table <- function(contacts, direction) {
         ## Pad with empty cells to the right
         lines <- c(lines,
                    paste(rep("<td>&nbsp;</td>",
-                             2L*(max(contacts$distance-1L) - (contacts$distance[i]-1L))),
+                             2L * (max(contacts$distance - 1L) - (contacts$distance[i] - 1L))),
                          collapse = ""))
 
         lines <- c(lines, "</tr>")
@@ -347,11 +347,11 @@ setMethod("Report",
               writeLines(html_report(object), con = sprintf("%s.html", object@root))
           } else {
               if (is.null(template)) {
-                  template <- system.file("Sweave/speak-latex.rnw", package="EpiContactTrace")
+                  template <- system.file("Sweave/speak-latex.rnw", package = "EpiContactTrace")
               }
 
               utils::Sweave(template, syntax="SweaveSyntaxNoweb")
-              tools::texi2pdf(sub("rnw$", "tex", basename(template)), clean=TRUE)
+              tools::texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
               file.rename(sub("rnw$", "pdf", basename(template)), sprintf("%s.pdf", object@root))
               unlink(sub("rnw$", "tex", basename(template)))
           }
@@ -377,8 +377,8 @@ setMethod("Report",
           }
 
           lapply(object, function(x) Report(x,
-                                            format=format,
-                                            template=template))
+                                            format = format,
+                                            template = template))
 
           invisible(NULL)
       }
