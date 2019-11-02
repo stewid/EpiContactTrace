@@ -24,12 +24,12 @@ To install the latest release on CRAN
 install.packages("EpiContactTrace")
 ```
 
-To install the development version of EpiContactTrace, it's easiest to
-use the `devtools` package:
+To install the development version of EpiContactTrace from GitHub,
+it's easiest to use the `remotes` package:
 
 ```
-# install.packages("devtools")
-library(devtools)
+# install.packages("remotes")
+library(remotes)
 install_github("stewid/EpiContactTrace")
 ```
 
