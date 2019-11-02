@@ -22,11 +22,14 @@
 #define STRICT_R_HEADERS
 
 #include "kvec.h"
+#include <string.h>
+
 #include <algorithm>
 #include <map>
 #include <set>
 #include <utility>
 #include <vector>
+
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <R_ext/Visibility.h>
@@ -663,20 +666,16 @@ SEXP networkSummary(const SEXP src,
     PROTECT(result = Rf_mkNamed(VECSXP, names));
 
     SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, kv_size(inDegree)));
-    for (size_t i = 0; i < kv_size(inDegree); ++i)
-        INTEGER(vec)[i] = kv_A(inDegree, i);
+    memcpy(INTEGER(vec), &kv_A(inDegree, 0), kv_size(inDegree) * sizeof(int));
 
     SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, kv_size(outDegree)));
-    for (size_t i = 0; i < kv_size(outDegree); ++i)
-        INTEGER(vec)[i] = kv_A(outDegree, i);
+    memcpy(INTEGER(vec), &kv_A(outDegree, 0), kv_size(outDegree) * sizeof(int));
 
     SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, kv_size(ingoingContactChain)));
-    for (size_t i = 0; i < kv_size(ingoingContactChain); ++i)
-        INTEGER(vec)[i] = kv_A(ingoingContactChain, i);
+    memcpy(INTEGER(vec), &kv_A(ingoingContactChain, 0), kv_size(ingoingContactChain) * sizeof(int));
 
     SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, kv_size(outgoingContactChain)));
-    for (size_t i = 0; i < kv_size(outgoingContactChain); ++i)
-        INTEGER(vec)[i] = kv_A(outgoingContactChain, i);
+    memcpy(INTEGER(vec), &kv_A(outgoingContactChain, 0), kv_size(outgoingContactChain) * sizeof(int));
 
     kv_destroy(ingoingContactChain);
     kv_destroy(outgoingContactChain);
