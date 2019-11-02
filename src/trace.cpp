@@ -273,6 +273,13 @@ SEXP shortestPaths(const SEXP src,
 {
     const char *names[] = {"inDistance", "inRowid", "inIndex",
                            "outDistance", "outRowid", "outIndex", ""};
+    kvec_t(int) inRowid;
+    kvec_t(int) outRowid;
+    kvec_t(int) inDistance;
+    kvec_t(int) outDistance;
+    kvec_t(int) inIndex;
+    kvec_t(int) outIndex;
+    SEXP result, vec;
 
     if (check_arguments(src, dst, t, root, inBegin, inEnd,
                        outBegin, outEnd, numberOfIdentifiers))
@@ -286,12 +293,13 @@ SEXP shortestPaths(const SEXP src,
                             INTEGER(numberOfIdentifiers)[0]);
 
     R_xlen_t len = Rf_xlength(root);
-    std::vector<int> inRowid;
-    std::vector<int> outRowid;
-    std::vector<int> inDistance;
-    std::vector<int> outDistance;
-    std::vector<int> inIndex;
-    std::vector<int> outIndex;
+    kv_init(inRowid);
+    kv_init(outRowid);
+    kv_init(inDistance);
+    kv_init(outDistance);
+    kv_init(inIndex);
+    kv_init(outIndex);
+
     for (R_xlen_t i = 0; i < len; ++i) {
         // Key: node, Value: first: distance, second: original rowid
         std::map<int, std::pair<int, int> > ingoingShortestPaths;
@@ -312,9 +320,9 @@ SEXP shortestPaths(const SEXP src,
                 ingoingShortestPaths.begin();
             it!=ingoingShortestPaths.end(); ++it)
         {
-            inDistance.push_back(it->second.first);
-            inRowid.push_back(it->second.second);
-            inIndex.push_back(i+1);
+            kv_push(int, inDistance, it->second.first);
+            kv_push(int, inRowid, it->second.second);
+            kv_push(int, inIndex, i + 1);
         }
 
         doShortestPaths(lookup.second,
@@ -330,38 +338,38 @@ SEXP shortestPaths(const SEXP src,
                  outgoingShortestPaths.begin();
             it!=outgoingShortestPaths.end(); ++it)
         {
-            outDistance.push_back(it->second.first);
-            outRowid.push_back(it->second.second);
-            outIndex.push_back(i+1);
+            kv_push(int, outDistance, it->second.first);
+            kv_push(int, outRowid, it->second.second);
+            kv_push(int, outIndex, i + 1);
         }
     }
 
-    SEXP result, vec;
     PROTECT(result = Rf_mkNamed(VECSXP, names));
 
-    SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, inDistance.size()));
-    for (size_t i = 0; i < inDistance.size(); ++i)
-        INTEGER(vec)[i] = inDistance[i];
+    SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, kv_size(inDistance)));
+    memcpy(INTEGER(vec), &kv_A(inDistance, 0), kv_size(inDistance) * sizeof(int));
 
-    SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, inRowid.size()));
-    for (size_t i = 0; i < inRowid.size(); ++i)
-        INTEGER(vec)[i] = inRowid[i];
+    SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, kv_size(inRowid)));
+    memcpy(INTEGER(vec), &kv_A(inRowid, 0), kv_size(inRowid) * sizeof(int));
 
-    SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, inIndex.size()));
-    for (size_t i = 0; i < inIndex.size(); ++i)
-        INTEGER(vec)[i] = inIndex[i];
+    SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, kv_size(inIndex)));
+    memcpy(INTEGER(vec), &kv_A(inIndex, 0), kv_size(inIndex) * sizeof(int));
 
-    SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, outDistance.size()));
-    for (size_t i = 0; i < outDistance.size(); ++i)
-        INTEGER(vec)[i] = outDistance[i];
+    SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, kv_size(outDistance)));
+    memcpy(INTEGER(vec), &kv_A(outDistance, 0), kv_size(outDistance) * sizeof(int));
 
-    SET_VECTOR_ELT(result, 4, vec = Rf_allocVector(INTSXP, outRowid.size()));
-    for (size_t i = 0; i < outRowid.size(); ++i)
-        INTEGER(vec)[i] = outRowid[i];
+    SET_VECTOR_ELT(result, 4, vec = Rf_allocVector(INTSXP, kv_size(outRowid)));
+    memcpy(INTEGER(vec), &kv_A(outRowid, 0), kv_size(outRowid) * sizeof(int));
 
-    SET_VECTOR_ELT(result, 5, vec = Rf_allocVector(INTSXP, outIndex.size()));
-    for (size_t i = 0; i < outIndex.size(); ++i)
-        INTEGER(vec)[i] = outIndex[i];
+    SET_VECTOR_ELT(result, 5, vec = Rf_allocVector(INTSXP, kv_size(outIndex)));
+    memcpy(INTEGER(vec), &kv_A(outIndex, 0), kv_size(outIndex) * sizeof(int));
+
+    kv_destroy(inRowid);
+    kv_destroy(outRowid);
+    kv_destroy(inDistance);
+    kv_destroy(outDistance);
+    kv_destroy(inIndex);
+    kv_destroy(outIndex);
 
     UNPROTECT(1);
 
@@ -615,14 +623,14 @@ SEXP networkSummary(const SEXP src,
     kvec_t(int) outDegree;
     SEXP result, vec;
 
+    if (check_arguments(src, dst, t, root, inBegin, inEnd,
+                        outBegin, outEnd, numberOfIdentifiers))
+        Rf_error("Unable to calculate network summary");
+
     kv_init(ingoingContactChain);
     kv_init(outgoingContactChain);
     kv_init(inDegree);
     kv_init(outDegree);
-
-    if (check_arguments(src, dst, t, root, inBegin, inEnd,
-                        outBegin, outEnd, numberOfIdentifiers))
-        Rf_error("Unable to calculate network summary");
 
     ContactsLookup lookup =
         buildContactsLookup(INTEGER(src),
