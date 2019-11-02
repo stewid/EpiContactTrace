@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -27,22 +27,23 @@ html_summary_table <- function(contacts, direction) {
 
     lines <- "<table border=0>"
 
-    for(i in seq_len(nrow(contacts))) {
+    for (i in seq_len(nrow(contacts))) {
         lines <- c(lines, "<tr>")
 
         ## Pad with empty cells to the left
+        pad <- rep("<td>&nbsp;</td>", 2L * (contacts$distance[i] - 1L))
         lines <- c(lines,
-                   paste(rep("<td>&nbsp;</td>", 2L * (contacts$distance[i] - 1L)), collapse = ""),
+                   paste(pad, collapse = ""),
                    sprintf('<td align="right">%s</td>', contacts$lhs[i]),
                    sprintf('<td align="right"><a href="#%s-%s-%s">%s</a></td>',
                            direction, contacts$lhs[i], contacts$rhs[i], arrow),
                    sprintf('<td align="right">%s</td>', contacts$rhs[i]))
 
         ## Pad with empty cells to the right
+        pad <- rep("<td>&nbsp;</td>", 2L * (max(contacts$distance - 1L) -
+                                            (contacts$distance[i] - 1L)))
         lines <- c(lines,
-                   paste(rep("<td>&nbsp;</td>",
-                             2L * (max(contacts$distance - 1L) - (contacts$distance[i] - 1L))),
-                         collapse = ""))
+                   paste(pad, collapse = ""))
 
         lines <- c(lines, "</tr>")
     }
@@ -80,7 +81,7 @@ html_detailed_table <- function(contacts, direction) {
                    "<table border=1>",
                    "<tr><th>Date</th><th>Id</th><th>N</th><th>Category</th><th>Source</th><th>Destination</th></tr>")
 
-        for(i in seq_len(nrow(x))) {
+        for (i in seq_len(nrow(x))) {
             lines <- c(lines,
                        "<tr>",
                        sprintf('<td align="right">%s</td>', x$t[i]),
@@ -109,16 +110,22 @@ html_report <- function(x) {
                "<h1 align='center'>Contact Tracing</h1>",
                sprintf("<h1 align='center'>Root: %s</h1>", x@root),
                "<h3 align='center'>EpiContactTrace</h3>",
-               sprintf("<h3 align='center'>Version: %s</h3>", packageVersion("EpiContactTrace")),
+               sprintf("<h3 align='center'>Version: %s</h3>",
+                       packageVersion("EpiContactTrace")),
                "<hr/>",
                "<h2>Summary ingoing contacts</h2>",
                "<p>",
                "<table border=0>",
-               sprintf("<tr><td>In begin date:</td><td>%s</td></tr>", x@ingoingContacts@tBegin),
-               sprintf("<tr><td>In end date:</td><td>%s</td></tr>", x@ingoingContacts@tEnd),
-               sprintf("<tr><td>In days:</td><td>%i</td></tr>", x@ingoingContacts@tEnd - x@ingoingContacts@tBegin),
-               sprintf("<tr><td>In degree:</td><td>%i</td></tr>", InDegree(x@ingoingContacts)),
-               sprintf("<tr><td>Ingoing contact chain:</td><td>%i</td></tr>", IngoingContactChain(x@ingoingContacts)),
+               sprintf("<tr><td>In begin date:</td><td>%s</td></tr>",
+                       x@ingoingContacts@tBegin),
+               sprintf("<tr><td>In end date:</td><td>%s</td></tr>",
+                       x@ingoingContacts@tEnd),
+               sprintf("<tr><td>In days:</td><td>%i</td></tr>",
+                       x@ingoingContacts@tEnd - x@ingoingContacts@tBegin),
+               sprintf("<tr><td>In degree:</td><td>%i</td></tr>",
+                       InDegree(x@ingoingContacts)),
+               sprintf("<tr><td>Ingoing contact chain:</td><td>%i</td></tr>",
+                       IngoingContactChain(x@ingoingContacts)),
                "</table>",
                "</p>")
 
@@ -140,11 +147,16 @@ html_report <- function(x) {
                "<h2>Summary outgoing contacts</h2>",
                "<p>",
                "<table border=0>",
-               sprintf("<tr><td>Out begin date:</td><td>%s</td></tr>", x@outgoingContacts@tBegin),
-               sprintf("<tr><td>Out end date:</td><td>%s</td></tr>", x@outgoingContacts@tEnd),
-               sprintf("<tr><td>Out days:</td><td>%i</td></tr>", x@outgoingContacts@tEnd - x@outgoingContacts@tBegin),
-               sprintf("<tr><td>Out degree:</td><td>%i</td></tr>", OutDegree(x@outgoingContacts)),
-               sprintf("<tr><td>Outgoing contact chain:</td><td>%i</td></tr>", OutgoingContactChain(x@outgoingContacts)),
+               sprintf("<tr><td>Out begin date:</td><td>%s</td></tr>",
+                       x@outgoingContacts@tBegin),
+               sprintf("<tr><td>Out end date:</td><td>%s</td></tr>",
+                       x@outgoingContacts@tEnd),
+               sprintf("<tr><td>Out days:</td><td>%i</td></tr>",
+                       x@outgoingContacts@tEnd - x@outgoingContacts@tBegin),
+               sprintf("<tr><td>Out degree:</td><td>%i</td></tr>",
+                       OutDegree(x@outgoingContacts)),
+               sprintf("<tr><td>Outgoing contact chain:</td><td>%i</td></tr>",
+                       OutgoingContactChain(x@outgoingContacts)),
                "</table>",
                "</p>")
 
@@ -158,7 +170,8 @@ html_report <- function(x) {
 
         lines <- c(lines, html_summary_table(df, "out"))
     } else {
-        lines <- c(lines, "<p>No outgoing contacts during the search period.</p>")
+        lines <- c(lines,
+                   "<p>No outgoing contacts during the search period.</p>")
     }
 
     if (length(x@ingoingContacts@source) > 0L) {
@@ -218,25 +231,28 @@ html_report <- function(x) {
 
 ##' Generate a contact tracing \code{Report}
 ##'
-##' EpiContatTrace contains report templates to generate pdf- or html reports
-##' for the farm specific contacts. These reports can be useful for hands-on
-##' disease tracing in the field. The templates are used by Sweave and can be
-##' adapted by the end user. However, in the default setting the report has the
-##' following layout; first the contacts are visualised graphically in a plot,
-##' as to give an immediate signal to the reader of the report of the number of
-##' contacts. In the following, the contact data are presented with different
-##' levels of detail split by ingoing and outgoing contacts. The first includes
-##' collapsed data and the sequential contact structure at group level (i.e. no
-##' information on individuals or dates). In this summary, the sequential
-##' structure of each part of the chain is included, and a holding that appears
-##' in several different parts of the chain can therefore be included more than
-##' once in the summary. The reason for this is to facilitate sequential
-##' tracing and getting an overview of each part of the chain. After the
-##' summary all details of all contacts included in the contact chains is
-##' presented, i.e. date of contact and data on individual level when
-##' available. To generate pdf files a TeX installation must exist to compile the
-##' latex file. The report is saved in the working directory with the name of
-##' the root as filename.
+##' EpiContatTrace contains report templates to generate pdf- or html
+##' reports for the farm specific contacts. These reports can be
+##' useful for hands-on disease tracing in the field. The templates
+##' are used by Sweave and can be adapted by the end user. However, in
+##' the default setting the report has the following layout; first the
+##' contacts are visualised graphically in a plot, as to give an
+##' immediate signal to the reader of the report of the number of
+##' contacts. In the following, the contact data are presented with
+##' different levels of detail split by ingoing and outgoing
+##' contacts. The first includes collapsed data and the sequential
+##' contact structure at group level (i.e. no information on
+##' individuals or dates). In this summary, the sequential structure
+##' of each part of the chain is included, and a holding that appears
+##' in several different parts of the chain can therefore be included
+##' more than once in the summary. The reason for this is to
+##' facilitate sequential tracing and getting an overview of each part
+##' of the chain. After the summary all details of all contacts
+##' included in the contact chains is presented, i.e. date of contact
+##' and data on individual level when available. To generate pdf files
+##' a TeX installation must exist to compile the latex file. The
+##' report is saved in the working directory with the name of the root
+##' as filename.
 ##'
 ##'
 ##' @rdname Report-methods
@@ -342,15 +358,18 @@ setMethod("Report",
           .ct_env$ct <- object
 
           if (identical(format, "html")) {
-              writeLines(html_report(object), con = sprintf("%s.html", object@root))
+              writeLines(html_report(object),
+                         con = sprintf("%s.html", object@root))
           } else {
               if (is.null(template)) {
-                  template <- system.file("Sweave/speak-latex.rnw", package = "EpiContactTrace")
+                  template <- system.file("Sweave/speak-latex.rnw",
+                                          package = "EpiContactTrace")
               }
 
-              utils::Sweave(template, syntax="SweaveSyntaxNoweb")
-              tools::texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
-              file.rename(sub("rnw$", "pdf", basename(template)), sprintf("%s.pdf", object@root))
+              Sweave(template, syntax="SweaveSyntaxNoweb")
+              texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
+              file.rename(sub("rnw$", "pdf", basename(template)),
+                          sprintf("%s.pdf", object@root))
               unlink(sub("rnw$", "tex", basename(template)))
           }
 
@@ -396,7 +415,6 @@ setMethod("Report",
 ##'
 ##' @return The current \code{ContactTrace} object when generating a report
 ##' @export
-ReportObject <- function()
-{
+ReportObject <- function() {
     return(.ct_env$ct)
 }
