@@ -287,8 +287,8 @@ html_report <- function(x) {
 ##' @param dir the generated report is written to the directory
 ##'     folder. The default (\code{"."}) is the current working
 ##'     directory.
-##' @param template the Sweave template file to use. If none is provided, the default
-##'        is used.
+##' @param template the Sweave template file to use. If none is
+##'     provided, the default is used.
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
 ##'     and its application to foot-and-mouth disease modelling and policy
