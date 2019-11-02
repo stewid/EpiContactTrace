@@ -11,9 +11,9 @@
 Report(object, ...)
 
 \S4method{Report}{ContactTrace}(object, format = c("html", "pdf"),
-  template = NULL)
+  dir = ".", template = NULL)
 
-\S4method{Report}{list}(object, format = c("html", "pdf"),
+\S4method{Report}{list}(object, format = c("html", "pdf"), dir = ".",
   template = NULL)
 }
 \arguments{
@@ -23,6 +23,10 @@ Report(object, ...)
 
 \item{format}{the format to use, can be either 'html' or 'pdf'. The default
 is 'html'}
+
+\item{dir}{the generated report is written to the directory
+folder. The default (\code{"."}) is the current working
+directory.}
 
 \item{template}{the Sweave template file to use. If none is provided, the default
 is used.}
@@ -51,13 +55,6 @@ a TeX installation must exist to compile the latex file. The
 report is saved in the working directory with the name of the root
 as filename.
 }
-\note{
-Plots are not supported in version 0.8.6 since igraph0 has
-been archived. We intend to resolve the issue in a future
-version. Install version 0.8.5 and igraph0 manually from the
-archive if plots are required. See section 6.3 in 'R Installation
-and Administration' on how to install packages from source.
-}
 \section{Methods}{
  \describe{
 
@@ -72,39 +69,34 @@ and Administration' on how to install packages from source.
 }
 
 \examples{
-\dontrun{
-
 ## Load data
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
 ## Generate an html report showing details of the contact tracing for
 ## root 2646.
-## Note: Creates the files 2645.html and 2645.png in the working
-## directory.
-Report(contactTrace)
+## Creates the file 2645.html in the temporary directory.
+Report(contactTrace, dir = tempdir())
 
 ## It's possible to generate reports for a list of ContactTrace objects.
 ## Perform contact tracing for ten of the included herds
 root <- sort(unique(c(transfers$source, transfers$destination)))[1:10]
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=root,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = root,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
 ## Generate reports
-## Note: Creates the files 1.html, 2.html, ..., 10.html and
-## 1.png, 2.png, ..., 10.png in the working directory
-Report(contactTrace)
-}
-
+## Creates the files 1.html, 2.html, ..., 10.html
+## in the temporary directory
+Report(contactTrace, dir = tempdir())
 }
 \references{
 \itemize{

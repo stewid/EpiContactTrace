@@ -53,6 +53,39 @@ html_summary_table <- function(contacts, direction) {
     lines
 }
 
+html_contacts_table <- function(x, direction, arrow) {
+    lines <- "<p>"
+
+    ## Create the lhs to/from rhs title and add the name of the href
+    ## link
+    lines <- c(lines,
+               sprintf('<h3><a name="%s-%s-%s">%s %s %s</a></h3>',
+                       direction, x$lhs[1], x$rhs[1], x$lhs[1], arrow, x$rhs[1]),
+               "<table border=1>",
+               "<tr>",
+               "<th>Date</th>",
+               "<th>Id</th>",
+               "<th>N</th>",
+               "<th>Category</th>",
+               "<th>Source</th>",
+               "<th>Destination</th>",
+               "</tr>")
+
+    for (i in seq_len(nrow(x))) {
+        lines <- c(lines,
+                   "<tr>",
+                   sprintf('<td align="right">%s</td>', x$t[i]),
+                   sprintf('<td align="right">%s</td>', x$id[i]),
+                   sprintf('<td align="right">%s</td>', x$n[i]),
+                   sprintf('<td align="right">%s</td>', x$category[i]),
+                   sprintf('<td align="right">%s</td>', x$source[i]),
+                   sprintf('<td align="right">%s</td>', x$destination[i]),
+                   "</tr>")
+    }
+
+    c(lines, "</table>", "</p>")
+}
+
 html_detailed_table <- function(contacts, direction) {
     if (identical(direction, "in")) {
         arrow <- "&larr;"
@@ -71,34 +104,10 @@ html_detailed_table <- function(contacts, direction) {
     contacts$category <- as.character(contacts$category)
     contacts$category[is.na(contacts$category)] <- "&nbsp;"
 
-    as.character(unlist(by(contacts, sprintf("%s - %s", contacts$lhs, contacts$rhs), function(x) {
-        lines <- "<p>"
+    html <- by(contacts, sprintf("%s - %s", contacts$lhs, contacts$rhs),
+               html_contacts_table, direction = direction, arrow = arrow)
 
-        ## Create the lhs to/from rhs title and add the name of the href link
-        lines <- c(lines,
-                   sprintf('<h3><a name="%s-%s-%s">%s %s %s</a></h3>', direction,
-                           x$lhs[1], x$rhs[1], x$lhs[1], arrow, x$rhs[1]),
-                   "<table border=1>",
-                   "<tr><th>Date</th><th>Id</th><th>N</th><th>Category</th><th>Source</th><th>Destination</th></tr>")
-
-        for (i in seq_len(nrow(x))) {
-            lines <- c(lines,
-                       "<tr>",
-                       sprintf('<td align="right">%s</td>', x$t[i]),
-                       sprintf('<td align="right">%s</td>', x$id[i]),
-                       sprintf('<td align="right">%s</td>', x$n[i]),
-                       sprintf('<td align="right">%s</td>', x$category[i]),
-                       sprintf('<td align="right">%s</td>', x$source[i]),
-                       sprintf('<td align="right">%s</td>', x$destination[i]),
-                       "</tr>")
-        }
-
-        lines <- c(lines,
-                   "</table>",
-                   "</p>")
-
-        lines
-    })))
+    as.character(unlist(html))
 }
 
 html_report <- function(x) {
@@ -273,6 +282,9 @@ html_report <- function(x) {
 ##' @param ... Additional arguments to the method
 ##' @param format the format to use, can be either 'html' or 'pdf'. The default
 ##'        is 'html'
+##' @param dir the generated report is written to the directory
+##'     folder. The default (\code{"."}) is the current working
+##'     directory.
 ##' @param template the Sweave template file to use. If none is provided, the default
 ##'        is used.
 ##' @references \itemize{
@@ -293,49 +305,39 @@ html_report <- function(x) {
 ##'     Heidelberg, 2002. ISBN 3-7908-1517-9.
 ##' }
 ##' @seealso Sweave, texi2pdf.
-##' @note Plots are not supported in version 0.8.6 since igraph0 has
-##' been archived. We intend to resolve the issue in a future
-##' version. Install version 0.8.5 and igraph0 manually from the
-##' archive if plots are required. See section 6.3 in 'R Installation
-##' and Administration' on how to install packages from source.
 ##' @keywords methods
 ##' @importFrom tools texi2pdf
 ##' @importFrom utils packageVersion
 ##' @importFrom utils Sweave
 ##' @examples
-##' \dontrun{
-##'
 ##' ## Load data
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 90)
 ##'
 ##' ## Generate an html report showing details of the contact tracing for
 ##' ## root 2646.
-##' ## Note: Creates the files 2645.html and 2645.png in the working
-##' ## directory.
-##' Report(contactTrace)
+##' ## Creates the file 2645.html in the temporary directory.
+##' Report(contactTrace, dir = tempdir())
 ##'
 ##' ## It's possible to generate reports for a list of ContactTrace objects.
 ##' ## Perform contact tracing for ten of the included herds
 ##' root <- sort(unique(c(transfers$source, transfers$destination)))[1:10]
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=root,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = root,
+##'                       tEnd = "2005-10-31",
+##'                       days = 90)
 ##'
 ##' ## Generate reports
-##' ## Note: Creates the files 1.html, 2.html, ..., 10.html and
-##' ## 1.png, 2.png, ..., 10.png in the working directory
-##' Report(contactTrace)
-##' }
-##'
+##' ## Creates the files 1.html, 2.html, ..., 10.html
+##' ## in the temporary directory
+##' Report(contactTrace, dir = tempdir())
 setGeneric("Report",
            signature = "object",
            function(object, ...) standardGeneric("Report"))
@@ -344,60 +346,62 @@ setGeneric("Report",
 ##' @export
 setMethod("Report",
           signature(object = "ContactTrace"),
-          function(object, format = c("html", "pdf"), template = NULL) {
-          format <- match.arg(format)
+          function(object, format = c("html", "pdf"),
+                   dir = ".", template = NULL) {
+              format <- match.arg(format)
 
-          if (!is.null(.ct_env$ct)) {
-              stop("Unable to create report. The ct object already exists")
-          }
-
-          ## Make sure the added object is removed.
-          on.exit(.ct_env$ct <- NULL)
-
-          ## Add the ContactTrace object to the .ct_env environment
-          .ct_env$ct <- object
-
-          if (identical(format, "html")) {
-              writeLines(html_report(object),
-                         con = sprintf("%s.html", object@root))
-          } else {
-              if (is.null(template)) {
-                  template <- system.file("Sweave/speak-latex.rnw",
-                                          package = "EpiContactTrace")
+              if (!is.null(.ct_env$ct)) {
+                  stop("Unable to create report. The ct object already exists")
               }
 
-              Sweave(template, syntax="SweaveSyntaxNoweb")
-              texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
-              file.rename(sub("rnw$", "pdf", basename(template)),
-                          sprintf("%s.pdf", object@root))
-              unlink(sub("rnw$", "tex", basename(template)))
-          }
+              ## Make sure the added object is removed.
+              on.exit(.ct_env$ct <- NULL)
 
-          invisible(NULL)
-      }
+              ## Add the ContactTrace object to the .ct_env
+              ## environment
+              .ct_env$ct <- object
+
+              if (identical(format, "html")) {
+                  writeLines(html_report(object),
+                             con = file.path(dir, paste0(object@root, ".html")))
+              } else {
+                  if (is.null(template)) {
+                      template <- system.file("Sweave/speak-latex.rnw",
+                                              package = "EpiContactTrace")
+                  }
+
+                  Sweave(template, syntax="SweaveSyntaxNoweb")
+                  texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
+                  file.rename(sub("rnw$", "pdf", basename(template)),
+                              sprintf("%s.pdf", object@root))
+                  unlink(sub("rnw$", "tex", basename(template)))
+              }
+
+              invisible(NULL)
+          }
 )
 
 ##' @rdname Report-methods
 ##' @export
 setMethod("Report",
           signature(object = "list"),
-          function(object, format = c("html", "pdf"), template = NULL) {
-          format <- match.arg(format)
+          function(object, format = c("html", "pdf"),
+                   dir = ".", template = NULL) {
+              format <- match.arg(format)
 
-          if (!all(sapply(object, function(x) length(x)) == 1)) {
-              stop("Unexpected length of list")
+              if (!all(sapply(object, length) == 1)) {
+                  stop("Unexpected length of list")
+              }
+
+              if (!all(sapply(object, class) == "ContactTrace")) {
+                  stop("Unexpected object in list")
+              }
+
+              lapply(object, Report, dir = dir,
+                     format = format, template = template)
+
+              invisible(NULL)
           }
-
-          if (!all(sapply(object, function(x) class(x)) == "ContactTrace")) {
-              stop("Unexpected object in list")
-          }
-
-          lapply(object, function(x) Report(x,
-                                            format = format,
-                                            template = template))
-
-          invisible(NULL)
-      }
 )
 
 ## In order to communicate with Sweave add an environment to store the
