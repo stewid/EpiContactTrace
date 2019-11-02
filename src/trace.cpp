@@ -267,6 +267,9 @@ SEXP shortestPaths(const SEXP src,
 		   const SEXP outEnd,
 		   const SEXP numberOfIdentifiers)
 {
+    const char *names[] = {"inDistance", "inRowid", "inIndex",
+                           "outDistance", "outRowid", "outIndex", ""};
+
     if (check_arguments(src, dst, t, root, inBegin, inEnd,
                        outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to calculate shortest paths");
@@ -320,7 +323,7 @@ SEXP shortestPaths(const SEXP src,
                         outgoingShortestPaths);
 
         for (std::map<int, std::pair<int, int> >::const_iterator it =
-                outgoingShortestPaths.begin();
+                 outgoingShortestPaths.begin();
             it!=outgoingShortestPaths.end(); ++it)
         {
             outDistance.push_back(it->second.first);
@@ -329,42 +332,34 @@ SEXP shortestPaths(const SEXP src,
         }
     }
 
-    SEXP result, names, vec;
-    PROTECT(result = Rf_allocVector(VECSXP, 6));
-    PROTECT(names = Rf_allocVector(STRSXP, 6));
+    SEXP result, vec;
+    PROTECT(result = Rf_mkNamed(VECSXP, names));
 
     SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, inDistance.size()));
     for (size_t i = 0; i < inDistance.size(); ++i)
         INTEGER(vec)[i] = inDistance[i];
-    SET_STRING_ELT(names,  0, Rf_mkChar("inDistance"));
 
     SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, inRowid.size()));
     for (size_t i = 0; i < inRowid.size(); ++i)
         INTEGER(vec)[i] = inRowid[i];
-    SET_STRING_ELT(names,  1, Rf_mkChar("inRowid"));
 
     SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, inIndex.size()));
     for (size_t i = 0; i < inIndex.size(); ++i)
         INTEGER(vec)[i] = inIndex[i];
-    SET_STRING_ELT(names,  2, Rf_mkChar("inIndex"));
 
     SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, outDistance.size()));
     for (size_t i = 0; i < outDistance.size(); ++i)
         INTEGER(vec)[i] = outDistance[i];
-    SET_STRING_ELT(names,  3, Rf_mkChar("outDistance"));
 
     SET_VECTOR_ELT(result, 4, vec = Rf_allocVector(INTSXP, outRowid.size()));
     for (size_t i = 0; i < outRowid.size(); ++i)
         INTEGER(vec)[i] = outRowid[i];
-    SET_STRING_ELT(names,  4, Rf_mkChar("outRowid"));
 
     SET_VECTOR_ELT(result, 5, vec = Rf_allocVector(INTSXP, outIndex.size()));
     for (size_t i = 0; i < outIndex.size(); ++i)
         INTEGER(vec)[i] = outIndex[i];
-    SET_STRING_ELT(names,  5, Rf_mkChar("outIndex"));
 
-    Rf_setAttrib(result, R_NamesSymbol, names);
-    UNPROTECT(2);
+    UNPROTECT(1);
 
     return result;
 }
@@ -499,7 +494,7 @@ SEXP traceContacts(const SEXP src,
                         INTEGER(root)[i] - 1,
                         INTEGER(outBegin)[i],
                         INTEGER(outEnd)[i],
-                        std::set<int>(),
+                       std::set<int>(),
                         1,
                         false,
                         resultRowid,
@@ -608,8 +603,11 @@ SEXP networkSummary(const SEXP src,
 		    const SEXP outEnd,
 		    const SEXP numberOfIdentifiers)
 {
+    const char *names[] = {"inDegree", "outDegree",
+                           "ingoingContactChain", "outgoingContactChain", ""};
+
     if (check_arguments(src, dst, t, root, inBegin, inEnd,
-                       outBegin, outEnd, numberOfIdentifiers))
+                        outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to calculate network summary");
 
     ContactsLookup lookup =
@@ -656,32 +654,26 @@ SEXP networkSummary(const SEXP src,
                                    INTEGER(outEnd)[i]));
     }
 
-    SEXP result, names, vec;
-    PROTECT(result = Rf_allocVector(VECSXP, 4));
-    PROTECT(names = Rf_allocVector(STRSXP, 4));
+    SEXP result, vec;
+    PROTECT(result = Rf_mkNamed(VECSXP, names));
 
     SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, inDegree.size()));
     for (size_t i = 0; i < inDegree.size(); ++i)
         INTEGER(vec)[i] = inDegree[i];
-    SET_STRING_ELT(names,  0, Rf_mkChar("inDegree"));
 
     SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, outDegree.size()));
     for (size_t i = 0; i < outDegree.size(); ++i)
         INTEGER(vec)[i] = outDegree[i];
-    SET_STRING_ELT(names,  1, Rf_mkChar("outDegree"));
 
     SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, ingoingContactChain.size()));
     for (size_t i = 0; i < ingoingContactChain.size(); ++i)
         INTEGER(vec)[i] = ingoingContactChain[i];
-    SET_STRING_ELT(names,  2, Rf_mkChar("ingoingContactChain"));
 
     SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, outgoingContactChain.size()));
     for (size_t i = 0; i < outgoingContactChain.size(); ++i)
         INTEGER(vec)[i] = outgoingContactChain[i];
-    SET_STRING_ELT(names,  3, Rf_mkChar("outgoingContactChain"));
 
-    Rf_setAttrib(result, R_NamesSymbol, names);
-    UNPROTECT(2);
+    UNPROTECT(1);
 
     return result;
 }
