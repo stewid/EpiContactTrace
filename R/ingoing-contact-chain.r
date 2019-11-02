@@ -65,7 +65,8 @@
 ##'   }
 ##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal e.g. Cattle.
+##'     an optional character or factor with category of the animal
+##'     e.g. Cattle.
 ##'   }
 ##' }
 ##'
@@ -75,20 +76,21 @@
 ##' @include Contacts.r
 ##' @include ContactTrace.r
 ##' @seealso \code{\link{NetworkSummary}}
+##'
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
-##' or a \code{data.frame} with movements of animals between holdings,
-##' see \code{\link{Trace}} for details.
+##'     or a \code{data.frame} with movements of animals between
+##'     holdings, see \code{\link{Trace}} for details.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate ingoing contact chain
-##' for.
+##'     for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' ingoing movements. Defaults to \code{NULL}
+##'     ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -108,7 +110,8 @@
 ##'   }
 ##'
 ##'   \item{ingoingContactChain}{
-##'     The \code{\link{IngoingContactChain}} of the root within the time-interval
+##'     The \code{\link{IngoingContactChain}} of the root within the
+##'     time-interval
 ##'   }
 ##' }
 ##'
@@ -180,7 +183,8 @@ setMethod("IngoingContactChain",
           function (x)
       {
           if(!identical(x@direction, "in")) {
-              stop("Unable to determine IngoingContactChain for outgoing contacts")
+              stop("Unable to determine IngoingContactChain ",
+                   "for outgoing contacts")
           }
 
           return(length(setdiff(x@source,x@root)))
