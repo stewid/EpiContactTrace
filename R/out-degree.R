@@ -204,8 +204,7 @@ setMethod("OutDegree",
                    tEnd = NULL,
                    days = NULL,
                    outBegin = NULL,
-                   outEnd = NULL)
-      {
+                   outEnd = NULL) {
           if (missing(root)) {
               stop("Missing parameters in call to OutDegree")
           }

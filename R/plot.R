@@ -69,8 +69,7 @@
 ##' }
 setMethod("plot",
           signature(x = "ContactTrace"),
-          function(x, ...)
-      {
+          function(x, ...) {
           ns <- NetworkStructure(x)
           tree <- build_tree(ns)
 

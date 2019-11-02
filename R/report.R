@@ -329,8 +329,7 @@ setGeneric("Report",
 ##' @export
 setMethod("Report",
           signature(object = "ContactTrace"),
-          function(object, format = c("html", "pdf"), template = NULL)
-      {
+          function(object, format = c("html", "pdf"), template = NULL) {
           format <- match.arg(format)
 
           if (!is.null(.ct_env$ct)) {
@@ -364,8 +363,7 @@ setMethod("Report",
 ##' @export
 setMethod("Report",
           signature(object = "list"),
-          function(object, format = c("html", "pdf"), template = NULL)
-      {
+          function(object, format = c("html", "pdf"), template = NULL) {
           format <- match.arg(format)
 
           if (!all(sapply(object, function(x) length(x)) == 1)) {
