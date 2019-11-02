@@ -29,34 +29,34 @@ library(EpiContactTrace)
 ##
 movements <- data.frame(source = c(2L, 2L),
                         destination = c(1L, 2L),
-                        t = as.Date(c('2010-10-03', '2010-10-02')))
+                        t = as.Date(c("2010-10-03", "2010-10-02")))
 
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-09-30'),
-            inEnd = as.Date('2010-10-05'),
-            outBegin = as.Date('2010-10-05'),
-            outEnd = as.Date('2010-10-10'))
+            inBegin = as.Date("2010-09-30"),
+            inEnd = as.Date("2010-10-05"),
+            outBegin = as.Date("2010-10-05"),
+            outEnd = as.Date("2010-10-10"))
 
-stopifnot(identical(ct@ingoingContacts@source, '2'))
-stopifnot(identical(ct@ingoingContacts@destination, '1'))
+stopifnot(identical(ct@ingoingContacts@source, "2"))
+stopifnot(identical(ct@ingoingContacts@destination, "1"))
 
 ##
 ## Loops: Case 2
 ##
 movements <- data.frame(source = c(2L, 2L),
                         destination = c(1L, 2L),
-                        t = as.Date(c('2010-10-03', '2010-10-02')))
+                        t = as.Date(c("2010-10-03", "2010-10-02")))
 
 ct <- Trace(movements,
             root = 2L,
-            inBegin = as.Date('2010-09-30'),
-            inEnd = as.Date('2010-10-05'),
-            outBegin = as.Date('2010-09-30'),
-            outEnd = as.Date('2010-10-10'))
+            inBegin = as.Date("2010-09-30"),
+            inEnd = as.Date("2010-10-05"),
+            outBegin = as.Date("2010-09-30"),
+            outEnd = as.Date("2010-10-10"))
 
-stopifnot(identical(ct@outgoingContacts@source, '2'))
-stopifnot(identical(ct@outgoingContacts@destination, '1'))
+stopifnot(identical(ct@outgoingContacts@source, "2"))
+stopifnot(identical(ct@outgoingContacts@destination, "1"))
 
 ##
 ## Direction: Case 1
@@ -70,13 +70,13 @@ movements <- structure(list(source = 1:7,
 
 ct <- Trace(movements,
             root = 4L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin =  as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin =  as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 
-stopifnot(identical(ct@ingoingContacts@direction, 'in'))
-stopifnot(identical(ct@outgoingContacts@direction, 'out'))
+stopifnot(identical(ct@ingoingContacts@direction, "in"))
+stopifnot(identical(ct@outgoingContacts@direction, "out"))
 
 ##
 ## Direction: Case 2
@@ -92,13 +92,13 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
 
 ct <- Trace(movements,
             root = 4L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin =  as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin =  as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 
-stopifnot(identical(ct@ingoingContacts@direction, 'in'))
-stopifnot(identical(ct@outgoingContacts@direction, 'out'))
+stopifnot(identical(ct@ingoingContacts@direction, "in"))
+stopifnot(identical(ct@outgoingContacts@direction, "out"))
 
 ##
 ## Root not in movements: Case 1
@@ -114,10 +114,10 @@ movements <- structure(list(source = c("1", "1", "1"),
 
 ct <- Trace(movements,
             root = 15L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 
 stopifnot(identical(InDegree(ct)$inDegree, 0L))
 stopifnot(identical(OutDegree(ct)$outDegree, 0L))
@@ -134,7 +134,7 @@ movements <- structure(list(source = c("1", "1", "1"),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -3L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 15, tEnd = '2010-09-01', days = 30)
+ns <- NetworkSummary(movements, root = 15, tEnd = "2010-09-01", days = 30)
 stopifnot(identical(ns$inDegree, 0L))
 
 ##
@@ -149,7 +149,7 @@ movements <- structure(list(source = c("1", "1", "1"),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -3L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 15, tEnd = '2010-08-31', days = 30)
+ns <- NetworkSummary(movements, root = 15, tEnd = "2010-08-31", days = 30)
 stopifnot(identical(ns$outDegree, 0L))
 
 ##
@@ -296,25 +296,25 @@ movements <- structure(list(source = c("2019", "2019", "2019", "2019", "2019",
 159L, 160L, 161L, 162L, 163L, 164L, 165L, 166L, 167L, 168L, 169L,
 170L, 171L, 172L), class = "data.frame")
 
-ct.1 <- Trace(movements, 2645, '2005-10-31', 90)
-ct.1.df <- as(ct.1, 'data.frame')
+ct.1 <- Trace(movements, 2645, "2005-10-31", 90)
+ct.1.df <- as(ct.1, "data.frame")
 
-ct.2 <- Trace(ct.1.df, 2645, '2005-10-31', 90)
-ct.2.df <- as(ct.2, 'data.frame')
+ct.2 <- Trace(ct.1.df, 2645, "2005-10-31", 90)
+ct.2.df <- as(ct.2, "data.frame")
 
-ct.1.df <- ct.1.df[, c('source',
-                       'destination',
-                       't',
-                       'id',
-                       'n',
-                       'category')]
+ct.1.df <- ct.1.df[, c("source",
+                       "destination",
+                       "t",
+                       "id",
+                       "n",
+                       "category")]
 
-ct.2.df <- ct.2.df[, c('source',
-                       'destination',
-                       't',
-                       'id',
-                       'n',
-                       'category')]
+ct.2.df <- ct.2.df[, c("source",
+                       "destination",
+                       "t",
+                       "id",
+                       "n",
+                       "category")]
 
 ct.1.df <- ct.1.df[order(ct.1.df$source,
                          ct.1.df$destination,

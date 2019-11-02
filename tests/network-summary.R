@@ -30,15 +30,15 @@ data(transfers)
 ##
 load(file=system.file("extdata", "ns.rda", package="EpiContactTrace"))
 root <- sort(unique(c(transfers$source, transfers$destination)))
-result <- NetworkSummary(transfers, root=root, tEnd='2005-10-31', days=90)
+result <- NetworkSummary(transfers, root=root, tEnd="2005-10-31", days=90)
 stopifnot(identical(result, ns))
 
 ##
 ## Case 2
 ##
-ns <- NetworkSummary(transfers, root=584, tEnd='2005-10-31', days=91)
+ns <- NetworkSummary(transfers, root=584, tEnd="2005-10-31", days=91)
 ns.trace <- NetworkSummary(Trace(transfers,
                                  root=584,
-                                 tEnd='2005-10-31',
+                                 tEnd="2005-10-31",
                                  days=91))
 stopifnot(identical(ns, ns.trace))
