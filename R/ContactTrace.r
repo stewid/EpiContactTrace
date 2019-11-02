@@ -69,8 +69,7 @@ setClass("ContactTrace",
 
 setAs(from = "ContactTrace",
       to   = "data.frame",
-      def  = function(from)
-  {
+      def  = function(from) {
       return(rbind(as(from@ingoingContacts, "data.frame"),
                    as(from@outgoingContacts, "data.frame")))
   }

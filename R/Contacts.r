@@ -143,8 +143,7 @@ setClass("Contacts",
 
 setAs(from = "Contacts",
       to = "data.frame",
-      def = function(from)
-  {
+      def = function(from) {
       if (length(from@source) > 0L) {
           df1 <- data.frame(source = from@source,
                             destination = from@destination,

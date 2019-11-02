@@ -170,8 +170,7 @@ setGeneric("InDegree",
 ##' @export
 setMethod("InDegree",
           signature(x = "Contacts"),
-          function(x)
-      {
+          function(x) {
           if (!identical(x@direction, "in")) {
               stop("Unable to determine InDegree for outgoing contacts")
           }
@@ -184,8 +183,7 @@ setMethod("InDegree",
 ##' @export
 setMethod("InDegree",
           signature(x = "ContactTrace"),
-          function (x)
-      {
+          function (x) {
           return(NetworkSummary(x)[, c("root",
                                        "inBegin",
                                        "inEnd",
@@ -203,8 +201,7 @@ setMethod("InDegree",
                    tEnd = NULL,
                    days = NULL,
                    inBegin = NULL,
-                   inEnd = NULL)
-      {
+                   inEnd = NULL) {
           if (missing(root)) {
               stop("Missing parameters in call to InDegree")
           }

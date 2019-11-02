@@ -180,23 +180,21 @@ setGeneric("IngoingContactChain",
 ##' @export
 setMethod("IngoingContactChain",
           signature(x = "Contacts"),
-          function (x)
-      {
-          if (!identical(x@direction, "in")) {
-              stop("Unable to determine IngoingContactChain ",
-                   "for outgoing contacts")
-          }
+          function (x) {
+              if (!identical(x@direction, "in")) {
+                  stop("Unable to determine IngoingContactChain ",
+                       "for outgoing contacts")
+              }
 
-          return(length(setdiff(x@source,x@root)))
-      }
+              return(length(setdiff(x@source,x@root)))
+          }
 )
 
 ##' @rdname IngoingContactChain-methods
 ##' @export
 setMethod("IngoingContactChain",
           signature(x = "ContactTrace"),
-          function (x)
-      {
+          function (x) {
           return(NetworkSummary(x)[, c("root",
                                        "inBegin",
                                        "inEnd",
@@ -214,8 +212,7 @@ setMethod("IngoingContactChain",
                    tEnd = NULL,
                    days = NULL,
                    inBegin = NULL,
-                   inEnd = NULL)
-      {
+                   inEnd = NULL) {
           if (missing(root)) {
               stop("Missing parameters in call to IngoingContactChain")
           }

@@ -118,8 +118,7 @@ setGeneric("NetworkStructure",
 ##' @export
 setMethod("NetworkStructure",
           signature(object = "Contacts"),
-          function(object)
-      {
+          function(object) {
           if (length(object@source) > 0L) {
               ## Create a matrix with source, destination and distance
               m <- cbind(object@source[object@index],
@@ -182,9 +181,8 @@ setMethod("NetworkStructure",
 ##' @export
 setMethod("NetworkStructure",
           signature(object = "ContactTrace"),
-          function(object)
-      {
-          return(rbind(NetworkStructure(object@ingoingContacts),
-                       NetworkStructure(object@outgoingContacts)))
-      }
+          function(object) {
+              return(rbind(NetworkStructure(object@ingoingContacts),
+                           NetworkStructure(object@outgoingContacts)))
+          }
 )

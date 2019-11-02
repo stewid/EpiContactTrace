@@ -241,8 +241,7 @@ setGeneric("NetworkSummary",
 ##' @export
 setMethod("NetworkSummary",
           signature(x = "ContactTrace"),
-          function(x)
-      {
+          function(x) {
           data.frame(root = x@root,
                      inBegin = x@ingoingContacts@tBegin,
                      inEnd = x@ingoingContacts@tEnd,
@@ -268,8 +267,7 @@ setMethod("NetworkSummary",
                    inBegin = NULL,
                    inEnd = NULL,
                    outBegin = NULL,
-                   outEnd = NULL)
-      {
+                   outEnd = NULL) {
           ## Check that arguments are ok from various perspectives...
 
           ## Check the data.frame x with movements
