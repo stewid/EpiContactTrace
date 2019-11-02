@@ -122,13 +122,13 @@ check_arguments(const SEXP src,
         Rf_isNull(outBegin) ||
         Rf_isNull(outEnd) ||
         Rf_isNull(numberOfIdentifiers) ||
-        INTSXP != TYPEOF(root) ||
-        INTSXP != TYPEOF(inBegin) ||
-        INTSXP != TYPEOF(inEnd) ||
-        INTSXP != TYPEOF(outBegin) ||
-        INTSXP != TYPEOF(outEnd) ||
-        INTSXP != TYPEOF(numberOfIdentifiers) ||
-        1 != LENGTH(numberOfIdentifiers))
+        !Rf_isInteger(root) ||
+        !Rf_isInteger(inBegin) ||
+        !Rf_isInteger(inEnd) ||
+        !Rf_isInteger(outBegin) ||
+        !Rf_isInteger(outEnd) ||
+        !Rf_isInteger(numberOfIdentifiers) ||
+        Rf_xlength(numberOfIdentifiers) != 1)
         return 1;
     return 0;
 }
@@ -278,17 +278,17 @@ SEXP shortestPaths(const SEXP src,
         buildContactsLookup(INTEGER(src),
                             INTEGER(dst),
                             INTEGER(t),
-                            LENGTH(t),
+                            Rf_xlength(t),
                             INTEGER(numberOfIdentifiers)[0]);
 
-    size_t len = LENGTH(root);
+    R_xlen_t len = Rf_xlength(root);
     std::vector<int> inRowid;
     std::vector<int> outRowid;
     std::vector<int> inDistance;
     std::vector<int> outDistance;
     std::vector<int> inIndex;
     std::vector<int> outIndex;
-    for (size_t i=0; i<len; ++i) {
+    for (R_xlen_t i = 0; i < len; ++i) {
         // Key: node, Value: first: distance, second: original rowid
         std::map<int, std::pair<int, int> > ingoingShortestPaths;
 
@@ -456,15 +456,15 @@ SEXP traceContacts(const SEXP src,
         buildContactsLookup(INTEGER(src),
                             INTEGER(dst),
                             INTEGER(t),
-                            LENGTH(t),
+                            Rf_xlength(t),
                             INTEGER(numberOfIdentifiers)[0]);
 
     SEXP result, vec;
     std::vector<int> resultRowid;
     std::vector<int> resultDistance;
 
-    PROTECT(result = Rf_allocVector(VECSXP, 4 * LENGTH(root)));
-    for (size_t i = 0, end = LENGTH(root); i < end; ++i) {
+    PROTECT(result = Rf_allocVector(VECSXP, 4 * Rf_xlength(root)));
+    for (R_xlen_t i = 0, end = Rf_xlength(root); i < end; ++i) {
         resultRowid.clear();
         resultDistance.clear();
 
@@ -614,7 +614,7 @@ SEXP networkSummary(const SEXP src,
         buildContactsLookup(INTEGER(src),
                             INTEGER(dst),
                             INTEGER(t),
-                            LENGTH(t),
+                            Rf_xlength(t),
                             INTEGER(numberOfIdentifiers)[0]);
 
     std::vector<int> ingoingContactChain;
@@ -622,7 +622,7 @@ SEXP networkSummary(const SEXP src,
     std::vector<int> inDegree;
     std::vector<int> outDegree;
 
-    for (size_t i=0, end=LENGTH(root); i<end; ++i) {
+    for (R_xlen_t i = 0, end = Rf_xlength(root); i < end; ++i) {
         VisitedNodes visitedNodesIngoing(INTEGER(numberOfIdentifiers)[0]);
         VisitedNodes visitedNodesOutgoing(INTEGER(numberOfIdentifiers)[0]);
 
