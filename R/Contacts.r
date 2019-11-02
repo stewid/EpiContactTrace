@@ -100,19 +100,19 @@
 ##' ## Show structure of ougoing contacts
 ##' str(contactTrace@@outgoingContacts)
 ##'
-setClass('Contacts',
-         slots = c(root = 'character',
-                   tBegin = 'Date',
-                   tEnd = 'Date',
-                   source = 'character',
-                   destination = 'character',
-                   t = 'Date',
-                   id = 'character',
-                   n = 'numeric',
-                   category = 'character',
-                   index = 'integer',
-                   distance = 'integer',
-                   direction = 'character'),
+setClass("Contacts",
+         slots = c(root = "character",
+                   tBegin = "Date",
+                   tEnd = "Date",
+                   source = "character",
+                   destination = "character",
+                   t = "Date",
+                   id = "character",
+                   n = "numeric",
+                   category = "character",
+                   index = "integer",
+                   distance = "integer",
+                   direction = "character"),
          validity = function(object) {
              retval <- NULL
 
@@ -123,7 +123,7 @@ setClass('Contacts',
                            length(object@n),
                            length(object@category)))
              if(!identical(length(l), 1L)) {
-                 retval <- 'Lengths of source, destination, t, id, n and category should have equal length'
+                 retval <- "Lengths of source, destination, t, id, n and category should have equal length"
              }
 
              if(is.null(retval)) {
@@ -134,8 +134,8 @@ setClass('Contacts',
          }
 )
 
-setAs(from='Contacts',
-      to='data.frame',
+setAs(from="Contacts",
+      to="data.frame",
       def=function(from)
   {
       if(length(from@source) > 0L) {
@@ -147,13 +147,13 @@ setAs(from='Contacts',
                             category=from@category,
                             stringsAsFactors=FALSE)
 
-          if(identical(from@direction, 'in')) {
+          if(identical(from@direction, "in")) {
               df2 <- data.frame(root=from@root,
                                 inBegin=from@tBegin,
                                 inEnd=from@tEnd,
                                 outBegin=as.Date(as.character(NA)),
                                 outEnd=as.Date(as.character(NA)),
-                                direction='in',
+                                direction="in",
                                 stringsAsFactors=FALSE)
           } else {
               df2 <- data.frame(root=from@root,
@@ -161,7 +161,7 @@ setAs(from='Contacts',
                                 inEnd=as.Date(as.character(NA)),
                                 outBegin=from@tBegin,
                                 outEnd=from@tEnd,
-                                direction='out',
+                                direction="out",
                                 stringsAsFactors=FALSE)
           }
 
