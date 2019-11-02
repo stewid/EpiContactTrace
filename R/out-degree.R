@@ -173,28 +173,26 @@ setGeneric("OutDegree",
 ##' @export
 setMethod("OutDegree",
           signature(x = "Contacts"),
-          function (x)
-      {
-          if (!identical(x@direction, "out")) {
-              stop("Unable to determine OutDegree for ingoing contacts")
-          }
+          function(x) {
+              if (!identical(x@direction, "out")) {
+                  stop("Unable to determine OutDegree for ingoing contacts")
+              }
 
-          return(length(unique(x@destination[x@source == x@root])))
-      }
+              return(length(unique(x@destination[x@source == x@root])))
+          }
 )
 
 ##' @rdname OutDegree-methods
 ##' @export
 setMethod("OutDegree",
           signature(x = "ContactTrace"),
-          function (x)
-      {
-          return(NetworkSummary(x)[, c("root",
-                                       "outBegin",
-                                       "outEnd",
-                                       "outDays",
-                                       "outDegree")])
-      }
+          function(x) {
+              return(NetworkSummary(x)[, c("root",
+                                           "outBegin",
+                                           "outEnd",
+                                           "outDays",
+                                           "outDegree")])
+          }
 )
 
 ##' @rdname OutDegree-methods

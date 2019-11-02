@@ -72,7 +72,7 @@
 ##'}
 setMethod("show",
           signature(object = "Contacts"),
-          function (object)
+          function(object)
       {
           arrow <- ifelse(identical(object@direction, "in"), "<<<", ">>>")
           prefix <- ifelse(identical(object@direction, "in"), "In", "Out")
@@ -125,10 +125,9 @@ setMethod("show",
 
 setMethod("show",
           signature(object = "ContactTrace"),
-          function (object)
-      {
-          cat(sprintf("Root: %s\n\n", object@root))
-          show(object@ingoingContacts)
-          show(object@outgoingContacts)
-      }
+          function(object) {
+              cat(sprintf("Root: %s\n\n", object@root))
+              show(object@ingoingContacts)
+              show(object@outgoingContacts)
+          }
 )

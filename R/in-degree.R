@@ -183,13 +183,13 @@ setMethod("InDegree",
 ##' @export
 setMethod("InDegree",
           signature(x = "ContactTrace"),
-          function (x) {
-          return(NetworkSummary(x)[, c("root",
-                                       "inBegin",
-                                       "inEnd",
-                                       "inDays",
-                                       "inDegree")])
-      }
+          function(x) {
+              return(NetworkSummary(x)[, c("root",
+                                           "inBegin",
+                                           "inEnd",
+                                           "inDays",
+                                           "inDegree")])
+          }
 )
 
 ##' @rdname InDegree-methods

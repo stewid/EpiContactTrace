@@ -132,28 +132,26 @@ setGeneric("OutgoingContactChain",
 ##' @export
 setMethod("OutgoingContactChain",
           signature(x = "Contacts"),
-          function (x)
-      {
-          if (!identical(x@direction, "out")) {
-              stop("Unable to determine OutgoingContactChain for ingoing contacts")
-          }
+          function(x) {
+              if (!identical(x@direction, "out")) {
+                  stop("Unable to determine OutgoingContactChain for ingoing contacts")
+              }
 
-          return(length(setdiff(x@destination,x@root)))
-      }
+              return(length(setdiff(x@destination,x@root)))
+          }
 )
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
 setMethod("OutgoingContactChain",
           signature(x = "ContactTrace"),
-          function (x)
-      {
-          return(NetworkSummary(x)[, c("root",
-                                       "outBegin",
-                                       "outEnd",
-                                       "outDays",
-                                       "outgoingContactChain")])
-      }
+          function(x) {
+              return(NetworkSummary(x)[, c("root",
+                                           "outBegin",
+                                           "outEnd",
+                                           "outDays",
+                                           "outgoingContactChain")])
+          }
 )
 
 ##' @rdname OutgoingContactChain-methods
