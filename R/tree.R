@@ -45,10 +45,10 @@ build_tree <- function(network_structure)
 
     if (nrow(tree.in)) {
         i <- order(tree.in$distance, tree.in$source)
-        tree.in <- tree.in[i, c('source', 'distance')]
+        tree.in <- tree.in[i, c("source", "distance")]
         tree.in <- tree.in[!duplicated(tree.in$source),]
         tree.in$parent <- NA_character_
-        colnames(tree.in)[1:2] <- c('node', 'level')
+        colnames(tree.in)[1:2] <- c("node", "level")
         tree.in <- tree.in[, colnames(root_node)]
 
         for(lev in rev(seq_len(max(tree.in$level)))) {
@@ -75,10 +75,10 @@ build_tree <- function(network_structure)
 
     if (nrow(tree.out)) {
         i <- order(tree.out$distance, tree.out$destination)
-        tree.out <- tree.out[i, c('destination', 'distance')]
+        tree.out <- tree.out[i, c("destination", "distance")]
         tree.out <- tree.out[!duplicated(tree.out$destination),]
         tree.out$parent <- NA_character_
-        colnames(tree.out)[1:2] <- c('node', 'level')
+        colnames(tree.out)[1:2] <- c("node", "level")
         tree.out <- tree.out[, colnames(root_node)]
 
         for(lev in rev(seq_len(max(tree.out$level)))) {
@@ -481,7 +481,7 @@ position_tree <- function(tree,
                 x_temp <- x + node_level(node) * level_separation
                 y_temp <- y + prelim(node) + modsum
             } else {
-                stop('Undefined orientation')
+                stop("Undefined orientation")
             }
 
             ## Check that x_temp and y_temp are of the proper size.
@@ -499,7 +499,7 @@ position_tree <- function(tree,
                     second_walk(right_sibling(node), modsum)
                 }
             } else {
-                stop('Tree outside drawable extents range')
+                stop("Tree outside drawable extents range")
             }
         }
 
@@ -529,5 +529,5 @@ position_tree <- function(tree,
 
     second_walk(root(), 0)
 
-    return(tree[, c('node', 'parent', 'level', 'x', 'y')])
+    return(tree[, c("node", "parent", "level", "x", "y")])
 }
