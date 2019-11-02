@@ -128,7 +128,7 @@ ShortestPaths(contactTrace)
 ## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source, transfers$destination)))
 
-sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
+sp <- ShortestPaths(transfers, root=root, tEnd="2005-10-31", days=90)
 
 }
 }
