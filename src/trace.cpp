@@ -21,6 +21,7 @@
 #define R_NO_REMAP
 #define STRICT_R_HEADERS
 
+#include "kvec.h"
 #include <algorithm>
 #include <map>
 #include <set>
@@ -605,6 +606,16 @@ SEXP networkSummary(const SEXP src,
 {
     const char *names[] = {"inDegree", "outDegree",
                            "ingoingContactChain", "outgoingContactChain", ""};
+    kvec_t(int) ingoingContactChain;
+    kvec_t(int) outgoingContactChain;
+    kvec_t(int) inDegree;
+    kvec_t(int) outDegree;
+    SEXP result, vec;
+
+    kv_init(ingoingContactChain);
+    kv_init(outgoingContactChain);
+    kv_init(inDegree);
+    kv_init(outDegree);
 
     if (check_arguments(src, dst, t, root, inBegin, inEnd,
                         outBegin, outEnd, numberOfIdentifiers))
@@ -616,11 +627,6 @@ SEXP networkSummary(const SEXP src,
                             INTEGER(t),
                             Rf_xlength(t),
                             INTEGER(numberOfIdentifiers)[0]);
-
-    std::vector<int> ingoingContactChain;
-    std::vector<int> outgoingContactChain;
-    std::vector<int> inDegree;
-    std::vector<int> outDegree;
 
     for (R_xlen_t i = 0, end = Rf_xlength(root); i < end; ++i) {
         VisitedNodes visitedNodesIngoing(INTEGER(numberOfIdentifiers)[0]);
@@ -640,38 +646,42 @@ SEXP networkSummary(const SEXP src,
                      visitedNodesOutgoing,
                      false);
 
-        ingoingContactChain.push_back(visitedNodesIngoing.N() - 1);
-        outgoingContactChain.push_back(visitedNodesOutgoing.N() - 1);
+        kv_push(int, ingoingContactChain, visitedNodesIngoing.N() - 1);
+        kv_push(int, outgoingContactChain, visitedNodesOutgoing.N() - 1);
 
-        inDegree.push_back(degree(lookup.first,
-                                  INTEGER(root)[i] - 1,
-                                  INTEGER(inBegin)[i],
-                                  INTEGER(inEnd)[i]));
+        kv_push(int, inDegree, degree(lookup.first,
+                                      INTEGER(root)[i] - 1,
+                                      INTEGER(inBegin)[i],
+                                      INTEGER(inEnd)[i]));
 
-        outDegree.push_back(degree(lookup.second,
-                                   INTEGER(root)[i] - 1,
-                                   INTEGER(outBegin)[i],
-                                   INTEGER(outEnd)[i]));
+        kv_push(int, outDegree, degree(lookup.second,
+                                       INTEGER(root)[i] - 1,
+                                       INTEGER(outBegin)[i],
+                                       INTEGER(outEnd)[i]));
     }
 
-    SEXP result, vec;
     PROTECT(result = Rf_mkNamed(VECSXP, names));
 
-    SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, inDegree.size()));
-    for (size_t i = 0; i < inDegree.size(); ++i)
-        INTEGER(vec)[i] = inDegree[i];
+    SET_VECTOR_ELT(result, 0, vec = Rf_allocVector(INTSXP, kv_size(inDegree)));
+    for (size_t i = 0; i < kv_size(inDegree); ++i)
+        INTEGER(vec)[i] = kv_A(inDegree, i);
 
-    SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, outDegree.size()));
-    for (size_t i = 0; i < outDegree.size(); ++i)
-        INTEGER(vec)[i] = outDegree[i];
+    SET_VECTOR_ELT(result, 1, vec = Rf_allocVector(INTSXP, kv_size(outDegree)));
+    for (size_t i = 0; i < kv_size(outDegree); ++i)
+        INTEGER(vec)[i] = kv_A(outDegree, i);
 
-    SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, ingoingContactChain.size()));
-    for (size_t i = 0; i < ingoingContactChain.size(); ++i)
-        INTEGER(vec)[i] = ingoingContactChain[i];
+    SET_VECTOR_ELT(result, 2, vec = Rf_allocVector(INTSXP, kv_size(ingoingContactChain)));
+    for (size_t i = 0; i < kv_size(ingoingContactChain); ++i)
+        INTEGER(vec)[i] = kv_A(ingoingContactChain, i);
 
-    SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, outgoingContactChain.size()));
-    for (size_t i = 0; i < outgoingContactChain.size(); ++i)
-        INTEGER(vec)[i] = outgoingContactChain[i];
+    SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, kv_size(outgoingContactChain)));
+    for (size_t i = 0; i < kv_size(outgoingContactChain); ++i)
+        INTEGER(vec)[i] = kv_A(outgoingContactChain, i);
+
+    kv_destroy(ingoingContactChain);
+    kv_destroy(outgoingContactChain);
+    kv_destroy(inDegree);
+    kv_destroy(outDegree);
 
     UNPROTECT(1);
 
