@@ -104,7 +104,7 @@ setMethod("plot",
               if (is.null(vertices)) {
                   vertices <- tree$outgoing
               } else {
-                  vertices <- rbind(vertices, tree$outgoing[-1,])
+                  vertices <- rbind(vertices, tree$outgoing[-1, ])
               }
           }
 

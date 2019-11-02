@@ -194,7 +194,7 @@
 ##'
 ##' ## When calculating the network summary for a data.frame of movements
 ##' ## a data.frame for each combination of root, tEnd and days are returned.
-##' root <- c(1,2,3)
+##' root <- c(1, 2, 3)
 ##' tEnd <- c("2005-09-01", "2005-10-01")
 ##' days <- c(30, 45)
 ##'

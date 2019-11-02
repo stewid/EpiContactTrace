@@ -186,7 +186,7 @@ setMethod("IngoingContactChain",
                        "for outgoing contacts")
               }
 
-              return(length(setdiff(x@source,x@root)))
+              return(length(setdiff(x@source, x@root)))
           }
 )
 

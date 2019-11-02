@@ -27,14 +27,13 @@
 ##' \code{data.frame} with the tree. The fields are \code{NULL} if
 ##' there are no in- or outgoing contacts.
 ##' @keywords internal
-build_tree <- function(network_structure)
-{
+build_tree <- function(network_structure) {
     stopifnot(is.data.frame(network_structure))
     root <- unique(network_structure$root)
     stopifnot(identical(length(root), 1L))
 
-    tree.in <- network_structure[network_structure$direction == "in",]
-    tree.out <- network_structure[network_structure$direction == "out",]
+    tree.in <- network_structure[network_structure$direction == "in", ]
+    tree.out <- network_structure[network_structure$direction == "out", ]
 
     result <- list(ingoing=NULL, outgoing=NULL)
 
@@ -46,7 +45,7 @@ build_tree <- function(network_structure)
     if (nrow(tree.in)) {
         i <- order(tree.in$distance, tree.in$source)
         tree.in <- tree.in[i, c("source", "distance")]
-        tree.in <- tree.in[!duplicated(tree.in$source),]
+        tree.in <- tree.in[!duplicated(tree.in$source), ]
         tree.in$parent <- NA_character_
         colnames(tree.in)[1:2] <- c("node", "level")
         tree.in <- tree.in[, colnames(root_node)]
@@ -76,7 +75,7 @@ build_tree <- function(network_structure)
     if (nrow(tree.out)) {
         i <- order(tree.out$distance, tree.out$destination)
         tree.out <- tree.out[i, c("destination", "distance")]
-        tree.out <- tree.out[!duplicated(tree.out$destination),]
+        tree.out <- tree.out[!duplicated(tree.out$destination), ]
         tree.out$parent <- NA_character_
         colnames(tree.out)[1:2] <- c("node", "level")
         tree.out <- tree.out[, colnames(root_node)]
@@ -142,8 +141,7 @@ position_tree <- function(tree,
                           left_size = 1,
                           right_size = 1,
                           top_size = 1,
-                          bottom_size = 1)
-{
+                          bottom_size = 1) {
     ## Clean up the positioning of small sibling subtrees
     apportion <- function(node) {
         left_most <- first_child(node)

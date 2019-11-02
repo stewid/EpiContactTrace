@@ -59,7 +59,7 @@ html_detailed_table <- function(contacts, direction) {
         arrow <- "&rarr;"
     }
 
-    contacts <- contacts[order(contacts$t, contacts$id, decreasing = FALSE),]
+    contacts <- contacts[order(contacts$t, contacts$id, decreasing = FALSE), ]
 
     contacts$id <- as.character(contacts$id)
     contacts$id[is.na(contacts$id)] <- "&nbsp;"
@@ -100,8 +100,7 @@ html_detailed_table <- function(contacts, direction) {
     })))
 }
 
-html_report <- function(x)
-{
+html_report <- function(x) {
     lines <- c("<html>",
                "<head>",
                sprintf("<title>%s</title>", x@root),
@@ -174,9 +173,9 @@ html_report <- function(x)
         df$rhs <- df$source
 
         lines <- c(lines,
-                   html_detailed_table(df[df$destination == df$root,], "in"))
+                   html_detailed_table(df[df$destination == df$root, ], "in"))
 
-        df <- df[df$destination != df$root,]
+        df <- df[df$destination != df$root, ]
         if (nrow(df) > 0) {
             lines <- c(lines,
                        "<hr/>",
@@ -196,9 +195,9 @@ html_report <- function(x)
         df$lhs <- df$source
         df$rhs <- df$destination
 
-        html_detailed_table(df[df$source == df$root,], "out")
+        html_detailed_table(df[df$source == df$root, ], "out")
 
-        df <- df[df$source != df$root,]
+        df <- df[df$source != df$root, ]
         if (nrow(df) > 0) {
             lines <- c(lines,
                        "<hr/>",

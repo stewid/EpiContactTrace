@@ -133,23 +133,22 @@ setGeneric("ShortestPaths",
 ##' @export
 setMethod("ShortestPaths",
           signature(x = "ContactTrace"),
-          function(x)
-      {
+          function(x) {
           ns <- NetworkStructure(x)
-          ns.in <- ns[ns$direction == "in",]
-          ns.out <- ns[ns$direction == "out",]
+          ns.in <- ns[ns$direction == "in", ]
+          ns.out <- ns[ns$direction == "out", ]
 
           result <- NULL
           if (nrow(ns.in)) {
-              ns.in <- ns.in[order(ns.in$distance, ns.in$source),]
-              ns.in <- ns.in[!duplicated(ns.in$source),]
+              ns.in <- ns.in[order(ns.in$distance, ns.in$source), ]
+              ns.in <- ns.in[!duplicated(ns.in$source), ]
               ns.in$destination <- NA_character_
               result <- ns.in
           }
 
           if (nrow(ns.out)) {
-              ns.out <- ns.out[order(ns.out$distance, ns.out$destination),]
-              ns.out <- ns.out[!duplicated(ns.out$destination),]
+              ns.out <- ns.out[order(ns.out$distance, ns.out$destination), ]
+              ns.out <- ns.out[!duplicated(ns.out$destination), ]
               ns.out$source <- NA_character_
               result <- rbind(result, ns.out)
           }
@@ -175,8 +174,7 @@ setMethod("ShortestPaths",
                    inBegin = NULL,
                    inEnd = NULL,
                    outBegin = NULL,
-                   outEnd = NULL)
-      {
+                   outEnd = NULL) {
           ## Check that arguments are ok from various perspectives...
 
           ## Check the data.frame x with movements

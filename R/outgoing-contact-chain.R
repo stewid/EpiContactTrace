@@ -137,7 +137,7 @@ setMethod("OutgoingContactChain",
                   stop("Unable to determine OutgoingContactChain for ingoing contacts")
               }
 
-              return(length(setdiff(x@destination,x@root)))
+              return(length(setdiff(x@destination, x@root)))
           }
 )
 
