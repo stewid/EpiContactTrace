@@ -21,8 +21,8 @@ Report(object, ...)
 
 \item{...}{Additional arguments to the method}
 
-\item{format}{the format to use, can be either 'html' or 'pdf'. The default
-is 'html'}
+\item{format}{the format to use, can be either 'html' or
+'pdf'. The default is 'html'}
 
 \item{dir}{the generated report is written to the directory
 folder. The default (\code{"."}) is the current working

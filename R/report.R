@@ -60,7 +60,8 @@ html_contacts_table <- function(x, direction, arrow) {
     ## link
     lines <- c(lines,
                sprintf('<h3><a name="%s-%s-%s">%s %s %s</a></h3>',
-                       direction, x$lhs[1], x$rhs[1], x$lhs[1], arrow, x$rhs[1]),
+                       direction, x$lhs[1], x$rhs[1],
+                       x$lhs[1], arrow, x$rhs[1]),
                "<table border=1>",
                "<tr>",
                "<th>Date</th>",
@@ -148,7 +149,8 @@ html_report <- function(x) {
 
         lines <- c(lines, html_summary_table(df, "in"))
     } else {
-        lines <- c(lines, "<p>No ingoing contacts during the search period.</p>")
+        lines <- c(lines,
+                   "<p>No ingoing contacts during the search period.</p>")
     }
 
     lines <- c(lines,
@@ -280,8 +282,8 @@ html_report <- function(x) {
 ##' }
 ##' @param object the object
 ##' @param ... Additional arguments to the method
-##' @param format the format to use, can be either 'html' or 'pdf'. The default
-##'        is 'html'
+##' @param format the format to use, can be either 'html' or
+##'     'pdf'. The default is 'html'
 ##' @param dir the generated report is written to the directory
 ##'     folder. The default (\code{"."}) is the current working
 ##'     directory.
@@ -370,7 +372,7 @@ setMethod("Report",
                                               package = "EpiContactTrace")
                   }
 
-                  Sweave(template, syntax="SweaveSyntaxNoweb")
+                  Sweave(template, syntax = "SweaveSyntaxNoweb")
                   texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
                   file.rename(sub("rnw$", "pdf", basename(template)),
                               sprintf("%s.pdf", object@root))
