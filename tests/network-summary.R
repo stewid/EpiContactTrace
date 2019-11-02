@@ -28,7 +28,7 @@ data(transfers)
 ##
 ## Case 1
 ##
-load(file=system.file("extdata", "ns.rda", package = "EpiContactTrace"))
+load(file = system.file("extdata", "ns.rda", package = "EpiContactTrace"))
 root <- sort(unique(c(transfers$source, transfers$destination)))
 result <- NetworkSummary(transfers, root = root, tEnd = "2005-10-31", days = 90)
 stopifnot(identical(result, ns))

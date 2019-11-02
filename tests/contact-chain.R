@@ -28,10 +28,14 @@ library(EpiContactTrace)
 ## Case 1
 ##
 
-movements <- structure(list(source = 1:7, destination = c(4L, 5L, 5L,
-6L, 8L, 8L, 8L), t = structure(c(14849, 14846, 14847, 14850, 14848,
-14851, 14852), class = "Date")), .Names = c("source", "destination",
-"t"), class = "data.frame", row.names = c(NA, -7L))
+movements <- structure(list(
+    source = 1:7,
+    destination = c(4L, 5L, 5L, 6L, 8L, 8L, 8L),
+    t = structure(c(14849, 14846, 14847, 14850, 14848, 14851, 14852),
+                  class = "Date")),
+    .Names = c("source", "destination", "t"),
+    class = "data.frame",
+    row.names = c(NA, -7L))
 ct <- Trace(movements,
             root = 8L,
             inBegin = as.Date("2010-08-22"),
@@ -73,7 +77,7 @@ movements <- structure(list(
     source = 1:2,
     destination = c(2L, 1L),
     t = structure(c(14834, 14834), class = "Date"),
-    individual = c(NA_character_, NA_character_ ),
+    individual = c(NA_character_, NA_character_),
     n = c(NA_integer_, NA_integer_)),
     .Names = c("source", "destination", "t", "individual", "n"),
     row.names = c(NA, -2L),
@@ -102,7 +106,7 @@ movements <- structure(list(
     n = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_, NA_integer_,
           NA_integer_, NA_integer_)),
     .Names = c("source", "destination", "t", "individual", "n"),
-    row.names = c(NA, -7L ),
+    row.names = c(NA, -7L),
     class = "data.frame")
 ct <- Trace(movements,
             root = 1L,
@@ -122,7 +126,7 @@ movements <- structure(list(
     source = 1:2,
     destination = c(2L, 1L),
     t = structure(c(14834, 14834), class = "Date"),
-    individual = c(NA_character_, NA_character_ ),
+    individual = c(NA_character_, NA_character_),
     n = c(NA_integer_, NA_integer_)),
     .Names = c("source", "destination", "t", "individual", "n"),
     row.names = c(NA, -2L),
@@ -176,7 +180,7 @@ movements <- structure(list(
     class = "data.frame",
     row.names = c(NA, -7L))
 
-ns <- NetworkSummary(movements, root=1, tEnd="2010-10-20", days=10)
+ns <- NetworkSummary(movements, root = 1, tEnd = "2010-10-20", days = 10)
 
 df <- structure(list(
     root = structure(1L, .Label = "1", class = "factor"),

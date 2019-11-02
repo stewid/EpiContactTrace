@@ -326,14 +326,14 @@ ct_1_df <- ct_1_df[order(ct_1_df$source,
                          ct_1_df$t,
                          ct_1_df$id,
                          ct_1_df$n,
-                         ct_1_df$category),]
+                         ct_1_df$category), ]
 
 ct_2_df <- ct_2_df[order(ct_2_df$source,
                          ct_2_df$destination,
                          ct_2_df$t,
                          ct_2_df$id,
                          ct_2_df$n,
-                         ct_2_df$category),]
+                         ct_2_df$category), ]
 
 rownames(ct_1_df) <- NULL
 rownames(ct_2_df) <- NULL
