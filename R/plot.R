@@ -78,7 +78,7 @@ setMethod("plot",
           edges_in <- NULL
           edges_out <- NULL
 
-          if(!is.null(tree$ingoing)) {
+          if (!is.null(tree$ingoing)) {
               tree$ingoing <- position_tree(tree$ingoing, orientation="South")
               tree$ingoing$bg <- ifelse(tree$ingoing$level > 0, "white", "black")
               tree$ingoing$pch <- 21
@@ -91,7 +91,7 @@ setMethod("plot",
               edges_in$y1 <- tree$ingoing$y[i]
           }
 
-          if(!is.null(tree$outgoing)) {
+          if (!is.null(tree$outgoing)) {
               tree$outgoing <- position_tree(tree$outgoing)
               tree$outgoing$bg <- ifelse(tree$outgoing$level > 0, "gray", "black")
               tree$outgoing$pch <- 21
@@ -102,23 +102,23 @@ setMethod("plot",
               edges_out$x0 <- tree$outgoing$x[i]
               edges_out$y0 <- tree$outgoing$y[i]
 
-              if(is.null(vertices)) {
+              if (is.null(vertices)) {
                   vertices <- tree$outgoing
               } else {
                   vertices <- rbind(vertices, tree$outgoing[-1,])
               }
           }
 
-          if(!is.null(vertices)) {
+          if (!is.null(vertices)) {
               plot(y~x, data = vertices, frame.plot = FALSE, axes = FALSE,
                    ann = FALSE, type = "n")
 
-              if(!is.null(edges_in)) {
+              if (!is.null(edges_in)) {
                   arrows(edges_in$x0, edges_in$y0, edges_in$x1, edges_in$y1,
                          length=0)
               }
 
-              if(!is.null(edges_out)) {
+              if (!is.null(edges_out)) {
                   arrows(edges_out$x0, edges_out$y0, edges_out$x1, edges_out$y1,
                          length=0)
               }

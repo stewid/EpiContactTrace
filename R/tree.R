@@ -43,7 +43,7 @@ build_tree <- function(network_structure)
                             level = 0,
                             stringsAsFactors = FALSE)
 
-    if(nrow(tree.in)) {
+    if (nrow(tree.in)) {
         i <- order(tree.in$distance, tree.in$source)
         tree.in <- tree.in[i, c('source', 'distance')]
         tree.in <- tree.in[!duplicated(tree.in$source),]
@@ -53,7 +53,7 @@ build_tree <- function(network_structure)
 
         for(lev in rev(seq_len(max(tree.in$level)))) {
             for(src in tree.in$node[tree.in$level == lev]) {
-                if(lev > 1) {
+                if (lev > 1) {
                     i <- which(network_structure$direction == "in"
                                & network_structure$distance == lev)
                     dst <- network_structure$destination[i]
@@ -73,7 +73,7 @@ build_tree <- function(network_structure)
         result$ingoing <- tree.in
     }
 
-    if(nrow(tree.out)) {
+    if (nrow(tree.out)) {
         i <- order(tree.out$distance, tree.out$destination)
         tree.out <- tree.out[i, c('destination', 'distance')]
         tree.out <- tree.out[!duplicated(tree.out$destination),]
@@ -83,7 +83,7 @@ build_tree <- function(network_structure)
 
         for(lev in rev(seq_len(max(tree.out$level)))) {
             for(dst in tree.out$node[tree.out$level == lev]) {
-                if(lev > 1) {
+                if (lev > 1) {
                     i <- which(network_structure$direction == "out"
                                & network_structure$distance == lev)
                     src <- network_structure$source[i]
@@ -176,7 +176,7 @@ position_tree <- function(tree,
                                mean_node_size(left_most, neighbor)) -
                               (prelim(left_most) + right_modsum))
 
-            if(move_distance > 0) {
+            if (move_distance > 0) {
                 ## Count interior sibling subtrees in left siblings
                 temp_node <- node
                 left_siblings <- 0
@@ -187,7 +187,7 @@ position_tree <- function(tree,
                     temp_node <- left_sibling(temp_node)
                 }
 
-                if(!is.null(temp_node)) {
+                if (!is.null(temp_node)) {
                     ## Apply portions to appropriate leftsibling
                     ## subtrees
                     portion <- move_distance / left_siblings
@@ -205,7 +205,7 @@ position_tree <- function(tree,
             }
 
             compare_depth <- compare_depth + 1L
-            if(is_leaf(left_most)) {
+            if (is_leaf(left_most)) {
                 left_most <- get_left_most(node, 0L, compare_depth)
             } else {
                 left_most <- first_child(left_most)
@@ -225,16 +225,16 @@ position_tree <- function(tree,
 
     first_child <- function(node) {
         children <- tree$node[!is.na(tree$parent) & (tree$parent == node)]
-        if(length(children)>0) {
+        if (length(children)>0) {
             return(children[1])
         }
         return(NULL)
     }
 
     get_left_most <- function(node, level, depth) {
-        if(level >= depth) {
+        if (level >= depth) {
             return(node)
-        } else if(is_leaf(node)) {
+        } else if (is_leaf(node)) {
             return(NULL)
         } else {
             right_most <- first_child(node)
@@ -266,12 +266,12 @@ position_tree <- function(tree,
     }
 
     left_neighbor <- function(node) {
-        if(!is.null(node)) {
+        if (!is.null(node)) {
             n <- tree$node[tree$level == node_level(node)]
             stopifnot(node %in% n)
             i <- which(node == n)
             stopifnot(identical(length(i), 1L))
-            if(i[1] > 1)
+            if (i[1] > 1)
                 return(n[i[1]-1])
         }
         return(NULL)
@@ -297,17 +297,17 @@ position_tree <- function(tree,
     mean_node_size <- function(left_node, right_node) {
         node_size <- 0
 
-        if(any(identical(orientation, "North"),
+        if (any(identical(orientation, "North"),
                identical(orientation, "South"))) {
-            if(!is.null(left_node))
+            if (!is.null(left_node))
                 node_size <- node_size + get_right_size(left_node)
-            if(!is.null(right_node))
+            if (!is.null(right_node))
                 node_size <- node_size + get_left_size(right_node)
-        } else if(any(identical(orientation, "East"),
+        } else if (any(identical(orientation, "East"),
                       identical(orientation, "West"))) {
-            if(!is.null(left_node))
+            if (!is.null(left_node))
                 node_size <- node_size + get_top_size(left_node)
-            if(!is.null(right_node))
+            if (!is.null(right_node))
                 node_size <- node_size + get_bottom_size(right_node)
         }
 
@@ -363,7 +363,7 @@ position_tree <- function(tree,
     siblings <- function(node) {
         i <- node_index(node)
         parent <- tree$parent[i]
-        if(is.na(parent)) {
+        if (is.na(parent)) {
             ## Check that node is root
             stopifnot(identical(node_level(node), 0L))
             siblings <- node
@@ -387,7 +387,7 @@ position_tree <- function(tree,
         s <- siblings(node)
         i <- which(node == s)
         stopifnot(identical(length(i), 1L))
-        if(i[1] > 1)
+        if (i[1] > 1)
             return(s[i[1]-1])
         return(NULL)
     }
@@ -396,7 +396,7 @@ position_tree <- function(tree,
         s <- siblings(node)
         i <- which(node == s)
         stopifnot(identical(length(i), 1L))
-        if(i[1] < length(s))
+        if (i[1] < length(s))
             return(s[i[1]+1])
         return(NULL)
     }
@@ -409,9 +409,9 @@ position_tree <- function(tree,
         ## Set the default modifier value.
         set_modifier(node, 0)
 
-        if(any(is_leaf(node),
+        if (any(is_leaf(node),
                node_level(node) == max_depth())) {
-            if(has_left_sibling(node)) {
+            if (has_left_sibling(node)) {
                 ## Determine the preliminary x-coordinate based on:
                 ##  - the preliminary x-coordinate of the left sibling,
                 ##  - the separation between sibling nodes, and
@@ -437,7 +437,7 @@ position_tree <- function(tree,
 
             mid_point <- (prelim(left_most) + prelim(right_most)) / 2
 
-            if(has_left_sibling(node)) {
+            if (has_left_sibling(node)) {
                 set_prelim(node,
                            prelim(left_sibling(node)) +
                            sibling_separation +
@@ -467,17 +467,17 @@ position_tree <- function(tree,
     ## field. In this second pass down the tree, modifiers are
     ## accumulated and applied to every node.
     second_walk <- function(node, modsum) {
-        if(node_level(node) <= max_depth()) {
-            if(identical(orientation, "North")) {
+        if (node_level(node) <= max_depth()) {
+            if (identical(orientation, "North")) {
                 x_temp <- x + prelim(node) + modsum
                 y_temp <- y - node_level(node) * level_separation
-            } else if(identical(orientation, "South")) {
+            } else if (identical(orientation, "South")) {
                 x_temp <- x + prelim(node) + modsum
                 y_temp <- y + node_level(node) * level_separation
-            } else if(identical(orientation, "East")) {
+            } else if (identical(orientation, "East")) {
                 x_temp <- x - node_level(node) * level_separation
                 y_temp <- y + prelim(node) + modsum
-            } else if(identical(orientation, "West")) {
+            } else if (identical(orientation, "West")) {
                 x_temp <- x + node_level(node) * level_separation
                 y_temp <- y + prelim(node) + modsum
             } else {
@@ -485,17 +485,17 @@ position_tree <- function(tree,
             }
 
             ## Check that x_temp and y_temp are of the proper size.
-            if(check_extents_range(x_temp, y_temp)) {
+            if (check_extents_range(x_temp, y_temp)) {
                 set_x(node, x_temp)
                 set_y(node, y_temp)
 
-                if(has_child(node)) {
+                if (has_child(node)) {
                     ## Apply the modifier value for this node to
                     ## all its offspring.
                     second_walk(first_child(node), modsum + modifier(node))
                 }
 
-                if(has_right_sibling(node)) {
+                if (has_right_sibling(node)) {
                     second_walk(right_sibling(node), modsum)
                 }
             } else {
@@ -519,10 +519,10 @@ position_tree <- function(tree,
 
     first_walk(root())
 
-    if(any(identical(orientation, "North"),
+    if (any(identical(orientation, "North"),
            identical(orientation, "South"))) {
         x <- x - prelim(root())
-    } else if(any(identical(orientation, "East"),
+    } else if (any(identical(orientation, "East"),
                   identical(orientation, "West"))) {
         y <- y - prelim(root())
     }

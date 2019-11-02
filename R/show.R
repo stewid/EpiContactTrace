@@ -83,7 +83,7 @@ setMethod("show",
           cat(sprintf("%s end date:   %s\n", prefix, object@tEnd))
           cat(sprintf("%s days: %i\n", prefix, object@tEnd - object@tBegin))
 
-          if(identical(object@direction, "out")) {
+          if (identical(object@direction, "out")) {
               cat(sprintf("%s degree: %s\n", prefix, OutDegree(object)))
               cat(sprintf("%sgoing contact chain: %i\n\n", prefix, OutgoingContactChain(object)))
           } else {
@@ -91,7 +91,7 @@ setMethod("show",
               cat(sprintf("%sgoing contact chain: %i\n\n", prefix, IngoingContactChain(object)))
           }
 
-          if(length(object@source) > 0L) {
+          if (length(object@source) > 0L) {
               arrow <- ifelse(identical(object@direction, "out"), "-->", "<--")
               width <- max(nchar(object@source), nchar(object@destination))
               format <- sprintf("%%s%% %is %s %% %is\n", width, arrow, width)
@@ -100,7 +100,7 @@ setMethod("show",
               ns <- NetworkStructure(object)
 
               ## Rename source and destination to lhs and rhs, with respect to direction
-              if(identical(object@direction, "out")) {
+              if (identical(object@direction, "out")) {
                   names(ns)[names(ns) == "source"] <- "lhs"
                   names(ns)[names(ns) == "destination"] <- "rhs"
               } else {

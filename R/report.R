@@ -19,7 +19,7 @@
 ## permissions and limitations under the Licence.
 
 html_summary_table <- function(contacts, direction) {
-    if(identical(direction, "in")) {
+    if (identical(direction, "in")) {
         arrow <- "&larr;"
     } else {
         arrow <- "&rarr;"
@@ -53,7 +53,7 @@ html_summary_table <- function(contacts, direction) {
 }
 
 html_detailed_table <- function(contacts, direction) {
-    if(identical(direction, "in")) {
+    if (identical(direction, "in")) {
         arrow <- "&larr;"
     } else {
         arrow <- "&rarr;"
@@ -123,7 +123,7 @@ html_report <- function(x)
                "</table>",
                "</p>")
 
-    if(length(x@ingoingContacts@source) > 0L) {
+    if (length(x@ingoingContacts@source) > 0L) {
         ## Get network structure. The distance is used for indentation.
         df <- NetworkStructure(x@ingoingContacts)
 
@@ -149,7 +149,7 @@ html_report <- function(x)
                "</table>",
                "</p>")
 
-    if(length(x@outgoingContacts@source) > 0L) {
+    if (length(x@outgoingContacts@source) > 0L) {
         ## Get network structure. The distance is used for indentation.
         df <- NetworkStructure(x@outgoingContacts)
 
@@ -162,7 +162,7 @@ html_report <- function(x)
         lines <- c(lines, "<p>No outgoing contacts during the search period.</p>")
     }
 
-    if(length(x@ingoingContacts@source) > 0L) {
+    if (length(x@ingoingContacts@source) > 0L) {
         lines <- c(lines,
                    "<hr/>",
                    "<h2>Direct ingoing contacts</h2>")
@@ -177,7 +177,7 @@ html_report <- function(x)
                    html_detailed_table(df[df$destination == df$root,], "in"))
 
         df <- df[df$destination != df$root,]
-        if(nrow(df) > 0) {
+        if (nrow(df) > 0) {
             lines <- c(lines,
                        "<hr/>",
                        "<h2>Indirect ingoing contacts</h2>",
@@ -185,7 +185,7 @@ html_report <- function(x)
         }
     }
 
-    if(length(x@outgoingContacts@source) > 0L) {
+    if (length(x@outgoingContacts@source) > 0L) {
         lines <- c(lines,
                    "<hr/>",
                    "<h2>Direct outgoing contacts</h2>")
@@ -199,7 +199,7 @@ html_report <- function(x)
         html_detailed_table(df[df$source == df$root,], "out")
 
         df <- df[df$source != df$root,]
-        if(nrow(df) > 0) {
+        if (nrow(df) > 0) {
             lines <- c(lines,
                        "<hr/>",
                        "<h2>Indirect outgoing contacts</h2>",
@@ -343,10 +343,10 @@ setMethod("Report",
           ## Add the ContactTrace object to the .ct_env environment
           .ct_env$ct <- object
 
-          if(identical(format, "html")) {
+          if (identical(format, "html")) {
               writeLines(html_report(object), con = sprintf("%s.html", object@root))
           } else {
-              if(is.null(template)) {
+              if (is.null(template)) {
                   template <- system.file("Sweave/speak-latex.rnw", package="EpiContactTrace")
               }
 
@@ -368,11 +368,11 @@ setMethod("Report",
       {
           format <- match.arg(format)
 
-          if(!all(sapply(object, function(x) length(x)) == 1)) {
+          if (!all(sapply(object, function(x) length(x)) == 1)) {
               stop("Unexpected length of list")
           }
 
-          if(!all(sapply(object, function(x) class(x)) == "ContactTrace")) {
+          if (!all(sapply(object, function(x) class(x)) == "ContactTrace")) {
               stop("Unexpected object in list")
           }
 

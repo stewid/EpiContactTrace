@@ -277,13 +277,13 @@ setMethod("NetworkSummary",
 
           if (any(is.factor(x$source), is.integer(x$source))) {
               x$source <- as.character(x$source)
-          } else if(!is.character(x$source)) {
+          } else if (!is.character(x$source)) {
               stop("invalid class of column source in x")
           }
 
           if (any(is.factor(x$destination), is.integer(x$destination))) {
               x$destination <- as.character(x$destination)
-          } else if(!is.character(x$destination)) {
+          } else if (!is.character(x$destination)) {
               stop("invalid class of column destination in x")
           }
 

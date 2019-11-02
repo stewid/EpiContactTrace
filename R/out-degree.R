@@ -175,7 +175,7 @@ setMethod("OutDegree",
           signature(x = "Contacts"),
           function (x)
       {
-          if(!identical(x@direction, "out")) {
+          if (!identical(x@direction, "out")) {
               stop("Unable to determine OutDegree for ingoing contacts")
           }
 
@@ -208,11 +208,11 @@ setMethod("OutDegree",
                    outBegin = NULL,
                    outEnd = NULL)
       {
-          if(missing(root)) {
+          if (missing(root)) {
               stop("Missing parameters in call to OutDegree")
           }
 
-          if(all(is.null(tEnd), is.null(days))) {
+          if (all(is.null(tEnd), is.null(days))) {
               inBegin <- outBegin
               inEnd <- outBegin
           } else {

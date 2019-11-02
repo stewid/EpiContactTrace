@@ -177,83 +177,83 @@ Trace <- function(movements,
 {
     ## Before doing any contact tracing check that arguments are ok
     ## from various perspectives.
-    if(any(missing(movements),
+    if (any(missing(movements),
            missing(root))) {
         stop('Missing parameters in call to Trace')
     }
 
-    if(!is.data.frame(movements)) {
+    if (!is.data.frame(movements)) {
         stop('movements must be a data.frame')
     }
 
-    if(!all(c('source', 'destination', 't') %in% names(movements))) {
+    if (!all(c('source', 'destination', 't') %in% names(movements))) {
         stop('movements must contain the columns source, destination and t.')
     }
 
     ##
     ## Check movements$source
     ##
-    if(any(is.factor(movements$source), is.integer(movements$source))) {
+    if (any(is.factor(movements$source), is.integer(movements$source))) {
         movements$source <- as.character(movements$source)
-    } else if(!is.character(movements$source)) {
+    } else if (!is.character(movements$source)) {
         stop('invalid class of column source in movements')
     }
 
-    if(any(is.na(movements$source))) {
+    if (any(is.na(movements$source))) {
         stop('source in movements contains NA')
     }
 
     ##
     ## Check movements$destination
     ##
-    if(any(is.factor(movements$destination), is.integer(movements$destination))) {
+    if (any(is.factor(movements$destination), is.integer(movements$destination))) {
         movements$destination <- as.character(movements$destination)
-    } else if(!is.character(movements$destination)) {
+    } else if (!is.character(movements$destination)) {
         stop('invalid class of column destination in movements')
     }
 
-    if(any(is.na(movements$destination))) {
+    if (any(is.na(movements$destination))) {
         stop('destination in movements contains NA')
     }
 
     ##
     ## Check movements$t
     ##
-    if(any(is.character(movements$t), is.factor(movements$t))) {
+    if (any(is.character(movements$t), is.factor(movements$t))) {
         movements$t <- as.Date(movements$t)
     }
-    if(!identical(class(movements$t), 'Date')) {
+    if (!identical(class(movements$t), 'Date')) {
         stop('invalid class of column t in movements')
     }
 
-    if(any(is.na(movements$t))) {
+    if (any(is.na(movements$t))) {
         stop('t in movements contains NA')
     }
 
-    if('n' %in% names(movements)) {
-        if(is.integer(movements$n)) {
+    if ('n' %in% names(movements)) {
+        if (is.integer(movements$n)) {
             movements$n <- as.numeric(movements$n)
-        } else if(!is.numeric(movements$n)) {
+        } else if (!is.numeric(movements$n)) {
             stop('invalid class of column n in movements')
         }
     } else {
         movements$n <- as.numeric(NA)
     }
 
-    if('id' %in% names(movements)) {
-        if(any(is.factor(movements$id), is.integer(movements$id))) {
+    if ('id' %in% names(movements)) {
+        if (any(is.factor(movements$id), is.integer(movements$id))) {
             movements$id <- as.character(movements$id)
-        } else if(!is.character(movements$id)) {
+        } else if (!is.character(movements$id)) {
             stop('invalid class of column id in movements')
         }
     } else {
         movements$id <- as.character(NA)
     }
 
-    if('category' %in% names(movements)) {
-        if(any(is.factor(movements$category), is.integer(movements$category))) {
+    if ('category' %in% names(movements)) {
+        if (any(is.factor(movements$category), is.integer(movements$category))) {
             movements$category <- as.character(movements$category)
-        } else if(!is.character(movements$category)) {
+        } else if (!is.character(movements$category)) {
             stop('invalid class of column category in movements')
         }
     } else {
@@ -261,7 +261,7 @@ Trace <- function(movements,
     }
 
     ## Make sure the columns are in expected order
-    if(!identical(names(movements), c('source',
+    if (!identical(names(movements), c('source',
                                       'destination',
                                       't',
                                       'id',
@@ -281,39 +281,39 @@ Trace <- function(movements,
     ##
     ## Check root
     ##
-    if(any(is.factor(root), is.integer(root))) {
+    if (any(is.factor(root), is.integer(root))) {
         root <- as.character(root)
-    } else if(is.numeric(root)) {
+    } else if (is.numeric(root)) {
         ## root is supposed to be a character or integer identifier
         ## so test that root is a integer the same way as binom.test test x
         rootr <- round(root)
-        if(any(max(abs(root - rootr) > 1e-07))) {
+        if (any(max(abs(root - rootr) > 1e-07))) {
             stop("'root' must be an integer or character")
         }
 
         root <- as.character(rootr)
-    } else if(!is.character(root)) {
+    } else if (!is.character(root)) {
         stop('invalid class of root')
     }
 
-    if(any(is.na(root))) {
+    if (any(is.na(root))) {
         stop('root contains NA')
     }
 
     ## Check if we are using the combination of tEnd and days or
     ## specify inBegin, inEnd, outBegin and outEnd
-    if(all(!is.null(tEnd), !is.null(days))) {
+    if (all(!is.null(tEnd), !is.null(days))) {
         ## Using tEnd and days...check that
         ## inBegin, inEnd, outBegin and outEnd is NULL
-        if(!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
+        if (!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
             stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace')
         }
 
-        if(any(is.character(tEnd), is.factor(tEnd))) {
+        if (any(is.character(tEnd), is.factor(tEnd))) {
             tEnd <- as.Date(tEnd)
         }
 
-        if(!identical(class(tEnd), 'Date')) {
+        if (!identical(class(tEnd), 'Date')) {
             stop("'tEnd' must be a Date vector")
         }
 
@@ -339,11 +339,11 @@ Trace <- function(movements,
         inBegin <- inEnd - rep(days, each=1, length.out=n)
         outEnd <- inEnd
         outBegin <- inBegin
-    } else if(all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
+    } else if (all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
         ## Using tEnd and days...check that
         ## Using inBegin, inEnd, outBegin and outEnd...check that
         ## tEnd and days are NULL
-        if(!all(is.null(tEnd), is.null(days))) {
+        if (!all(is.null(tEnd), is.null(days))) {
             stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace')
         }
     } else {
@@ -353,78 +353,78 @@ Trace <- function(movements,
     ##
     ## Check inBegin
     ##
-    if(any(is.character(inBegin), is.factor(inBegin))) {
+    if (any(is.character(inBegin), is.factor(inBegin))) {
         inBegin <- as.Date(inBegin)
     }
 
-    if(!identical(class(inBegin), 'Date')) {
+    if (!identical(class(inBegin), 'Date')) {
         stop("'inBegin' must be a Date vector")
     }
 
-    if(any(is.na(inBegin))) {
+    if (any(is.na(inBegin))) {
         stop('inBegin contains NA')
     }
 
     ##
     ## Check inEnd
     ##
-    if(any(is.character(inEnd), is.factor(inEnd))) {
+    if (any(is.character(inEnd), is.factor(inEnd))) {
         inEnd <- as.Date(inEnd)
     }
 
-    if(!identical(class(inEnd), 'Date')) {
+    if (!identical(class(inEnd), 'Date')) {
         stop("'inEnd' must be a Date vector")
     }
 
-    if(any(is.na(inEnd))) {
+    if (any(is.na(inEnd))) {
         stop('inEnd contains NA')
     }
 
     ##
     ## Check outBegin
     ##
-    if(any(is.character(outBegin), is.factor(outBegin))) {
+    if (any(is.character(outBegin), is.factor(outBegin))) {
         outBegin <- as.Date(outBegin)
     }
 
-    if(!identical(class(outBegin), 'Date')) {
+    if (!identical(class(outBegin), 'Date')) {
         stop("'outBegin' must be a Date vector")
     }
 
-    if(any(is.na(outBegin))) {
+    if (any(is.na(outBegin))) {
         stop('outBegin contains NA')
     }
 
     ##
     ## Check outEnd
     ##
-    if(any(is.character(outEnd), is.factor(outEnd))) {
+    if (any(is.character(outEnd), is.factor(outEnd))) {
         outEnd <- as.Date(outEnd)
     }
 
-    if(!identical(class(outEnd), 'Date')) {
+    if (!identical(class(outEnd), 'Date')) {
         stop("'outEnd' must be a Date vector")
     }
 
-    if(any(is.na(outEnd))) {
+    if (any(is.na(outEnd))) {
         stop('outEnd contains NA')
     }
 
     ##
     ## Check ranges of dates
     ##
-    if(any(inEnd < inBegin)) {
+    if (any(inEnd < inBegin)) {
         stop('inEnd < inBegin')
     }
 
-    if(any(outEnd < outBegin)) {
+    if (any(outEnd < outBegin)) {
         stop('outEnd < outBegin')
     }
 
     ##
     ## Check length of vectors
     ##
-    if(!identical(length(unique(c(length(root),
+    if (!identical(length(unique(c(length(root),
                                   length(inBegin),
                                   length(inEnd),
                                   length(outBegin),
@@ -537,7 +537,7 @@ Trace <- function(movements,
     ## Name each list item with ContactTrace objects to the name of the ContactTrace root.
     names(result) <-  sapply(result, function(listItem) listItem@ingoingContacts@root)
 
-    if(identical(length(result), 1L))
+    if (identical(length(result), 1L))
       return(result[[1]])
 
     return(result)
