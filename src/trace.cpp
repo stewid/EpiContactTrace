@@ -116,19 +116,19 @@ check_arguments(const SEXP src,
                 const SEXP outEnd,
                 const SEXP numberOfIdentifiers)
 {
-    if (R_NilValue == root
-        || R_NilValue == inBegin
-        || R_NilValue == inEnd
-        || R_NilValue == outBegin
-        || R_NilValue == outEnd
-        || R_NilValue == numberOfIdentifiers
-        || INTSXP != TYPEOF(root)
-        || INTSXP != TYPEOF(inBegin)
-        || INTSXP != TYPEOF(inEnd)
-        || INTSXP != TYPEOF(outBegin)
-        || INTSXP != TYPEOF(outEnd)
-        || INTSXP != TYPEOF(numberOfIdentifiers)
-        || 1 != LENGTH(numberOfIdentifiers))
+    if (Rf_isNull(root) ||
+        Rf_isNull(inBegin) ||
+        Rf_isNull(inEnd) ||
+        Rf_isNull(outBegin) ||
+        Rf_isNull(outEnd) ||
+        Rf_isNull(numberOfIdentifiers) ||
+        INTSXP != TYPEOF(root) ||
+        INTSXP != TYPEOF(inBegin) ||
+        INTSXP != TYPEOF(inEnd) ||
+        INTSXP != TYPEOF(outBegin) ||
+        INTSXP != TYPEOF(outEnd) ||
+        INTSXP != TYPEOF(numberOfIdentifiers) ||
+        1 != LENGTH(numberOfIdentifiers))
         return 1;
     return 0;
 }
