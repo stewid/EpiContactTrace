@@ -151,44 +151,42 @@ with the following columns:
 }
 
 \examples{
-\dontrun{
-
 ## Load data
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd="2005-10-31",
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate network summary from a ContactTrace object
-ns.1 <- NetworkSummary(contactTrace)
+ns_1 <- NetworkSummary(contactTrace)
 
 ## Calculate network summary using tEnd and days
-ns.2 <- NetworkSummary(transfers,
-                       root=2645,
-                       tEnd="2005-10-31",
-                       days=91)
+ns_2 <- NetworkSummary(transfers,
+                       root = 2645,
+                       tEnd = "2005-10-31",
+                       days = 91)
 
 ## Check that the result is identical
-identical(ns.1, ns.2)
+identical(ns_1, ns_2)
 
 ## Calculate network summary using inBegin, inEnd
 ## outBegin and outEnd
-ns.3 <- NetworkSummary(transfers,
-                       root=2645,
-                       inBegin="2005-08-01",
-                       inEnd="2005-10-31",
-                       outBegin="2005-08-01",
-                       outEnd="2005-10-31")
+ns_3 <- NetworkSummary(transfers,
+                       root = 2645,
+                       inBegin = "2005-08-01",
+                       inEnd = "2005-10-31",
+                       outBegin = "2005-08-01",
+                       outEnd = "2005-10-31")
 
 ## Check that the result is identical
-identical(ns.2, ns.3)
+identical(ns_2, ns_3)
 
 ## When calculating the network summary for a data.frame of movements
 ## a data.frame for each combination of root, tEnd and days are returned.
-root <- c(1,2,3)
+root <- c(1, 2, 3)
 tEnd <- c("2005-09-01", "2005-10-01")
 days <- c(30, 45)
 
@@ -214,19 +212,18 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Perform contact tracing using tEnd and days
-result.1 <- NetworkSummary(transfers,
-                           root=root,
-                           tEnd="2005-10-31",
-                           days=90)
+result_1 <- NetworkSummary(transfers,
+                           root = root,
+                           tEnd = "2005-10-31",
+                           days = 90)
 
 ## Perform contact tracing using inBegin, inEnd, outBegin and outEnd.
-result.2 <- NetworkSummary(transfers,
-                           root=root,
-                           inBegin=rep("2005-08-02", length(root)),
-                           inEnd=rep("2005-10-31", length(root)),
-                           outBegin=rep("2005-08-02", length(root)),
-                           outEnd=rep("2005-10-31", length(root)))
-}
+result_2 <- NetworkSummary(transfers,
+                           root = root,
+                           inBegin = rep("2005-08-02", length(root)),
+                           inEnd = rep("2005-10-31", length(root)),
+                           outBegin = rep("2005-08-02", length(root)),
+                           outEnd = rep("2005-10-31", length(root)))
 }
 \references{
 \itemize{

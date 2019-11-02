@@ -44,7 +44,8 @@ tree.
 }
 \references{
 \itemize{
-  \item John Q. Walker II, A node positioning algorithm for general tress.\cr
+  \item John Q. Walker II, A node positioning algorithm for
+  general tress.\cr
   \url{http://www.cs.unc.edu/techreports/89-034.pdf}
 }
 }

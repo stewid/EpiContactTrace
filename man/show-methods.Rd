@@ -18,8 +18,9 @@
 None (invisible 'NULL').
 }
 \description{
-Shows information of the time-window used for contact tracing and summary of
-network parameters. It also visualize the contact structure.
+Shows information of the time-window used for contact tracing and
+summary of network parameters. It also visualize the contact
+structure.
 }
 \section{Methods}{
  \describe{
@@ -53,14 +54,14 @@ show(contactTrace)
 \references{
 \itemize{
   \item Dube, C., et al., A review of network analysis terminology
-    and its application to foot-and-mouth disease modelling and policy
-    development. Transbound Emerg Dis 56 (2009) 73-85, doi:
+    and its application to foot-and-mouth disease modelling and
+    policy development. Transbound Emerg Dis 56 (2009) 73-85, doi:
     10.1111/j.1865-1682.2008.01064.x
 
-  \item Noremark, M., et al., Network analysis
-    of cattle and pig movements in Sweden: Measures relevant for
-    disease control and riskbased surveillance.  Preventive Veterinary
-    Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+  \item Noremark, M., et al., Network analysis of cattle and pig
+    movements in Sweden: Measures relevant for disease control and
+    riskbased surveillance.  Preventive Veterinary Medicine 99
+    (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 }
 }
 \keyword{methods}

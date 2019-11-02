@@ -28,25 +28,28 @@ is 'html'}
 is used.}
 }
 \description{
-EpiContatTrace contains report templates to generate pdf- or html reports
-for the farm specific contacts. These reports can be useful for hands-on
-disease tracing in the field. The templates are used by Sweave and can be
-adapted by the end user. However, in the default setting the report has the
-following layout; first the contacts are visualised graphically in a plot,
-as to give an immediate signal to the reader of the report of the number of
-contacts. In the following, the contact data are presented with different
-levels of detail split by ingoing and outgoing contacts. The first includes
-collapsed data and the sequential contact structure at group level (i.e. no
-information on individuals or dates). In this summary, the sequential
-structure of each part of the chain is included, and a holding that appears
-in several different parts of the chain can therefore be included more than
-once in the summary. The reason for this is to facilitate sequential
-tracing and getting an overview of each part of the chain. After the
-summary all details of all contacts included in the contact chains is
-presented, i.e. date of contact and data on individual level when
-available. To generate pdf files a TeX installation must exist to compile the
-latex file. The report is saved in the working directory with the name of
-the root as filename.
+EpiContatTrace contains report templates to generate pdf- or html
+reports for the farm specific contacts. These reports can be
+useful for hands-on disease tracing in the field. The templates
+are used by Sweave and can be adapted by the end user. However, in
+the default setting the report has the following layout; first the
+contacts are visualised graphically in a plot, as to give an
+immediate signal to the reader of the report of the number of
+contacts. In the following, the contact data are presented with
+different levels of detail split by ingoing and outgoing
+contacts. The first includes collapsed data and the sequential
+contact structure at group level (i.e. no information on
+individuals or dates). In this summary, the sequential structure
+of each part of the chain is included, and a holding that appears
+in several different parts of the chain can therefore be included
+more than once in the summary. The reason for this is to
+facilitate sequential tracing and getting an overview of each part
+of the chain. After the summary all details of all contacts
+included in the contact chains is presented, i.e. date of contact
+and data on individual level when available. To generate pdf files
+a TeX installation must exist to compile the latex file. The
+report is saved in the working directory with the name of the root
+as filename.
 }
 \note{
 Plots are not supported in version 0.8.6 since igraph0 has
