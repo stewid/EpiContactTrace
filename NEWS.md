@@ -1,46 +1,47 @@
-EpiContactTrace 0.13.0
-----------------------
+# EpiContactTrace (development version)
 
-IMPROVEMENTS
+## CHANGES
+
+* Renamed the `NEWS` file to `NEWS.md` and changed to use markdown
+  format style.
+
+# EpiContactTrace 0.13.0
+
+## IMPROVEMENTS
 
 * Set 'stringsAsFactors = FALSE' in the data.frame returned by
   'NetworkSummary'.
 
-EpiContactTrace 0.12.0
-----------------------
+# EpiContactTrace 0.12.0
 
-BUG FIXES
+## BUG FIXES
 
 * Fix format of authors in CITATION file.
 
-EpiContactTrace 0.11.0
-----------------------
+# EpiContactTrace 0.11.0
 
-BUG FIXES
+## BUG FIXES
 
 * Added missing calls to 'R_forceSymbols' and 'R_useDynamicSymbols' in
   the C init function.
 
-EpiContactTrace 0.10.0
----------------------
+# EpiContactTrace 0.10.0
 
-IMPROVEMENTS
+## IMPROVEMENTS
 
-Added the 'maxDistance' argument to the 'Trace' method to stop contact
-tracing at 'maxDistance' (inclusive) from the root node.  Default is
-‘NULL’ i.e. to not use the 'maxDistance' stop criteria.
+* Added the 'maxDistance' argument to the 'Trace' method to stop
+  contact tracing at 'maxDistance' (inclusive) from the root node.
+  Default is ‘NULL’ i.e. to not use the 'maxDistance' stop criteria.
 
-EpiContactTrace 0.9.1
----------------------
+# EpiContactTrace 0.9.1
 
-BUG FIXES
+## BUG FIXES
 
 * Fixed build failure on the Solaris platform.
 
-EpiContactTrace 0.9.0
----------------------
+# EpiContactTrace 0.9.0
 
-CHANGES
+## CHANGES
 
 * Removed Animate method to pass the CRAN checks. Install version
   0.8.8 manually from the archive if that method is required. See
@@ -59,256 +60,232 @@ CHANGES
 
 * Changed 'Title' field in DESCRIPTION to title case
 
-PERFORMANCE IMPROVEMENTS
+## PERFORMANCE IMPROVEMENTS
 
 * Improved performance when calculating ShortestPaths on a data.frame
   of movements.
 
-EpiContactTrace 0.8.8
----------------------
+# EpiContactTrace 0.8.8
 
-BUG FIXES
+## BUG FIXES
 
 * Fixed failing test case 'Duplicate movements'
 
 * Fixed NOTE not importing 'methods' from R CMD check
 
 
-EpiContactTrace 0.8.7
----------------------
+# EpiContactTrace 0.8.7
 
-NOTE
+## NOTE
 
 * Changed argument representation to slots in setClass for the two S4
   classes ContactTrace and Contacts. The package now requires R>=3.0.0
 
-EpiContactTrace 0.8.6
----------------------
+# EpiContactTrace 0.8.6
 
-NOTE
+## NOTE
 
 * Plots are not supported in version 0.8.6 since igraph0 has been
   archived. We intend to resolve the issue in a future version.
-  Install version 0.8.5 and igraph0 manually from the archive if
-  plots are required. See section 6.3 in 'R Installation and
-  Administration' on how to install packages from source.
+  Install version 0.8.5 and igraph0 manually from the archive if plots
+  are required. See section 6.3 in 'R Installation and Administration'
+  on how to install packages from source.
 
-EpiContactTrace 0.8.5
----------------------
+# EpiContactTrace 0.8.5
 
-NEW FEATURES
+## NEW FEATURES
 
 * Updated DESCRIPTION to use Imports instead of Depends for igraph0,
-    plyr, R2HTML.
+  plyr, R2HTML.
 
-EpiContactTrace 0.8.4
----------------------
+# EpiContactTrace 0.8.4
 
-NEW FEATURES
+## NEW FEATURES
 
 * Added method ReportObject to be called from a Sweave report template
   to get the current ContactTrace object.
 
-EpiContactTrace 0.8.3
----------------------
+# EpiContactTrace 0.8.3
 
-NEW FEATURES
+## NEW FEATURES
 
 * inDays and outDays now returned as integer from NetworkSummary of a
   ContactTrace object.
 
 * Added 'all' to interval argument in Animate to view visualize all
-  movements in one image. The default interval argument was changed
-  to 'all'.
+  movements in one image. The default interval argument was changed to
+  'all'.
 
-BUGFIX
+## BUGFIX
 
-* Fixed a bug that was introduced in ver 0.7.6 when performing
-  contact tracing.
+* Fixed a bug that was introduced in ver 0.7.6 when performing contact
+  tracing.
 
-EpiContactTrace 0.8.2
----------------------
+# EpiContactTrace 0.8.2
 
-BUGFIX
+## BUGFIX
 
 * Fixed a bug that was introduced in ver 0.7.6 when calculating
   IngoingContactChain and OutgoingContactChain using NetworkSummary.
 
 
-EpiContactTrace 0.8.0
----------------------
+# EpiContactTrace 0.8.0
 
-NEW FEATURES
+## NEW FEATURES
 
 * Using the the animation and ggmap package, contacts can now be
   visualized and animated.
 
-EpiContactTrace 0.7.6
----------------------
+# EpiContactTrace 0.7.6
 
-PERFORMANCE IMPROVEMENTS
+## PERFORMANCE IMPROVEMENTS
 
 * Improved performance when calculating contact chain in C++ code by
   counting the number of visited nodes more efficient.
 
-EpiContactTrace 0.7.5
+# EpiContactTrace 0.7.5
 ---------------------
 
 NEW FEATURES
 
 * Report now uses match.arg to check output format.
 
-EpiContactTrace 0.7.4
----------------------
+# EpiContactTrace 0.7.4
 
-NEW FEATURES
+## NEW FEATURES
 
 * Added the parameters inBegin, inEnd, outBegin and outEnd to
   NetworkSummary to allow for different time windows for ingoing and
   outgoing contacts.
 
-EpiContactTrace 0.7.3
----------------------
+# EpiContactTrace 0.7.3
 
-BUG FIXES
+## BUG FIXES
 
 * Fixed bug in Report. InDegree were not defined for the S4 class
   Contacts.
 
-EpiContactTrace 0.7.2
----------------------
+# EpiContactTrace 0.7.2
 
-NEW FEATURES
+## NEW FEATURES
 
 * Improved performance in C++ code by using visited nodes more
   efficient
 
-EpiContactTrace 0.7.1
----------------------
+# EpiContactTrace 0.7.1
 
-NEW FEATURES
+## NEW FEATURES
 
 * Updated documentation
 
-BUG FIXES
+## BUG FIXES
 
 * Fixed bug in C++ code not checking tEnd constraint.
 
 * Fixed bug in NetworkSummary when calculating degree.
 
-EpiContactTrace 0.7.0
----------------------
+# EpiContactTrace 0.7.0
 
-NEW FEATURES
+## NEW FEATURES
 
 * When the methods Trace, NetworkSummary, InDegree, OutDegree,
-     IngoingContactChain, OutgoingContactChain are called with the
-     arguments movements, root, tEnd and days; the measures are
-     calculated for each combination of root, tEnd and days.
+  IngoingContactChain, OutgoingContactChain are called with the
+  arguments movements, root, tEnd and days; the measures are
+  calculated for each combination of root, tEnd and days.
 
-PERFORMANCE IMPROVEMENTS
+## PERFORMANCE IMPROVEMENTS
 
 * Ongoing work to improve performance using Rcpp.
 
-EpiContactTrace 0.6.9
----------------------
+# EpiContactTrace 0.6.9
 
-NEW FEATURES
+## NEW FEATURES
 
 * Changed from igraph to igraph0 to handle the update of igraph to 0.6.
 
-BUG FIXES
+## BUG FIXES
 
 * Fixed bug with Report of a list of ContactTrace objects.  Each
   ContactTrace object called Report with missing parameter clean.
 
-EpiContactTrace 0.6.8
----------------------
+# EpiContactTrace 0.6.8
 
-BUG FIXES
+## BUG FIXES
 
 * The html and pdf reports have been corrected. The table displaying
   individual outgoing contacts erronously switched source and
   destination.
 
-EpiContactTrace 0.6.7
----------------------
+# EpiContactTrace 0.6.7
 
-NEW FEATURES
+## NEW FEATURES
 
 * Removed unused parameters from Report method.
 
-EpiContactTrace 0.6.6
----------------------
+# EpiContactTrace 0.6.6
 
-NEW FEATURES
-
-* Updated documentation.
-
-EpiContactTrace 0.6.5
----------------------
-
-NEW FEATURES
+## NEW FEATURES
 
 * Updated documentation.
 
-EpiContactTrace 0.6.4
----------------------
+# EpiContactTrace 0.6.5
 
-NEW FEATURES
+## NEW FEATURES
 
 * Updated documentation.
 
-EpiContactTrace 0.6.3
----------------------
+# EpiContactTrace 0.6.4
 
-NEW FEATURES
+## NEW FEATURES
+
+* Updated documentation.
+
+# EpiContactTrace 0.6.3
+
+## NEW FEATURES
 
 * All documentation generated via roxygen.
 
-EpiContactTrace 0.6.2
----------------------
+# EpiContactTrace 0.6.2
 
-BUG FIXES
+## BUG FIXES
 
-* If movements contained duplicate contacts, they were all added.
-  Now only unique contacts are included from the contact tracing.
+* If movements contained duplicate contacts, they were all added.  Now
+  only unique contacts are included from the contact tracing.
 
-EpiContactTrace 0.6.1
----------------------
+# EpiContactTrace 0.6.1
 
-BUG FIXES
+## BUG FIXES
 
-* 'plot' now works as intended for the S4 ContactTrace object
-  with only outgoing contacts
+* 'plot' now works as intended for the S4 ContactTrace object with
+  only outgoing contacts
 
-EpiContactTrace 0.6.0
----------------------
+# EpiContactTrace 0.6.0
 
-NEW FEATURES
+## NEW FEATURES
 
 * Added the method ShortestPaths
 
-* NetworkStructure gives the distance from root for
-  each node during the depth first search.
+* NetworkStructure gives the distance from root for each node during
+  the depth first search.
 
 
-EpiContactTrace 0.5.3
----------------------
+# EpiContactTrace 0.5.3
 
-NEW FEATURES
+## NEW FEATURES
 
 * Added the example dataset transfers
 
-EpiContactTrace 0.5.2
----------------------
+# EpiContactTrace 0.5.2
 
-NEW FEATURES
+## NEW FEATURES
 
-* Can now generate an 'html' report for the contact tracing using 'Report'
+* Can now generate an 'html' report for the contact tracing using
+  'Report'
 
-* Can now generate a 'pdf' report for the contact tracing using 'Report'
+* Can now generate a 'pdf' report for the contact tracing using
+  'Report'
 
-BUG FIXES
+## BUG FIXES
 
 * 'show' now works as intended for the S4 ContactTrace object
