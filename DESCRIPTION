@@ -2,9 +2,11 @@ Package: EpiContactTrace
 Title: Epidemiological Tool for Contact Tracing
 Version: 0.13.0
 Authors@R: c(
-    person("Maria", "Noremark", role = c("aut")),
+    person("Maria", "Noremark", role = c("aut"),
+           comment = c(ORCID = "0000-0003-2555-8476")),
     person("Stefan", "Widgren", role = c("aut", "cre"),
-     email = "stefan.widgren@gmail.com"))
+           email = "stefan.widgren@gmail.com",
+           comment = c(ORCID = "0000-0001-5745-2284")))
 Description: Routines for epidemiological contact tracing
     and visualisation of network of contacts.
 License: EUPL
