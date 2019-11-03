@@ -134,54 +134,42 @@ check_arguments(const SEXP src,
     return 0;
 }
 
-/* Help method to sort contacts by julian time. */
-bool
-compareT(std::pair<int, int> const& t1, std::pair<int, int> const& t2)
-{
-    return t1.first < t2.first;
-}
-
 /* Lookup of ingoing and outgoing contacts. */
 typedef std::pair<std::vector<std::map<int, Contacts> >,
                   std::vector<std::map<int, Contacts> > > ContactsLookup;
 
 static ContactsLookup
-buildContactsLookup(const int *src,
-		    const int *dst,
-		    const int *t,
-                    const size_t len,
-		    const size_t numberOfIdentifiers)
+buildContactsLookup(SEXP src, SEXP dst, SEXP t, SEXP numberOfIdentifiers)
 {
+    int *ptr_src = INTEGER(src);
+    int *ptr_dst = INTEGER(dst);
+    int *ptr_t = INTEGER(t);
+    R_xlen_t len = Rf_xlength(t);
+    int *rowid = (int *)malloc(len * sizeof(int));
+
     /* Lookup for ingoing contacts. */
-    std::vector<std::map<int, Contacts> > ingoing(numberOfIdentifiers);
+    std::vector<std::map<int, Contacts> > ingoing(Rf_asInteger(numberOfIdentifiers));
 
     /* Lookup for outfoing contacts. */
-    std::vector<std::map<int, Contacts> > outgoing(numberOfIdentifiers);
-
-    /* first: julian time, second: original rowid. */
-    std::vector<std::pair<int, int> > rowid;
-
-    if (NULL == src || NULL == dst || NULL == t)
-        Rf_error("Unable to build contacts lookup");
+    std::vector<std::map<int, Contacts> > outgoing(Rf_asInteger(numberOfIdentifiers));
 
     /* The contacts must be sorted by t. */
-    rowid.reserve(len);
-    for (size_t i = 0; i < len; ++i) {
-        rowid.push_back(std::make_pair(t[i], i));
-    }
+    if (!rowid)
+        Rf_error("Unable to allocate memory.");
+    R_orderVector(rowid, len, Rf_lang1(t), FALSE, FALSE);
 
-    sort(rowid.begin(), rowid.end(), compareT);
-
-    for (size_t i = 0; i < len; ++i) {
-        int j = rowid[i].second;
+    for (R_xlen_t i = 0; i < len; ++i) {
+        int j = rowid[i];
 
         /* Decrement with one since std::vector is zero-based. */
-        int zb_src = src[j] - 1;
-        int zb_dst = dst[j] - 1;
+        int zb_src = ptr_src[j] - 1;
+        int zb_dst = ptr_dst[j] - 1;
 
-        ingoing[zb_dst][zb_src].push_back((Contact){j, zb_src, t[j]});
-        outgoing[zb_src][zb_dst].push_back((Contact){j, zb_dst, t[j]});
+        ingoing[zb_dst][zb_src].push_back((Contact){j, zb_src, ptr_t[j]});
+        outgoing[zb_src][zb_dst].push_back((Contact){j, zb_dst, ptr_t[j]});
     }
+
+    free(rowid);
 
     return make_pair(ingoing, outgoing);
 }
@@ -284,12 +272,7 @@ SEXP shortestPaths(const SEXP src,
                        outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to calculate shortest paths");
 
-    ContactsLookup lookup =
-        buildContactsLookup(INTEGER(src),
-                            INTEGER(dst),
-                            INTEGER(t),
-                            Rf_xlength(t),
-                            INTEGER(numberOfIdentifiers)[0]);
+    ContactsLookup lookup = buildContactsLookup(src, dst, t, numberOfIdentifiers);
 
     R_xlen_t len = Rf_xlength(root);
     kv_init(inRowid);
@@ -466,12 +449,7 @@ SEXP traceContacts(const SEXP src,
         Rf_error("Unable to trace contacts");
     }
 
-    ContactsLookup lookup =
-        buildContactsLookup(INTEGER(src),
-                            INTEGER(dst),
-                            INTEGER(t),
-                            Rf_xlength(t),
-                            INTEGER(numberOfIdentifiers)[0]);
+    ContactsLookup lookup = buildContactsLookup(src, dst, t, numberOfIdentifiers);
 
     SEXP result, vec;
     std::vector<int> resultRowid;
@@ -634,12 +612,7 @@ SEXP networkSummary(const SEXP src,
     kv_init(inDegree);
     kv_init(outDegree);
 
-    ContactsLookup lookup =
-        buildContactsLookup(INTEGER(src),
-                            INTEGER(dst),
-                            INTEGER(t),
-                            Rf_xlength(t),
-                            INTEGER(numberOfIdentifiers)[0]);
+    ContactsLookup lookup = buildContactsLookup(src, dst, t, numberOfIdentifiers);
 
     for (R_xlen_t i = 0, end = Rf_xlength(root); i < end; ++i) {
         VisitedNodes visitedNodesIngoing(INTEGER(numberOfIdentifiers)[0]);
