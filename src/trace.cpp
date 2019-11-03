@@ -34,17 +34,12 @@
 #include <R_ext/Rdynload.h>
 #include <R_ext/Visibility.h>
 
-class Contact {
-public:
-  Contact(int rowid, int identifier, int t)
-    : rowid_(rowid), identifier_(identifier), t_(t)
-  {
-  }
-
+typedef struct Contact
+{
   int rowid_;
   int identifier_;
   int t_;
-};
+} Contact;
 
 class CompareContact {
 public:
@@ -169,21 +164,21 @@ buildContactsLookup(const int *src,
 
     // The contacts must be sorted by t.
     rowid.reserve(len);
-    for (size_t i=0;i<len;++i) {
+    for (size_t i = 0; i < len; ++i) {
         rowid.push_back(std::make_pair(t[i], i));
     }
 
     sort(rowid.begin(), rowid.end(), compareT);
 
-    for (size_t i=0;i<len;++i) {
+    for (size_t i = 0; i < len; ++i) {
         int j = rowid[i].second;
 
         // Decrement with one since std::vector is zero-based
         int zb_src = src[j] - 1;
         int zb_dst = dst[j] - 1;
 
-        ingoing[zb_dst][zb_src].push_back(Contact(j, zb_src, t[j]));
-        outgoing[zb_src][zb_dst].push_back(Contact(j, zb_dst, t[j]));
+        ingoing[zb_dst][zb_src].push_back((Contact){j, zb_src, t[j]});
+        outgoing[zb_src][zb_dst].push_back((Contact){j, zb_dst, t[j]});
     }
 
     return make_pair(ingoing, outgoing);
@@ -506,7 +501,7 @@ SEXP traceContacts(const SEXP src,
                         INTEGER(root)[i] - 1,
                         INTEGER(outBegin)[i],
                         INTEGER(outEnd)[i],
-                       std::set<int>(),
+                        std::set<int>(),
                         1,
                         false,
                         resultRowid,
