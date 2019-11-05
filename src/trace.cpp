@@ -38,19 +38,19 @@
 
 typedef struct Contact
 {
-  int rowid_;
-  int identifier_;
-  int t_;
+  int rowid;
+  int identifier;
+  int t;
 } Contact;
 
 class CompareContact {
 public:
     bool operator()(const Contact& c, int t) {
-        return c.t_ < t;
+        return c.t < t;
     }
 
     bool operator()(int t, const Contact& c) {
-        return t < c.t_;
+        return t < c.t;
     }
 };
 
@@ -200,7 +200,7 @@ doShortestPaths(const std::vector<std::map<int, Contacts> >& data,
                                  tBegin,
                                  CompareContact());
 
-            if (t_begin != it->second.end() && t_begin->t_ <= tEnd) {
+            if (t_begin != it->second.end() && t_begin->t <= tEnd) {
                 int t0, t1;
 
                 std::map<int, std::pair<int, int> >::iterator distance_it =
@@ -210,13 +210,13 @@ doShortestPaths(const std::vector<std::map<int, Contacts> >& data,
 
                     /* Increment with one since R vector is
                      * one-based. */
-                    result[it->first].second = t_begin->rowid_ + 1;
+                    result[it->first].second = t_begin->rowid + 1;
                 }  else if (distance < distance_it->second.first) {
                     distance_it->second.first = distance;
 
                     /* Increment with one since R vector is
                      * one-based. */
-                    distance_it->second.second = t_begin->rowid_ + 1;
+                    distance_it->second.second = t_begin->rowid + 1;
                 }
 
                 if (ingoing) {
@@ -228,9 +228,9 @@ doShortestPaths(const std::vector<std::map<int, Contacts> >& data,
                                          CompareContact());
 
                     t0 = tBegin;
-                    t1 = (t_end-1)->t_;
+                    t1 = (t_end-1)->t;
                 } else {
-                    t0 = t_begin->t_;
+                    t0 = t_begin->t;
                     t1 = tEnd;
                 }
 
@@ -388,7 +388,7 @@ doTraceContacts(const std::vector<std::map<int, Contacts> >& data,
                                  tBegin,
                                  CompareContact());
 
-            if (t_begin != it->second.end() && t_begin->t_ <= tEnd) {
+            if (t_begin != it->second.end() && t_begin->t <= tEnd) {
                 int t0, t1;
 
                 /* and then the upper bound, tEnd. */
@@ -401,7 +401,7 @@ doTraceContacts(const std::vector<std::map<int, Contacts> >& data,
                 for (Contacts::const_iterator iit=t_begin; iit!=t_end; ++iit) {
                     /* Increment with one since R vector is
                      * one-based. */
-                    resultRowid.push_back(iit->rowid_ + 1);
+                    resultRowid.push_back(iit->rowid + 1);
 
                     resultDistance.push_back(distance);
                 }
@@ -411,9 +411,9 @@ doTraceContacts(const std::vector<std::map<int, Contacts> >& data,
 
                 if (ingoing) {
                     t0 = tBegin;
-                    t1 = (t_end-1)->t_;
+                    t1 = (t_end-1)->t;
                 } else {
-                    t0 = t_begin->t_;
+                    t0 = t_begin->t;
                     t1 = tEnd;
                 }
 
@@ -529,7 +529,7 @@ degree(const std::vector<std::map<int, Contacts> >& data,
                                  tBegin,
                                  CompareContact());
 
-            if (t_begin != it->second.end() && t_begin->t_ <= tEnd) {
+            if (t_begin != it->second.end() && t_begin->t <= tEnd) {
                 ++result;
             }
         }
@@ -560,7 +560,7 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
                                  tBegin,
                                  CompareContact());
 
-            if (t_begin != it->second.end() && t_begin->t_ <= tEnd) {
+            if (t_begin != it->second.end() && t_begin->t <= tEnd) {
                 int t0, t1;
 
                 if (ingoing) {
@@ -572,9 +572,9 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
                                          CompareContact());
 
                     t0 = tBegin;
-                    t1 = (t_end-1)->t_;
+                    t1 = (t_end-1)->t;
                 } else {
-                    t0 = t_begin->t_;
+                    t0 = t_begin->t;
                     t1 = tEnd;
                 }
 
