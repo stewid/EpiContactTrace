@@ -106,16 +106,16 @@ private:
 
 typedef std::vector<Contact> Contacts;
 
-static int
-check_arguments(const SEXP src,
-                const SEXP dst,
-                const SEXP t,
-                const SEXP root,
-                const SEXP inBegin,
-                const SEXP inEnd,
-                const SEXP outBegin,
-                const SEXP outEnd,
-                const SEXP numberOfIdentifiers)
+static int check_arguments(
+    SEXP src,
+    SEXP dst,
+    SEXP t,
+    SEXP root,
+    SEXP inBegin,
+    SEXP inEnd,
+    SEXP outBegin,
+    SEXP outEnd,
+    SEXP numberOfIdentifiers)
 {
     if (Rf_isNull(root) ||
         Rf_isNull(inBegin) ||
@@ -247,16 +247,16 @@ doShortestPaths(const std::vector<std::map<int, Contacts> >& data,
     }
 }
 
-extern "C"
-SEXP shortestPaths(const SEXP src,
-		   const SEXP dst,
-		   const SEXP t,
-		   const SEXP root,
-		   const SEXP inBegin,
-		   const SEXP inEnd,
-		   const SEXP outBegin,
-		   const SEXP outEnd,
-		   const SEXP numberOfIdentifiers)
+extern "C" SEXP shortestPaths(
+    SEXP src,
+    SEXP dst,
+    SEXP t,
+    SEXP root,
+    SEXP inBegin,
+    SEXP inEnd,
+    SEXP outBegin,
+    SEXP outEnd,
+    SEXP numberOfIdentifiers)
 {
     const char *names[] = {"inDistance", "inRowid", "inIndex",
                            "outDistance", "outRowid", "outIndex", ""};
@@ -432,17 +432,17 @@ doTraceContacts(const std::vector<std::map<int, Contacts> >& data,
     }
 }
 
-extern "C"
-SEXP traceContacts(const SEXP src,
-		   const SEXP dst,
-		   const SEXP t,
-		   const SEXP root,
-		   const SEXP inBegin,
-		   const SEXP inEnd,
-		   const SEXP outBegin,
-		   const SEXP outEnd,
-		   const SEXP numberOfIdentifiers,
-                   const SEXP maxDistance)
+extern "C" SEXP traceContacts(
+    SEXP src,
+    SEXP dst,
+    SEXP t,
+    SEXP root,
+    SEXP inBegin,
+    SEXP inEnd,
+    SEXP outBegin,
+    SEXP outEnd,
+    SEXP numberOfIdentifiers,
+    SEXP maxDistance)
 {
     if (check_arguments(src, dst, t, root, inBegin, inEnd, outBegin, outEnd,
                         numberOfIdentifiers)) {
@@ -584,16 +584,16 @@ contactChain(const std::vector<std::map<int, Contacts> >& data,
     }
 }
 
-extern "C"
-SEXP networkSummary(const SEXP src,
-		    const SEXP dst,
-		    const SEXP t,
-		    const SEXP root,
-		    const SEXP inBegin,
-		    const SEXP inEnd,
-		    const SEXP outBegin,
-		    const SEXP outEnd,
-		    const SEXP numberOfIdentifiers)
+extern "C" SEXP networkSummary(
+    SEXP src,
+    SEXP dst,
+    SEXP t,
+    SEXP root,
+    SEXP inBegin,
+    SEXP inEnd,
+    SEXP outBegin,
+    SEXP outEnd,
+    SEXP numberOfIdentifiers)
 {
     const char *names[] = {"inDegree", "outDegree",
                            "ingoingContactChain", "outgoingContactChain", ""};
