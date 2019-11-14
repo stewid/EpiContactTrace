@@ -26,7 +26,7 @@
 ##' \code{outgoing}. The fields are \code{NULL} or contain a
 ##' \code{data.frame} with the tree. The fields are \code{NULL} if
 ##' there are no in- or outgoing contacts.
-##' @keywords internal
+##' @noRd
 build_tree <- function(network_structure) {
     stopifnot(is.data.frame(network_structure))
     root <- unique(network_structure$root)
@@ -126,7 +126,7 @@ build_tree <- function(network_structure) {
 ##' @param right_size The right size of a node.
 ##' @param top_size  The top size of a node.
 ##' @param bottom_size The bottom size of a node.
-##' @keywords internal
+##' @noRd
 ##' @references \itemize{
 ##'   \item John Q. Walker II, A node positioning algorithm for
 ##'   general tress.\cr
