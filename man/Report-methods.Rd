@@ -10,11 +10,9 @@
 \usage{
 Report(object, ...)
 
-\S4method{Report}{ContactTrace}(object, format = c("html", "pdf"),
-  dir = ".", template = NULL)
+\S4method{Report}{ContactTrace}(object, format = c("html", "pdf"), dir = ".", template = NULL)
 
-\S4method{Report}{list}(object, format = c("html", "pdf"), dir = ".",
-  template = NULL)
+\S4method{Report}{list}(object, format = c("html", "pdf"), dir = ".", template = NULL)
 }
 \arguments{
 \item{object}{the object}
@@ -28,8 +26,8 @@ Report(object, ...)
 folder. The default (\code{"."}) is the current working
 directory.}
 
-\item{template}{the Sweave template file to use. If none is provided, the default
-is used.}
+\item{template}{the Sweave template file to use. If none is
+provided, the default is used.}
 }
 \description{
 EpiContatTrace contains report templates to generate pdf- or html

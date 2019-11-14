@@ -11,8 +11,16 @@ ShortestPaths(x, ...)
 
 \S4method{ShortestPaths}{ContactTrace}(x)
 
-\S4method{ShortestPaths}{data.frame}(x, root, tEnd = NULL, days = NULL,
-  inBegin = NULL, inEnd = NULL, outBegin = NULL, outEnd = NULL)
+\S4method{ShortestPaths}{data.frame}(
+  x,
+  root,
+  tEnd = NULL,
+  days = NULL,
+  inBegin = NULL,
+  inEnd = NULL,
+  outBegin = NULL,
+  outEnd = NULL
+)
 }
 \arguments{
 \item{x}{a \code{\linkS4class{ContactTrace}} object, or a

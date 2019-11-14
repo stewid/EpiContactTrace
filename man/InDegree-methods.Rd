@@ -14,8 +14,7 @@ InDegree(x, ...)
 
 \S4method{InDegree}{ContactTrace}(x)
 
-\S4method{InDegree}{data.frame}(x, root, tEnd = NULL, days = NULL,
-  inBegin = NULL, inEnd = NULL)
+\S4method{InDegree}{data.frame}(x, root, tEnd = NULL, days = NULL, inBegin = NULL, inEnd = NULL)
 }
 \arguments{
 \item{x}{a ContactTrace object, or a list of ContactTrace objects

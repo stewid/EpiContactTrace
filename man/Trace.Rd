@@ -4,8 +4,17 @@
 \alias{Trace}
 \title{Trace Contacts.}
 \usage{
-Trace(movements, root, tEnd = NULL, days = NULL, inBegin = NULL,
-  inEnd = NULL, outBegin = NULL, outEnd = NULL, maxDistance = NULL)
+Trace(
+  movements,
+  root,
+  tEnd = NULL,
+  days = NULL,
+  inBegin = NULL,
+  inEnd = NULL,
+  outBegin = NULL,
+  outEnd = NULL,
+  maxDistance = NULL
+)
 }
 \arguments{
 \item{movements}{a \code{data.frame} data.frame with movements,
@@ -62,27 +71,27 @@ The argument movements in Trace is a \code{data.frame}
 with the following columns:
 \describe{
 
-\item{source}{
+  \item{source}{
     an integer or character identifier of the source holding.
   }
 
-\item{destination}{
+  \item{destination}{
     an integer or character identifier of the destination holding.
   }
 
-\item{t}{
+  \item{t}{
     the Date of the transfer
   }
 
-\item{id}{
+  \item{id}{
     an optional character vector with the identity of the animal.
   }
 
-\item{n}{
+  \item{n}{
     an optional numeric vector with the number of animals moved.
   }
 
-\item{category}{
+  \item{category}{
     an optional character or factor with category of the animal e.g. Cattle.
   }
 }
