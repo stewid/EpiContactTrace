@@ -134,34 +134,28 @@ static int check_arguments(
     return 0;
 }
 
-/* Lookup of ingoing and outgoing contacts. */
-typedef std::pair<std::vector<std::map<int, Contacts> >,
-                  std::vector<std::map<int, Contacts> > > ContactsLookup;
-
-static ContactsLookup
-buildContactsLookup(SEXP src, SEXP dst, SEXP t, SEXP numberOfIdentifiers)
+static int buildContactsLookup(
+    std::vector<std::map<int, Contacts> >& ingoing,
+    std::vector<std::map<int, Contacts> >& outgoing,
+    SEXP src,
+    SEXP dst,
+    SEXP t)
 {
     int *ptr_src = INTEGER(src);
     int *ptr_dst = INTEGER(dst);
     int *ptr_t = INTEGER(t);
     R_xlen_t len = Rf_xlength(t);
     int *rowid = (int *)malloc(len * sizeof(int));
-
-    /* Lookup for ingoing contacts. */
-    std::vector<std::map<int, Contacts> > ingoing(Rf_asInteger(numberOfIdentifiers));
-
-    /* Lookup for outfoing contacts. */
-    std::vector<std::map<int, Contacts> > outgoing(Rf_asInteger(numberOfIdentifiers));
+    if (!rowid)
+        return -1;
 
     /* The contacts must be sorted by t. */
-    if (!rowid)
-        Rf_error("Unable to allocate memory.");
     R_orderVector(rowid, len, Rf_lang1(t), FALSE, FALSE);
 
     for (R_xlen_t i = 0; i < len; ++i) {
         int j = rowid[i];
 
-        /* Decrement with one since std::vector is zero-based. */
+        /* Decrement with one since C is zero-based. */
         int zb_src = ptr_src[j] - 1;
         int zb_dst = ptr_dst[j] - 1;
 
@@ -171,7 +165,7 @@ buildContactsLookup(SEXP src, SEXP dst, SEXP t, SEXP numberOfIdentifiers)
 
     free(rowid);
 
-    return make_pair(ingoing, outgoing);
+    return 0;
 }
 
 static void
@@ -267,12 +261,17 @@ extern "C" SEXP shortestPaths(
     kvec_t(int) inIndex;
     kvec_t(int) outIndex;
     SEXP result, vec;
+    /* Lookup for ingoing contacts. */
+    std::vector<std::map<int, Contacts> > ingoing(Rf_asInteger(numberOfIdentifiers));
+
+    /* Lookup for outfoing contacts. */
+    std::vector<std::map<int, Contacts> > outgoing(Rf_asInteger(numberOfIdentifiers));
 
     if (check_arguments(src, dst, t, root, inBegin, inEnd,
                        outBegin, outEnd, numberOfIdentifiers))
         Rf_error("Unable to calculate shortest paths");
 
-    ContactsLookup lookup = buildContactsLookup(src, dst, t, numberOfIdentifiers);
+    buildContactsLookup(ingoing, outgoing, src, dst, t);
 
     R_xlen_t len = Rf_xlength(root);
     kv_init(inRowid);
@@ -291,7 +290,7 @@ extern "C" SEXP shortestPaths(
          * rowid. */
         std::map<int, std::pair<int, int> > outgoingShortestPaths;
 
-        doShortestPaths(lookup.first,
+        doShortestPaths(ingoing,
                         INTEGER(root)[i] - 1,
                         INTEGER(inBegin)[i],
                         INTEGER(inEnd)[i],
@@ -309,7 +308,7 @@ extern "C" SEXP shortestPaths(
             kv_push(int, inIndex, i + 1);
         }
 
-        doShortestPaths(lookup.second,
+        doShortestPaths(outgoing,
                         INTEGER(root)[i] - 1,
                         INTEGER(outBegin)[i],
                         INTEGER(outEnd)[i],
@@ -348,6 +347,7 @@ extern "C" SEXP shortestPaths(
     SET_VECTOR_ELT(result, 5, vec = Rf_allocVector(INTSXP, kv_size(outIndex)));
     memcpy(INTEGER(vec), &kv_A(outIndex, 0), kv_size(outIndex) * sizeof(int));
 
+cleanup:
     kv_destroy(inRowid);
     kv_destroy(outRowid);
     kv_destroy(inDistance);
@@ -444,12 +444,18 @@ extern "C" SEXP traceContacts(
     SEXP numberOfIdentifiers,
     SEXP maxDistance)
 {
+    /* Lookup for ingoing contacts. */
+    std::vector<std::map<int, Contacts> > ingoing(Rf_asInteger(numberOfIdentifiers));
+
+    /* Lookup for outfoing contacts. */
+    std::vector<std::map<int, Contacts> > outgoing(Rf_asInteger(numberOfIdentifiers));
+
     if (check_arguments(src, dst, t, root, inBegin, inEnd, outBegin, outEnd,
                         numberOfIdentifiers)) {
         Rf_error("Unable to trace contacts");
     }
 
-    ContactsLookup lookup = buildContactsLookup(src, dst, t, numberOfIdentifiers);
+    buildContactsLookup(ingoing, outgoing, src, dst, t);
 
     SEXP result, vec;
     std::vector<int> resultRowid;
@@ -460,7 +466,7 @@ extern "C" SEXP traceContacts(
         resultRowid.clear();
         resultDistance.clear();
 
-        doTraceContacts(lookup.first,
+        doTraceContacts(ingoing,
                         INTEGER(root)[i] - 1,
                         INTEGER(inBegin)[i],
                         INTEGER(inEnd)[i],
@@ -482,7 +488,7 @@ extern "C" SEXP traceContacts(
         resultRowid.clear();
         resultDistance.clear();
 
-        doTraceContacts(lookup.second,
+        doTraceContacts(outgoing,
                         INTEGER(root)[i] - 1,
                         INTEGER(outBegin)[i],
                         INTEGER(outEnd)[i],
@@ -502,6 +508,7 @@ extern "C" SEXP traceContacts(
             INTEGER(vec)[j] = resultDistance[j];
     }
 
+cleanup:
     UNPROTECT(1);
 
     return result;
@@ -597,35 +604,45 @@ extern "C" SEXP networkSummary(
 {
     const char *names[] = {"inDegree", "outDegree",
                            "ingoingContactChain", "outgoingContactChain", ""};
+    int error = 0, nprotect = 0;
     kvec_t(int) ingoingContactChain;
     kvec_t(int) outgoingContactChain;
     kvec_t(int) inDegree;
     kvec_t(int) outDegree;
     SEXP result, vec;
 
-    if (check_arguments(src, dst, t, root, inBegin, inEnd,
-                        outBegin, outEnd, numberOfIdentifiers))
-        Rf_error("Unable to calculate network summary");
+    /* Lookup for ingoing contacts. */
+    std::vector<std::map<int, Contacts> > ingoing(Rf_asInteger(numberOfIdentifiers));
+
+    /* Lookup for outfoing contacts. */
+    std::vector<std::map<int, Contacts> > outgoing(Rf_asInteger(numberOfIdentifiers));
+
+    error = check_arguments(src, dst, t, root, inBegin, inEnd,
+                            outBegin, outEnd, numberOfIdentifiers);
+    if (error)
+        goto cleanup;
 
     kv_init(ingoingContactChain);
     kv_init(outgoingContactChain);
     kv_init(inDegree);
     kv_init(outDegree);
 
-    ContactsLookup lookup = buildContactsLookup(src, dst, t, numberOfIdentifiers);
+    error = buildContactsLookup(ingoing, outgoing, src, dst, t);
+    if (error)
+        goto cleanup;
 
     for (R_xlen_t i = 0, end = Rf_xlength(root); i < end; ++i) {
         VisitedNodes visitedNodesIngoing(INTEGER(numberOfIdentifiers)[0]);
         VisitedNodes visitedNodesOutgoing(INTEGER(numberOfIdentifiers)[0]);
 
-        contactChain(lookup.first,
+        contactChain(ingoing,
                      INTEGER(root)[i] - 1,
                      INTEGER(inBegin)[i],
                      INTEGER(inEnd)[i],
                      visitedNodesIngoing,
                      true);
 
-        contactChain(lookup.second,
+        contactChain(outgoing,
                      INTEGER(root)[i] - 1,
                      INTEGER(outBegin)[i],
                      INTEGER(outEnd)[i],
@@ -635,12 +652,12 @@ extern "C" SEXP networkSummary(
         kv_push(int, ingoingContactChain, visitedNodesIngoing.N() - 1);
         kv_push(int, outgoingContactChain, visitedNodesOutgoing.N() - 1);
 
-        kv_push(int, inDegree, degree(lookup.first,
+        kv_push(int, inDegree, degree(ingoing,
                                       INTEGER(root)[i] - 1,
                                       INTEGER(inBegin)[i],
                                       INTEGER(inEnd)[i]));
 
-        kv_push(int, outDegree, degree(lookup.second,
+        kv_push(int, outDegree, degree(outgoing,
                                        INTEGER(root)[i] - 1,
                                        INTEGER(outBegin)[i],
                                        INTEGER(outEnd)[i]));
@@ -660,12 +677,17 @@ extern "C" SEXP networkSummary(
     SET_VECTOR_ELT(result, 3, vec = Rf_allocVector(INTSXP, kv_size(outgoingContactChain)));
     memcpy(INTEGER(vec), &kv_A(outgoingContactChain, 0), kv_size(outgoingContactChain) * sizeof(int));
 
+cleanup:
     kv_destroy(ingoingContactChain);
     kv_destroy(outgoingContactChain);
     kv_destroy(inDegree);
     kv_destroy(outDegree);
 
-    UNPROTECT(1);
+    if (nprotect)
+        UNPROTECT(nprotect);
+
+    if (error)
+        Rf_error("Unable to calculate network summary");
 
     return result;
 }
