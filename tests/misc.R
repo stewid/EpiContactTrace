@@ -1,4 +1,4 @@
-## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -27,9 +27,11 @@ library(EpiContactTrace)
 ##
 ## Loops: Case 1
 ##
-movements <- data.frame(source = c(2L, 2L),
-                        destination = c(1L, 2L),
-                        t = as.Date(c("2010-10-03", "2010-10-02")))
+movements <- data.frame(
+    source = c(2L, 2L),
+    destination = c(1L, 2L),
+    t = as.Date(c("2010-10-03", "2010-10-02")),
+    stringsAsFactors = FALSE)
 
 ct <- Trace(movements,
             root = 1L,
@@ -44,9 +46,11 @@ stopifnot(identical(ct@ingoingContacts@destination, "1"))
 ##
 ## Loops: Case 2
 ##
-movements <- data.frame(source = c(2L, 2L),
-                        destination = c(1L, 2L),
-                        t = as.Date(c("2010-10-03", "2010-10-02")))
+movements <- data.frame(
+    source = c(2L, 2L),
+    destination = c(1L, 2L),
+    t = as.Date(c("2010-10-03", "2010-10-02")),
+    stringsAsFactors = FALSE)
 
 ct <- Trace(movements,
             root = 2L,
@@ -61,13 +65,13 @@ stopifnot(identical(ct@outgoingContacts@destination, "1"))
 ##
 ## Direction: Case 1
 ##
-movements <- structure(list(
+movements <- data.frame(
     source = 1:7,
     destination = c(4L, 5L, 5L, 6L, 8L, 8L, 8L),
-    t = structure(c(14849, 14846, 14847, 14850, 14848, 14851, 14852),
-                  class = "Date")),
-    .Names = c("source", "destination", "t"),
-    class = "data.frame", row.names = c(NA, -7L))
+    t = as.Date(c("2010-08-28", "2010-08-25", "2010-08-26",
+                  "2010-08-29", "2010-08-27", "2010-08-30",
+                  "2010-08-31")),
+    stringsAsFactors = FALSE)
 
 ct <- Trace(movements,
             root = 4L,
@@ -82,15 +86,16 @@ stopifnot(identical(ct@outgoingContacts@direction, "out"))
 ##
 ## Direction: Case 2
 ##
-movements <- structure(list(
+movements <- data.frame(
     source = c(1L, 2L, 3L, 3L),
     destination = c(3L, 3L, 4L, 4L),
-    t = structure(c(14834, 14838, 14836, 14841), class = "Date"),
-    individual = c(NA_character_, NA_character_, NA_character_,  NA_character_),
-    n = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_)),
-    .Names = c("source", "destination", "t", "individual", "n"),
-    row.names = c(NA, -4L),
-    class = "data.frame")
+    t = as.Date(c("2010-08-13", "2010-08-17",
+                  "2010-08-15", "2010-08-20")),
+    individual = c(NA_character_, NA_character_,
+                   NA_character_,  NA_character_),
+    n = c(NA_integer_, NA_integer_,
+          NA_integer_, NA_integer_),
+    stringsAsFactors = FALSE)
 
 ct <- Trace(movements,
             root = 4L,
@@ -105,15 +110,13 @@ stopifnot(identical(ct@outgoingContacts@direction, "out"))
 ##
 ## Root not in movements: Case 1
 ##
-movements <- structure(list(
+movements <- data.frame(
     source = c("1", "1", "1"),
     destination = c("2", "3", "4"),
-    t = structure(c(14834, 14838, 14836), class = "Date"),
+    t = as.Date(c("2010-08-13", "2010-08-17", "2010-08-15")),
     individual = c(NA_character_, NA_character_, NA_character_),
-    n = c(NA_integer_, NA_integer_, NA_integer_)),
-    .Names = c("source", "destination", "t", "individual", "n"),
-    row.names = c(NA, -3L),
-    class = "data.frame")
+    n = c(NA_integer_, NA_integer_, NA_integer_),
+    stringsAsFactors = FALSE)
 
 ct <- Trace(movements,
             root = 15L,
@@ -128,15 +131,13 @@ stopifnot(identical(OutDegree(ct)$outDegree, 0L))
 ##
 ## Root not in movements: Case 2
 ##
-movements <- structure(list(
+movements <- data.frame(
     source = c("1", "1", "1"),
     destination = c("2", "3", "4"),
-    t = structure(c(14834, 14838, 14836), class = "Date"),
+    t = as.Date(c("2010-08-13", "2010-08-17", "2010-08-15")),
     individual = c(NA_character_, NA_character_, NA_character_),
-    n = c(NA_integer_, NA_integer_, NA_integer_)),
-    .Names = c("source", "destination", "t", "individual", "n"),
-    row.names = c(NA, -3L),
-    class = "data.frame")
+    n = c(NA_integer_, NA_integer_, NA_integer_),
+    stringsAsFactors = FALSE)
 
 ns <- NetworkSummary(movements, root = 15, tEnd = "2010-09-01", days = 30)
 stopifnot(identical(ns$inDegree, 0L))
@@ -144,15 +145,13 @@ stopifnot(identical(ns$inDegree, 0L))
 ##
 ## Root not in movements: Case 3
 ##
-movements <- structure(list(
+movements <- data.frame(
     source = c("1", "1", "1"),
     destination = c("2", "3", "4"),
-    t = structure(c(14834, 14838, 14836), class = "Date"),
+    t = as.Date(c("2010-08-13", "2010-08-17", "2010-08-15")),
     individual = c(NA_character_, NA_character_, NA_character_),
-    n = c(NA_integer_, NA_integer_, NA_integer_)),
-    .Names = c("source", "destination", "t", "individual", "n"),
-    row.names = c(NA, -3L),
-    class = "data.frame")
+    n = c(NA_integer_, NA_integer_, NA_integer_),
+    stringsAsFactors = FALSE)
 
 ns <- NetworkSummary(movements, root = 15, tEnd = "2010-08-31", days = 30)
 stopifnot(identical(ns$outDegree, 0L))
