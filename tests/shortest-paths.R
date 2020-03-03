@@ -1,4 +1,4 @@
-## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -49,12 +49,11 @@ stopifnot(identical(out_1, out_2))
 ##
 ## Case 2
 ##
-sp_in_exp <- structure(list(root = c("100", "100", "100", "100", "100"),
-                            source = c("54", "262", "356", "357", "358"),
-                            distance = c(1L, 1L, 1L, 1L, 1L)),
-                       .Names = c("root", "source", "distance"),
-                       row.names = c(NA, -5L),
-                       class = "data.frame")
+sp_in_exp <- data.frame(
+    root = c("100", "100", "100", "100", "100"),
+    source = c("54", "262", "356", "357", "358"),
+    distance = c(1L, 1L, 1L, 1L, 1L),
+    stringsAsFactors = FALSE)
 
 sp_in <- ShortestPaths(
     Trace(movements = transfers, root = 100, tEnd = "2005-10-31", days = 90))
@@ -63,14 +62,14 @@ sp_in <- sp_in[order(as.numeric(sp_in$source)), ]
 rownames(sp_in) <- NULL
 stopifnot(identical(sp_in, sp_in_exp))
 
-sp_out_exp <- structure(list(
-    root = c("100", "100", "100", "100", "100", "100",
-        "100", "100", "100", "100", "100", "100", "100", "100"),
+sp_out_exp <- data.frame(
+    root = c("100", "100", "100", "100", "100", "100", "100", "100",
+             "100", "100", "100", "100", "100", "100"),
     destination = c("101", "357", "358", "2508", "8239", "8243",
-        "8327", "8356", "8388", "8420", "8991", "9003", "9087", "9110"),
-    distance = c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L)),
-                        .Names = c("root", "destination", "distance"),
-                        row.names = c(NA, -14L), class = "data.frame")
+                    "8327", "8356", "8388", "8420", "8991", "9003",
+                    "9087", "9110"),
+    distance = c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L),
+    stringsAsFactors = FALSE)
 
 sp_out <- ShortestPaths(
     Trace(movements = transfers, root = 100, tEnd = "2005-10-31", days = 90))
