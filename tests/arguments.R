@@ -1,4 +1,4 @@
-## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -33,7 +33,8 @@ library(tools)
 ##
 assertError(IngoingContactChain(data.frame(source = 1L,
                                            destination = 2L,
-                                           t = as.Date("2011-08-10")),
+                                           t = as.Date("2011-08-10"),
+                                           stringsAsFactors = FALSE),
                                 tEnd = "2005-10-31",
                                 days = 90))
 
@@ -43,7 +44,8 @@ assertError(IngoingContactChain(data.frame(source = 1L,
 ##
 assertError(IngoingContactChain(data.frame(source = 1L,
                                            destination = 2L,
-                                           t = as.Date("2011-08-10")),
+                                           t = as.Date("2011-08-10"),
+                                           stringsAsFactors = FALSE),
                                 root = 1,
                                 days = 90))
 
@@ -53,7 +55,8 @@ assertError(IngoingContactChain(data.frame(source = 1L,
 ##
 assertError(IngoingContactChain(data.frame(source = 1L,
                                            destination = 2L,
-                                           t = as.Date("2011-08-10")),
+                                           t = as.Date("2011-08-10"),
+                                           stringsAsFactors = FALSE),
                                 root = 1,
                                 tEnd = "2005-10-31"))
 
@@ -62,7 +65,8 @@ assertError(IngoingContactChain(data.frame(source = 1L,
 ##
 assertError(OutgoingContactChain(data.frame(source = 1L,
                                             destination = 2L,
-                                            t = as.Date("2011-08-10")),
+                                            t = as.Date("2011-08-10"),
+                                            stringsAsFactors = FALSE),
                                  tEnd = "2005-10-31",
                                  days = 90))
 
@@ -72,7 +76,8 @@ assertError(OutgoingContactChain(data.frame(source = 1L,
 ##
 assertError(OutgoingContactChain(data.frame(source = 1L,
                                             destination = 2L,
-                                            t = as.Date("2011-08-10")),
+                                            t = as.Date("2011-08-10"),
+                                            stringsAsFactors = FALSE),
                                  root = 1,
                                  days = 90))
 
@@ -82,7 +87,8 @@ assertError(OutgoingContactChain(data.frame(source = 1L,
 ##
 assertError(OutgoingContactChain(data.frame(source = 1L,
                                             destination = 2L,
-                                            t = as.Date("2011-08-10")),
+                                            t = as.Date("2011-08-10"),
+                                            stringsAsFactors = FALSE),
                                  root = 1,
                                  tEnd = "2005-10-31"))
 
@@ -91,7 +97,8 @@ assertError(OutgoingContactChain(data.frame(source = 1L,
 ##
 assertError(InDegree(data.frame(source = 1L,
                                 destination = 2L,
-                                t = as.Date("2011-08-10")),
+                                t = as.Date("2011-08-10"),
+                                stringsAsFactors = FALSE),
                      tEnd = "2005-10-31",
                      days = 90))
 
@@ -101,7 +108,8 @@ assertError(InDegree(data.frame(source = 1L,
 ##
 assertError(InDegree(data.frame(source = 1L,
                                 destination = 2L,
-                                t = as.Date("2011-08-10")),
+                                t = as.Date("2011-08-10"),
+                                stringsAsFactors = FALSE),
                      root = 1,
                      days = 90))
 
@@ -111,7 +119,8 @@ assertError(InDegree(data.frame(source = 1L,
 ##
 assertError(InDegree(data.frame(source = 1L,
                                 destination = 2L,
-                                t = as.Date("2011-08-10")),
+                                t = as.Date("2011-08-10"),
+                                stringsAsFactors = FALSE),
                      root = 1,
                      tEnd = "2005-10-31"))
 
@@ -120,7 +129,8 @@ assertError(InDegree(data.frame(source = 1L,
 ##
 assertError(OutDegree(data.frame(source = 1L,
                                  destination = 2L,
-                                 t = as.Date("2011-08-10")),
+                                 t = as.Date("2011-08-10"),
+                                 stringsAsFactors = FALSE),
                       tEnd = "2005-10-31",
                       days = 90))
 
@@ -130,7 +140,8 @@ assertError(OutDegree(data.frame(source = 1L,
 ##
 assertError(OutDegree(data.frame(source = 1L,
                                  destination = 2L,
-                                 t = as.Date("2011-08-10")),
+                                 t = as.Date("2011-08-10"),
+                                 stringsAsFactors = FALSE),
                       root = 1,
                       days = 90))
 
@@ -140,7 +151,8 @@ assertError(OutDegree(data.frame(source = 1L,
 ##
 assertError(OutDegree(data.frame(source = 1L,
                                  destination = 2L,
-                                 t = as.Date("2011-08-10")),
+                                 t = as.Date("2011-08-10"),
+                                 stringsAsFactors = FALSE),
                       root = 1,
                       tEnd = "2005-10-31"))
 
@@ -155,7 +167,8 @@ assertError(Trace())
 assertError(Trace(movement = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   tEnd = "2005-10-31",
                   days = 90))
 
@@ -166,7 +179,8 @@ assertError(Trace(movement = data.frame(
 assertError(Trace(movement = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1,
                   days = 90))
 ##
@@ -176,7 +190,8 @@ assertError(Trace(movement = data.frame(
 assertError(Trace(movement = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1,
                   tEnd = "2005-10-31"))
 
@@ -193,7 +208,9 @@ assertError(Trace(movements = 1:3,
 ##
 ## movements must contain the columns source, destination and t
 ##
-assertError(Trace(movements = data.frame(destination = 1, t = 1),
+assertError(Trace(movements = data.frame(destination = 1,
+                                         t = 1,
+                                         stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -203,7 +220,9 @@ assertError(Trace(movements = data.frame(destination = 1, t = 1),
 ##
 ## movements must contain the columns source, destination and t
 ##
-assertError(Trace(movements = data.frame(source = 1, t = 1),
+assertError(Trace(movements = data.frame(source = 1,
+                                         t = 1,
+                                         stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -213,7 +232,9 @@ assertError(Trace(movements = data.frame(source = 1, t = 1),
 ##
 ## movements must contain the columns source, destination and t
 ##
-assertError(Trace(movements = data.frame(source = 1, destination = 1),
+assertError(Trace(movements = data.frame(source = 1,
+                                         destination = 1,
+                                         stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -223,7 +244,10 @@ assertError(Trace(movements = data.frame(source = 1, destination = 1),
 ##
 ## invalid class of column t in movements
 ##
-assertError(Trace(movements = data.frame(source = 1L, destination = 2L, t = 1),
+assertError(Trace(movements = data.frame(source = 1L,
+                                         destination = 2L,
+                                         t = 1,
+                                         stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -236,7 +260,8 @@ assertError(Trace(movements = data.frame(source = 1L, destination = 2L, t = 1),
 assertError(Trace(movements = data.frame(
                       source = c(1L, NA),
                       destination = c(2L, 3L),
-                      t = c("2011-08-10", "2011-08-10")),
+                      t = c("2011-08-10", "2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -249,7 +274,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = c(1L, 2L),
                       destination = c(2L, NA),
-                      t = c("2011-08-10", "2011-08-10")),
+                      t = c("2011-08-10", "2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -262,7 +288,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = c(1L, 2L),
                       destination = c(2L, 3L),
-                      t = c("2011-08-10", NA)),
+                      t = c("2011-08-10", NA),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -275,7 +302,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = c(1L, 2L),
                       destination = c(2L, 3L),
-                      t = c("2011-08-10", NA)),
+                      t = c("2011-08-10", NA),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -289,7 +317,8 @@ assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
                       t = as.Date("2011-08-10"),
-                      n = "3"),
+                      n = "3",
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -304,7 +333,8 @@ assertError(Trace(movements = data.frame(
                       destination = 2L,
                       t = as.Date("2011-08-10"),
                       n = 3L,
-                      id = 4),
+                      id = 4,
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -320,7 +350,8 @@ assertError(Trace(movements = data.frame(
                       t = as.Date("2011-08-10"),
                       n = 3L,
                       id = 4L,
-                      category = 3),
+                      category = 3,
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -333,7 +364,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1.1,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -346,7 +378,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = 2011,
                   inEnd = as.Date("2011-08-10"),
@@ -359,7 +392,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = 2011,
@@ -372,7 +406,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -385,7 +420,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
@@ -398,7 +434,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-07-10"),
@@ -411,7 +448,8 @@ assertError(Trace(movements = data.frame(
 assertError(Trace(movements = data.frame(
                       source = 1L,
                       destination = 2L,
-                      t = as.Date("2011-08-10")),
+                      t = as.Date("2011-08-10"),
+                      stringsAsFactors = FALSE),
                   root = 1L,
                   inBegin = as.Date("2011-08-10"),
                   inEnd = as.Date("2011-08-10"),
