@@ -6,14 +6,11 @@
 \alias{Report-methods}
 \alias{Report,ContactTrace-method}
 \alias{Report,list-method}
-\alias{Report,ContactTrace-method}
-\alias{Report,list-method}
 \title{Generate a contact tracing \code{Report}}
 \usage{
 Report(object, ...)
 
-\S4method{Report}{ContactTrace}(object, format = c("html", "pdf"),
-  template = NULL)
+\S4method{Report}{ContactTrace}(object, format = c("html", "pdf"), template = NULL)
 
 \S4method{Report}{list}(object, format = c("html", "pdf"), template = NULL)
 }

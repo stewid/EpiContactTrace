@@ -14,8 +14,14 @@ OutgoingContactChain(x, ...)
 
 \S4method{OutgoingContactChain}{ContactTrace}(x)
 
-\S4method{OutgoingContactChain}{data.frame}(x, root, tEnd = NULL,
-  days = NULL, outBegin = NULL, outEnd = NULL)
+\S4method{OutgoingContactChain}{data.frame}(
+  x,
+  root,
+  tEnd = NULL,
+  days = NULL,
+  outBegin = NULL,
+  outEnd = NULL
+)
 }
 \arguments{
 \item{x}{a ContactTrace object, or a list of ContactTrace objects

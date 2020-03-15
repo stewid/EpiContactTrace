@@ -4,10 +4,19 @@
 \alias{position_tree}
 \title{Position nodes in a tree}
 \usage{
-position_tree(tree, x = 0, y = 0, orientation = c("North", "South",
-  "East", "West"), sibling_separation = 4, subtree_separation = 4,
-  level_separation = 1, left_size = 1, right_size = 1, top_size = 1,
-  bottom_size = 1)
+position_tree(
+  tree,
+  x = 0,
+  y = 0,
+  orientation = c("North", "South", "East", "West"),
+  sibling_separation = 4,
+  subtree_separation = 4,
+  level_separation = 1,
+  left_size = 1,
+  right_size = 1,
+  top_size = 1,
+  bottom_size = 1
+)
 }
 \arguments{
 \item{tree}{The tree with nodes to position.}

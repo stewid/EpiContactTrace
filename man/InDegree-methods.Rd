@@ -14,8 +14,7 @@ InDegree(x, ...)
 
 \S4method{InDegree}{ContactTrace}(x)
 
-\S4method{InDegree}{data.frame}(x, root, tEnd = NULL, days = NULL,
-  inBegin = NULL, inEnd = NULL)
+\S4method{InDegree}{data.frame}(x, root, tEnd = NULL, days = NULL, inBegin = NULL, inEnd = NULL)
 }
 \arguments{
 \item{x}{a ContactTrace object, or a list of ContactTrace objects
@@ -85,27 +84,27 @@ The movements in \code{InDegree} is a \code{data.frame}
 with the following columns:
 \describe{
 
-\item{source}{
+  \item{source}{
     an integer or character identifier of the source holding.
   }
 
-\item{destination}{
+  \item{destination}{
     an integer or character identifier of the destination holding.
   }
 
-\item{t}{
+  \item{t}{
     the Date of the transfer
   }
 
-\item{id}{
+  \item{id}{
     an optional character vector with the identity of the animal.
   }
 
-\item{n}{
+  \item{n}{
     an optional numeric vector with the number of animals moved.
   }
 
-\item{category}{
+  \item{category}{
     an optional character or factor with category of the animal e.g. Cattle.
   }
 }
