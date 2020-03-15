@@ -1,3 +1,11 @@
+EpiContactTrace 0.13.0
+----------------------
+
+IMPROVEMENTS
+
+* Set 'stringsAsFactors = FALSE' in the data.frame returned by
+  'NetworkSummary'.
+
 EpiContactTrace 0.12.0
 ----------------------
 
