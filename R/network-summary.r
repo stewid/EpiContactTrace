@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -253,7 +253,8 @@ setMethod('NetworkSummary',
                      inDegree=InDegree(x@ingoingContacts),
                      outDegree=OutDegree(x@outgoingContacts),
                      ingoingContactChain=IngoingContactChain(x@ingoingContacts),
-                     outgoingContactChain=OutgoingContactChain(x@outgoingContacts))
+                     outgoingContactChain=OutgoingContactChain(x@outgoingContacts),
+                     stringsAsFactors=FALSE)
       }
 )
 
@@ -489,6 +490,7 @@ setMethod('NetworkSummary',
                             inDegree=contact_chain[['inDegree']],
                             outDegree=contact_chain[['outDegree']],
                             ingoingContactChain=contact_chain[['ingoingContactChain']],
-                            outgoingContactChain=contact_chain[['outgoingContactChain']]))
+                            outgoingContactChain=contact_chain[['outgoingContactChain']],
+                            stringsAsFactors=FALSE))
      }
 )
