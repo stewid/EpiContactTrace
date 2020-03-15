@@ -1,4 +1,4 @@
-## Copyright 2013-2014 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -155,14 +155,17 @@ class = "factor")), .Names = c("source", "destination", "t"), class =
 
 ns <- NetworkSummary(movements, root=1, tEnd="2010-10-20", days=10)
 
-df <- structure(list(root = structure(1L, .Label = "1", class =
-"factor"), inBegin = structure(14892, class = "Date"), inEnd =
-structure(14902, class = "Date"), inDays = 10L, outBegin =
-structure(14892, class = "Date"), outEnd = structure(14902, class =
-"Date"), outDays = 10L, inDegree = 0L, outDegree = 1L,
-ingoingContactChain = 0L, outgoingContactChain = 2L), .Names =
-c("root", "inBegin", "inEnd", "inDays", "outBegin", "outEnd",
-"outDays", "inDegree", "outDegree", "ingoingContactChain",
-"outgoingContactChain"), row.names = c(NA, -1L), class = "data.frame")
+df <- data.frame(root = "1",
+                 inBegin = structure(14892, class = "Date"),
+                 inEnd = structure(14902, class = "Date"),
+                 inDays = 10L,
+                 outBegin = structure(14892, class = "Date"),
+                 outEnd = structure(14902, class = "Date"),
+                 outDays = 10L,
+                 inDegree = 0L,
+                 outDegree = 1L,
+                 ingoingContactChain = 0L,
+                 outgoingContactChain = 2L,
+                 stringsAsFactors = FALSE)
 ns
 stopifnot(identical(ns, df))
