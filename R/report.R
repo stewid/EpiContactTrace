@@ -284,6 +284,7 @@ html_report <- function(x) {
 ##' archive if plots are required. See section 6.3 in 'R Installation
 ##' and Administration' on how to install packages from source.
 ##' @keywords methods
+##' @importFrom tools file_path_sans_ext
 ##' @importFrom tools texi2pdf
 ##' @importFrom utils packageVersion
 ##' @importFrom utils Sweave
@@ -347,13 +348,14 @@ setMethod("Report",
               writeLines(html_report(object), con = sprintf("%s.html", object@root))
           } else {
               if(is.null(template)) {
-                  template <- system.file("Sweave/speak-latex.rnw", package="EpiContactTrace")
+                  template <- system.file("Sweave/speak-latex.Rnw", package="EpiContactTrace")
               }
 
               utils::Sweave(template, syntax="SweaveSyntaxNoweb")
-              tools::texi2pdf(sub("rnw$", "tex", basename(template)), clean=TRUE)
-              file.rename(sub("rnw$", "pdf", basename(template)), sprintf("%s.pdf", object@root))
-              unlink(sub("rnw$", "tex", basename(template)))
+              filename <- tools::file_path_sans_ext(basename(template))
+              tools::texi2pdf(paste0(filename, ".tex"), clean=TRUE)
+              file.rename(paste0(filename, ".pdf"), sprintf("%s.pdf", object@root))
+              unlink(paste0(filename, ".tex"))
           }
 
           invisible(NULL)
