@@ -354,63 +354,64 @@ setGeneric(
 
 ##' @rdname Report-methods
 ##' @export
-setMethod("Report",
-          signature(object = "ContactTrace"),
-          function(object, format, dir, template) {
-              format <- match.arg(format)
+setMethod(
+    "Report",
+    signature(object = "ContactTrace"),
+    function(object, format, dir, template) {
+        format <- match.arg(format)
 
-              if (!is.null(.ct_env$ct)) {
-                  stop("Unable to create report. The ct object already exists")
-              }
+        if (!is.null(.ct_env$ct)) {
+            stop("Unable to create report. The ct object already exists")
+        }
 
-              ## Make sure the added object is removed.
-              on.exit(.ct_env$ct <- NULL)
+        ## Make sure the added object is removed.
+        on.exit(.ct_env$ct <- NULL)
 
-              ## Add the ContactTrace object to the .ct_env
-              ## environment
-              .ct_env$ct <- object
+        ## Add the ContactTrace object to the .ct_env environment
+        .ct_env$ct <- object
 
-              if (identical(format, "html")) {
-                  writeLines(html_report(object),
-                             con = file.path(dir, paste0(object@root, ".html")))
-              } else {
-                  if (is.null(template)) {
-                      template <- system.file("Sweave/speak-latex.Rnw",
-                                              package = "EpiContactTrace")
-                  }
+        if (identical(format, "html")) {
+            writeLines(html_report(object),
+                       con = file.path(dir, paste0(object@root, ".html")))
+        } else {
+            if (is.null(template)) {
+                template <- system.file("Sweave/speak-latex.Rnw",
+                                        package = "EpiContactTrace")
+            }
 
-                  Sweave(template, syntax = "SweaveSyntaxNoweb")
-                  filename <- file_path_sans_ext(basename(template))
-                  texi2pdf(paste0(filename, ".tex"), clean=TRUE)
-                  file.rename(paste0(filename, ".pdf"),
-                              file.path(dir, paste0(object@root, ".pdf")))
-                  unlink(paste0(filename, ".tex"))
-              }
+            Sweave(template, syntax = "SweaveSyntaxNoweb")
+            filename <- file_path_sans_ext(basename(template))
+            texi2pdf(paste0(filename, ".tex"), clean=TRUE)
+            file.rename(paste0(filename, ".pdf"),
+                        file.path(dir, paste0(object@root, ".pdf")))
+            unlink(paste0(filename, ".tex"))
+        }
 
-              invisible(NULL)
-          }
+        invisible(NULL)
+    }
 )
 
 ##' @rdname Report-methods
 ##' @export
-setMethod("Report",
-          signature(object = "list"),
-          function(object, format, dir, template) {
-              format <- match.arg(format)
+setMethod(
+    "Report",
+    signature(object = "list"),
+    function(object, format, dir, template) {
+        format <- match.arg(format)
 
-              if (!all(sapply(object, length) == 1)) {
-                  stop("Unexpected length of list")
-              }
+        if (!all(sapply(object, length) == 1)) {
+            stop("Unexpected length of list")
+        }
 
-              if (!all(sapply(object, class) == "ContactTrace")) {
-                  stop("Unexpected object in list")
-              }
+        if (!all(sapply(object, class) == "ContactTrace")) {
+            stop("Unexpected object in list")
+        }
 
-              lapply(object, Report, dir = dir,
-                     format = format, template = template)
+        lapply(object, Report, dir = dir,
+               format = format, template = template)
 
-              invisible(NULL)
-          }
+        invisible(NULL)
+    }
 )
 
 ## In order to communicate with Sweave add an environment to store the
