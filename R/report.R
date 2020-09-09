@@ -219,7 +219,8 @@ html_report <- function(x) {
         df$lhs <- df$source
         df$rhs <- df$destination
 
-        html_detailed_table(df[df$source == df$root, ], "out")
+        lines <- c(lines,
+                   html_detailed_table(df[df$source == df$root,], "out"))
 
         df <- df[df$source != df$root, ]
         if (nrow(df) > 0) {
