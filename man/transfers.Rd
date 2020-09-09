@@ -4,7 +4,8 @@
 \name{transfers}
 \alias{transfers}
 \title{Movement Example Data}
-\format{A data frame with 70190 observations on the following 6 variables.
+\format{
+A data frame with 70190 observations on the following 6 variables.
 \describe{
   \item{source}{
     a numeric vector with the holding identifier of the source
@@ -32,7 +33,8 @@
     a factor describing the category of the animal.
     Always \code{Cattle} in this dataset.
   }
-}}
+}
+}
 \usage{
 data(transfers)
 }
