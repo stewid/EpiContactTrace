@@ -21,13 +21,13 @@
 ##' \code{NetworkStructure}
 ##'
 ##' Methods for function \code{NetworkStructure} in package
-##' \pkg{EpiContactTrace} to get the network tree structure from the
-##' contact tracing.
+##' \pkg{EpiContactTrace} to get the network tree structure from the contact
+##' tracing.
 ##'
-##' The contact tracing performs a depth first search starting at the
-##' root. The \code{NetworkStructure} gives the distance from root at
-##' each node. The network tree structure given by the depth first
-##' search is shown by \code{\link{show}}.
+##' The contact tracing performs a depth first search starting at the root. The
+##' \code{NetworkStructure} gives the distance from root at each node. The
+##' network tree structure given by the depth first search is shown by
+##' \code{\link{show}}.
 ##'
 ##' @rdname NetworkStructure-methods
 ##' @docType methods
@@ -61,8 +61,7 @@
 ##'   }
 ##'
 ##'   \item{direction}{
-##'     If the direction is ingoing, then direction equals 'in' else
-##'     'out'
+##'     If the direction is ingoing, then direction equals 'in' else 'out'
 ##'   }
 ##'
 ##'   \item{source}{
@@ -74,8 +73,7 @@
 ##'   }
 ##'
 ##'   \item{distance}{
-##'     The distance from the destination to root in the depth first
-##'     search
+##'     The distance from the destination to root in the depth first search
 ##'   }
 ##' }
 ##' @section Methods:
@@ -91,8 +89,7 @@
 ##'
 ##'   \item{\code{signature(object = "list")}}{
 ##'     Get the network structure for a list of \code{ContactTrace}
-##'     objects. Each item in the list must be a \code{ContactTrace}
-##'     object.
+##'     objects. Each item in the list must be a \code{ContactTrace} object.
 ##'   }
 ##' }
 ##' @seealso \code{\link{show}}.
@@ -127,17 +124,15 @@ setMethod("NetworkStructure",
                          object@distance,
                          deparse.level=0)
 
-              ## To be able to identify duplicate rows, create strings
-              ## from rows
+              ## To be able to identify duplicate rows, create strings from rows
               tmp <- apply(m, 1, function(x) paste(x, collapse="\r"))
 
-              ## Identify which rows are not identical to previous
-              ## rows.  row[i] != row[i-1] for all i > 1
+              ## Identify which rows are not identical to previous rows.
+              ## row[i] != row[i-1] for all i > 1
               i <- tmp[seq_len(length(tmp)-1)] != tmp[seq_len(length(tmp))[-1]]
 
               ## Select the i rows, including first row
-              m <- as.data.frame(m[c(TRUE, i), , drop=FALSE],
-                                 stringsAsFactors=FALSE)
+              m <- as.data.frame(m[c(TRUE, i), , drop=FALSE], stringsAsFactors=FALSE)
               names(m) <- c("source", "destination", "distance")
 
               ## Convert distance from character to integer

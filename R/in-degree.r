@@ -20,13 +20,12 @@
 
 ##' \code{InDegree}
 ##'
-##' The number of herds with direct movements of animals to the root
-##' herd during the defined time window used for tracing.
+##' The number of herds with direct movements of animals to the root herd
+##' during the defined time window used for tracing.
 ##'
 ##'
 ##' The time period used for \code{InDegree} can either be specified
-##' using \code{tEnd} and \code{days} or \code{inBegin} and
-##' \code{inEnd}.
+##' using \code{tEnd} and \code{days} or \code{inBegin} and \code{inEnd}.
 ##'
 ##' If using \code{tEnd} and \code{days}, the time period for ingoing
 ##' contacts ends at \code{tEnd} and starts at \code{days} prior to
@@ -42,24 +41,29 @@
 ##' The movements in \code{InDegree} is a \code{data.frame}
 ##' with the following columns:
 ##' \describe{
+##'
 ##'   \item{source}{
 ##'     an integer or character identifier of the source holding.
 ##'   }
+##'
 ##'   \item{destination}{
 ##'     an integer or character identifier of the destination holding.
 ##'   }
+##'
 ##'   \item{t}{
 ##'     the Date of the transfer
 ##'   }
+##'
 ##'   \item{id}{
 ##'     an optional character vector with the identity of the animal.
 ##'   }
+##'
 ##'   \item{n}{
 ##'     an optional numeric vector with the number of animals moved.
 ##'   }
+##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal
-##'     e.g. Cattle.
+##'     an optional character or factor with category of the animal e.g. Cattle.
 ##'   }
 ##' }
 ##'
@@ -73,25 +77,25 @@
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the InDegree of a \code{ContactTrace} object.
 ##'   }
+##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the InDegree for a data.frame with movements, see details
-##'     and examples.
+##'     Get the InDegree for a data.frame with movements, see details and examples.
 ##'   }
 ##' }
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
-##'     or a \code{data.frame} with movements of animals between
-##'     holdings, see \code{\link{Trace}} for details.
+##' or a \code{data.frame} with movements of animals between holdings,
+##' see \code{\link{Trace}} for details.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate indegree for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##'     to \code{NULL}
+##' to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##'     ingoing movements. Defaults to \code{NULL}
+##' ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##'     movements. Defaults to \code{NULL}
+##' movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##'     to \code{NULL}
+##' to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -111,21 +115,20 @@
 ##'   }
 ##'
 ##'   \item{inDegree}{
-##'     The \code{\link{InDegree}} of the root within the
-##'     time-interval
+##'     The \code{\link{InDegree}} of the root within the time-interval
 ##'   }
 ##' }
 ##'
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
-##'     and its application to foot-and-mouth disease modelling and
-##'     policy development. Transbound Emerg Dis 56 (2009) 73-85, doi:
+##'     and its application to foot-and-mouth disease modelling and policy
+##'     development. Transbound Emerg Dis 56 (2009) 73-85, doi:
 ##'     10.1111/j.1865-1682.2008.01064.x
 ##'
-##'   \item Noremark, M., et al., Network analysis of cattle and pig
-##'     movements in Sweden: Measures relevant for disease control and
-##'     riskbased surveillance.  Preventive Veterinary Medicine 99
-##'     (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+##'   \item Noremark, M., et al., Network analysis
+##'     of cattle and pig movements in Sweden: Measures relevant for
+##'     disease control and riskbased surveillance.  Preventive Veterinary
+##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @examples
 ##' \dontrun{
