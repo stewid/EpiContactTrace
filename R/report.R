@@ -1,4 +1,4 @@
-## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -282,7 +282,6 @@ html_report <- function(x) {
 ##'   }
 ##' }
 ##' @param object the object
-##' @param ... Additional arguments to the method
 ##' @param format the format to use, can be either 'html' or
 ##'     'pdf'. The default is 'html'
 ##' @param dir the generated report is written to the directory
@@ -342,16 +341,22 @@ html_report <- function(x) {
 ##' ## Creates the files 1.html, 2.html, ..., 10.html
 ##' ## in the temporary directory
 ##' Report(contactTrace, dir = tempdir())
-setGeneric("Report",
-           signature = "object",
-           function(object, ...) standardGeneric("Report"))
+setGeneric(
+    "Report",
+    signature = "object",
+    function(object,
+             format = c("html", "pdf"),
+             dir = ".",
+             template = NULL) {
+        standardGeneric("Report")
+    }
+)
 
 ##' @rdname Report-methods
 ##' @export
 setMethod("Report",
           signature(object = "ContactTrace"),
-          function(object, format = c("html", "pdf"),
-                   dir = ".", template = NULL) {
+          function(object, format, dir, template) {
               format <- match.arg(format)
 
               if (!is.null(.ct_env$ct)) {
@@ -375,17 +380,11 @@ setMethod("Report",
                   }
 
                   Sweave(template, syntax = "SweaveSyntaxNoweb")
-                  utils::Sweave(template, syntax="SweaveSyntaxNoweb")
-                  filename <- tools::file_path_sans_ext(basename(template))
-                  tools::texi2pdf(paste0(filename, ".tex"), clean=TRUE)
+                  filename <- file_path_sans_ext(basename(template))
+                  texi2pdf(paste0(filename, ".tex"), clean=TRUE)
                   file.rename(paste0(filename, ".pdf"),
                               sprintf("%s.pdf", object@root))
                   unlink(paste0(filename, ".tex"))
-
-                  texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
-                  file.rename(sub("rnw$", "pdf", basename(template)),
-                              sprintf("%s.pdf", object@root))
-                  unlink(sub("rnw$", "tex", basename(template)))
               }
 
               invisible(NULL)
@@ -396,8 +395,7 @@ setMethod("Report",
 ##' @export
 setMethod("Report",
           signature(object = "list"),
-          function(object, format = c("html", "pdf"),
-                   dir = ".", template = NULL) {
+          function(object, format, dir, template) {
               format <- match.arg(format)
 
               if (!all(sapply(object, length) == 1)) {

@@ -8,7 +8,7 @@
 \alias{Report,list-method}
 \title{Generate a contact tracing \code{Report}}
 \usage{
-Report(object, ...)
+Report(object, format = c("html", "pdf"), dir = ".", template = NULL)
 
 \S4method{Report}{ContactTrace}(object, format = c("html", "pdf"), dir = ".", template = NULL)
 
@@ -16,8 +16,6 @@ Report(object, ...)
 }
 \arguments{
 \item{object}{the object}
-
-\item{...}{Additional arguments to the method}
 
 \item{format}{the format to use, can be either 'html' or
 'pdf'. The default is 'html'}
