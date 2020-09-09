@@ -100,8 +100,7 @@ html_detailed_table <- function(contacts, direction) {
     })))
 }
 
-html_report <- function(x)
-{
+html_report <- function(x) {
     lines <- c("<html>",
                "<head>",
                sprintf("<title>%s</title>", x@root),
@@ -400,7 +399,6 @@ setMethod("Report",
 ##'
 ##' @return The current \code{ContactTrace} object when generating a report
 ##' @export
-ReportObject <- function()
-{
+ReportObject <- function() {
     return(.ct_env$ct)
 }
