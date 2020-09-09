@@ -1,9 +1,23 @@
 # EpiContactTrace (development version)
 
-## CHANGES
+## IMPROVEMENTS
 
 * Renamed the `NEWS` file to `NEWS.md` and changed to use markdown
   format style.
+
+* Removed the dependency to the plyr package for building pdf reports.
+
+* Added orcid id:s in the DESCRIPTION file for the package authors.
+
+* Changed the file extension for files in the R folder from '.r' to
+  '.R'.
+
+* Used roxygen2 ver 7.1.1 to build the documentation.
+
+## BUG FIXES
+
+* Added the missing table for direct outgoing contacts in the html
+  report.
 
 # EpiContactTrace 0.13.0
 
