@@ -9,10 +9,10 @@ citEntry(entry = "Article",
   pages        = "71",
   volume       = "10",
   doi          = "10.1186/1746-6148-10-71",
-  url          = "http://www.biomedcentral.com/1746-6148/10/71",
+  url          = "https://bmcvetres.biomedcentral.com/articles/10.1186/1746-6148-10-71",
   textVersion  =
   paste("Maria Noremark and Stefan Widgren (2014).",
         "EpiContactTrace: an R-package for contact tracing during livestock disease outbreaks and for risk-based surveillance.",
         "BMC Veterinary Research, 10:71,",
-        "URL http://www.biomedcentral.com/1746-6148/10/71")
+        "URL https://bmcvetres.biomedcentral.com/articles/10.1186/1746-6148-10-71")
 )
