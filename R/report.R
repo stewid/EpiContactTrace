@@ -309,6 +309,7 @@ html_report <- function(x) {
 ##' }
 ##' @seealso Sweave, texi2pdf.
 ##' @keywords methods
+##' @importFrom tools file_path_sans_ext
 ##' @importFrom tools texi2pdf
 ##' @importFrom utils packageVersion
 ##' @importFrom utils Sweave
@@ -369,11 +370,18 @@ setMethod("Report",
                              con = file.path(dir, paste0(object@root, ".html")))
               } else {
                   if (is.null(template)) {
-                      template <- system.file("Sweave/speak-latex.rnw",
+                      template <- system.file("Sweave/speak-latex.Rnw",
                                               package = "EpiContactTrace")
                   }
 
                   Sweave(template, syntax = "SweaveSyntaxNoweb")
+                  utils::Sweave(template, syntax="SweaveSyntaxNoweb")
+                  filename <- tools::file_path_sans_ext(basename(template))
+                  tools::texi2pdf(paste0(filename, ".tex"), clean=TRUE)
+                  file.rename(paste0(filename, ".pdf"),
+                              sprintf("%s.pdf", object@root))
+                  unlink(paste0(filename, ".tex"))
+
                   texi2pdf(sub("rnw$", "tex", basename(template)), clean = TRUE)
                   file.rename(sub("rnw$", "pdf", basename(template)),
                               sprintf("%s.pdf", object@root))
