@@ -40,7 +40,7 @@
 ##' }
 ##' @name ContactTrace-class
 ##' @docType class
-##' @include Contacts.r
+##' @include Contacts.R
 ##' @section Objects from the Class: Objects can be created by calls of the
 ##' form \code{new("ContactTrace",root, ingoingContacts, outgoingContacts,...)}
 ##' @keywords classes

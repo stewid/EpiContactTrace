@@ -49,7 +49,7 @@
 ##' @importFrom graphics plot
 ##' @importFrom graphics points
 ##' @importFrom graphics arrows
-##' @include ContactTrace.r
+##' @include ContactTrace.R
 ##' @export
 ##' @examples
 ##' \dontrun{

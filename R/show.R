@@ -29,8 +29,8 @@
 ##' @docType methods
 ##' @keywords methods
 ##' @export
-##' @include Contacts.r
-##' @include ContactTrace.r
+##' @include Contacts.R
+##' @include ContactTrace.R
 ##' @param object The \code{\linkS4class{Contacts}} or
 ##' \code{\linkS4class{ContactTrace}} \code{object}
 ##' @return None (invisible 'NULL').
