@@ -1,4 +1,4 @@
-## Copyright 2013-2017 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
