@@ -1,4 +1,4 @@
-% Copyright 2013 Stefan Widgren and Maria Noremark,
+% Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 % National Veterinary Institute, Sweden
 %
 % Licensed under the EUPL, Version 1.1 or - as soon they
@@ -47,8 +47,6 @@
 
 <<echo=false, results=tex>>=
     DetailedTable <- function(contacts, direction) {
-        require(plyr)
-
         if(identical(direction, 'in')) {
             arrow <- '\\leftarrow'
         } else {
@@ -66,9 +64,7 @@
         contacts$category <- as.character(contacts$category)
         contacts$category[is.na(contacts$category)] <- ''
 
-        # To prevent output of "data frame with 0 columns and 0 rows"
-        # collect the result
-        dummy <- ddply(contacts, c('lhs', 'rhs'), .fun=function(x) {
+        by(contacts, sprintf("%s - %s", contacts$lhs, contacts$rhs), function(x) {
             cat(sprintf('\\subsection{%s $%s$ %s}\n', x$lhs[1], arrow, x$rhs[1]))
 
             cat('\\begin{longtable}[l]{l r r r r r}\n')
@@ -89,9 +85,9 @@
 
             cat('\\hline\n')
             cat('\\end{longtable}\n')
-
-            return(NULL)
         })
+
+        invisible(NULL)
     }
 @
 
