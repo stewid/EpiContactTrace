@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -65,8 +65,7 @@
 ##'   }
 ##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal
-##'     e.g. Cattle.
+##'     an optional character or factor with category of the animal e.g. Cattle.
 ##'   }
 ##' }
 ##'
@@ -76,7 +75,6 @@
 ##' @include Contacts.R
 ##' @include ContactTrace.R
 ##' @seealso \code{\link{NetworkSummary}}
-##'
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
 ##'     or a \code{data.frame} with movements of animals between
 ##'     holdings, see \code{\link{Trace}} for details.
@@ -144,19 +142,19 @@
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing using tEnd and days
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=91)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 91)
 ##'
 ##' ## Calculate ingoing contact chain from a ContactTrace object
 ##' ic.1 <- IngoingContactChain(contactTrace)
 ##'
 ##' ## Calculate ingoing contact chain using tEnd and days
-##' ic.2 <- IngoingContactChain(transfers,
-##'                             root=2645,
-##'                             tEnd='2005-10-31',
-##'                             days=91)
+##' ic.2 <- IngoingContactChain(movements = transfers,
+##'                             root = 2645,
+##'                             tEnd = "2005-10-31",
+##'                             days = 91)
 ##'
 ##' ## Check that the result is identical
 ##' identical(ic.1, ic.2)
@@ -167,75 +165,70 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Calculate ingoing contact chain
-##' result <- IngoingContactChain(transfers,
-##'                               root=root,
-##'                               tEnd='2005-10-31',
-##'                               days=91)
+##' result <- IngoingContactChain(movements = transfers,
+##'                               root = root,
+##'                               tEnd = "2005-10-31",
+##'                               days = 91)
 ##' }
-setGeneric("IngoingContactChain",
-           signature = "x",
-           function(x, ...) standardGeneric("IngoingContactChain"))
-
-##' @rdname IngoingContactChain-methods
-##' @export
-setMethod("IngoingContactChain",
-          signature(x = "Contacts"),
-          function(x) {
-              if (!identical(x@direction, "in")) {
-                  stop("Unable to determine IngoingContactChain ",
-                       "for outgoing contacts")
-              }
-
-              return(length(setdiff(x@source, x@root)))
-          }
+setGeneric(
+    "IngoingContactChain",
+    signature = "x",
+    function(x, ...) {
+        standardGeneric("IngoingContactChain")
+    }
 )
 
 ##' @rdname IngoingContactChain-methods
 ##' @export
-setMethod("IngoingContactChain",
-          signature(x = "ContactTrace"),
-          function(x) {
-              return(NetworkSummary(x)[, c("root",
-                                           "inBegin",
-                                           "inEnd",
-                                           "inDays",
-                                           "ingoingContactChain")])
-          }
+setMethod(
+    "IngoingContactChain",
+    signature(x = "Contacts"),
+    function (x) {
+        if (!identical(x@direction, "in")) {
+            stop(paste0("Unable to determine IngoingContactChain",
+                        " for outgoing contacts"))
+        }
+
+        length(setdiff(x@source, x@root))
+    }
 )
 
 ##' @rdname IngoingContactChain-methods
 ##' @export
-setMethod("IngoingContactChain",
-          signature(x = "data.frame"),
-          function(x,
-                   root,
-                   tEnd = NULL,
-                   days = NULL,
-                   inBegin = NULL,
-                   inEnd = NULL) {
-          if (missing(root)) {
-              stop("Missing parameters in call to IngoingContactChain")
-          }
+setMethod(
+    "IngoingContactChain",
+    signature(x = "ContactTrace"),
+    function (x) {
+        ns <- NetworkSummary(x)
+        ns[, c("root", "inBegin", "inEnd", "inDays", "ingoingContactChain")]
+    }
+)
 
-          if (all(is.null(tEnd), is.null(days))) {
-              outBegin <- inBegin
-              outEnd <- inBegin
-          } else {
-              outBegin <- NULL
-              outEnd <- NULL
-          }
+##' @rdname IngoingContactChain-methods
+##' @export
+setMethod(
+    "IngoingContactChain",
+    signature(x = "data.frame"),
+    function(x,
+             root,
+             tEnd = NULL,
+             days = NULL,
+             inBegin = NULL,
+             inEnd = NULL) {
+        if (missing(root))
+            stop("Missing parameters in call to IngoingContactChain")
 
-          return(NetworkSummary(x,
-                                root,
-                                tEnd,
-                                days,
-                                inBegin,
-                                inEnd,
-                                outBegin,
-                                outEnd)[, c("root",
-                                            "inBegin",
-                                            "inEnd",
-                                            "inDays",
-                                            "ingoingContactChain")])
-      }
+        if (all(is.null(tEnd), is.null(days))) {
+            outBegin <- inBegin
+            outEnd <- inBegin
+        } else {
+            outBegin <- NULL
+            outEnd <- NULL
+        }
+
+        ns <- NetworkSummary(
+            x, root, tEnd, days, inBegin, inEnd, outBegin, outEnd)
+
+        ns[, c("root", "inBegin", "inEnd", "inDays", "ingoingContactChain")]
+    }
 )

@@ -116,8 +116,7 @@ with the following columns: \describe{
   }
 
   \item{category}{
-    an optional character or factor with category of the animal
-    e.g. Cattle.
+    an optional character or factor with category of the animal e.g. Cattle.
   }
 }
 }
@@ -142,19 +141,19 @@ with the following columns: \describe{
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate ingoing contact chain from a ContactTrace object
 ic.1 <- IngoingContactChain(contactTrace)
 
 ## Calculate ingoing contact chain using tEnd and days
-ic.2 <- IngoingContactChain(transfers,
-                            root=2645,
-                            tEnd='2005-10-31',
-                            days=91)
+ic.2 <- IngoingContactChain(movements = transfers,
+                            root = 2645,
+                            tEnd = "2005-10-31",
+                            days = 91)
 
 ## Check that the result is identical
 identical(ic.1, ic.2)
@@ -165,10 +164,10 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate ingoing contact chain
-result <- IngoingContactChain(transfers,
-                              root=root,
-                              tEnd='2005-10-31',
-                              days=91)
+result <- IngoingContactChain(movements = transfers,
+                              root = root,
+                              tEnd = "2005-10-31",
+                              days = 91)
 }
 }
 \references{
