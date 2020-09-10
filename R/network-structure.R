@@ -21,13 +21,13 @@
 ##' \code{NetworkStructure}
 ##'
 ##' Methods for function \code{NetworkStructure} in package
-##' \pkg{EpiContactTrace} to get the network tree structure from the contact
-##' tracing.
+##' \pkg{EpiContactTrace} to get the network tree structure from the
+##' contact tracing.
 ##'
-##' The contact tracing performs a depth first search starting at the root. The
-##' \code{NetworkStructure} gives the distance from root at each node. The
-##' network tree structure given by the depth first search is shown by
-##' \code{\link{show}}.
+##' The contact tracing performs a depth first search starting at the
+##' root. The \code{NetworkStructure} gives the distance from root at
+##' each node. The network tree structure given by the depth first
+##' search is shown by \code{\link{show}}.
 ##'
 ##' @rdname NetworkStructure-methods
 ##' @docType methods
@@ -35,7 +35,7 @@
 ##' @include Contacts.R
 ##' @include ContactTrace.R
 ##' @param object A \code{\linkS4class{Contacts}} or
-##' \code{linkS4class{ContactTrace}} object.
+##'     \code{linkS4class{ContactTrace}} object.
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{The root of the contact tracing}
@@ -94,92 +94,95 @@
 ##' }
 ##' @seealso \code{\link{show}}.
 ##' @examples
-##' \dontrun{
-##'
 ##' ## Load data
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 90)
 ##'
 ##' NetworkStructure(contactTrace)
-##' }
-setGeneric("NetworkStructure",
-           signature = "object",
-           function(object) standardGeneric("NetworkStructure"))
-
-##' @rdname NetworkStructure-methods
-##' @export
-setMethod("NetworkStructure",
-          signature(object = "Contacts"),
-          function(object)
-      {
-          if(length(object@source) > 0L) {
-              ## Create a matrix with source, destination and distance
-              m <- cbind(object@source[object@index],
-                         object@destination[object@index],
-                         object@distance,
-                         deparse.level=0)
-
-              ## To be able to identify duplicate rows, create strings from rows
-              tmp <- apply(m, 1, function(x) paste(x, collapse="\r"))
-
-              ## Identify which rows are not identical to previous rows.
-              ## row[i] != row[i-1] for all i > 1
-              i <- tmp[seq_len(length(tmp)-1)] != tmp[seq_len(length(tmp))[-1]]
-
-              ## Select the i rows, including first row
-              m <- as.data.frame(m[c(TRUE, i), , drop=FALSE], stringsAsFactors=FALSE)
-              names(m) <- c("source", "destination", "distance")
-
-              ## Convert distance from character to integer
-              m$distance <- as.integer(m$distance)
-
-              if(identical(object@direction, "in")) {
-                  result <- data.frame(root=object@root,
-                                       inBegin=object@tBegin,
-                                       inEnd=object@tEnd,
-                                       outBegin=as.Date(as.character(NA)),
-                                       outEnd=as.Date(as.character(NA)),
-                                       direction="in",
-                                       stringsAsFactors=FALSE)
-              } else {
-                  result <- data.frame(root=object@root,
-                                       inBegin=as.Date(as.character(NA)),
-                                       inEnd=as.Date(as.character(NA)),
-                                       outBegin=object@tBegin,
-                                       outEnd=object@tEnd,
-                                       direction="out",
-                                       stringsAsFactors=FALSE)
-              }
-
-              return(cbind(result, m))
-          } else {
-              ## No contacts, return a zero row data.frame
-              return(data.frame(root=character(0),
-                                inBegin=as.Date(character(0)),
-                                inEnd=as.Date(character(0)),
-                                outBegin=as.Date(character(0)),
-                                outEnd=as.Date(character(0)),
-                                direction=character(0),
-                                source=character(0),
-                                destination=character(0),
-                                distance=integer(0),
-                                stringsAsFactors=FALSE))
-          }
-      }
+setGeneric(
+    "NetworkStructure",
+    signature = "object",
+    function(object) {
+        standardGeneric("NetworkStructure")
+    }
 )
 
 ##' @rdname NetworkStructure-methods
 ##' @export
-setMethod("NetworkStructure",
-          signature(object="ContactTrace"),
-          function(object)
-      {
-          return(rbind(NetworkStructure(object@ingoingContacts),
-                       NetworkStructure(object@outgoingContacts)))
-      }
+setMethod(
+    "NetworkStructure",
+    signature(object = "Contacts"),
+    function(object) {
+        if(length(object@source) > 0L) {
+            ## Create a matrix with source, destination and distance
+            m <- cbind(object@source[object@index],
+                       object@destination[object@index],
+                       object@distance,
+                       deparse.level = 0)
+
+            ## To be able to identify duplicate rows, create strings
+            ## from rows
+            tmp <- apply(m, 1, function(x) paste(x, collapse = "\r"))
+
+            ## Identify which rows are not identical to previous rows.
+            ## row[i] != row[i-1] for all i > 1
+            i <- tmp[seq_len(length(tmp) - 1)] != tmp[seq_len(length(tmp))[-1]]
+
+            ## Select the i rows, including first row
+            m <- as.data.frame(m[c(TRUE, i), , drop = FALSE],
+                               stringsAsFactors = FALSE)
+            names(m) <- c("source", "destination", "distance")
+
+            ## Convert distance from character to integer
+            m$distance <- as.integer(m$distance)
+
+            if(identical(object@direction, "in")) {
+                result <- data.frame(root = object@root,
+                                     inBegin = object@tBegin,
+                                     inEnd = object@tEnd,
+                                     outBegin = as.Date(as.character(NA)),
+                                     outEnd = as.Date(as.character(NA)),
+                                     direction = "in",
+                                     stringsAsFactors = FALSE)
+            } else {
+                result <- data.frame(root = object@root,
+                                     inBegin = as.Date(as.character(NA)),
+                                     inEnd = as.Date(as.character(NA)),
+                                     outBegin = object@tBegin,
+                                     outEnd = object@tEnd,
+                                     direction = "out",
+                                     stringsAsFactors = FALSE)
+            }
+
+            return(cbind(result, m))
+        }
+
+        ## No contacts, return a zero row data.frame
+        data.frame(root = character(0),
+                   inBegin = as.Date(character(0)),
+                   inEnd = as.Date(character(0)),
+                   outBegin = as.Date(character(0)),
+                   outEnd = as.Date(character(0)),
+                   direction = character(0),
+                   source = character(0),
+                   destination = character(0),
+                   distance = integer(0),
+                   stringsAsFactors = FALSE)
+    }
+)
+
+##' @rdname NetworkStructure-methods
+##' @export
+setMethod(
+    "NetworkStructure",
+    signature(object = "ContactTrace"),
+    function(object) {
+        rbind(NetworkStructure(object@ingoingContacts),
+              NetworkStructure(object@outgoingContacts))
+    }
 )
