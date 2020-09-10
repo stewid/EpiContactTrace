@@ -43,8 +43,7 @@ A \code{data.frame} with the following columns:
   }
 
   \item{direction}{
-    If the direction is ingoing, then direction equals 'in' else
-    'out'
+    If the direction is ingoing, then direction equals 'in' else 'out'
   }
 
   \item{source}{
@@ -56,8 +55,7 @@ A \code{data.frame} with the following columns:
   }
 
   \item{distance}{
-    The distance from the destination to root in the depth first
-    search
+    The distance from the destination to root in the depth first search
   }
 }
 }
@@ -86,26 +84,22 @@ search is shown by \code{\link{show}}.
 
   \item{\code{signature(object = "list")}}{
     Get the network structure for a list of \code{ContactTrace}
-    objects. Each item in the list must be a \code{ContactTrace}
-    object.
+    objects. Each item in the list must be a \code{ContactTrace} object.
   }
 }
 }
 
 \examples{
-\dontrun{
-
 ## Load data
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
 NetworkStructure(contactTrace)
-}
 }
 \seealso{
 \code{\link{show}}.
