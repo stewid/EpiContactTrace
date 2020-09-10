@@ -3,59 +3,51 @@
 \docType{package}
 \name{EpiContactTrace-package}
 \alias{EpiContactTrace-package}
-\alias{EpiContactTrace}
 \title{Epidemiological tool for contact tracing.}
 \description{
-Routines for epidemiological contact tracing and visualisation of network
-of contacts.
+Routines for epidemiological contact tracing and visualisation of
+network of contacts.
 }
 \details{
-In many countries, livestock movement data are
-collected with the major objective to enable contact tracing during disease
-outbreaks. Livestock movement data can also be of relevance for risk based
-surveillance - both during outbreak or when investigating if a disease is
-present in the population. However, the livestock movement databases are
-not always structured in such a way that relevant information for contact
-tracing or surveillance design is easily retrieved. EpiContactTrace uses
-the network parameters in-degree, out-degree, ingoing contact-chain and
-outgoing contact-chain, which are relevant for forward- and backward
-contact-tracing respectively. The measures can also be used for identifying
-herds with many contacts, which can be used in risk based disease
-surveillance. Different time periods for ingoing and outgoing contacts can
-be of interest in the contact tracing, based on possible window of
-introduction, and this can be adjusted in the tool. The output from the
-analysis is available as a dataset, but moreover, the tool automatically
-generates a report on farm level. The report both contains an overview of
-the situation on the farm, including a graph, as well as detailed
-information including dates of movements on group or individual level on
-all contacts.
+In many countries, livestock movement data are collected with the
+major objective to enable contact tracing during disease
+outbreaks. Livestock movement data can also be of relevance for
+risk based surveillance - both during outbreak or when
+investigating if a disease is present in the population. However,
+the livestock movement databases are not always structured in such
+a way that relevant information for contact tracing or
+surveillance design is easily retrieved. EpiContactTrace uses the
+network parameters in-degree, out-degree, ingoing contact-chain
+and outgoing contact-chain, which are relevant for forward- and
+backward contact-tracing respectively. The measures can also be
+used for identifying herds with many contacts, which can be used
+in risk based disease surveillance. Different time periods for
+ingoing and outgoing contacts can be of interest in the contact
+tracing, based on possible window of introduction, and this can be
+adjusted in the tool. The output from the analysis is available as
+a dataset, but moreover, the tool automatically generates a report
+on farm level. The report both contains an overview of the
+situation on the farm, including a graph, as well as detailed
+information including dates of movements on group or individual
+level on all contacts.
 }
-\section{Maintainer}{
-
-Stefan Widgren <stefan.widgren@sva.se>
-}
-
 \examples{
 
 ## Load data
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
-show(contactTrace)
+contactTrace
 
-\dontrun{
-## Generate an html report showing details of the contact tracing for
-## root 2645.
-## Note: Creates the files 2645.html and 2645.png in the working
-## directory.
-Report(contactTrace)
-}
-
+## Generate an html report showing details of the contact tracing
+## for root 2645. Note: Creates the files 2645.html and 2645.png
+## in the temporary directory.
+Report(contactTrace, dir = tempdir())
 }
 \references{
 \itemize{
@@ -70,7 +62,3 @@ Report(contactTrace)
     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 }
 }
-\author{
-Stefan Widgren Maria Noremark
-}
-\keyword{package}
