@@ -1,4 +1,4 @@
-## Copyright 2013 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -26,28 +26,16 @@
 ##' The \code{ContactTrace} class holds information for the ingoing
 ##' and outgoing contact chain for a specific root within the time
 ##' window used for contact tracing.
-##' @section Slots:
-##' \describe{
-##'   \item{root}{
-##'     A \code{character} vector of length one with the identifier of
-##'     the root.
-##'   }
-##'   \item{ingoingContacts}{
-##'     A \code{Contacts} object with the contacts for the ingoing
-##'     contact chain.
-##'   }
-##'   \item{outgoingContacts}{
-##'     A \code{Contacts} object with the contacts for the outgoing
-##'     contact chain.
-##'   }
-##' }
-##' @name ContactTrace-class
-##' @docType class
+##' @slot root A \code{character} vector of length one with the
+##'     identifier of the root.
+##' @slot ingoingContacts A \code{Contacts} object with the contacts
+##'     for the ingoing contact chain.
+##' @slot outgoingContacts A \code{Contacts} object with the contacts
+##'     for the outgoing contact chain.
 ##' @include Contacts.R
 ##' @section Objects from the Class: Objects can be created by calls
 ##'     of the form \code{new("ContactTrace",root, ingoingContacts,
 ##'     outgoingContacts,...)}
-##' @keywords classes
 ##' @export
 ##' @examples
 ##'
@@ -57,20 +45,23 @@
 ##' ## Perform contact tracing
 ##' contactTrace <- Trace(movements = transfers,
 ##'                       root = 2645,
-##'                       tEnd = '2005-10-31',
+##'                       tEnd = "2005-10-31",
 ##'                       days = 90)
 ##'
 ##' ## Show structure
 ##' str(contactTrace)
-setClass("ContactTrace",
-         slots = c(root             = "character",
-                   ingoingContacts  = "Contacts",
-                   outgoingContacts = "Contacts"))
+setClass(
+    "ContactTrace",
+    slots = c(root             = "character",
+              ingoingContacts  = "Contacts",
+              outgoingContacts = "Contacts")
+)
 
-setAs(from = "ContactTrace",
-      to   = "data.frame",
-      def  = function(from) {
-      return(rbind(as(from@ingoingContacts, "data.frame"),
-                   as(from@outgoingContacts, "data.frame")))
-  }
+setAs(
+    from = "ContactTrace",
+    to   = "data.frame",
+    def  = function(from) {
+        return(rbind(as(from@ingoingContacts, "data.frame"),
+                     as(from@outgoingContacts, "data.frame")))
+    }
 )
