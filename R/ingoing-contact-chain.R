@@ -189,7 +189,7 @@ setMethod(
                         " for outgoing contacts"))
         }
 
-        length(setdiff(x@source,x@root))
+        length(setdiff(x@source, x@root))
     }
 )
 
