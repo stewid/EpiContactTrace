@@ -92,8 +92,6 @@ setClass(
               distance    = "integer",
               direction   = "character"),
     validity = function(object) {
-        retval <- NULL
-
         l <- unique(c(length(object@source),
                       length(object@destination),
                       length(object@t),
@@ -101,14 +99,11 @@ setClass(
                       length(object@n),
                       length(object@category)))
         if (!identical(length(l), 1L)) {
-            retval <- "Lengths of source, destination, t, id, n and category should have equal length"
+            return(paste0("Lengths of source, destination, t, id, ",
+                          "n and category should have equal length"))
         }
 
-        if (is.null(retval)) {
-            return(TRUE)
-        }
-
-        return(retval)
+        TRUE
     }
 )
 
