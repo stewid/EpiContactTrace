@@ -54,7 +54,7 @@ animals e.g. cattle.}
 for the contact[index]}
 
 \item{\code{direction}}{A \code{character} vector of length one equal to
-the direction 'in' or 'out'}
+the direction "in" or "out"}
 }}
 
 \section{Objects from the Class}{
@@ -72,7 +72,7 @@ data(transfers)
 ## Perform contact tracing
 contactTrace <- Trace(movements = transfers,
                       root = 2645,
-                      tEnd = '2005-10-31',
+                      tEnd = "2005-10-31",
                       days = 90)
 
 ## Show structure of ingoing contacts

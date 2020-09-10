@@ -5,10 +5,11 @@
 \alias{transfers}
 \title{Movement Example Data}
 \format{
-A data frame with 70190 observations on the following 6 variables.
+A data frame with 70190 observations on the following 6
+    variables.
 \describe{
   \item{source}{
-    a numeric vector with the holding identifier of the source
+    a numeric vector with the holding identifier of the source.
   }
 
   \item{destination}{
@@ -39,8 +40,9 @@ A data frame with 70190 observations on the following 6 variables.
 data(transfers)
 }
 \description{
-Movement data included in the package. The data contains fictitious
-example data of cattle movements during the period 2005-08-01 -- 2005-10-31.
+Movement data included in the package. The data contains
+fictitious example data of cattle movements during the period
+2005-08-01 -- 2005-10-31.
 }
 \examples{
 
@@ -49,11 +51,10 @@ data(transfers)
 
 contactTrace <- Trace(movements=transfers,
                       root=2645,
-                      tEnd='2005-10-31',
+                      tEnd="2005-10-31",
                       days=90)
 
 show(contactTrace)
 }
-
 }
 \keyword{datasets}
