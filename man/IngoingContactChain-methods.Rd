@@ -25,8 +25,8 @@ IngoingContactChain(x, ...)
 }
 \arguments{
 \item{x}{a ContactTrace object, or a list of ContactTrace objects
-or a \code{data.frame} with movements of animals between holdings,
-see \code{\link{Trace}} for details.}
+or a \code{data.frame} with movements of animals between
+holdings, see \code{\link{Trace}} for details.}
 
 \item{...}{Additional arguments to the method}
 
@@ -65,7 +65,8 @@ A \code{data.frame} with the following columns:
   }
 
   \item{ingoingContactChain}{
-    The \code{\link{IngoingContactChain}} of the root within the time-interval
+    The \code{\link{IngoingContactChain}} of the root within the
+    time-interval
   }
 }
 }
@@ -140,19 +141,19 @@ with the following columns: \describe{
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate ingoing contact chain from a ContactTrace object
 ic.1 <- IngoingContactChain(contactTrace)
 
 ## Calculate ingoing contact chain using tEnd and days
-ic.2 <- IngoingContactChain(transfers,
-                            root=2645,
-                            tEnd='2005-10-31',
-                            days=91)
+ic.2 <- IngoingContactChain(movements = transfers,
+                            root = 2645,
+                            tEnd = "2005-10-31",
+                            days = 91)
 
 ## Check that the result is identical
 identical(ic.1, ic.2)
@@ -163,10 +164,10 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate ingoing contact chain
-result <- IngoingContactChain(transfers,
-                              root=root,
-                              tEnd='2005-10-31',
-                              days=91)
+result <- IngoingContactChain(movements = transfers,
+                              root = root,
+                              tEnd = "2005-10-31",
+                              days = 91)
 }
 }
 \references{
