@@ -50,16 +50,18 @@
 ##'
 ##' ## Show structure
 ##' str(contactTrace)
-setClass("ContactTrace",
-         slots = c(root             = "character",
-                   ingoingContacts  = "Contacts",
-                   outgoingContacts = "Contacts"))
+setClass(
+    "ContactTrace",
+    slots = c(root             = "character",
+              ingoingContacts  = "Contacts",
+              outgoingContacts = "Contacts")
+)
 
-setAs(from = "ContactTrace",
-      to   = "data.frame",
-      def  = function(from)
-  {
-      return(rbind(as(from@ingoingContacts, "data.frame"),
-                   as(from@outgoingContacts, "data.frame")))
-  }
+setAs(
+    from = "ContactTrace",
+    to   = "data.frame",
+    def  = function(from) {
+        return(rbind(as(from@ingoingContacts, "data.frame"),
+                     as(from@outgoingContacts, "data.frame")))
+    }
 )
