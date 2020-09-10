@@ -3,7 +3,6 @@
 \docType{package}
 \name{EpiContactTrace-package}
 \alias{EpiContactTrace-package}
-\alias{EpiContactTrace}
 \title{Epidemiological tool for contact tracing.}
 \description{
 Routines for epidemiological contact tracing and visualisation of
@@ -32,39 +31,23 @@ situation on the farm, including a graph, as well as detailed
 information including dates of movements on group or individual
 level on all contacts.
 }
-\note{
-Plots are not supported in version 0.8.6 since igraph0 has
-been archived. We intend to resolve the issue in a future
-version. Install version 0.8.5 and igraph0 manually from the
-archive if plots are required. See section 6.3 in 'R Installation
-and Administration' on how to install packages from source.
-}
-\section{Maintainer}{
-
-Stefan Widgren <stefan.widgren@sva.se>
-}
-
 \examples{
 
 ## Load data
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd="2005-10-31",
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
-show(contactTrace)
+contactTrace
 
-\dontrun{
-## Generate an html report showing details of the contact tracing for
-## root 2645.
-## Note: Creates the files 2645.html and 2645.png in the working
-## directory.
-Report(contactTrace)
-}
-
+## Generate an html report showing details of the contact tracing
+## for root 2645. Note: Creates the files 2645.html and 2645.png
+## in the temporary directory.
+Report(contactTrace, dir = tempdir())
 }
 \references{
 \itemize{
@@ -79,7 +62,3 @@ Report(contactTrace)
     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 }
 }
-\author{
-Stefan Widgren Maria Noremark
-}
-\keyword{package}

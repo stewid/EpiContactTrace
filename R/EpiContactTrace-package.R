@@ -46,12 +46,6 @@
 ##' information including dates of movements on group or individual
 ##' level on all contacts.
 ##'
-##' @name EpiContactTrace-package
-##' @aliases EpiContactTrace-package EpiContactTrace
-##' @docType package
-##' @author Stefan Widgren Maria Noremark
-##' @section Maintainer:
-##' Stefan Widgren <stefan.widgren@@sva.se>
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
 ##'     and its application to foot-and-mouth disease modelling and policy
@@ -63,13 +57,9 @@
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
-##' @note Plots are not supported in version 0.8.6 since igraph0 has
-##' been archived. We intend to resolve the issue in a future
-##' version. Install version 0.8.5 and igraph0 manually from the
-##' archive if plots are required. See section 6.3 in 'R Installation
-##' and Administration' on how to install packages from source.
-##' @keywords package
 ##' @import methods
+##' @docType package
+##' @name EpiContactTrace-package
 ##' @useDynLib EpiContactTrace, .registration=TRUE
 ##' @examples
 ##'
@@ -77,21 +67,17 @@
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd="2005-10-31",
-##'                       days=90)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 90)
 ##'
-##' show(contactTrace)
+##' contactTrace
 ##'
-##' \dontrun{
-##' ## Generate an html report showing details of the contact tracing for
-##' ## root 2645.
-##' ## Note: Creates the files 2645.html and 2645.png in the working
-##' ## directory.
-##' Report(contactTrace)
-##' }
-##'
+##' ## Generate an html report showing details of the contact tracing
+##' ## for root 2645. Note: Creates the files 2645.html and 2645.png
+##' ## in the temporary directory.
+##' Report(contactTrace, dir = tempdir())
 NULL
 
 ##' Movement Example Data
@@ -136,15 +122,7 @@ NULL
 ##' }
 ##' @keywords datasets
 ##' @examples
-##'
-##' \dontrun{
 ##' data(transfers)
 ##'
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd="2005-10-31",
-##'                       days=90)
-##'
-##' show(contactTrace)
-##' }
+##' Trace(movements = transfers, root = 2645, tEnd = "2005-10-31", days = 90)
 NULL
