@@ -23,65 +23,42 @@
 ##' Class to handle contacts.
 ##'
 ##'
-##' The \code{Contacts} class keeps track of all ingoing or outgoing livstock
-##' transfers in the contact chain for a specific root within the time window
-##' used for contact tracing.
-##' The slots; \code{source}, \code{destination}, \code{t}, \code{id}, \code{n}
-##' and \code{category} contains contact information extracted from the movement
-##' dataset during contact tracing. The \code{index} slot is an index to the extracted
-##' contacts within the class that together with the \code{distance} slot can be
-##' used to rebuild the exact contacts that were extracted from each search step
-##' during the contact tracing.
-##' @section Slots:
-##' \describe{
-##'   \item{root}{
-##'     A \code{character} vector of length one with the identifier of the root.
-##'   }
-##'   \item{tBegin}{
-##'     A \code{Date} vector of length one with the start date of the time
-##'     window used for contact tracing.
-##'   }
-##'   \item{tEnd}{
-##'     A \code{Date} vector of length one with the end date of the time
-##'     window used for contact tracing.
-##'   }
-##'   \item{source}{
-##'     A \code{character} vector with the identifiers of the source holdings
-##'     of the livestock transfer.
-##'   }
-##'   \item{destination}{
-##'     A \code{character} vector with the identifier of the destination holdings
-##'     of the livestock transfer.
-##'   }
-##'   \item{t}{
-##'     A \code{Date} vector of the livestock transfer.
-##'   }
-##'   \item{id}{
-##'     A \code{character} vector with the identifiers of the animals.
-##'   }
-##'   \item{n}{
-##'     A \code{numeric} vector with the number of animals transfered.
-##'   }
-##'   \item{category}{
-##'     A \code{character} vector with the category of animals e.g. cattle.
-##'   }
-##'   \item{index}{
-##'     A \code{integer} index vector.
-##'   }
-##'   \item{distance}{
-##'     A \code{integer} vector with the distance from root for the contact[index]
-##'   }
-##'   \item{direction}{
-##'     A \code{character} vector of length one equal to the direction 'in' or 'out'
-##'     of the contacts.
-##'   }
-##' }
-##' @name Contacts-class
-##' @docType class
-##' @section Objects from the Class: Objects can be created by calls of the
-##' form \code{new("Contacts", root, startDate, days, source, destination, t,
-##' id, n, category, level, direction, ...)}.
-##' @keywords classes
+##' The \code{Contacts} class keeps track of all ingoing or outgoing
+##' livstock transfers in the contact chain for a specific root within
+##' the time window used for contact tracing.  The slots;
+##' \code{source}, \code{destination}, \code{t}, \code{id}, \code{n}
+##' and \code{category} contains contact information extracted from
+##' the movement dataset during contact tracing. The \code{index} slot
+##' is an index to the extracted contacts within the class that
+##' together with the \code{distance} slot can be used to rebuild the
+##' exact contacts that were extracted from each search step during
+##' the contact tracing.
+##' @slot root A \code{character} vector of length one with the
+##'     identifier of the root.
+##' @slot tBegin A \code{Date} vector of length one with the start
+##'     date of the time window used for contact tracing.
+##' @slot tEnd A \code{Date} vector of length one with the end date of
+##'     the time window used for contact tracing.
+##' @slot source A \code{character} vector with the identifiers of the
+##'     source holdings of the livestock transfer.
+##' @slot destination A \code{character} vector with the identifier of
+##'     the destination holdings of the livestock transfer.
+##' @slot t A \code{Date} vector of the livestock transfer.
+##' @slot id A \code{character} vector with the identifiers of the
+##'     animals.
+##' @slot n A \code{numeric} vector with the number of animals
+##'     transfered.
+##' @slot category A \code{character} vector with the category of
+##'     animals e.g. cattle.
+##' @slot index A \code{integer} index vector.
+##' @slot distance A \code{integer} vector with the distance from root
+##'     for the contact[index]
+##' @slot direction A \code{character} vector of length one equal to
+##'     the direction 'in' or 'out'
+##' @section Objects from the Class: Objects can be created by calls
+##'     of the form \code{new("Contacts", root, startDate, days,
+##'     source, destination, t, id, n, category, level, direction,
+##'     ...)}.
 ##' @export
 ##' @examples
 ##'
