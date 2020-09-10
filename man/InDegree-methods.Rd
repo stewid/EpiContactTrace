@@ -62,12 +62,13 @@ A \code{data.frame} with the following columns:
 }
 }
 \description{
-The number of herds with direct movements of animals to the root herd
-during the defined time window used for tracing.
+The number of herds with direct movements of animals to the root
+herd during the defined time window used for tracing.
 }
 \details{
 The time period used for \code{InDegree} can either be specified
-using \code{tEnd} and \code{days} or \code{inBegin} and \code{inEnd}.
+using \code{tEnd} and \code{days} or \code{inBegin} and
+\code{inEnd}.
 
 If using \code{tEnd} and \code{days}, the time period for ingoing
 contacts ends at \code{tEnd} and starts at \code{days} prior to
@@ -129,19 +130,19 @@ with the following columns:
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate indegree from a ContactTrace object
 id.1 <- InDegree(contactTrace)
 
 ## Calculate indegree using tEnd and days
-id.2 <- InDegree(transfers,
-                 root=2645,
-                 tEnd='2005-10-31',
-                 days=91)
+id.2 <- InDegree(movements = transfers,
+                 root = 2645,
+                 tEnd = "2005-10-31",
+                 days = 91)
 
 ## Check that the result is identical
 identical(id.1, id.2)
@@ -152,10 +153,10 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate indegree
-result <- InDegree(transfers,
-                   root=root,
-                   tEnd='2005-10-31',
-                   days=91)
+result <- InDegree(movements = transfers,
+                   root = root,
+                   tEnd = "2005-10-31",
+                   days = 91)
 }
 }
 \references{

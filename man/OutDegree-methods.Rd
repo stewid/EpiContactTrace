@@ -130,19 +130,19 @@ with the following columns:
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate outdegree from a ContactTrace object
 od.1 <- OutDegree(contactTrace)
 
 ## Calculate outdegree using tEnd and days
-od.2 <- OutDegree(transfers,
-                  root=2645,
-                  tEnd='2005-10-31',
-                  days=91)
+od.2 <- OutDegree(movements = transfers,
+                  root = 2645,
+                  tEnd = "2005-10-31",
+                  days = 91)
 
 ## Check that the result is identical
 identical(od.1, od.2)
@@ -153,10 +153,10 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate outdegree
-result <- OutDegree(transfers,
-                    root=root,
-                    tEnd='2005-10-31',
-                    days=91)
+result <- OutDegree(movements = transfers,
+                    root = root,
+                    tEnd = "2005-10-31",
+                    days = 91)
 }
 }
 \references{
