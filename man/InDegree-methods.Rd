@@ -18,8 +18,8 @@ InDegree(x, ...)
 }
 \arguments{
 \item{x}{a ContactTrace object, or a list of ContactTrace objects
-or a \code{data.frame} with movements of animals between
-holdings, see \code{\link{Trace}} for details.}
+or a \code{data.frame} with movements of animals between holdings,
+see \code{\link{Trace}} for details.}
 
 \item{...}{Additional arguments to the method}
 
@@ -57,8 +57,7 @@ A \code{data.frame} with the following columns:
   }
 
   \item{inDegree}{
-    The \code{\link{InDegree}} of the root within the
-    time-interval
+    The \code{\link{InDegree}} of the root within the time-interval
   }
 }
 }
@@ -85,24 +84,29 @@ each index of them.
 The movements in \code{InDegree} is a \code{data.frame}
 with the following columns:
 \describe{
+
   \item{source}{
     an integer or character identifier of the source holding.
   }
+
   \item{destination}{
     an integer or character identifier of the destination holding.
   }
+
   \item{t}{
     the Date of the transfer
   }
+
   \item{id}{
     an optional character vector with the identity of the animal.
   }
+
   \item{n}{
     an optional numeric vector with the number of animals moved.
   }
+
   \item{category}{
-    an optional character or factor with category of the animal
-    e.g. Cattle.
+    an optional character or factor with category of the animal e.g. Cattle.
   }
 }
 }
@@ -112,9 +116,9 @@ with the following columns:
   \item{\code{signature(x = "ContactTrace")}}{
     Get the InDegree of a \code{ContactTrace} object.
   }
+
   \item{\code{signature(x = "data.frame")}}{
-    Get the InDegree for a data.frame with movements, see details
-    and examples.
+    Get the InDegree for a data.frame with movements, see details and examples.
   }
 }
 }
@@ -126,19 +130,19 @@ with the following columns:
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate indegree from a ContactTrace object
 id.1 <- InDegree(contactTrace)
 
 ## Calculate indegree using tEnd and days
-id.2 <- InDegree(transfers,
-                 root=2645,
-                 tEnd='2005-10-31',
-                 days=91)
+id.2 <- InDegree(movements = transfers,
+                 root = 2645,
+                 tEnd = "2005-10-31",
+                 days = 91)
 
 ## Check that the result is identical
 identical(id.1, id.2)
@@ -149,23 +153,23 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate indegree
-result <- InDegree(transfers,
-                   root=root,
-                   tEnd='2005-10-31',
-                   days=91)
+result <- InDegree(movements = transfers,
+                   root = root,
+                   tEnd = "2005-10-31",
+                   days = 91)
 }
 }
 \references{
 \itemize{
   \item Dube, C., et al., A review of network analysis terminology
-    and its application to foot-and-mouth disease modelling and
-    policy development. Transbound Emerg Dis 56 (2009) 73-85, doi:
+    and its application to foot-and-mouth disease modelling and policy
+    development. Transbound Emerg Dis 56 (2009) 73-85, doi:
     10.1111/j.1865-1682.2008.01064.x
 
-  \item Noremark, M., et al., Network analysis of cattle and pig
-    movements in Sweden: Measures relevant for disease control and
-    riskbased surveillance.  Preventive Veterinary Medicine 99
-    (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+  \item Noremark, M., et al., Network analysis
+    of cattle and pig movements in Sweden: Measures relevant for
+    disease control and riskbased surveillance.  Preventive Veterinary
+    Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 }
 }
 \seealso{

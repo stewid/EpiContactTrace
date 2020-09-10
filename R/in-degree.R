@@ -1,4 +1,4 @@
-## Copyright 2013-2015 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -42,24 +42,29 @@
 ##' The movements in \code{InDegree} is a \code{data.frame}
 ##' with the following columns:
 ##' \describe{
+##'
 ##'   \item{source}{
 ##'     an integer or character identifier of the source holding.
 ##'   }
+##'
 ##'   \item{destination}{
 ##'     an integer or character identifier of the destination holding.
 ##'   }
+##'
 ##'   \item{t}{
 ##'     the Date of the transfer
 ##'   }
+##'
 ##'   \item{id}{
 ##'     an optional character vector with the identity of the animal.
 ##'   }
+##'
 ##'   \item{n}{
 ##'     an optional numeric vector with the number of animals moved.
 ##'   }
+##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal
-##'     e.g. Cattle.
+##'     an optional character or factor with category of the animal e.g. Cattle.
 ##'   }
 ##' }
 ##'
@@ -73,25 +78,25 @@
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the InDegree of a \code{ContactTrace} object.
 ##'   }
+##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the InDegree for a data.frame with movements, see details
-##'     and examples.
+##'     Get the InDegree for a data.frame with movements, see details and examples.
 ##'   }
 ##' }
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
-##'     or a \code{data.frame} with movements of animals between
-##'     holdings, see \code{\link{Trace}} for details.
+##' or a \code{data.frame} with movements of animals between holdings,
+##' see \code{\link{Trace}} for details.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate indegree for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##'     to \code{NULL}
+##' to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##'     ingoing movements. Defaults to \code{NULL}
+##' ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##'     movements. Defaults to \code{NULL}
+##' movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##'     to \code{NULL}
+##' to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -111,21 +116,20 @@
 ##'   }
 ##'
 ##'   \item{inDegree}{
-##'     The \code{\link{InDegree}} of the root within the
-##'     time-interval
+##'     The \code{\link{InDegree}} of the root within the time-interval
 ##'   }
 ##' }
 ##'
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
-##'     and its application to foot-and-mouth disease modelling and
-##'     policy development. Transbound Emerg Dis 56 (2009) 73-85, doi:
+##'     and its application to foot-and-mouth disease modelling and policy
+##'     development. Transbound Emerg Dis 56 (2009) 73-85, doi:
 ##'     10.1111/j.1865-1682.2008.01064.x
 ##'
-##'   \item Noremark, M., et al., Network analysis of cattle and pig
-##'     movements in Sweden: Measures relevant for disease control and
-##'     riskbased surveillance.  Preventive Veterinary Medicine 99
-##'     (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+##'   \item Noremark, M., et al., Network analysis
+##'     of cattle and pig movements in Sweden: Measures relevant for
+##'     disease control and riskbased surveillance.  Preventive Veterinary
+##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @examples
 ##' \dontrun{
@@ -134,19 +138,19 @@
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing using tEnd and days
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=91)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 91)
 ##'
 ##' ## Calculate indegree from a ContactTrace object
 ##' id.1 <- InDegree(contactTrace)
 ##'
 ##' ## Calculate indegree using tEnd and days
-##' id.2 <- InDegree(transfers,
-##'                  root=2645,
-##'                  tEnd='2005-10-31',
-##'                  days=91)
+##' id.2 <- InDegree(movements = transfers,
+##'                  root = 2645,
+##'                  tEnd = "2005-10-31",
+##'                  days = 91)
 ##'
 ##' ## Check that the result is identical
 ##' identical(id.1, id.2)
@@ -157,74 +161,68 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Calculate indegree
-##' result <- InDegree(transfers,
-##'                    root=root,
-##'                    tEnd='2005-10-31',
-##'                    days=91)
+##' result <- InDegree(movements = transfers,
+##'                    root = root,
+##'                    tEnd = "2005-10-31",
+##'                    days = 91)
 ##' }
-setGeneric("InDegree",
-           signature = "x",
-           function(x, ...) standardGeneric("InDegree"))
-
-##' @rdname InDegree-methods
-##' @export
-setMethod("InDegree",
-          signature(x = "Contacts"),
-          function(x) {
-          if (!identical(x@direction, "in")) {
-              stop("Unable to determine InDegree for outgoing contacts")
-          }
-
-          return(length(unique(x@source[x@destination == x@root])))
-      }
+setGeneric(
+    "InDegree",
+    signature = "x",
+    function(x, ...) {
+        standardGeneric("InDegree")
+    }
 )
 
 ##' @rdname InDegree-methods
 ##' @export
-setMethod("InDegree",
-          signature(x = "ContactTrace"),
-          function(x) {
-              return(NetworkSummary(x)[, c("root",
-                                           "inBegin",
-                                           "inEnd",
-                                           "inDays",
-                                           "inDegree")])
-          }
+setMethod(
+    "InDegree",
+    signature(x = "Contacts"),
+    function(x) {
+        if(!identical(x@direction, "in"))
+            stop("Unable to determine InDegree for outgoing contacts")
+
+        length(unique(x@source[x@destination == x@root]))
+    }
 )
 
 ##' @rdname InDegree-methods
 ##' @export
-setMethod("InDegree",
-          signature(x = "data.frame"),
-          function(x,
-                   root,
-                   tEnd = NULL,
-                   days = NULL,
-                   inBegin = NULL,
-                   inEnd = NULL) {
-          if (missing(root)) {
-              stop("Missing parameters in call to InDegree")
-          }
+setMethod(
+    "InDegree",
+    signature(x = "ContactTrace"),
+    function (x) {
+        ns <- NetworkSummary(x)
+        ns[, c("root", "inBegin", "inEnd", "inDays", "inDegree")]
+    }
+)
 
-          if (all(is.null(tEnd), is.null(days))) {
-              outBegin <- inBegin
-              outEnd <- outBegin
-          } else {
-              outBegin <- NULL
-              outEnd <- NULL
-          }
+##' @rdname InDegree-methods
+##' @export
+setMethod(
+    "InDegree",
+    signature(x = "data.frame"),
+    function(x,
+             root,
+             tEnd = NULL,
+             days = NULL,
+             inBegin = NULL,
+             inEnd = NULL) {
+        if(missing(root))
+            stop("Missing parameters in call to InDegree")
 
-          return(NetworkSummary(x,
-                                root,
-                                tEnd,
-                                days,
-                                inBegin,
-                                inEnd,
-                                outBegin,
-                                outEnd)[, c("root",
-                                            "inBegin",
-                                            "inEnd",
-                                            "inDays",
-                                            "inDegree")])
-      }
+        if(all(is.null(tEnd), is.null(days))) {
+            outBegin <- inBegin
+            outEnd <- outBegin
+        } else {
+            outBegin <- NULL
+            outEnd <- NULL
+        }
+
+        ns <- NetworkSummary(
+            x, root, tEnd, days, inBegin, inEnd, outBegin, outEnd)
+
+        ns[, c("root", "inBegin", "inEnd", "inDays", "inDegree")]
+    }
 )
