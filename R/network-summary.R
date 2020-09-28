@@ -20,14 +20,15 @@
 
 ##' \code{NetworkSummary}
 ##'
-##' \code{NetworkSummary} gives a summary of the contact tracing including the
-##' time-window, \code{\link{InDegree}}, \code{\link{OutDegree}},
-##' \code{\link{IngoingContactChain}} and \code{\link{OutgoingContactChain}}.
+##' \code{NetworkSummary} gives a summary of the contact tracing
+##' including the time-window, \code{\link{InDegree}},
+##' \code{\link{OutDegree}}, \code{\link{IngoingContactChain}} and
+##' \code{\link{OutgoingContactChain}}.
 ##'
 ##'
-##' The time period used for \code{NetworkSummary} can either be specified
-##' using \code{tEnd} and \code{days} or \code{inBegin}, \code{inEnd},
-##' \code{outBegin} and \code{outEnd}.
+##' The time period used for \code{NetworkSummary} can either be
+##' specified using \code{tEnd} and \code{days} or \code{inBegin},
+##' \code{inEnd}, \code{outBegin} and \code{outEnd}.
 ##'
 ##' If using \code{tEnd} and \code{days}, the time period for ingoing
 ##' and outgoing contacts ends at \code{tEnd} and starts at
@@ -68,7 +69,8 @@
 ##'   }
 ##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal e.g. Cattle.
+##'     an optional character or factor with category of the animal
+##'     e.g. Cattle.
 ##'   }
 ##' }
 ##'
@@ -136,6 +138,11 @@
 ##'   \item{\code{signature(x = "ContactTrace")}}{
 ##'     Get the network summary for the ingoing and outgoing
 ##'     \code{Contacts} of a ContactTrace object.
+##'   }
+##'
+##'   \item{\code{signature(x = "list")}}{
+##'     Get the network summary for a list of \code{ContactTrace} objects.
+##'     Each item in the list must be a \code{ContactTrace} object.
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
