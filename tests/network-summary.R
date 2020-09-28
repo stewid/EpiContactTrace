@@ -42,3 +42,12 @@ ns.trace <- NetworkSummary(Trace(transfers,
                                  tEnd='2005-10-31',
                                  days=91))
 stopifnot(identical(ns, ns.trace))
+
+##
+## Case 3
+##
+root <- c(2645, 2838)
+tEnd <- "2005-10-31"
+days <- 90
+contactTrace <- Trace(transfers,root,tEnd,days)
+NetworkSummary(contactTrace)

@@ -74,23 +74,24 @@
 ##'
 ##' @rdname NetworkSummary-methods
 ##' @docType methods
-##' @param x a ContactTrace object or a \code{data.frame} with
-##' movements of animals between holdings, see \code{\link{Trace}} for
-##' details.
+##' @param x a ContactTrace object, a \code{data.frame} with movements
+##'     of animals between holdings (see \code{\link{Trace}} for
+##'     details), or a list of \code{ContactTrace} objects where each
+##'     item in the list must be a \code{ContactTrace} object.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate network summary for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' ingoing movements. Defaults to \code{NULL}
+##'     ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param outBegin the first date to include outgoing
-##' movements. Defaults to \code{NULL}
-##' @param outEnd the last date to include outgoing movements. Defaults
-##' to \code{NULL}
+##'     movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing
+##'     movements. Defaults to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -256,6 +257,24 @@ setMethod('NetworkSummary',
                      outgoingContactChain=OutgoingContactChain(x@outgoingContacts),
                      stringsAsFactors=FALSE)
       }
+)
+
+##' @rdname NetworkSummary-methods
+##' @export
+setMethod(
+    "NetworkSummary",
+    signature(x = "list"),
+    function(x)
+    {
+        if(!all(vapply(
+                x,
+                function(y) {inherits(y, "ContactTrace")},
+                logical(1)))) {
+            stop("list must only contain 'ContactTrace' objects.")
+        }
+
+        do.call("rbind", lapply(x, NetworkSummary))
+    }
 )
 
 ##' @rdname NetworkSummary-methods

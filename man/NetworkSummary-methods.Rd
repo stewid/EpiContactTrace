@@ -4,12 +4,15 @@
 \name{NetworkSummary}
 \alias{NetworkSummary}
 \alias{NetworkSummary,ContactTrace-method}
+\alias{NetworkSummary,list-method}
 \alias{NetworkSummary,data.frame-method}
 \title{\code{NetworkSummary}}
 \usage{
 NetworkSummary(x, ...)
 
 \S4method{NetworkSummary}{ContactTrace}(x)
+
+\S4method{NetworkSummary}{list}(x)
 
 \S4method{NetworkSummary}{data.frame}(
   x,
@@ -23,9 +26,10 @@ NetworkSummary(x, ...)
 )
 }
 \arguments{
-\item{x}{a ContactTrace object or a \code{data.frame} with
-movements of animals between holdings, see \code{\link{Trace}} for
-details.}
+\item{x}{a ContactTrace object, a \code{data.frame} with movements
+of animals between holdings (see \code{\link{Trace}} for
+details), or a list of \code{ContactTrace} objects where each
+item in the list must be a \code{ContactTrace} object.}
 
 \item{...}{Additional arguments to the method}
 
@@ -46,8 +50,8 @@ to \code{NULL}}
 \item{outBegin}{the first date to include outgoing
 movements. Defaults to \code{NULL}}
 
-\item{outEnd}{the last date to include outgoing movements. Defaults
-to \code{NULL}}
+\item{outEnd}{the last date to include outgoing
+movements. Defaults to \code{NULL}}
 }
 \value{
 A \code{data.frame} with the following columns:
