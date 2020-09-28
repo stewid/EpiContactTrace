@@ -94,14 +94,15 @@ A \code{data.frame} with the following columns:
 }
 }
 \description{
-\code{NetworkSummary} gives a summary of the contact tracing including the
-time-window, \code{\link{InDegree}}, \code{\link{OutDegree}},
-\code{\link{IngoingContactChain}} and \code{\link{OutgoingContactChain}}.
+\code{NetworkSummary} gives a summary of the contact tracing
+including the time-window, \code{\link{InDegree}},
+\code{\link{OutDegree}}, \code{\link{IngoingContactChain}} and
+\code{\link{OutgoingContactChain}}.
 }
 \details{
-The time period used for \code{NetworkSummary} can either be specified
-using \code{tEnd} and \code{days} or \code{inBegin}, \code{inEnd},
-\code{outBegin} and \code{outEnd}.
+The time period used for \code{NetworkSummary} can either be
+specified using \code{tEnd} and \code{days} or \code{inBegin},
+\code{inEnd}, \code{outBegin} and \code{outEnd}.
 
 If using \code{tEnd} and \code{days}, the time period for ingoing
 and outgoing contacts ends at \code{tEnd} and starts at
@@ -142,7 +143,8 @@ with the following columns:
   }
 
   \item{category}{
-    an optional character or factor with category of the animal e.g. Cattle.
+    an optional character or factor with category of the animal
+    e.g. Cattle.
   }
 }
 }
@@ -154,6 +156,11 @@ with the following columns:
     \code{Contacts} of a ContactTrace object.
   }
 
+  \item{\code{signature(x = "list")}}{
+    Get the network summary for a list of \code{ContactTrace} objects.
+    Each item in the list must be a \code{ContactTrace} object.
+  }
+
   \item{\code{signature(x = "data.frame")}}{
     Get the network summary for a data.frame with movements,
     see details and examples.
@@ -161,84 +168,6 @@ with the following columns:
 }
 }
 
-\examples{
-\dontrun{
-
-## Load data
-data(transfers)
-
-## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
-
-## Calculate network summary from a ContactTrace object
-ns.1 <- NetworkSummary(contactTrace)
-
-## Calculate network summary using tEnd and days
-ns.2 <- NetworkSummary(transfers,
-                       root=2645,
-                       tEnd='2005-10-31',
-                       days=91)
-
-## Check that the result is identical
-identical(ns.1, ns.2)
-
-## Calculate network summary using inBegin, inEnd
-## outBegin and outEnd
-ns.3 <- NetworkSummary(transfers,
-                       root=2645,
-                       inBegin='2005-08-01',
-                       inEnd='2005-10-31',
-                       outBegin='2005-08-01',
-                       outEnd='2005-10-31')
-
-## Check that the result is identical
-identical(ns.2, ns.3)
-
-## When calculating the network summary for a data.frame of movements
-## a data.frame for each combination of root, tEnd and days are returned.
-root <- c(1,2,3)
-tEnd <- c("2005-09-01", "2005-10-01")
-days <- c(30, 45)
-
-## The network summary are calculated at the following
-## 12 combinations.
-## root = 1, tEnd = "2005-09-01", days = 30
-## root = 1, tEnd = "2005-09-01", days = 45
-## root = 1, tEnd = "2005-10-01", days = 30
-## root = 1, tEnd = "2005-10-01", days = 45
-## root = 2, tEnd = "2005-09-01", days = 30
-## root = 2, tEnd = "2005-09-01", days = 45
-## root = 2, tEnd = "2005-10-01", days = 30
-## root = 2, tEnd = "2005-10-01", days = 45
-## root = 3, tEnd = "2005-09-01", days = 30
-## root = 3, tEnd = "2005-09-01", days = 45
-## root = 3, tEnd = "2005-10-01", days = 30
-## root = 3, tEnd = "2005-10-01", days = 45
-NetworkSummary(transfers, root, tEnd, days)
-
-## Create a network summary for all included herds
-## First extract all source and destination from the dataset
-root <- sort(unique(c(transfers$source,
-                      transfers$destination)))
-
-## Perform contact tracing using tEnd and days
-result.1 <- NetworkSummary(transfers,
-                           root=root,
-                           tEnd='2005-10-31',
-                           days=90)
-
-## Perform contact tracing using inBegin, inEnd, outBegin and outEnd.
-result.2 <- NetworkSummary(transfers,
-                           root=root,
-                           inBegin=rep('2005-08-02', length(root)),
-                           inEnd=rep('2005-10-31', length(root)),
-                           outBegin=rep('2005-08-02', length(root)),
-                           outEnd=rep('2005-10-31', length(root)))
-}
-}
 \references{
 \itemize{
   \item Dube, C., et al., A review of network analysis terminology
