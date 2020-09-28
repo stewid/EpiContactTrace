@@ -1,6 +1,6 @@
 # EpiContactTrace (development version)
 
-# EpiContactTrace 0.14.0
+# EpiContactTrace 0.14.0 (2020-09-09)
 
 ## IMPROVEMENTS
 
@@ -21,27 +21,27 @@
 * Added the missing table for direct outgoing contacts in the html
   report.
 
-# EpiContactTrace 0.13.0
+# EpiContactTrace 0.13.0 (2020-03-15)
 
 ## IMPROVEMENTS
 
 * Set 'stringsAsFactors = FALSE' in the data.frame returned by
   'NetworkSummary'.
 
-# EpiContactTrace 0.12.0
+# EpiContactTrace 0.12.0 (2017-10-19)
 
 ## BUG FIXES
 
 * Fix format of authors in CITATION file.
 
-# EpiContactTrace 0.11.0
+# EpiContactTrace 0.11.0 (2017-07-20)
 
 ## BUG FIXES
 
 * Added missing calls to 'R_forceSymbols' and 'R_useDynamicSymbols' in
   the C init function.
 
-# EpiContactTrace 0.10.0
+# EpiContactTrace 0.10.0 (2017-07-20)
 
 ## IMPROVEMENTS
 
@@ -49,13 +49,13 @@
   contact tracing at 'maxDistance' (inclusive) from the root node.
   Default is ‘NULL’ i.e. to not use the 'maxDistance' stop criteria.
 
-# EpiContactTrace 0.9.1
+# EpiContactTrace 0.9.1 (2015-07-03)
 
 ## BUG FIXES
 
 * Fixed build failure on the Solaris platform.
 
-# EpiContactTrace 0.9.0
+# EpiContactTrace 0.9.0 (2015-07-02)
 
 ## CHANGES
 
@@ -81,7 +81,7 @@
 * Improved performance when calculating ShortestPaths on a data.frame
   of movements.
 
-# EpiContactTrace 0.8.8
+# EpiContactTrace 0.8.8 (2013-11-05)
 
 ## BUG FIXES
 
@@ -97,7 +97,7 @@
 * Changed argument representation to slots in setClass for the two S4
   classes ContactTrace and Contacts. The package now requires R>=3.0.0
 
-# EpiContactTrace 0.8.6
+# EpiContactTrace 0.8.6 (2013-09-01)
 
 ## NOTE
 
@@ -107,7 +107,7 @@
   are required. See section 6.3 in 'R Installation and Administration'
   on how to install packages from source.
 
-# EpiContactTrace 0.8.5
+# EpiContactTrace 0.8.5 (2013-07-19)
 
 ## NEW FEATURES
 
@@ -188,7 +188,7 @@ NEW FEATURES
 * Improved performance in C++ code by using visited nodes more
   efficient
 
-# EpiContactTrace 0.7.1
+# EpiContactTrace 0.7.1 (2012-11-01)
 
 ## NEW FEATURES
 
@@ -213,7 +213,7 @@ NEW FEATURES
 
 * Ongoing work to improve performance using Rcpp.
 
-# EpiContactTrace 0.6.9
+# EpiContactTrace 0.6.9 (2012-06-21)
 
 ## NEW FEATURES
 
@@ -224,7 +224,7 @@ NEW FEATURES
 * Fixed bug with Report of a list of ContactTrace objects.  Each
   ContactTrace object called Report with missing parameter clean.
 
-# EpiContactTrace 0.6.8
+# EpiContactTrace 0.6.8 (2012-06-12)
 
 ## BUG FIXES
 
