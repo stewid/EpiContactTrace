@@ -28,19 +28,22 @@ data(transfers)
 ##
 ## Case 1
 ##
-sp_1 <- ShortestPaths(transfers, root=2645, tEnd="2005-10-31", days=90)
-sp_2 <- ShortestPaths(Trace(movements=transfers, root=2645, tEnd="2005-10-31", days=90))
+sp_1 <- ShortestPaths(transfers, root = 2645, tEnd = "2005-10-31", days = 90)
+sp_2 <- ShortestPaths(Trace(movements = transfers,
+                            root = 2645,
+                            tEnd = "2005-10-31",
+                            days = 90))
 in_1 <- sp_1[sp_1$direction == "in", c("source", "distance")]
 in_2 <- sp_2[sp_2$direction == "in", c("source", "distance")]
-in_1 <- in_1[order(in_1$source, in_1$distance),]
-in_2 <- in_2[order(in_2$source, in_2$distance),]
+in_1 <- in_1[order(in_1$source, in_1$distance), ]
+in_2 <- in_2[order(in_2$source, in_2$distance), ]
 rownames(in_1) <- NULL
 rownames(in_2) <- NULL
 stopifnot(identical(in_1, in_2))
 out_1 <- sp_1[sp_1$direction == "out", c("destination", "distance")]
 out_2 <- sp_2[sp_2$direction == "out", c("destination", "distance")]
-out_1 <- out_1[order(out_1$destination, out_1$distance),]
-out_2 <- out_2[order(out_2$destination, out_2$distance),]
+out_1 <- out_1[order(out_1$destination, out_1$distance), ]
+out_2 <- out_2[order(out_2$destination, out_2$distance), ]
 rownames(out_1) <- NULL
 rownames(out_2) <- NULL
 stopifnot(identical(out_1, out_2))
@@ -53,9 +56,12 @@ sp_in_exp <- data.frame(
     source = c("54", "262", "356", "357", "358"),
     distance = c(1L, 1L, 1L, 1L, 1L))
 
-sp_in <- ShortestPaths(Trace(movements=transfers, root=100, tEnd="2005-10-31", days=90))
+sp_in <- ShortestPaths(Trace(movements = transfers,
+                             root = 100,
+                             tEnd = "2005-10-31",
+                             days = 90))
 sp_in <- sp_in[sp_in$direction == "in", c("root", "source", "distance")]
-sp_in <- sp_in[order(as.numeric(sp_in$source)),]
+sp_in <- sp_in[order(as.numeric(sp_in$source)), ]
 rownames(sp_in) <- NULL
 stopifnot(identical(sp_in, sp_in_exp))
 
@@ -66,8 +72,12 @@ sp_out_exp <- data.frame(
         "8327", "8356", "8388", "8420", "8991", "9003", "9087", "9110"),
     distance = c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L))
 
-sp_out <- ShortestPaths(Trace(movements=transfers, root=100, tEnd="2005-10-31", days=90))
-sp_out <- sp_out[sp_out$direction == "out", c("root", "destination", "distance")]
-sp_out <- sp_out[order(as.numeric(sp_out$destination)),]
+sp_out <- ShortestPaths(Trace(movements = transfers,
+                              root = 100,
+                              tEnd = "2005-10-31",
+                              days = 90))
+sp_out <- sp_out[sp_out$direction == "out",
+                 c("root", "destination", "distance")]
+sp_out <- sp_out[order(as.numeric(sp_out$destination)), ]
 rownames(sp_out) <- NULL
 stopifnot(identical(sp_out, sp_out_exp))
