@@ -35,10 +35,15 @@ winbuilder: clean check
 	cd .. && curl -T $(PKG_TAR) ftp://win-builder.r-project.org/R-release/
 	cd .. && curl -T $(PKG_TAR) ftp://win-builder.r-project.org/R-devel/
 
+.PHONY: clean
 clean:
 	-rm -f src/*.o
 	-rm -f src/*.so
 	-rm -rf src-x64
 	-rm -rf src-i386
 
-.PHONY: install roxygen pdf check clean
+.PHONY: lintr
+lintr:
+	Rscript -e "library(lintr);lint_package(linters = with_defaults(object_name_linter = NULL, object_usage_linter = NULL))"
+
+.PHONY: install roxygen pdf check
