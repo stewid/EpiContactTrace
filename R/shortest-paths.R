@@ -111,10 +111,10 @@
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=90)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 90)
 ##'
 ##' ShortestPaths(contactTrace)
 ##'
@@ -122,22 +122,24 @@
 ##' ## First extract all source and destination from the dataset
 ##' root <- sort(unique(c(transfers$source, transfers$destination)))
 ##'
-##' sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
-##'
+##' sp <- ShortestPaths(transfers,
+##'                     root = root,
+##'                     tEnd = "2005-10-31",
+##'                     days = 90)
 ##' }
 setGeneric(
-    'ShortestPaths',
-    signature = 'x',
+    "ShortestPaths",
+    signature = "x",
     function(x, ...) {
-        standardGeneric('ShortestPaths')
+        standardGeneric("ShortestPaths")
     }
 )
 
 ##' @rdname ShortestPaths-methods
 ##' @export
 setMethod(
-    'ShortestPaths',
-    signature(x = 'ContactTrace'),
+    "ShortestPaths",
+    signature(x = "ContactTrace"),
     function(x) {
         ns <- NetworkStructure(x)
         ns.in <- ns[ns$direction == "in",]
@@ -171,8 +173,8 @@ setMethod(
 ##' @rdname ShortestPaths-methods
 ##' @export
 setMethod(
-    'ShortestPaths',
-    signature(x = 'data.frame'),
+    "ShortestPaths",
+    signature(x = "data.frame"),
     function(x,
              root,
              tEnd = NULL,
@@ -184,28 +186,28 @@ setMethod(
         ## Check that arguments are ok from various perspectives...
 
         ## Check the data.frame x with movements
-        if(!all(c('source', 'destination', 't') %in% names(x))) {
-            stop('x must contain the columns source, destination and t.')
+        if(!all(c("source", "destination", "t") %in% names(x))) {
+            stop("x must contain the columns source, destination and t.")
         }
 
         if(any(is.factor(x$source), is.integer(x$source))) {
             x$source <- as.character(x$source)
         } else if(!is.character(x$source)) {
-            stop('invalid class of column source in x')
+            stop("invalid class of column source in x")
         }
 
         if(any(is.factor(x$destination), is.integer(x$destination))) {
             x$destination <- as.character(x$destination)
         } else if(!is.character(x$destination)) {
-            stop('invalid class of column destination in x')
+            stop("invalid class of column destination in x")
         }
 
         if(any(is.character(x$t), is.factor(x$t))) {
             x$t <- as.Date(x$t)
         }
 
-        if(!identical(class(x$t), 'Date')) {
-            stop('invalid class of column t in x')
+        if(!identical(class(x$t), "Date")) {
+            stop("invalid class of column t in x")
         }
 
         if(any(is.na(x$t))) {
@@ -214,11 +216,11 @@ setMethod(
 
         ## Make sure the columns are in expected order and remove
         ## non-unique observations
-        x <- unique(x[, c('source', 'destination', 't')])
+        x <- unique(x[, c("source", "destination", "t")])
 
         ## Check root
         if(missing(root)) {
-            stop('Missing root in call to ShortestPaths')
+            stop("Missing root in call to ShortestPaths")
         }
 
         if(any(is.factor(root), is.integer(root))) {
@@ -234,7 +236,7 @@ setMethod(
 
             root <- as.character(rootr)
         } else if(!is.character(root)) {
-            stop('invalid class of root')
+            stop("invalid class of root")
         }
 
         ## Check if we are using the combination of tEnd and days or
@@ -243,14 +245,14 @@ setMethod(
             ## Using tEnd and days...check that inBegin, inEnd,
             ## outBegin and outEnd is NULL
             if(!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
-                stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
+                stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths")
             }
 
             if(any(is.character(tEnd), is.factor(tEnd))) {
                 tEnd <- as.Date(tEnd)
             }
 
-            if(!identical(class(tEnd), 'Date')) {
+            if(!identical(class(tEnd), "Date")) {
                 stop("'tEnd' must be a Date vector")
             }
 
@@ -281,10 +283,10 @@ setMethod(
             ## Using tEnd and days...check that Using inBegin, inEnd,
             ## outBegin and outEnd...check that tEnd and days are NULL
             if(!all(is.null(tEnd), is.null(days))) {
-                stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
+                stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths")
             }
         } else {
-            stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
+            stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths")
         }
 
         ##
@@ -294,12 +296,12 @@ setMethod(
             inBegin <- as.Date(inBegin)
         }
 
-        if(!identical(class(inBegin), 'Date')) {
+        if(!identical(class(inBegin), "Date")) {
             stop("'inBegin' must be a Date vector")
         }
 
         if(any(is.na(inBegin))) {
-            stop('inBegin contains NA')
+            stop("inBegin contains NA")
         }
 
         ##
@@ -309,12 +311,12 @@ setMethod(
             inEnd <- as.Date(inEnd)
         }
 
-        if(!identical(class(inEnd), 'Date')) {
+        if(!identical(class(inEnd), "Date")) {
             stop("'inEnd' must be a Date vector")
         }
 
         if(any(is.na(inEnd))) {
-            stop('inEnd contains NA')
+            stop("inEnd contains NA")
         }
 
         ##
@@ -324,12 +326,12 @@ setMethod(
             outBegin <- as.Date(outBegin)
         }
 
-        if(!identical(class(outBegin), 'Date')) {
+        if(!identical(class(outBegin), "Date")) {
             stop("'outBegin' must be a Date vector")
         }
 
         if(any(is.na(outBegin))) {
-            stop('outBegin contains NA')
+            stop("outBegin contains NA")
         }
 
         ##
@@ -339,23 +341,23 @@ setMethod(
             outEnd <- as.Date(outEnd)
         }
 
-        if(!identical(class(outEnd), 'Date')) {
+        if(!identical(class(outEnd), "Date")) {
             stop("'outEnd' must be a Date vector")
         }
 
         if(any(is.na(outEnd))) {
-            stop('outEnd contains NA')
+            stop("outEnd contains NA")
         }
 
         ##
         ## Check ranges of dates
         ##
         if(any(inEnd < inBegin)) {
-            stop('inEnd < inBegin')
+            stop("inEnd < inBegin")
         }
 
         if(any(outEnd < outBegin)) {
-            stop('outEnd < outBegin')
+            stop("outEnd < outBegin")
         }
 
         ##
@@ -367,7 +369,7 @@ setMethod(
                                       length(outBegin),
                                       length(outEnd)))),
                       1L)) {
-            stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
+            stop("root, inBegin, inEnd, outBegin and outEnd must have equal length")
         }
 
         ## Arguments seems ok...go on with calculations
@@ -397,7 +399,7 @@ setMethod(
                                  inEnd       = inEnd[sp$inIndex],
                                  outBegin    = as.Date(NA_character_),
                                  outEnd      = as.Date(NA_character_),
-                                 direction   = 'in',
+                                 direction   = "in",
                                  source      = x$source[sp$inRowid],
                                  destination = NA_character_,
                                  distance    = sp$inDistance,
@@ -411,7 +413,7 @@ setMethod(
                                        inEnd       = as.Date(NA_character_),
                                        outBegin    = outBegin[sp$outIndex],
                                        outEnd      = outEnd[sp$outIndex],
-                                       direction   = 'out',
+                                       direction   = "out",
                                        source      = NA_character_,
                                        destination = x$destination[sp$outRowid],
                                        distance    = sp$outDistance,
