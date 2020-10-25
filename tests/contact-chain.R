@@ -34,10 +34,10 @@ movements <- structure(list(source = 1:7, destination = c(4L, 5L, 5L,
 "t"), class = "data.frame", row.names = c(NA, -7L))
 ct <- Trace(movements,
             root = 8L,
-            inBegin = as.Date('2010-08-22'),
-            inEnd = as.Date('2010-10-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-22"),
+            inEnd = as.Date("2010-10-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 ct
 stopifnot(identical(IngoingContactChain(ct)$ingoingContactChain, 7L))
 stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 0L))
@@ -54,10 +54,10 @@ NA_integer_)), .Names = c("source", "destination", "t", "individual",
 "n"), row.names = c(NA, -4L), class = "data.frame")
 ct <- Trace(movements,
             root = 4L,
-            inBegin = as.Date('2010-07-22'),
-            inEnd = as.Date('2010-08-21'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-07-22"),
+            inEnd = as.Date("2010-08-21"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 ct
 stopifnot(identical(IngoingContactChain(ct)$ingoingContactChain, 3L))
 stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 0L))
@@ -73,10 +73,10 @@ c(NA_character_, NA_character_ ), n = c(NA_integer_, NA_integer_)),
 = c(NA, -2L), class = "data.frame")
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-09-01'),
-            outEnd = as.Date('2010-10-01'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-09-01"),
+            outEnd = as.Date("2010-10-01"))
 ct
 stopifnot(identical(IngoingContactChain(ct)$ingoingContactChain, 1L))
 stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 0L))
@@ -95,10 +95,10 @@ NA_integer_)), .Names = c("source", "destination", "t", "individual",
 "n"), row.names = c(NA, -7L ), class = "data.frame")
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-11-09'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-11-09"))
 ct
 stopifnot(identical(IngoingContactChain(ct)$ingoingContactChain, 0L))
 stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 7L))
@@ -114,10 +114,10 @@ c(NA_character_, NA_character_ ), n = c(NA_integer_, NA_integer_)),
 = c(NA, -2L), class = "data.frame")
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-07-02'),
-            inEnd = as.Date('2010-08-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-07-02"),
+            inEnd = as.Date("2010-08-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 ct
 stopifnot(identical(IngoingContactChain(ct)$ingoingContactChain, 0L))
 stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 1L))
@@ -134,10 +134,10 @@ class = "factor")), .Names = c("source", "destination", "t"), class =
 "data.frame", row.names = c(NA, -7L))
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-10-10'),
-            inEnd = as.Date('2010-10-20'),
-            outBegin = as.Date('2010-10-10'),
-            outEnd = as.Date('2010-10-20'))
+            inBegin = as.Date("2010-10-10"),
+            inEnd = as.Date("2010-10-20"),
+            outBegin = as.Date("2010-10-10"),
+            outEnd = as.Date("2010-10-20"))
 ct
 stopifnot(identical(IngoingContactChain(ct)$ingoingContactChain, 0L))
 stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 2L))

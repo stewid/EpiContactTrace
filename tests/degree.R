@@ -37,10 +37,10 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
 
 ct <- Trace(movements,
             root = 4L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 
 stopifnot(identical(InDegree(ct)$inDegree, 1L))
 stopifnot(identical(OutDegree(ct)$outDegree, 0L))
@@ -56,7 +56,7 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -4L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 4, tEnd = '2010-09-01', days = 30)
+ns <- NetworkSummary(movements, root = 4, tEnd = "2010-09-01", days = 30)
 stopifnot(identical(ns$inDegree, 1L))
 
 ##
@@ -70,7 +70,7 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -4L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 4, tEnd = '2010-08-31', days = 30)
+ns <- NetworkSummary(movements, root = 4, tEnd = "2010-08-31", days = 30)
 stopifnot(identical(ns$outDegree, 0L))
 
 ##
@@ -86,10 +86,10 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
 
 ct <- Trace(movements,
             root = 4L,
-            inBegin = as.Date('2010-08-27'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-27"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 
 stopifnot(identical(InDegree(ct)$inDegree, 0L))
 stopifnot(identical(OutDegree(ct)$outDegree, 0L))
@@ -105,7 +105,7 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -4L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 4, tEnd = '2010-09-01', days = 5)
+ns <- NetworkSummary(movements, root = 4, tEnd = "2010-09-01", days = 5)
 stopifnot(identical(ns$inDegree, 0L))
 
 ##
@@ -119,7 +119,7 @@ movements <- structure(list(source = c(1L, 2L, 3L, 3L),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -4L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 4, tEnd = '2010-08-31', days = 30)
+ns <- NetworkSummary(movements, root = 4, tEnd = "2010-08-31", days = 30)
 stopifnot(identical(ns$outDegree, 0L))
 
 ##
@@ -135,10 +135,10 @@ movements <- structure(list(source = c("1", "1", "1"),
 
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-31'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-31"))
 
 stopifnot(identical(InDegree(ct)$inDegree, 0L))
 stopifnot(identical(OutDegree(ct)$outDegree, 3L))
@@ -154,7 +154,7 @@ movements <- structure(list(source = c("1", "1", "1"),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -3L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 1, tEnd = '2010-09-01', days = 30)
+ns <- NetworkSummary(movements, root = 1, tEnd = "2010-09-01", days = 30)
 stopifnot(identical(ns$inDegree,0L))
 
 ##
@@ -168,7 +168,7 @@ movements <- structure(list(source = c("1", "1", "1"),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -3L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 1, tEnd = '2010-08-31', days = 30)
+ns <- NetworkSummary(movements, root = 1, tEnd = "2010-08-31", days = 30)
 stopifnot(identical(ns$outDegree, 3L))
 
 ##
@@ -184,10 +184,10 @@ movements <- structure(list(source = c("1", "1", "1"),
 
 ct <- Trace(movements,
             root = 1L,
-            inBegin = as.Date('2010-08-02'),
-            inEnd = as.Date('2010-09-01'),
-            outBegin = as.Date('2010-08-01'),
-            outEnd = as.Date('2010-08-16'))
+            inBegin = as.Date("2010-08-02"),
+            inEnd = as.Date("2010-09-01"),
+            outBegin = as.Date("2010-08-01"),
+            outEnd = as.Date("2010-08-16"))
 
 stopifnot(identical(InDegree(ct)$inDegree, 0L))
 stopifnot(identical(OutDegree(ct)$outDegree, 2L))
@@ -203,7 +203,7 @@ movements <- structure(list(source = c("1", "1", "1"),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -3L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 1, tEnd = '2010-09-01', days = 30)
+ns <- NetworkSummary(movements, root = 1, tEnd = "2010-09-01", days = 30)
 stopifnot(identical(ns$inDegree, 0L))
 
 ##
@@ -217,5 +217,5 @@ movements <- structure(list(source = c("1", "1", "1"),
                        .Names = c("source", "destination", "t", "individual", "n"),
                        row.names = c(NA, -3L), class = "data.frame")
 
-ns <- NetworkSummary(movements, root = 1, tEnd = '2010-08-16', days = 15)
+ns <- NetworkSummary(movements, root = 1, tEnd = "2010-08-16", days = 15)
 stopifnot(identical(ns$outDegree, 2L))
