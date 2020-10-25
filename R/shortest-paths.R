@@ -23,37 +23,34 @@
 ##' Methods for function \code{ShortestPaths} in package \pkg{EpiContactTrace}
 ##' to get the shortest distance from/to the root given by the contact tracing.
 ##'
-##' The contact tracing performs a depth first search starting at the root. The
-##' \code{ShortestPaths} gives the shortest distance from root at each node.
-##' The network tree structure given by the depth first search is shown by
-##' \code{\link{show}}.
+##' The contact tracing performs a depth first search starting at the
+##' root. The \code{ShortestPaths} gives the shortest distance from
+##' root at each node.  The network tree structure given by the depth
+##' first search is shown by \code{\link{show}}.
 ##'
 ##' @rdname ShortestPaths-methods
 ##' @docType methods
 ##' @keywords methods
 ##' @include ContactTrace.R
 ##' @param x a \code{\linkS4class{ContactTrace}} object, or a
-##' \code{data.frame} with movements of animals between holdings, see
-##' \code{\link{Trace}} for details.
+##'     \code{data.frame} with movements of animals between holdings,
+##'     see \code{\link{Trace}} for details.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate shortest path for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' ingoing movements. Defaults to \code{NULL}
+##'     ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param outBegin the first date to include outgoing
-##' movements. Defaults to \code{NULL}
-##' @param outEnd the last date to include outgoing movements. Defaults
-##' to \code{NULL}
-##' @return A \code{data.frame} with the following columns:
-##' \describe{
-##'   \item{root}{
-##'     The root of the contact tracing
-##'   }
+##'     movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing
+##'     movements. Defaults to \code{NULL}
+##' @return A \code{data.frame} with the following columns: \describe{
+##'     \item{root}{ The root of the contact tracing }
 ##'
 ##'   \item{inBegin}{
 ##'     If the direction is ingoing, then inBegin equals inBegin in
@@ -244,8 +241,10 @@ setMethod(
         if (all(!is.null(tEnd), !is.null(days))) {
             ## Using tEnd and days...check that inBegin, inEnd,
             ## outBegin and outEnd is NULL
-            if (!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
-                stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths")
+            if (!all(is.null(inBegin), is.null(inEnd),
+                     is.null(outBegin), is.null(outEnd))) {
+                stop("Use either tEnd and days or inBegin, inEnd, ",
+                     "outBegin and outEnd in call to ShortestPaths")
             }
 
             if (any(is.character(tEnd), is.factor(tEnd))) {
@@ -259,7 +258,8 @@ setMethod(
             ## Test that days is a nonnegative integer the same way as
             ## binom.test test x
             daysr <- round(days)
-            if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
+            if (any(is.na(days) | (days < 0)) ||
+                max(abs(days - daysr)) > 1e-07) {
                 stop("'days' must be nonnegative and integer")
             }
             days <- daysr
@@ -279,14 +279,17 @@ setMethod(
             inBegin <- inEnd - rep(days, each=1, length.out=n)
             outEnd <- inEnd
             outBegin <- inBegin
-        } else if (all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
+        } else if (all(!is.null(inBegin), !is.null(inEnd),
+                       !is.null(outBegin), !is.null(outEnd))) {
             ## Using tEnd and days...check that Using inBegin, inEnd,
             ## outBegin and outEnd...check that tEnd and days are NULL
             if (!all(is.null(tEnd), is.null(days))) {
-                stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths")
+                stop("Use either tEnd and days or inBegin, inEnd, ",
+                     "outBegin and outEnd in call to ShortestPaths")
             }
         } else {
-            stop("Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths")
+            stop("Use either tEnd and days or inBegin, inEnd, ",
+                 "outBegin and outEnd in call to ShortestPaths")
         }
 
         ##
@@ -369,7 +372,8 @@ setMethod(
                                       length(outBegin),
                                       length(outEnd)))),
                       1L)) {
-            stop("root, inBegin, inEnd, outBegin and outEnd must have equal length")
+            stop("root, inBegin, inEnd, outBegin and ",
+                 "outEnd must have equal length")
         }
 
         ## Arguments seems ok...go on with calculations
@@ -381,10 +385,10 @@ setMethod(
                                     root)))
 
         sp <- .Call("shortestPaths",
-                    as.integer(factor(x$source, levels=levels(nodes))),
-                    as.integer(factor(x$destination, levels=levels(nodes))),
+                    as.integer(factor(x$source, levels = levels(nodes))),
+                    as.integer(factor(x$destination, levels = levels(nodes))),
                     as.integer(julian(x$t)),
-                    as.integer(factor(root, levels=levels(nodes))),
+                    as.integer(factor(root, levels = levels(nodes))),
                     as.integer(julian(inBegin)),
                     as.integer(julian(inEnd)),
                     as.integer(julian(outBegin)),
@@ -403,7 +407,7 @@ setMethod(
                                  source      = x$source[sp$inRowid],
                                  destination = NA_character_,
                                  distance    = sp$inDistance,
-                                 stringsAsFactors=FALSE)
+                                 stringsAsFactors = FALSE)
         }
 
         if (length(sp$outIndex)) {
