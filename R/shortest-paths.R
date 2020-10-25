@@ -125,311 +125,314 @@
 ##' sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
 ##'
 ##' }
-setGeneric('ShortestPaths',
-           signature = 'x',
-           function(x, ...) standardGeneric('ShortestPaths'))
-
-##' @rdname ShortestPaths-methods
-##' @export
-setMethod('ShortestPaths',
-          signature(x = 'ContactTrace'),
-          function(x)
-      {
-          ns <- NetworkStructure(x)
-          ns.in <- ns[ns$direction == "in",]
-          ns.out <- ns[ns$direction == "out",]
-
-          result <- NULL
-          if(nrow(ns.in)) {
-              ns.in <- ns.in[order(ns.in$distance, ns.in$source),]
-              ns.in <- ns.in[!duplicated(ns.in$source),]
-              ns.in$destination <- NA_character_
-              result <- ns.in
-          }
-
-          if(nrow(ns.out)) {
-              ns.out <- ns.out[order(ns.out$distance, ns.out$destination),]
-              ns.out <- ns.out[!duplicated(ns.out$destination),]
-              ns.out$source <- NA_character_
-              result <- rbind(result, ns.out)
-          }
-
-          if(is.null(result)) {
-              result <- ns
-          } else {
-              rownames(result) <- NULL
-          }
-
-          return(result)
-      }
+setGeneric(
+    'ShortestPaths',
+    signature = 'x',
+    function(x, ...) {
+        standardGeneric('ShortestPaths')
+    }
 )
 
 ##' @rdname ShortestPaths-methods
 ##' @export
-setMethod('ShortestPaths',
-          signature(x = 'data.frame'),
-          function(x,
-                   root,
-                   tEnd = NULL,
-                   days = NULL,
-                   inBegin = NULL,
-                   inEnd = NULL,
-                   outBegin = NULL,
-                   outEnd = NULL)
-      {
-          ## Check that arguments are ok from various perspectives...
+setMethod(
+    'ShortestPaths',
+    signature(x = 'ContactTrace'),
+    function(x) {
+        ns <- NetworkStructure(x)
+        ns.in <- ns[ns$direction == "in",]
+        ns.out <- ns[ns$direction == "out",]
 
-          ## Check the data.frame x with movements
-          if(!all(c('source', 'destination', 't') %in% names(x))) {
-              stop('x must contain the columns source, destination and t.')
-          }
+        result <- NULL
+        if(nrow(ns.in)) {
+            ns.in <- ns.in[order(ns.in$distance, ns.in$source),]
+            ns.in <- ns.in[!duplicated(ns.in$source),]
+            ns.in$destination <- NA_character_
+            result <- ns.in
+        }
 
-          if(any(is.factor(x$source), is.integer(x$source))) {
-              x$source <- as.character(x$source)
-          } else if(!is.character(x$source)) {
-              stop('invalid class of column source in x')
-          }
+        if(nrow(ns.out)) {
+            ns.out <- ns.out[order(ns.out$distance, ns.out$destination),]
+            ns.out <- ns.out[!duplicated(ns.out$destination),]
+            ns.out$source <- NA_character_
+            result <- rbind(result, ns.out)
+        }
 
-          if(any(is.factor(x$destination), is.integer(x$destination))) {
-              x$destination <- as.character(x$destination)
-          } else if(!is.character(x$destination)) {
-              stop('invalid class of column destination in x')
-          }
+        if(is.null(result)) {
+            result <- ns
+        } else {
+            rownames(result) <- NULL
+        }
 
-          if(any(is.character(x$t), is.factor(x$t))) {
-              x$t <- as.Date(x$t)
-          }
+        result
+    }
+)
 
-          if(!identical(class(x$t), 'Date')) {
-              stop('invalid class of column t in x')
-          }
+##' @rdname ShortestPaths-methods
+##' @export
+setMethod(
+    'ShortestPaths',
+    signature(x = 'data.frame'),
+    function(x,
+             root,
+             tEnd = NULL,
+             days = NULL,
+             inBegin = NULL,
+             inEnd = NULL,
+             outBegin = NULL,
+             outEnd = NULL) {
+        ## Check that arguments are ok from various perspectives...
 
-          if(any(is.na(x$t))) {
-              stop("t in x contains NA")
-          }
+        ## Check the data.frame x with movements
+        if(!all(c('source', 'destination', 't') %in% names(x))) {
+            stop('x must contain the columns source, destination and t.')
+        }
 
-          ## Make sure the columns are in expected order and remove
-          ## non-unique observations
-          x <- unique(x[, c('source', 'destination', 't')])
+        if(any(is.factor(x$source), is.integer(x$source))) {
+            x$source <- as.character(x$source)
+        } else if(!is.character(x$source)) {
+            stop('invalid class of column source in x')
+        }
 
-          ## Check root
-          if(missing(root)) {
-              stop('Missing root in call to ShortestPaths')
-          }
+        if(any(is.factor(x$destination), is.integer(x$destination))) {
+            x$destination <- as.character(x$destination)
+        } else if(!is.character(x$destination)) {
+            stop('invalid class of column destination in x')
+        }
 
-          if(any(is.factor(root), is.integer(root))) {
-              root <- as.character(root)
-          } else if(is.numeric(root)) {
-              ## root is supposed to be a character or integer
-              ## identifier so test that root is a integer the same
-              ## way as binom.test test x
-              rootr <- round(root)
-              if(any(max(abs(root - rootr) > 1e-07))) {
-                  stop("'root' must be an integer or character")
-              }
+        if(any(is.character(x$t), is.factor(x$t))) {
+            x$t <- as.Date(x$t)
+        }
 
-              root <- as.character(rootr)
-          } else if(!is.character(root)) {
-              stop('invalid class of root')
-          }
+        if(!identical(class(x$t), 'Date')) {
+            stop('invalid class of column t in x')
+        }
 
-          ## Check if we are using the combination of tEnd and days or
-          ## specify inBegin, inEnd, outBegin and outEnd
-          if(all(!is.null(tEnd), !is.null(days))) {
-              ## Using tEnd and days...check that
-              ## inBegin, inEnd, outBegin and outEnd is NULL
-              if(!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
-                  stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
-              }
+        if(any(is.na(x$t))) {
+            stop("t in x contains NA")
+        }
 
-              if(any(is.character(tEnd), is.factor(tEnd))) {
-                  tEnd <- as.Date(tEnd)
-              }
+        ## Make sure the columns are in expected order and remove
+        ## non-unique observations
+        x <- unique(x[, c('source', 'destination', 't')])
 
-              if(!identical(class(tEnd), 'Date')) {
-                  stop("'tEnd' must be a Date vector")
-              }
+        ## Check root
+        if(missing(root)) {
+            stop('Missing root in call to ShortestPaths')
+        }
 
-              ## Test that days is a nonnegative integer the same way
-              ## as binom.test test x
-              daysr <- round(days)
-              if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
-                  stop("'days' must be nonnegative and integer")
-              }
-              days <- daysr
+        if(any(is.factor(root), is.integer(root))) {
+            root <- as.character(root)
+        } else if(is.numeric(root)) {
+            ## root is supposed to be a character or integer
+            ## identifier so test that root is a integer the same way
+            ## as binom.test test x
+            rootr <- round(root)
+            if(any(max(abs(root - rootr) > 1e-07))) {
+                stop("'root' must be an integer or character")
+            }
 
-              ## Make sure root, tEnd and days are unique
-              root <- unique(root)
-              tEnd <- unique(tEnd)
-              days <- unique(days)
+            root <- as.character(rootr)
+        } else if(!is.character(root)) {
+            stop('invalid class of root')
+        }
 
-              n.root <- length(root)
-              n.tEnd <- length(tEnd)
-              n.days <- length(days)
-              n <- n.root * n.tEnd * n.days
+        ## Check if we are using the combination of tEnd and days or
+        ## specify inBegin, inEnd, outBegin and outEnd
+        if(all(!is.null(tEnd), !is.null(days))) {
+            ## Using tEnd and days...check that inBegin, inEnd,
+            ## outBegin and outEnd is NULL
+            if(!all(is.null(inBegin), is.null(inEnd), is.null(outBegin), is.null(outEnd))) {
+                stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
+            }
 
-              root <- rep(root, each=n.tEnd*n.days, length.out=n)
-              inEnd <- rep(tEnd, each=n.days, length.out=n)
-              inBegin <- inEnd - rep(days, each=1, length.out=n)
-              outEnd <- inEnd
-              outBegin <- inBegin
-          } else if(all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
-              ## Using tEnd and days...check that
-              ## Using inBegin, inEnd, outBegin and outEnd...check that
-              ## tEnd and days are NULL
-              if(!all(is.null(tEnd), is.null(days))) {
-                  stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
-              }
-          } else {
-              stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
-          }
+            if(any(is.character(tEnd), is.factor(tEnd))) {
+                tEnd <- as.Date(tEnd)
+            }
 
-          ##
-          ## Check inBegin
-          ##
-          if(any(is.character(inBegin), is.factor(inBegin))) {
-              inBegin <- as.Date(inBegin)
-          }
+            if(!identical(class(tEnd), 'Date')) {
+                stop("'tEnd' must be a Date vector")
+            }
 
-          if(!identical(class(inBegin), 'Date')) {
-              stop("'inBegin' must be a Date vector")
-          }
+            ## Test that days is a nonnegative integer the same way as
+            ## binom.test test x
+            daysr <- round(days)
+            if (any(is.na(days) | (days < 0)) || max(abs(days - daysr)) > 1e-07) {
+                stop("'days' must be nonnegative and integer")
+            }
+            days <- daysr
 
-          if(any(is.na(inBegin))) {
-              stop('inBegin contains NA')
-          }
+            ## Make sure root, tEnd and days are unique
+            root <- unique(root)
+            tEnd <- unique(tEnd)
+            days <- unique(days)
 
-          ##
-          ## Check inEnd
-          ##
-          if(any(is.character(inEnd), is.factor(inEnd))) {
-              inEnd <- as.Date(inEnd)
-          }
+            n.root <- length(root)
+            n.tEnd <- length(tEnd)
+            n.days <- length(days)
+            n <- n.root * n.tEnd * n.days
 
-          if(!identical(class(inEnd), 'Date')) {
-              stop("'inEnd' must be a Date vector")
-          }
+            root <- rep(root, each=n.tEnd*n.days, length.out=n)
+            inEnd <- rep(tEnd, each=n.days, length.out=n)
+            inBegin <- inEnd - rep(days, each=1, length.out=n)
+            outEnd <- inEnd
+            outBegin <- inBegin
+        } else if(all(!is.null(inBegin), !is.null(inEnd), !is.null(outBegin), !is.null(outEnd))) {
+            ## Using tEnd and days...check that Using inBegin, inEnd,
+            ## outBegin and outEnd...check that tEnd and days are NULL
+            if(!all(is.null(tEnd), is.null(days))) {
+                stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
+            }
+        } else {
+            stop('Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to ShortestPaths')
+        }
 
-          if(any(is.na(inEnd))) {
-              stop('inEnd contains NA')
-          }
+        ##
+        ## Check inBegin
+        ##
+        if(any(is.character(inBegin), is.factor(inBegin))) {
+            inBegin <- as.Date(inBegin)
+        }
 
-          ##
-          ## Check outBegin
-          ##
-          if(any(is.character(outBegin), is.factor(outBegin))) {
-              outBegin <- as.Date(outBegin)
-          }
+        if(!identical(class(inBegin), 'Date')) {
+            stop("'inBegin' must be a Date vector")
+        }
 
-          if(!identical(class(outBegin), 'Date')) {
-              stop("'outBegin' must be a Date vector")
-          }
+        if(any(is.na(inBegin))) {
+            stop('inBegin contains NA')
+        }
 
-          if(any(is.na(outBegin))) {
-              stop('outBegin contains NA')
-          }
+        ##
+        ## Check inEnd
+        ##
+        if(any(is.character(inEnd), is.factor(inEnd))) {
+            inEnd <- as.Date(inEnd)
+        }
 
-          ##
-          ## Check outEnd
-          ##
-          if(any(is.character(outEnd), is.factor(outEnd))) {
-              outEnd <- as.Date(outEnd)
-          }
+        if(!identical(class(inEnd), 'Date')) {
+            stop("'inEnd' must be a Date vector")
+        }
 
-          if(!identical(class(outEnd), 'Date')) {
-              stop("'outEnd' must be a Date vector")
-          }
+        if(any(is.na(inEnd))) {
+            stop('inEnd contains NA')
+        }
 
-          if(any(is.na(outEnd))) {
-              stop('outEnd contains NA')
-          }
+        ##
+        ## Check outBegin
+        ##
+        if(any(is.character(outBegin), is.factor(outBegin))) {
+            outBegin <- as.Date(outBegin)
+        }
 
-          ##
-          ## Check ranges of dates
-          ##
-          if(any(inEnd < inBegin)) {
-              stop('inEnd < inBegin')
-          }
+        if(!identical(class(outBegin), 'Date')) {
+            stop("'outBegin' must be a Date vector")
+        }
 
-          if(any(outEnd < outBegin)) {
-              stop('outEnd < outBegin')
-          }
+        if(any(is.na(outBegin))) {
+            stop('outBegin contains NA')
+        }
 
-          ##
-          ## Check length of vectors
-          ##
-          if(!identical(length(unique(c(length(root),
-                                        length(inBegin),
-                                        length(inEnd),
-                                        length(outBegin),
-                                        length(outEnd)))),
-                        1L)) {
-              stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
-          }
+        ##
+        ## Check outEnd
+        ##
+        if(any(is.character(outEnd), is.factor(outEnd))) {
+            outEnd <- as.Date(outEnd)
+        }
 
-          ## Arguments seems ok...go on with calculations
+        if(!identical(class(outEnd), 'Date')) {
+            stop("'outEnd' must be a Date vector")
+        }
 
-          ## Make sure all nodes have a valid variable name by making
-          ## a factor of source and destination
-          nodes <- as.factor(unique(c(x$source,
-                                      x$destination,
-                                      root)))
+        if(any(is.na(outEnd))) {
+            stop('outEnd contains NA')
+        }
 
-          sp <- .Call("shortestPaths",
-                      as.integer(factor(x$source, levels=levels(nodes))),
-                      as.integer(factor(x$destination, levels=levels(nodes))),
-                      as.integer(julian(x$t)),
-                      as.integer(factor(root, levels=levels(nodes))),
-                      as.integer(julian(inBegin)),
-                      as.integer(julian(inEnd)),
-                      as.integer(julian(outBegin)),
-                      as.integer(julian(outEnd)),
-                      length(nodes),
-                      PACKAGE = "EpiContactTrace")
+        ##
+        ## Check ranges of dates
+        ##
+        if(any(inEnd < inBegin)) {
+            stop('inEnd < inBegin')
+        }
 
-          result <- NULL
-          if(length(sp$inIndex)) {
-              result <- data.frame(root        = root[sp$inIndex],
-                                   inBegin     = inBegin[sp$inIndex],
-                                   inEnd       = inEnd[sp$inIndex],
-                                   outBegin    = as.Date(NA_character_),
-                                   outEnd      = as.Date(NA_character_),
-                                   direction   = 'in',
-                                   source      = x$source[sp$inRowid],
-                                   destination = NA_character_,
-                                   distance    = sp$inDistance,
-                                   stringsAsFactors=FALSE)
-          }
+        if(any(outEnd < outBegin)) {
+            stop('outEnd < outBegin')
+        }
 
-          if(length(sp$outIndex)) {
-              result <- rbind(result,
-                              data.frame(root        = root[sp$outIndex],
-                                         inBegin     = as.Date(NA_character_),
-                                         inEnd       = as.Date(NA_character_),
-                                         outBegin    = outBegin[sp$outIndex],
-                                         outEnd      = outEnd[sp$outIndex],
-                                         direction   = 'out',
-                                         source      = NA_character_,
-                                         destination = x$destination[sp$outRowid],
-                                         distance    = sp$outDistance,
-                                         stringsAsFactors=FALSE))
-          }
+        ##
+        ## Check length of vectors
+        ##
+        if(!identical(length(unique(c(length(root),
+                                      length(inBegin),
+                                      length(inEnd),
+                                      length(outBegin),
+                                      length(outEnd)))),
+                      1L)) {
+            stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
+        }
 
-          if(is.null(result)) {
-              result <- data.frame(root        = character(0),
-                                   inBegin     = as.Date(character(0)),
-                                   inEnd       = as.Date(character(0)),
-                                   outBegin    = as.Date(character(0)),
-                                   outEnd      = as.Date(character(0)),
-                                   direction   = character(0),
-                                   source      = character(0),
-                                   destination = character(0),
-                                   distance    = integer(0),
-                                   stringsAsFactors=FALSE)
-          } else {
-              rownames(result) <- NULL
-          }
+        ## Arguments seems ok...go on with calculations
 
-          return(result)
-     }
+        ## Make sure all nodes have a valid variable name by making a
+        ## factor of source and destination
+        nodes <- as.factor(unique(c(x$source,
+                                    x$destination,
+                                    root)))
+
+        sp <- .Call("shortestPaths",
+                    as.integer(factor(x$source, levels=levels(nodes))),
+                    as.integer(factor(x$destination, levels=levels(nodes))),
+                    as.integer(julian(x$t)),
+                    as.integer(factor(root, levels=levels(nodes))),
+                    as.integer(julian(inBegin)),
+                    as.integer(julian(inEnd)),
+                    as.integer(julian(outBegin)),
+                    as.integer(julian(outEnd)),
+                    length(nodes),
+                    PACKAGE = "EpiContactTrace")
+
+        result <- NULL
+        if(length(sp$inIndex)) {
+            result <- data.frame(root        = root[sp$inIndex],
+                                 inBegin     = inBegin[sp$inIndex],
+                                 inEnd       = inEnd[sp$inIndex],
+                                 outBegin    = as.Date(NA_character_),
+                                 outEnd      = as.Date(NA_character_),
+                                 direction   = 'in',
+                                 source      = x$source[sp$inRowid],
+                                 destination = NA_character_,
+                                 distance    = sp$inDistance,
+                                 stringsAsFactors=FALSE)
+        }
+
+        if(length(sp$outIndex)) {
+            result <- rbind(result,
+                            data.frame(root        = root[sp$outIndex],
+                                       inBegin     = as.Date(NA_character_),
+                                       inEnd       = as.Date(NA_character_),
+                                       outBegin    = outBegin[sp$outIndex],
+                                       outEnd      = outEnd[sp$outIndex],
+                                       direction   = 'out',
+                                       source      = NA_character_,
+                                       destination = x$destination[sp$outRowid],
+                                       distance    = sp$outDistance,
+                                       stringsAsFactors = FALSE))
+        }
+
+        if(is.null(result)) {
+            result <- data.frame(root        = character(0),
+                                 inBegin     = as.Date(character(0)),
+                                 inEnd       = as.Date(character(0)),
+                                 outBegin    = as.Date(character(0)),
+                                 outEnd      = as.Date(character(0)),
+                                 direction   = character(0),
+                                 source      = character(0),
+                                 destination = character(0),
+                                 distance    = integer(0),
+                                 stringsAsFactors = FALSE)
+        } else {
+            rownames(result) <- NULL
+        }
+
+        result
+    }
 )
