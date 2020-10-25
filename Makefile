@@ -28,10 +28,22 @@ check: clean
 	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check --as-cran \
         --no-manual --no-vignettes --no-build-vignettes $(PKG_TAR)
 
+# Build and check package on https://win-builder.r-project.org/
+.PHONY: winbuilder
+winbuilder: clean check
+	cd .. && curl -T $(PKG_TAR) ftp://win-builder.r-project.org/R-oldrelease/
+	cd .. && curl -T $(PKG_TAR) ftp://win-builder.r-project.org/R-release/
+	cd .. && curl -T $(PKG_TAR) ftp://win-builder.r-project.org/R-devel/
+
+.PHONY: lintr
+lintr:
+	Rscript -e "library(lintr);lint_package(linters = with_defaults(object_name_linter = NULL, object_usage_linter = NULL))"
+
+.PHONY: clean
 clean:
 	-rm -f src/*.o
 	-rm -f src/*.so
 	-rm -rf src-x64
 	-rm -rf src-i386
 
-.PHONY: install roxygen pdf check clean
+.PHONY: install roxygen pdf check
