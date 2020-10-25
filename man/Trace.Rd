@@ -45,9 +45,9 @@ from root. Default is \code{NULL} i.e. don't use the
 maxDistance stop criteria.}
 }
 \description{
-Contact tracing for a specied node(s) (root) during a specfied time period.
-The time period is divided into two parts, one for ingoing contacts and one
-for outgoing contacts.
+Contact tracing for a specied node(s) (root) during a specfied
+time period.  The time period is divided into two parts, one for
+ingoing contacts and one for outgoing contacts.
 }
 \details{
 The time period used for \code{Trace} can either be specified
@@ -97,31 +97,29 @@ with the following columns:
 }
 }
 \examples{
-\dontrun{
-
 ## Load data
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-trace.1 <- Trace(movements=transfers,
-                 root=2645,
-                 tEnd='2005-10-31',
-                 days=91)
+trace_1 <- Trace(movements = transfers,
+                 root = 2645,
+                 tEnd = "2005-10-31",
+                 days = 91)
 
 ## Perform contact tracing using inBegin, inEnd
 ## outBegin and outEnd
-trace.2 <- Trace(movements=transfers,
-                 root=2645,
-                 inBegin='2005-08-01',
-                 inEnd='2005-10-31',
-                 outBegin='2005-08-01',
-                 outEnd='2005-10-31')
+trace_2 <- Trace(movements = transfers,
+                 root = 2645,
+                 inBegin = "2005-08-01",
+                 inEnd = "2005-10-31",
+                 outBegin = "2005-08-01",
+                 outEnd = "2005-10-31")
 
 ## Check that the result is identical
-identical(trace.1, trace.2)
+identical(trace_1, trace_2)
 
 ## Show result of contact tracing
-show(trace.1)
+trace_1
 
 ## Create a network summary for all included herds
 ## First extract all source and destination from the dataset
@@ -129,26 +127,22 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Perform contact tracing using tEnd and days.
-trace.3 <- Trace(movements=transfers,
-                 root=root,
-                 tEnd='2005-10-31',
-                 days=91)
+trace_3 <- Trace(movements = transfers,
+                 root = root,
+                 tEnd = "2005-10-31",
+                 days = 91)
 
 ## Perform contact tracing using inBegin, inEnd
 ## outBegin and outEnd
-trace.4 <- Trace(movements=transfers,
-                 root=root,
-                 inBegin=rep('2005-08-01', length(root)),
-                 inEnd=rep('2005-10-31', length(root)),
-                 outBegin=rep('2005-08-01', length(root)),
-                 outEnd=rep('2005-10-31', length(root)))
+trace_4 <- Trace(movements = transfers,
+                 root = root,
+                 inBegin = rep("2005-08-01", length(root)),
+                 inEnd = rep("2005-10-31", length(root)),
+                 outBegin=rep("2005-08-01", length(root)),
+                 outEnd=rep("2005-10-31", length(root)))
 
 ## Check that the result is identical
-identical(trace.3, trace.4)
-
-NetworkSummary(trace.3)
-}
-
+identical(trace_3, trace_4)
 }
 \references{
 \itemize{ \item Dube, C., et al., A review of network

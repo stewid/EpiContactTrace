@@ -24,8 +24,8 @@ ShortestPaths(x, ...)
 }
 \arguments{
 \item{x}{a \code{\linkS4class{ContactTrace}} object, or a
-\code{data.frame} with movements of animals between holdings, see
-\code{\link{Trace}} for details.}
+\code{data.frame} with movements of animals between holdings,
+see \code{\link{Trace}} for details.}
 
 \item{...}{Additional arguments to the method}
 
@@ -46,15 +46,12 @@ to \code{NULL}}
 \item{outBegin}{the first date to include outgoing
 movements. Defaults to \code{NULL}}
 
-\item{outEnd}{the last date to include outgoing movements. Defaults
-to \code{NULL}}
+\item{outEnd}{the last date to include outgoing
+movements. Defaults to \code{NULL}}
 }
 \value{
-A \code{data.frame} with the following columns:
-\describe{
-  \item{root}{
-    The root of the contact tracing
-  }
+A \code{data.frame} with the following columns: \describe{
+    \item{root}{ The root of the contact tracing }
 
   \item{inBegin}{
     If the direction is ingoing, then inBegin equals inBegin in
@@ -98,10 +95,10 @@ Methods for function \code{ShortestPaths} in package \pkg{EpiContactTrace}
 to get the shortest distance from/to the root given by the contact tracing.
 }
 \details{
-The contact tracing performs a depth first search starting at the root. The
-\code{ShortestPaths} gives the shortest distance from root at each node.
-The network tree structure given by the depth first search is shown by
-\code{\link{show}}.
+The contact tracing performs a depth first search starting at the
+root. The \code{ShortestPaths} gives the shortest distance from
+root at each node.  The network tree structure given by the depth
+first search is shown by \code{\link{show}}.
 }
 \section{Methods}{
  \describe{
@@ -125,10 +122,10 @@ The network tree structure given by the depth first search is shown by
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
 ShortestPaths(contactTrace)
 
@@ -136,8 +133,10 @@ ShortestPaths(contactTrace)
 ## First extract all source and destination from the dataset
 root <- sort(unique(c(transfers$source, transfers$destination)))
 
-sp <- ShortestPaths(transfers, root=root, tEnd='2005-10-31', days=90)
-
+sp <- ShortestPaths(transfers,
+                    root = root,
+                    tEnd = "2005-10-31",
+                    days = 90)
 }
 }
 \seealso{
