@@ -142,22 +142,22 @@ setMethod(
     signature(x = "ContactTrace"),
     function(x) {
         ns <- NetworkStructure(x)
-        ns.in <- ns[ns$direction == "in",]
-        ns.out <- ns[ns$direction == "out",]
+        ns_in <- ns[ns$direction == "in",]
+        ns_out <- ns[ns$direction == "out",]
 
         result <- NULL
-        if(nrow(ns.in)) {
-            ns.in <- ns.in[order(ns.in$distance, ns.in$source),]
-            ns.in <- ns.in[!duplicated(ns.in$source),]
-            ns.in$destination <- NA_character_
-            result <- ns.in
+        if(nrow(ns_in)) {
+            ns_in <- ns_in[order(ns_in$distance, ns_in$source),]
+            ns_in <- ns_in[!duplicated(ns_in$source),]
+            ns_in$destination <- NA_character_
+            result <- ns_in
         }
 
-        if(nrow(ns.out)) {
-            ns.out <- ns.out[order(ns.out$distance, ns.out$destination),]
-            ns.out <- ns.out[!duplicated(ns.out$destination),]
-            ns.out$source <- NA_character_
-            result <- rbind(result, ns.out)
+        if(nrow(ns_out)) {
+            ns_out <- ns_out[order(ns_out$distance, ns_out$destination),]
+            ns_out <- ns_out[!duplicated(ns_out$destination),]
+            ns_out$source <- NA_character_
+            result <- rbind(result, ns_out)
         }
 
         if(is.null(result)) {
