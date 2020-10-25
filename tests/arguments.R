@@ -1,4 +1,4 @@
-## Copyright 2013-2014 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -169,7 +169,8 @@ tools::assertError(Trace(movement = data.frame(
                          root = 1,
                          days = 90))
 ##
-## Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in call to Trace
+## Use either tEnd and days or inBegin, inEnd, outBegin and outEnd in
+## call to Trace
 ##
 tools::assertError(Trace(movement = data.frame(
                              source = 1L,
@@ -221,7 +222,9 @@ tools::assertError(Trace(movements = data.frame(source = 1, destination = 1),
 ##
 ## invalid class of column t in movements
 ##
-tools::assertError(Trace(movements = data.frame(source = 1L, destination = 2L, t = 1),
+tools::assertError(Trace(movements = data.frame(source = 1L,
+                                                destination = 2L,
+                                                t = 1),
                          root = 1L,
                          inBegin = as.Date("2011-08-10"),
                          inEnd = as.Date("2011-08-10"),
@@ -232,8 +235,8 @@ tools::assertError(Trace(movements = data.frame(source = 1L, destination = 2L, t
 ## source in movements contains NA
 ##
 tools::assertError(Trace(movements = data.frame(
-                             source = c(1L,NA),
-                             destination = c(2L,3L),
+                             source = c(1L, NA),
+                             destination = c(2L, 3L),
                              t = c("2011-08-10", "2011-08-10")),
                          root = 1L,
                          inBegin = as.Date("2011-08-10"),
@@ -245,8 +248,8 @@ tools::assertError(Trace(movements = data.frame(
 ## destination in movements contains NA
 ##
 tools::assertError(Trace(movements = data.frame(
-                             source = c(1L,2L),
-                             destination = c(2L,NA),
+                             source = c(1L, 2L),
+                             destination = c(2L, NA),
                              t = c("2011-08-10", "2011-08-10")),
                          root = 1L,
                          inBegin = as.Date("2011-08-10"),
@@ -258,8 +261,8 @@ tools::assertError(Trace(movements = data.frame(
 ## t in movements contains NA
 ##
 tools::assertError(Trace(movements = data.frame(
-                             source = c(1L,2L),
-                             destination = c(2L,3L),
+                             source = c(1L, 2L),
+                             destination = c(2L, 3L),
                              t = c("2011-08-10", NA)),
                          root = 1L,
                          inBegin = as.Date("2011-08-10"),
@@ -271,8 +274,8 @@ tools::assertError(Trace(movements = data.frame(
 ## t in movements contains NA
 ##
 tools::assertError(Trace(movements = data.frame(
-                             source = c(1L,2L),
-                             destination = c(2L,3L),
+                             source = c(1L, 2L),
+                             destination = c(2L, 3L),
                              t = c("2011-08-10", NA)),
                          root = 1L,
                          inBegin = as.Date("2011-08-10"),
@@ -391,7 +394,7 @@ tools::assertError(Trace(movements = data.frame(
                          outEnd = 2011))
 
 ##
-## inEnd < inBegin
+## inEnd less than inBegin
 ##
 tools::assertError(Trace(movements = data.frame(
                              source = 1L,
@@ -404,7 +407,7 @@ tools::assertError(Trace(movements = data.frame(
                          outEnd = as.Date("2011-08-10")))
 
 ##
-## outEnd < outBegin
+## outEnd less than outBegin
 ##
 tools::assertError(Trace(movements = data.frame(
                              source = 1L,

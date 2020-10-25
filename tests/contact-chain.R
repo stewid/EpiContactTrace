@@ -28,10 +28,11 @@ library(EpiContactTrace)
 ## Case 1
 ##
 
-movements <- structure(list(source = 1:7, destination = c(4L, 5L, 5L,
-6L, 8L, 8L, 8L), t = structure(c(14849, 14846, 14847, 14850, 14848,
-14851, 14852), class = "Date")), .Names = c("source", "destination",
-"t"), class = "data.frame", row.names = c(NA, -7L))
+movements <- data.frame(
+    source = 1:7,
+    destination = c(4L, 5L, 5L, 6L, 8L, 8L, 8L),
+    t = structure(c(14849, 14846, 14847, 14850, 14848, 14851, 14852),
+                  class = "Date"))
 ct <- Trace(movements,
             root = 8L,
             inBegin = as.Date("2010-08-22"),
@@ -46,12 +47,12 @@ stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 0L))
 ## Case 2
 ##
 
-movements <- structure(list(source = c(1L, 2L, 3L, 3L), destination =
-c(3L, 3L, 4L, 4L), t = structure(c(14834, 14838, 14836, 14841), class
-= "Date"), individual = c(NA_character_, NA_character_, NA_character_,
-NA_character_), n = c(NA_integer_, NA_integer_, NA_integer_,
-NA_integer_)), .Names = c("source", "destination", "t", "individual",
-"n"), row.names = c(NA, -4L), class = "data.frame")
+movements <- data.frame(
+    source = c(1L, 2L, 3L, 3L),
+    destination = c(3L, 3L, 4L, 4L),
+    t = structure(c(14834, 14838, 14836, 14841), class = "Date"),
+    individual = c(NA_character_, NA_character_, NA_character_, NA_character_),
+    n = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_))
 ct <- Trace(movements,
             root = 4L,
             inBegin = as.Date("2010-07-22"),
@@ -66,11 +67,12 @@ stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 0L))
 ## Case 3
 ##
 
-movements <- structure(list(source = 1:2, destination = c(2L, 1L), t =
-structure(c(14834, 14834), class = "Date"), individual =
-c(NA_character_, NA_character_ ), n = c(NA_integer_, NA_integer_)),
-.Names = c("source", "destination", "t", "individual", "n"), row.names
-= c(NA, -2L), class = "data.frame")
+movements <- data.frame(
+    source = 1:2,
+    destination = c(2L, 1L),
+    t = structure(c(14834, 14834), class = "Date"),
+    individual = c(NA_character_, NA_character_),
+    n = c(NA_integer_, NA_integer_))
 ct <- Trace(movements,
             root = 1L,
             inBegin = as.Date("2010-08-02"),
@@ -85,14 +87,16 @@ stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 0L))
 ## Case 4
 ##
 
-movements <- structure(list(source = c(1L, 2L, 2L, 1L, 3L, 7L, 1L),
-destination = c(2L, 5L, 6L, 3L, 7L, 8L, 4L), t = structure(c(14834,
-14838, 14836, 14857, 14860, 14862, 14884), class = "Date"), individual
-= c(NA_character_, NA_character_, NA_character_, NA_character_,
-NA_character_, NA_character_, NA_character_), n = c(NA_integer_,
-NA_integer_, NA_integer_, NA_integer_, NA_integer_, NA_integer_,
-NA_integer_)), .Names = c("source", "destination", "t", "individual",
-"n"), row.names = c(NA, -7L ), class = "data.frame")
+movements <- data.frame(
+    source = c(1L, 2L, 2L, 1L, 3L, 7L, 1L),
+    destination = c(2L, 5L, 6L, 3L, 7L, 8L, 4L),
+    t = structure(c(14834, 14838, 14836, 14857, 14860, 14862, 14884),
+                  class = "Date"),
+    individual = c(NA_character_, NA_character_, NA_character_,
+                   NA_character_, NA_character_, NA_character_,
+                   NA_character_),
+    n = c(NA_integer_, NA_integer_, NA_integer_, NA_integer_,
+          NA_integer_, NA_integer_, NA_integer_))
 ct <- Trace(movements,
             root = 1L,
             inBegin = as.Date("2010-08-02"),
@@ -107,11 +111,12 @@ stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 7L))
 ## Case 5
 ##
 
-movements <- structure(list(source = 1:2, destination = c(2L, 1L), t =
-structure(c(14834, 14834), class = "Date"), individual =
-c(NA_character_, NA_character_ ), n = c(NA_integer_, NA_integer_)),
-.Names = c("source", "destination", "t", "individual", "n"), row.names
-= c(NA, -2L), class = "data.frame")
+movements <- data.frame(
+    source = 1:2,
+    destination = c(2L, 1L),
+    t = structure(c(14834, 14834), class = "Date"),
+    individual = c(NA_character_, NA_character_),
+    n = c(NA_integer_, NA_integer_))
 ct <- Trace(movements,
             root = 1L,
             inBegin = as.Date("2010-07-02"),
@@ -126,12 +131,14 @@ stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 1L))
 ## Case 6
 ##
 
-movements <- structure(list(source = c(1L, 2L, 1L, 2L, 1L, 3L, 1L),
-destination = c(2L, 3L, 2L, 3L, 2L, 4L, 2L), t = structure(c(1L, 2L,
-3L, 4L, 7L, 6L, 5L), .Label = c("2010-10-01", "2010-10-05",
-"2010-10-10", "2010-10-15", "2010-10-20", "2010-10-25", "2010-10-30"),
-class = "factor")), .Names = c("source", "destination", "t"), class =
-"data.frame", row.names = c(NA, -7L))
+movements <- data.frame(
+    source = c(1L, 2L, 1L, 2L, 1L, 3L, 1L),
+    destination = c(2L, 3L, 2L, 3L, 2L, 4L, 2L),
+    t = structure(c(1L, 2L, 3L, 4L, 7L, 6L, 5L),
+                  .Label = c("2010-10-01", "2010-10-05", "2010-10-10",
+                             "2010-10-15", "2010-10-20", "2010-10-25",
+                             "2010-10-30"),
+                  class = "factor"))
 ct <- Trace(movements,
             root = 1L,
             inBegin = as.Date("2010-10-10"),
@@ -146,14 +153,16 @@ stopifnot(identical(OutgoingContactChain(ct)$outgoingContactChain, 2L))
 ## Case 7
 ##
 
-movements <- structure(list(source = c(1L, 2L, 1L, 2L, 1L, 3L, 1L),
-destination = c(2L, 3L, 2L, 3L, 2L, 4L, 2L), t = structure(c(1L, 2L,
-3L, 4L, 7L, 6L, 5L), .Label = c("2010-10-01", "2010-10-05",
-"2010-10-10", "2010-10-15", "2010-10-20", "2010-10-25", "2010-10-30"),
-class = "factor")), .Names = c("source", "destination", "t"), class =
-"data.frame", row.names = c(NA, -7L))
+movements <- data.frame(
+    source = c(1L, 2L, 1L, 2L, 1L, 3L, 1L),
+    destination = c(2L, 3L, 2L, 3L, 2L, 4L, 2L),
+    t = structure(c(1L, 2L, 3L, 4L, 7L, 6L, 5L),
+                  .Label = c("2010-10-01", "2010-10-05", "2010-10-10",
+                             "2010-10-15", "2010-10-20", "2010-10-25",
+                             "2010-10-30"),
+                  class = "factor"))
 
-ns <- NetworkSummary(movements, root=1, tEnd="2010-10-20", days=10)
+ns <- NetworkSummary(movements, root = 1, tEnd = "2010-10-20", days = 10)
 
 df <- data.frame(root = "1",
                  inBegin = structure(14892, class = "Date"),
