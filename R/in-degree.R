@@ -180,7 +180,7 @@ setMethod(
     "InDegree",
     signature(x = "Contacts"),
     function(x) {
-        if(!identical(x@direction, "in"))
+        if (!identical(x@direction, "in"))
             stop("Unable to determine InDegree for outgoing contacts")
 
         length(unique(x@source[x@destination == x@root]))
@@ -192,7 +192,7 @@ setMethod(
 setMethod(
     "InDegree",
     signature(x = "ContactTrace"),
-    function (x) {
+    function(x) {
         ns <- NetworkSummary(x)
         ns[, c("root", "inBegin", "inEnd", "inDays", "inDegree")]
     }
@@ -209,10 +209,10 @@ setMethod(
              days = NULL,
              inBegin = NULL,
              inEnd = NULL) {
-        if(missing(root))
+        if (missing(root))
             stop("Missing parameters in call to InDegree")
 
-        if(all(is.null(tEnd), is.null(days))) {
+        if (all(is.null(tEnd), is.null(days))) {
             outBegin <- inBegin
             outEnd <- outBegin
         } else {
