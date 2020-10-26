@@ -139,20 +139,20 @@ setMethod(
     signature(x = "ContactTrace"),
     function(x) {
         ns <- NetworkStructure(x)
-        ns_in <- ns[ns$direction == "in",]
-        ns_out <- ns[ns$direction == "out",]
+        ns_in <- ns[ns$direction == "in", ]
+        ns_out <- ns[ns$direction == "out", ]
 
         result <- NULL
         if (nrow(ns_in)) {
-            ns_in <- ns_in[order(ns_in$distance, ns_in$source),]
-            ns_in <- ns_in[!duplicated(ns_in$source),]
+            ns_in <- ns_in[order(ns_in$distance, ns_in$source), ]
+            ns_in <- ns_in[!duplicated(ns_in$source), ]
             ns_in$destination <- NA_character_
             result <- ns_in
         }
 
         if (nrow(ns_out)) {
             ns_out <- ns_out[order(ns_out$distance, ns_out$destination),]
-            ns_out <- ns_out[!duplicated(ns_out$destination),]
+            ns_out <- ns_out[!duplicated(ns_out$destination), ]
             ns_out$source <- NA_character_
             result <- rbind(result, ns_out)
         }
@@ -274,9 +274,9 @@ setMethod(
             n.days <- length(days)
             n <- n.root * n.tEnd * n.days
 
-            root <- rep(root, each=n.tEnd*n.days, length.out=n)
-            inEnd <- rep(tEnd, each=n.days, length.out=n)
-            inBegin <- inEnd - rep(days, each=1, length.out=n)
+            root <- rep(root, each = n.tEnd*n.days, length.out = n)
+            inEnd <- rep(tEnd, each = n.days, length.out = n)
+            inBegin <- inEnd - rep(days, each = 1, length.out = n)
             outEnd <- inEnd
             outBegin <- inBegin
         } else if (all(!is.null(inBegin), !is.null(inEnd),
