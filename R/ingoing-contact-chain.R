@@ -183,7 +183,7 @@ setGeneric(
 setMethod(
     "IngoingContactChain",
     signature(x = "Contacts"),
-    function (x) {
+    function(x) {
         if (!identical(x@direction, "in")) {
             stop(paste0("Unable to determine IngoingContactChain",
                         " for outgoing contacts"))
@@ -198,7 +198,7 @@ setMethod(
 setMethod(
     "IngoingContactChain",
     signature(x = "ContactTrace"),
-    function (x) {
+    function(x) {
         ns <- NetworkSummary(x)
         ns[, c("root", "inBegin", "inEnd", "inDays", "ingoingContactChain")]
     }

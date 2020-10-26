@@ -1,4 +1,4 @@
-## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -20,14 +20,15 @@
 
 ##' \code{NetworkSummary}
 ##'
-##' \code{NetworkSummary} gives a summary of the contact tracing including the
-##' time-window, \code{\link{InDegree}}, \code{\link{OutDegree}},
-##' \code{\link{IngoingContactChain}} and \code{\link{OutgoingContactChain}}.
+##' \code{NetworkSummary} gives a summary of the contact tracing
+##' including the time-window, \code{\link{InDegree}},
+##' \code{\link{OutDegree}}, \code{\link{IngoingContactChain}} and
+##' \code{\link{OutgoingContactChain}}.
 ##'
 ##'
-##' The time period used for \code{NetworkSummary} can either be specified
-##' using \code{tEnd} and \code{days} or \code{inBegin}, \code{inEnd},
-##' \code{outBegin} and \code{outEnd}.
+##' The time period used for \code{NetworkSummary} can either be
+##' specified using \code{tEnd} and \code{days} or \code{inBegin},
+##' \code{inEnd}, \code{outBegin} and \code{outEnd}.
 ##'
 ##' If using \code{tEnd} and \code{days}, the time period for ingoing
 ##' and outgoing contacts ends at \code{tEnd} and starts at
@@ -68,29 +69,31 @@
 ##'   }
 ##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal e.g. Cattle.
+##'     an optional character or factor with category of the animal
+##'     e.g. Cattle.
 ##'   }
 ##' }
 ##'
 ##' @rdname NetworkSummary-methods
 ##' @docType methods
-##' @param x a ContactTrace object or a \code{data.frame} with
-##' movements of animals between holdings, see \code{\link{Trace}} for
-##' details.
+##' @param x a ContactTrace object, a \code{data.frame} with movements
+##'     of animals between holdings (see \code{\link{Trace}} for
+##'     details), or a list of \code{ContactTrace} objects where each
+##'     item in the list must be a \code{ContactTrace} object.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate network summary for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' ingoing movements. Defaults to \code{NULL}
+##'     ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param outBegin the first date to include outgoing
-##' movements. Defaults to \code{NULL}
-##' @param outEnd the last date to include outgoing movements. Defaults
-##' to \code{NULL}
+##'     movements. Defaults to \code{NULL}
+##' @param outEnd the last date to include outgoing
+##'     movements. Defaults to \code{NULL}
 ##' @return A \code{data.frame} with the following columns:
 ##' \describe{
 ##'   \item{root}{
@@ -137,6 +140,11 @@
 ##'     \code{Contacts} of a ContactTrace object.
 ##'   }
 ##'
+##'   \item{\code{signature(x = "list")}}{
+##'     Get the network summary for a list of \code{ContactTrace} objects.
+##'     Each item in the list must be a \code{ContactTrace} object.
+##'   }
+##'
 ##'   \item{\code{signature(x = "data.frame")}}{
 ##'     Get the network summary for a data.frame with movements,
 ##'     see details and examples.
@@ -157,13 +165,15 @@
 ##' @keywords methods
 ##' @useDynLib EpiContactTrace
 ##' @examples
+##' \dontrun{
+##'
 ##' ## Load data
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing using tEnd and days
 ##' contactTrace <- Trace(movements = transfers,
 ##'                       root = 2645,
-##'                       tEnd = "2005-10-31",
+##'                       tEnd = "2005-10-31',
 ##'                       days = 91)
 ##'
 ##' ## Calculate network summary from a ContactTrace object
@@ -230,279 +240,298 @@
 ##'                            inEnd = rep("2005-10-31", length(root)),
 ##'                            outBegin = rep("2005-08-02", length(root)),
 ##'                            outEnd = rep("2005-10-31", length(root)))
-setGeneric("NetworkSummary",
-           signature = "x",
-           function(x, ...) standardGeneric("NetworkSummary"))
-
-##' @rdname NetworkSummary-methods
-##' @export
-setMethod("NetworkSummary",
-          signature(x = "ContactTrace"),
-          function(x) {
-          data.frame(root = x@root,
-                     inBegin = x@ingoingContacts@tBegin,
-                     inEnd = x@ingoingContacts@tEnd,
-                     inDays = as.integer(x@ingoingContacts@tEnd -
-                                         x@ingoingContacts@tBegin),
-                     outBegin = x@outgoingContacts@tBegin,
-                     outEnd = x@outgoingContacts@tEnd,
-                     outDays = as.integer(x@outgoingContacts@tEnd -
-                                          x@outgoingContacts@tBegin),
-                     inDegree = InDegree(x@ingoingContacts),
-                     outDegree = OutDegree(x@outgoingContacts),
-                     ingoingContactChain =
-                         IngoingContactChain(x@ingoingContacts),
-                     outgoingContactChain =
-                         OutgoingContactChain(x@outgoingContacts))
-      }
+##' }
+setGeneric(
+    "NetworkSummary",
+    signature = "x",
+    function(x, ...) {
+        standardGeneric("NetworkSummary")
+    }
 )
 
 ##' @rdname NetworkSummary-methods
 ##' @export
-setMethod("NetworkSummary",
-          signature(x = "data.frame"),
-          function(x,
-                   root,
-                   tEnd = NULL,
-                   days = NULL,
-                   inBegin = NULL,
-                   inEnd = NULL,
-                   outBegin = NULL,
-                   outEnd = NULL) {
-              ## Check that arguments are ok from various
-              ## perspectives...
+setMethod(
+    "NetworkSummary",
+    signature(x = "ContactTrace"),
+    function(x) {
+        data.frame(root = x@root,
+                   inBegin = x@ingoingContacts@tBegin,
+                   inEnd = x@ingoingContacts@tEnd,
+                   inDays = as.integer(x@ingoingContacts@tEnd -
+                                       x@ingoingContacts@tBegin),
+                   outBegin = x@outgoingContacts@tBegin,
+                   outEnd = x@outgoingContacts@tEnd,
+                   outDays = as.integer(x@outgoingContacts@tEnd -
+                                        x@outgoingContacts@tBegin),
+                   inDegree = InDegree(x@ingoingContacts),
+                   outDegree = OutDegree(x@outgoingContacts),
+                   ingoingContactChain =
+                       IngoingContactChain(x@ingoingContacts),
+                   outgoingContactChain =
+                       OutgoingContactChain(x@outgoingContacts),
+                   stringsAsFactors = FALSE)
+    }
+)
 
-              ## Check the data.frame x with movements
-              if (!all(c("source", "destination", "t") %in% names(x))) {
-                  stop("x must contain the columns ",
-                       "source, destination and t.")
-              }
+##' @rdname NetworkSummary-methods
+##' @export
+setMethod(
+    "NetworkSummary",
+    signature(x = "list"),
+    function(x) {
+        if (!all(vapply(x,
+                        function(y) {
+                            inherits(y, "ContactTrace")
+                        },
+                        logical(1)))) {
+            stop("list must only contain 'ContactTrace' objects.")
+        }
 
-              if (any(is.factor(x$source), is.integer(x$source))) {
-                  x$source <- as.character(x$source)
-              } else if (!is.character(x$source)) {
-                  stop("invalid class of column source in x")
-              }
+        do.call("rbind", lapply(x, NetworkSummary))
+    }
+)
 
-              if (any(is.factor(x$destination), is.integer(x$destination))) {
-                  x$destination <- as.character(x$destination)
-              } else if (!is.character(x$destination)) {
-                  stop("invalid class of column destination in x")
-              }
+##' @rdname NetworkSummary-methods
+##' @export
+setMethod(
+    "NetworkSummary",
+    signature(x = "data.frame"),
+    function(x,
+             root,
+             tEnd = NULL,
+             days = NULL,
+             inBegin = NULL,
+             inEnd = NULL,
+             outBegin = NULL,
+             outEnd = NULL) {
+        ## Check that arguments are ok from various perspectives...
 
-              if (any(is.character(x$t), is.factor(x$t))) {
-                  x$t <- as.Date(x$t)
-              }
+        ## Check the data.frame x with movements
+        if (!all(c("source", "destination", "t") %in% names(x))) {
+            stop("x must contain the columns source, destination and t.")
+        }
 
-              if (!identical(class(x$t), "Date")) {
-                  stop("invalid class of column t in x")
-              }
+        if (any(is.factor(x$source), is.integer(x$source))) {
+            x$source <- as.character(x$source)
+        } else if (!is.character(x$source)) {
+            stop("invalid class of column source in x")
+        }
 
-              if (any(is.na(x$t))) {
-                  stop("t in x contains NA")
-              }
+        if (any(is.factor(x$destination), is.integer(x$destination))) {
+            x$destination <- as.character(x$destination)
+        } else if (!is.character(x$destination)) {
+            stop("invalid class of column destination in x")
+        }
 
-              ## Make sure the columns are in expected order and
-              ## remove non-unique observations
-              x <- unique(x[, c("source", "destination", "t")])
+        if (any(is.character(x$t), is.factor(x$t))) {
+            x$t <- as.Date(x$t)
+        }
 
-              ## Check root
-              if (missing(root)) {
-                  stop("Missing root in call to NetworkSummary")
-              }
+        if (!identical(class(x$t), "Date")) {
+            stop("invalid class of column t in x")
+        }
 
-              if (any(is.factor(root), is.integer(root))) {
-                  root <- as.character(root)
-              } else if (is.numeric(root)) {
-                  ## root is supposed to be a character or integer
-                  ## identifier so test that root is a integer the
-                  ## same way as binom.test test x
-                  rootr <- round(root)
-                  if (any(max(abs(root - rootr) > 1e-07))) {
-                      stop("'root' must be an integer or character")
-                  }
+        if (any(is.na(x$t))) {
+            stop("t in x contains NA")
+        }
 
-                  root <- as.character(rootr)
-              } else if (!is.character(root)) {
-                  stop("invalid class of root")
-              }
+        ## Make sure the columns are in expected order and remove
+        ## non-unique observations
+        x <- unique(x[, c("source", "destination", "t")])
 
-              ## Check if we are using the combination of tEnd and
-              ## days or specify inBegin, inEnd, outBegin and outEnd
-              if (all(!is.null(tEnd), !is.null(days))) {
-                  ## Using tEnd and days...check that inBegin, inEnd,
-                  ## outBegin and outEnd is NULL
-                  if (!all(is.null(inBegin), is.null(inEnd),
-                           is.null(outBegin), is.null(outEnd))) {
-                      stop("Use either tEnd and days or inBegin, inEnd, ",
-                           "outBegin and outEnd in call to NetworkSummary")
-                  }
+        ## Check root
+        if (missing(root)) {
+            stop("Missing root in call to NetworkSummary")
+        }
 
-                  if (any(is.character(tEnd), is.factor(tEnd))) {
-                      tEnd <- as.Date(tEnd)
-                  }
+        if (any(is.factor(root), is.integer(root))) {
+            root <- as.character(root)
+        } else if (is.numeric(root)) {
+            ## root is supposed to be a character or integer
+            ## identifier so test that root is a integer the same way
+            ## as binom.test test x
+            rootr <- round(root)
+            if (any(max(abs(root - rootr) > 1e-07))) {
+                stop("'root' must be an integer or character")
+            }
 
-                  if (!identical(class(tEnd), "Date")) {
-                      stop("'tEnd' must be a Date vector")
-                  }
+            root <- as.character(rootr)
+        } else if (!is.character(root)) {
+            stop("invalid class of root")
+        }
 
-                  ## Test that days is a nonnegative integer the same
-                  ## way as binom.test test x
-                  daysr <- round(days)
-                  if (any(is.na(days) | (days < 0)) ||
-                      max(abs(days - daysr)) > 1e-07) {
-                      stop("'days' must be nonnegative and integer")
-                  }
-                  days <- daysr
+        ## Check if we are using the combination of tEnd and days or
+        ## specify inBegin, inEnd, outBegin and outEnd
+        if (all(!is.null(tEnd), !is.null(days))) {
+            ## Using tEnd and days...check that inBegin, inEnd,
+            ## outBegin and outEnd is NULL
+            if (!all(is.null(inBegin), is.null(inEnd),
+                     is.null(outBegin), is.null(outEnd))) {
+                stop("Use either tEnd and days or inBegin, inEnd, ",
+                     "outBegin and outEnd in call to NetworkSummary")
+            }
 
-                  ## Make sure root, tEnd and days are unique
-                  root <- unique(root)
-                  tEnd <- unique(tEnd)
-                  days <- unique(days)
+            if (any(is.character(tEnd), is.factor(tEnd))) {
+                tEnd <- as.Date(tEnd)
+            }
 
-                  n.root <- length(root)
-                  n.tEnd <- length(tEnd)
-                  n.days <- length(days)
-                  n <- n.root * n.tEnd * n.days
+            if (!identical(class(tEnd), "Date")) {
+                stop("'tEnd' must be a Date vector")
+            }
 
-                  root <- rep(root, each = n.tEnd * n.days, length.out = n)
-                  inEnd <- rep(tEnd, each = n.days, length.out = n)
-                  inBegin <- inEnd - rep(days, each = 1, length.out = n)
-                  outEnd <- inEnd
-                  outBegin <- inBegin
-              } else if (all(!is.null(inBegin), !is.null(inEnd),
-                             !is.null(outBegin), !is.null(outEnd))) {
-                  ## Using tEnd and days...check that Using inBegin,
-                  ## inEnd, outBegin and outEnd...check that tEnd and
-                  ## days are NULL
-                  if (!all(is.null(tEnd), is.null(days))) {
-                      stop("Use either tEnd and days or inBegin, inEnd, ",
-                           "outBegin and outEnd in call to NetworkSummary")
-                  }
-              } else {
-                  stop("Use either tEnd and days or inBegin, inEnd, ",
-                       "outBegin and outEnd in call to NetworkSummary")
-              }
+            ## Test that days is a nonnegative integer the same way as
+            ## binom.test test x
+            daysr <- round(days)
+            if (any(is.na(days) | (days < 0)) ||
+                max(abs(days - daysr)) > 1e-07) {
+                stop("'days' must be nonnegative and integer")
+            }
+            days <- daysr
 
-              ##
-              ## Check inBegin
-              ##
-              if (any(is.character(inBegin), is.factor(inBegin))) {
-                  inBegin <- as.Date(inBegin)
-              }
+            ## Make sure root, tEnd and days are unique
+            root <- unique(root)
+            tEnd <- unique(tEnd)
+            days <- unique(days)
 
-              if (!identical(class(inBegin), "Date")) {
-                  stop("'inBegin' must be a Date vector")
-              }
+            n.root <- length(root)
+            n.tEnd <- length(tEnd)
+            n.days <- length(days)
+            n <- n.root * n.tEnd * n.days
 
-              if (any(is.na(inBegin))) {
-                  stop("inBegin contains NA")
-              }
+            root <- rep(root, each = n.tEnd*n.days, length.out = n)
+            inEnd <- rep(tEnd, each = n.days, length.out = n)
+            inBegin <- inEnd - rep(days, each = 1, length.out = n)
+            outEnd <- inEnd
+            outBegin <- inBegin
+        } else if (all(!is.null(inBegin), !is.null(inEnd),
+                       !is.null(outBegin), !is.null(outEnd))) {
+            ## Using tEnd and days...check that Using inBegin, inEnd,
+            ## outBegin and outEnd...check that tEnd and days are NULL
+            if (!all(is.null(tEnd), is.null(days))) {
+                stop("Use either tEnd and days or inBegin, inEnd, ",
+                     "outBegin and outEnd in call to NetworkSummary")
+            }
+        } else {
+            stop("Use either tEnd and days or inBegin, inEnd, ",
+                 "outBegin and outEnd in call to NetworkSummary")
+        }
 
-              ##
-              ## Check inEnd
-              ##
-              if (any(is.character(inEnd), is.factor(inEnd))) {
-                  inEnd <- as.Date(inEnd)
-              }
+        ##
+        ## Check inBegin
+        ##
+        if (any(is.character(inBegin), is.factor(inBegin))) {
+            inBegin <- as.Date(inBegin)
+        }
 
-              if (!identical(class(inEnd), "Date")) {
-                  stop("'inEnd' must be a Date vector")
-              }
+        if (!identical(class(inBegin), "Date")) {
+            stop("'inBegin' must be a Date vector")
+        }
 
-              if (any(is.na(inEnd))) {
-                  stop("inEnd contains NA")
-              }
+        if (any(is.na(inBegin))) {
+            stop('inBegin contains NA')
+        }
 
-              ##
-              ## Check outBegin
-              ##
-              if (any(is.character(outBegin), is.factor(outBegin))) {
-                  outBegin <- as.Date(outBegin)
-              }
+        ##
+        ## Check inEnd
+        ##
+        if (any(is.character(inEnd), is.factor(inEnd))) {
+            inEnd <- as.Date(inEnd)
+        }
 
-              if (!identical(class(outBegin), "Date")) {
-                  stop("'outBegin' must be a Date vector")
-              }
+        if (!identical(class(inEnd), "Date")) {
+            stop("'inEnd' must be a Date vector")
+        }
 
-              if (any(is.na(outBegin))) {
-                  stop("outBegin contains NA")
-              }
+        if (any(is.na(inEnd))) {
+            stop("inEnd contains NA")
+        }
 
-              ##
-              ## Check outEnd
-              ##
-              if (any(is.character(outEnd), is.factor(outEnd))) {
-                  outEnd <- as.Date(outEnd)
-              }
+        ##
+        ## Check outBegin
+        ##
+        if (any(is.character(outBegin), is.factor(outBegin))) {
+            outBegin <- as.Date(outBegin)
+        }
 
-              if (!identical(class(outEnd), "Date")) {
-                  stop("'outEnd' must be a Date vector")
-              }
+        if (!identical(class(outBegin), "Date")) {
+            stop("'outBegin' must be a Date vector")
+        }
 
-              if (any(is.na(outEnd))) {
-                  stop("outEnd contains NA")
-              }
+        if (any(is.na(outBegin))) {
+            stop("outBegin contains NA")
+        }
 
-              ##
-              ## Check ranges of dates
-              ##
-              if (any(inEnd < inBegin)) {
-                  stop("inEnd < inBegin")
-              }
+        ##
+        ## Check outEnd
+        ##
+        if (any(is.character(outEnd), is.factor(outEnd))) {
+            outEnd <- as.Date(outEnd)
+        }
 
-              if (any(outEnd < outBegin)) {
-                  stop("outEnd < outBegin")
-              }
+        if (!identical(class(outEnd), "Date")) {
+            stop("'outEnd' must be a Date vector")
+        }
 
-              ##
-              ## Check length of vectors
-              ##
-              if (!identical(length(unique(c(length(root),
-                                             length(inBegin),
-                                             length(inEnd),
-                                             length(outBegin),
-                                             length(outEnd)))), 1L)) {
-                  stop("root, inBegin, inEnd, outBegin and ",
-                       "outEnd must have equal length")
-              }
+        if (any(is.na(outEnd))) {
+            stop("outEnd contains NA")
+        }
 
-              ## Arguments seems ok...go on with calculations
+        ##
+        ## Check ranges of dates
+        ##
+        if (any(inEnd < inBegin)) {
+            stop("inEnd < inBegin")
+        }
 
-              ## Make sure all nodes have a valid variable name by
-              ## making a factor of source and destination
-              nodes <- as.factor(unique(c(x$source,
-                                          x$destination,
-                                          root)))
+        if (any(outEnd < outBegin)) {
+            stop("outEnd < outBegin")
+        }
 
-              ## Call networkSummary in EpiContactTrace.dll
-              contact_chain <- .Call("networkSummary",
-                                     as.integer(factor(x$source,
-                                                       levels = levels(nodes))),
-                                     as.integer(factor(x$destination,
-                                                       levels = levels(nodes))),
-                                     as.integer(julian(x$t)),
-                                     as.integer(factor(root,
-                                                       levels = levels(nodes))),
-                                     as.integer(julian(inBegin)),
-                                     as.integer(julian(inEnd)),
-                                     as.integer(julian(outBegin)),
-                                     as.integer(julian(outEnd)),
-                                     length(nodes),
-                                     PACKAGE = "EpiContactTrace")
+        ##
+        ## Check length of vectors
+        ##
+        if (!identical(length(unique(c(length(root),
+                                      length(inBegin),
+                                      length(inEnd),
+                                      length(outBegin),
+                                      length(outEnd)))),
+                      1L)) {
+            stop("root, inBegin, inEnd, outBegin and outEnd must have equal length")
+        }
 
-              data.frame(root = root,
-                         inBegin = inBegin,
-                         inEnd = inEnd,
-                         inDays = as.integer(inEnd - inBegin),
-                         outBegin = outBegin,
-                         outEnd = outEnd,
-                         outDays = as.integer(outEnd - outBegin),
-                         inDegree = contact_chain[["inDegree"]],
-                         outDegree = contact_chain[["outDegree"]],
-                         ingoingContactChain =
-                             contact_chain[["ingoingContactChain"]],
-                         outgoingContactChain =
-                             contact_chain[["outgoingContactChain"]])
-          }
+        ## Arguments seems ok...go on with calculations
+
+        ## Make sure all nodes have a valid variable name by making
+        ## a factor of source and destination
+        nodes <- as.factor(unique(c(x$source,
+                                    x$destination,
+                                    root)))
+
+        ## Call networkSummary in EpiContactTrace.dll
+        contact_chain<- .Call("networkSummary",
+                              as.integer(factor(x$source, levels = levels(nodes))),
+                              as.integer(factor(x$destination, levels = levels(nodes))),
+                              as.integer(julian(x$t)),
+                              as.integer(factor(root, levels = levels(nodes))),
+                              as.integer(julian(inBegin)),
+                              as.integer(julian(inEnd)),
+                              as.integer(julian(outBegin)),
+                              as.integer(julian(outEnd)),
+                              length(nodes),
+                              PACKAGE = "EpiContactTrace")
+
+        data.frame(root = root,
+                   inBegin = inBegin,
+                   inEnd = inEnd,
+                   inDays = as.integer(inEnd - inBegin),
+                   outBegin = outBegin,
+                   outEnd = outEnd,
+                   outDays = as.integer(outEnd - outBegin),
+                   inDegree = contact_chain[["inDegree"]],
+                   outDegree = contact_chain[["outDegree"]],
+                   ingoingContactChain = contact_chain[["ingoingContactChain"]],
+                   outgoingContactChain = contact_chain[["outgoingContactChain"]],
+                   stringsAsFactors = FALSE)
+    }
 )

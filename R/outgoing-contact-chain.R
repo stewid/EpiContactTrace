@@ -1,4 +1,4 @@
-## Copyright 2013-2019 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -20,10 +20,10 @@
 
 ##' \code{OutgoingContactChain}
 ##'
-##' The outgoing contact chain is the number of holdings in the
-##' network of direct and indirect contacts from the root holding,
-##' with regard to temporal and order of the contacts during the
-##' defined time window used for contact tracing.
+##' The outgoing contact chain is the number of holdings in the network of
+##' direct and indirect contacts from the root holding, with regard to temporal
+##' and order of the contacts during the defined time window used for contact
+##' tracing.
 ##'
 ##' @rdname OutgoingContactChain-methods
 ##' @docType methods
@@ -64,8 +64,7 @@
 ##'   }
 ##'
 ##'   \item{outDegree}{
-##'     The \code{\link{OutgoingContactChain}} of the root within the
-##'     time-interval
+##'     The \code{\link{OutgoingContactChain}} of the root within the time-interval
 ##'   }
 ##' }
 ##' @section Methods:
@@ -75,42 +74,43 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the OutgoingContactChain for a data.frame with movements,
-##'     see examples.
+##'     Get the OutgoingContactChain for a data.frame with movements, see examples.
 ##'   }
 ##' }
 ##' @references \itemize{
 ##'   \item Dube, C., et al., A review of network analysis terminology
-##'     and its application to foot-and-mouth disease modelling and
-##'     policy development. Transbound Emerg Dis 56 (2009) 73-85, doi:
+##'     and its application to foot-and-mouth disease modelling and policy
+##'     development. Transbound Emerg Dis 56 (2009) 73-85, doi:
 ##'     10.1111/j.1865-1682.2008.01064.x
 ##'
-##'   \item Noremark, M., et al., Network analysis of cattle and pig
-##'     movements in Sweden: Measures relevant for disease control and
-##'     riskbased surveillance.  Preventive Veterinary Medicine 99
-##'     (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
+##'   \item Noremark, M., et al., Network analysis
+##'     of cattle and pig movements in Sweden: Measures relevant for
+##'     disease control and riskbased surveillance.  Preventive Veterinary
+##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @examples
+##' \dontrun{
+##'
 ##' ## Load data
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing using tEnd and days
-##' contactTrace <- Trace(movements = transfers,
-##'                       root = 2645,
-##'                       tEnd = "2005-10-31",
-##'                       days = 91)
+##' contactTrace <- Trace(movements=transfers,
+##'                       root=2645,
+##'                       tEnd='2005-10-31',
+##'                       days=91)
 ##'
 ##' ## Calculate outgoing contact chain from a ContactTrace object
-##' oc_1 <- OutgoingContactChain(contactTrace)
+##' oc.1 <- OutgoingContactChain(contactTrace)
 ##'
 ##' ## Calculate outgoing contact chain using tEnd and days
-##' oc_2 <- OutgoingContactChain(transfers,
-##'                              root = 2645,
-##'                              tEnd = "2005-10-31",
-##'                              days = 91)
+##' oc.2 <- OutgoingContactChain(transfers,
+##'                             root=2645,
+##'                             tEnd='2005-10-31',
+##'                             days=91)
 ##'
 ##' ## Check that the result is identical
-##' identical(oc_1, oc_2)
+##' identical(oc.1, oc.2)
 ##'
 ##' ## Calculate outgoing contact chain for all included herds
 ##' ## First extract all source and destination from the dataset
@@ -119,9 +119,11 @@
 ##'
 ##' ## Calculate outgoing contact chain
 ##' result <- OutgoingContactChain(transfers,
-##'                                root = root,
-##'                                tEnd = "2005-10-31",
-##'                                days = 91)
+##'                                root=root,
+##'                                tEnd='2005-10-31',
+##'                                days=91)
+##' }
+##'
 setGeneric("OutgoingContactChain",
            signature = "x",
            function(x, ...) standardGeneric("OutgoingContactChain"))
@@ -130,27 +132,28 @@ setGeneric("OutgoingContactChain",
 ##' @export
 setMethod("OutgoingContactChain",
           signature(x = "Contacts"),
-          function(x) {
-              if (!identical(x@direction, "out")) {
-                  stop("Unable to determine OutgoingContactChain ",
-                       "for ingoing contacts")
-              }
-
-              return(length(setdiff(x@destination, x@root)))
+          function (x)
+      {
+          if(!identical(x@direction, "out")) {
+              stop("Unable to determine OutgoingContactChain for ingoing contacts")
           }
+
+          return(length(setdiff(x@destination,x@root)))
+      }
 )
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
 setMethod("OutgoingContactChain",
           signature(x = "ContactTrace"),
-          function(x) {
-              return(NetworkSummary(x)[, c("root",
-                                           "outBegin",
-                                           "outEnd",
-                                           "outDays",
-                                           "outgoingContactChain")])
-          }
+          function (x)
+      {
+          return(NetworkSummary(x)[, c("root",
+                                       "outBegin",
+                                       "outEnd",
+                                       "outDays",
+                                       "outgoingContactChain")])
+      }
 )
 
 ##' @rdname OutgoingContactChain-methods
@@ -162,12 +165,13 @@ setMethod("OutgoingContactChain",
                    tEnd = NULL,
                    days = NULL,
                    outBegin = NULL,
-                   outEnd = NULL) {
-          if (missing(root)) {
+                   outEnd = NULL)
+      {
+          if(missing(root)) {
               stop("Missing parameters in call to OutgoingContactChain")
           }
 
-          if (all(is.null(tEnd), is.null(days))) {
+          if(all(is.null(tEnd), is.null(days))) {
               inBegin <- outBegin
               inEnd <- outBegin
           } else {
