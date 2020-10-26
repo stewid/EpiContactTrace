@@ -80,25 +80,25 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the InDegree for a data.frame with movements, see details and examples.
+##'     Get the InDegree for a data.frame with movements, see details
+##'     and examples.
 ##'   }
 ##' }
 ##' @seealso \code{\link{NetworkSummary}}
 ##' @param x a ContactTrace object, or a list of ContactTrace objects
-##' or a \code{data.frame} with movements of animals between holdings,
-##' see \code{\link{Trace}} for details.
+##'     or a \code{data.frame} with movements of animals between
+##'     holdings, see \code{\link{Trace}} for details.
 ##' @param ... Additional arguments to the method
 ##' @param root vector of roots to calculate indegree for.
 ##' @param tEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
+##'     to \code{NULL}
 ##' @param days the number of previous days before tEnd to include
-##' ingoing movements. Defaults to \code{NULL}
+##'     ingoing movements. Defaults to \code{NULL}
 ##' @param inBegin the first date to include ingoing
-##' movements. Defaults to \code{NULL}
+##'     movements. Defaults to \code{NULL}
 ##' @param inEnd the last date to include ingoing movements. Defaults
-##' to \code{NULL}
-##' @return A \code{data.frame} with the following columns:
-##' \describe{
+##'     to \code{NULL}
+##' @return A \code{data.frame} with the following columns: \describe{
 ##'   \item{root}{
 ##'     The root of the contact tracing
 ##'   }

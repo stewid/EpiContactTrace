@@ -328,7 +328,7 @@ setMethod(
             x$t <- as.Date(x$t)
         }
 
-        if (!identical(class(x$t), 'Date')) {
+        if (!identical(class(x$t), "Date")) {
             stop("invalid class of column t in x")
         }
 
@@ -399,9 +399,9 @@ setMethod(
             n.days <- length(days)
             n <- n.root * n.tEnd * n.days
 
-            root <- rep(root, each=n.tEnd*n.days, length.out=n)
-            inEnd <- rep(tEnd, each=n.days, length.out=n)
-            inBegin <- inEnd - rep(days, each=1, length.out=n)
+            root <- rep(root, each = n.tEnd*n.days, length.out = n)
+            inEnd <- rep(tEnd, each = n.days, length.out = n)
+            inBegin <- inEnd - rep(days, each = 1, length.out = n)
             outEnd <- inEnd
             outBegin <- inBegin
         } else if (all(!is.null(inBegin), !is.null(inEnd),
@@ -444,7 +444,7 @@ setMethod(
         }
 
         if (any(is.na(inEnd))) {
-            stop('inEnd contains NA')
+            stop("inEnd contains NA")
         }
 
         ##
@@ -474,18 +474,18 @@ setMethod(
         }
 
         if (any(is.na(outEnd))) {
-            stop('outEnd contains NA')
+            stop("outEnd contains NA")
         }
 
         ##
         ## Check ranges of dates
         ##
         if (any(inEnd < inBegin)) {
-            stop('inEnd < inBegin')
+            stop("inEnd < inBegin")
         }
 
         if (any(outEnd < outBegin)) {
-            stop('outEnd < outBegin')
+            stop("outEnd < outBegin")
         }
 
         ##
@@ -497,7 +497,7 @@ setMethod(
                                       length(outBegin),
                                       length(outEnd)))),
                       1L)) {
-            stop('root, inBegin, inEnd, outBegin and outEnd must have equal length')
+            stop("root, inBegin, inEnd, outBegin and outEnd must have equal length")
         }
 
         ## Arguments seems ok...go on with calculations
@@ -510,10 +510,10 @@ setMethod(
 
         ## Call networkSummary in EpiContactTrace.dll
         contact_chain<- .Call("networkSummary",
-                              as.integer(factor(x$source, levels=levels(nodes))),
-                              as.integer(factor(x$destination, levels=levels(nodes))),
+                              as.integer(factor(x$source, levels = levels(nodes))),
+                              as.integer(factor(x$destination, levels = levels(nodes))),
                               as.integer(julian(x$t)),
-                              as.integer(factor(root, levels=levels(nodes))),
+                              as.integer(factor(root, levels = levels(nodes))),
                               as.integer(julian(inBegin)),
                               as.integer(julian(inEnd)),
                               as.integer(julian(outBegin)),
@@ -521,17 +521,17 @@ setMethod(
                               length(nodes),
                               PACKAGE = "EpiContactTrace")
 
-        return(data.frame(root=root,
-                          inBegin=inBegin,
-                          inEnd=inEnd,
-                          inDays=as.integer(inEnd - inBegin),
-                          outBegin=outBegin,
-                          outEnd=outEnd,
-                          outDays=as.integer(outEnd - outBegin),
-                          inDegree=contact_chain[['inDegree']],
-                          outDegree=contact_chain[['outDegree']],
-                          ingoingContactChain=contact_chain[['ingoingContactChain']],
-                          outgoingContactChain=contact_chain[['outgoingContactChain']],
-                          stringsAsFactors=FALSE))
+        data.frame(root = root,
+                   inBegin = inBegin,
+                   inEnd = inEnd,
+                   inDays = as.integer(inEnd - inBegin),
+                   outBegin = outBegin,
+                   outEnd = outEnd,
+                   outDays = as.integer(outEnd - outBegin),
+                   inDegree = contact_chain[["inDegree"]],
+                   outDegree = contact_chain[["outDegree"]],
+                   ingoingContactChain = contact_chain[["ingoingContactChain"]],
+                   outgoingContactChain = contact_chain[["outgoingContactChain"]],
+                   stringsAsFactors = FALSE)
     }
 )
