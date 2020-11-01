@@ -163,7 +163,6 @@
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
 ##' @keywords methods
-##' @useDynLib EpiContactTrace
 ##' @examples
 ##' \dontrun{
 ##'
@@ -173,7 +172,7 @@
 ##' ## Perform contact tracing using tEnd and days
 ##' contactTrace <- Trace(movements = transfers,
 ##'                       root = 2645,
-##'                       tEnd = "2005-10-31',
+##'                       tEnd = "2005-10-31",
 ##'                       days = 91)
 ##'
 ##' ## Calculate network summary from a ContactTrace object
