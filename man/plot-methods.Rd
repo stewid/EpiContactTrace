@@ -31,14 +31,13 @@ holdings with outgoing contacts from root.
 data(transfers)
 
 ## Perform contact tracing
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=90)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 90)
 
 ## Plot in- and outgoing contact chain for the root 2645
 plot(contactTrace)
-
 }
 }
 \references{

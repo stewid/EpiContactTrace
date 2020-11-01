@@ -18,8 +18,8 @@ InDegree(x, ...)
 }
 \arguments{
 \item{x}{a ContactTrace object, or a list of ContactTrace objects
-or a \code{data.frame} with movements of animals between holdings,
-see \code{\link{Trace}} for details.}
+or a \code{data.frame} with movements of animals between
+holdings, see \code{\link{Trace}} for details.}
 
 \item{...}{Additional arguments to the method}
 
@@ -38,8 +38,7 @@ movements. Defaults to \code{NULL}}
 to \code{NULL}}
 }
 \value{
-A \code{data.frame} with the following columns:
-\describe{
+A \code{data.frame} with the following columns: \describe{
   \item{root}{
     The root of the contact tracing
   }
@@ -118,7 +117,8 @@ with the following columns:
   }
 
   \item{\code{signature(x = "data.frame")}}{
-    Get the InDegree for a data.frame with movements, see details and examples.
+    Get the InDegree for a data.frame with movements, see details
+    and examples.
   }
 }
 }
