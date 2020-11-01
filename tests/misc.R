@@ -61,7 +61,7 @@ stopifnot(identical(ct@outgoingContacts@destination, "1"))
 ##
 ## Direction: Case 1
 ##
-movements <- data.fram(
+movements <- data.frame(
     source = 1:7,
     destination = c(4L, 5L, 5L, 6L, 8L, 8L, 8L),
     t = structure(c(14849, 14846, 14847, 14850, 14848, 14851, 14852),
