@@ -151,7 +151,7 @@ setMethod(
         }
 
         if (nrow(ns_out)) {
-            ns_out <- ns_out[order(ns_out$distance, ns_out$destination),]
+            ns_out <- ns_out[order(ns_out$distance, ns_out$destination), ]
             ns_out <- ns_out[!duplicated(ns_out$destination), ]
             ns_out$source <- NA_character_
             result <- rbind(result, ns_out)
@@ -274,7 +274,7 @@ setMethod(
             n.days <- length(days)
             n <- n.root * n.tEnd * n.days
 
-            root <- rep(root, each = n.tEnd*n.days, length.out = n)
+            root <- rep(root, each = n.tEnd * n.days, length.out = n)
             inEnd <- rep(tEnd, each = n.days, length.out = n)
             inBegin <- inEnd - rep(days, each = 1, length.out = n)
             outEnd <- inEnd

@@ -398,7 +398,7 @@ setMethod(
             n.days <- length(days)
             n <- n.root * n.tEnd * n.days
 
-            root <- rep(root, each = n.tEnd*n.days, length.out = n)
+            root <- rep(root, each = n.tEnd * n.days, length.out = n)
             inEnd <- rep(tEnd, each = n.days, length.out = n)
             inBegin <- inEnd - rep(days, each = 1, length.out = n)
             outEnd <- inEnd

@@ -144,7 +144,7 @@ setMethod(
                  "for ingoing contacts")
         }
 
-        length(setdiff(x@destination,x@root))
+        length(setdiff(x@destination, x@root))
     }
 )
 
@@ -173,11 +173,11 @@ setMethod(
              days = NULL,
              outBegin = NULL,
              outEnd = NULL) {
-        if(missing(root)) {
+        if (missing(root)) {
             stop("Missing parameters in call to OutgoingContactChain")
         }
 
-        if(all(is.null(tEnd), is.null(days))) {
+        if (all(is.null(tEnd), is.null(days))) {
             inBegin <- outBegin
             inEnd <- outBegin
         } else {
