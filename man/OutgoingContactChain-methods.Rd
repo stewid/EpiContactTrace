@@ -65,7 +65,8 @@ A \code{data.frame} with the following columns:
   }
 
   \item{outDegree}{
-    The \code{\link{OutgoingContactChain}} of the root within the time-interval
+    The \code{\link{OutgoingContactChain}} of the root within the
+    time-interval
   }
 }
 }
@@ -83,7 +84,8 @@ tracing.
   }
 
   \item{\code{signature(x = "data.frame")}}{
-    Get the OutgoingContactChain for a data.frame with movements, see examples.
+    Get the OutgoingContactChain for a data.frame with movements,
+    see examples.
   }
 }
 }
@@ -95,22 +97,22 @@ tracing.
 data(transfers)
 
 ## Perform contact tracing using tEnd and days
-contactTrace <- Trace(movements=transfers,
-                      root=2645,
-                      tEnd='2005-10-31',
-                      days=91)
+contactTrace <- Trace(movements = transfers,
+                      root = 2645,
+                      tEnd = "2005-10-31",
+                      days = 91)
 
 ## Calculate outgoing contact chain from a ContactTrace object
-oc.1 <- OutgoingContactChain(contactTrace)
+oc_1 <- OutgoingContactChain(contactTrace)
 
 ## Calculate outgoing contact chain using tEnd and days
-oc.2 <- OutgoingContactChain(transfers,
-                            root=2645,
-                            tEnd='2005-10-31',
-                            days=91)
+oc_2 <- OutgoingContactChain(transfers,
+                             root = 2645,
+                             tEnd = "2005-10-31",
+                             days = 91)
 
 ## Check that the result is identical
-identical(oc.1, oc.2)
+identical(oc_1, oc_2)
 
 ## Calculate outgoing contact chain for all included herds
 ## First extract all source and destination from the dataset
@@ -119,11 +121,10 @@ root <- sort(unique(c(transfers$source,
 
 ## Calculate outgoing contact chain
 result <- OutgoingContactChain(transfers,
-                               root=root,
-                               tEnd='2005-10-31',
-                               days=91)
+                               root = root,
+                               tEnd = "2005-10-31",
+                               days = 91)
 }
-
 }
 \references{
 \itemize{

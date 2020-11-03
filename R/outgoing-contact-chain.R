@@ -64,7 +64,8 @@
 ##'   }
 ##'
 ##'   \item{outDegree}{
-##'     The \code{\link{OutgoingContactChain}} of the root within the time-interval
+##'     The \code{\link{OutgoingContactChain}} of the root within the
+##'     time-interval
 ##'   }
 ##' }
 ##' @section Methods:
@@ -74,7 +75,8 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the OutgoingContactChain for a data.frame with movements, see examples.
+##'     Get the OutgoingContactChain for a data.frame with movements,
+##'     see examples.
 ##'   }
 ##' }
 ##' @references \itemize{
@@ -95,22 +97,22 @@
 ##' data(transfers)
 ##'
 ##' ## Perform contact tracing using tEnd and days
-##' contactTrace <- Trace(movements=transfers,
-##'                       root=2645,
-##'                       tEnd='2005-10-31',
-##'                       days=91)
+##' contactTrace <- Trace(movements = transfers,
+##'                       root = 2645,
+##'                       tEnd = "2005-10-31",
+##'                       days = 91)
 ##'
 ##' ## Calculate outgoing contact chain from a ContactTrace object
-##' oc.1 <- OutgoingContactChain(contactTrace)
+##' oc_1 <- OutgoingContactChain(contactTrace)
 ##'
 ##' ## Calculate outgoing contact chain using tEnd and days
-##' oc.2 <- OutgoingContactChain(transfers,
-##'                             root=2645,
-##'                             tEnd='2005-10-31',
-##'                             days=91)
+##' oc_2 <- OutgoingContactChain(transfers,
+##'                              root = 2645,
+##'                              tEnd = "2005-10-31",
+##'                              days = 91)
 ##'
 ##' ## Check that the result is identical
-##' identical(oc.1, oc.2)
+##' identical(oc_1, oc_2)
 ##'
 ##' ## Calculate outgoing contact chain for all included herds
 ##' ## First extract all source and destination from the dataset
@@ -119,77 +121,81 @@
 ##'
 ##' ## Calculate outgoing contact chain
 ##' result <- OutgoingContactChain(transfers,
-##'                                root=root,
-##'                                tEnd='2005-10-31',
-##'                                days=91)
+##'                                root = root,
+##'                                tEnd = "2005-10-31",
+##'                                days = 91)
 ##' }
-##'
-setGeneric("OutgoingContactChain",
-           signature = "x",
-           function(x, ...) standardGeneric("OutgoingContactChain"))
-
-##' @rdname OutgoingContactChain-methods
-##' @export
-setMethod("OutgoingContactChain",
-          signature(x = "Contacts"),
-          function (x)
-      {
-          if(!identical(x@direction, "out")) {
-              stop("Unable to determine OutgoingContactChain for ingoing contacts")
-          }
-
-          return(length(setdiff(x@destination,x@root)))
-      }
+setGeneric(
+    "OutgoingContactChain",
+    signature = "x",
+    function(x, ...) {
+        standardGeneric("OutgoingContactChain")
+    }
 )
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
-setMethod("OutgoingContactChain",
-          signature(x = "ContactTrace"),
-          function (x)
-      {
-          return(NetworkSummary(x)[, c("root",
-                                       "outBegin",
-                                       "outEnd",
-                                       "outDays",
-                                       "outgoingContactChain")])
-      }
+setMethod(
+    "OutgoingContactChain",
+    signature(x = "Contacts"),
+    function(x) {
+        if (!identical(x@direction, "out")) {
+            stop("Unable to determine OutgoingContactChain ",
+                 "for ingoing contacts")
+        }
+
+        length(setdiff(x@destination,x@root))
+    }
 )
 
 ##' @rdname OutgoingContactChain-methods
 ##' @export
-setMethod("OutgoingContactChain",
-          signature(x = "data.frame"),
-          function(x,
-                   root,
-                   tEnd = NULL,
-                   days = NULL,
-                   outBegin = NULL,
-                   outEnd = NULL)
-      {
-          if(missing(root)) {
-              stop("Missing parameters in call to OutgoingContactChain")
-          }
+setMethod(
+    "OutgoingContactChain",
+    signature(x = "ContactTrace"),
+    function(x) {
+        NetworkSummary(x)[, c("root",
+                              "outBegin",
+                              "outEnd",
+                              "outDays",
+                              "outgoingContactChain")]
+    }
+)
 
-          if(all(is.null(tEnd), is.null(days))) {
-              inBegin <- outBegin
-              inEnd <- outBegin
-          } else {
-              inBegin <- NULL
-              inEnd <- NULL
-          }
+##' @rdname OutgoingContactChain-methods
+##' @export
+setMethod(
+    "OutgoingContactChain",
+    signature(x = "data.frame"),
+    function(x,
+             root,
+             tEnd = NULL,
+             days = NULL,
+             outBegin = NULL,
+             outEnd = NULL) {
+        if(missing(root)) {
+            stop("Missing parameters in call to OutgoingContactChain")
+        }
 
-          return(NetworkSummary(x,
-                                root,
-                                tEnd,
-                                days,
-                                inBegin,
-                                inEnd,
-                                outBegin,
-                                outEnd)[, c("root",
-                                            "outBegin",
-                                            "outEnd",
-                                            "outDays",
-                                            "outgoingContactChain")])
-      }
+        if(all(is.null(tEnd), is.null(days))) {
+            inBegin <- outBegin
+            inEnd <- outBegin
+        } else {
+            inBegin <- NULL
+            inEnd <- NULL
+        }
+
+        NetworkSummary(x,
+                       root,
+                       tEnd,
+                       days,
+                       inBegin,
+                       inEnd,
+                       outBegin,
+                       outEnd)[, c("root",
+                                   "outBegin",
+                                   "outEnd",
+                                   "outDays",
+                                   "outgoingContactChain")]
+    }
 )

@@ -220,7 +220,7 @@ html_report <- function(x) {
         df$rhs <- df$destination
 
         lines <- c(lines,
-                   html_detailed_table(df[df$source == df$root,], "out"))
+                   html_detailed_table(df[df$source == df$root, ], "out"))
 
         df <- df[df$source != df$root, ]
         if (nrow(df) > 0) {
@@ -381,7 +381,7 @@ setMethod(
 
             Sweave(template, syntax = "SweaveSyntaxNoweb")
             filename <- file_path_sans_ext(basename(template))
-            texi2pdf(paste0(filename, ".tex"), clean=TRUE)
+            texi2pdf(paste0(filename, ".tex"), clean = TRUE)
             file.rename(paste0(filename, ".pdf"),
                         file.path(dir, paste0(object@root, ".pdf")))
             unlink(paste0(filename, ".tex"))

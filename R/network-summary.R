@@ -428,7 +428,7 @@ setMethod(
         }
 
         if (any(is.na(inBegin))) {
-            stop('inBegin contains NA')
+            stop("inBegin contains NA")
         }
 
         ##
@@ -496,7 +496,8 @@ setMethod(
                                       length(outBegin),
                                       length(outEnd)))),
                       1L)) {
-            stop("root, inBegin, inEnd, outBegin and outEnd must have equal length")
+            stop("root, inBegin, inEnd, outBegin and ",
+                 "outEnd must have equal length")
         }
 
         ## Arguments seems ok...go on with calculations
@@ -508,29 +509,31 @@ setMethod(
                                     root)))
 
         ## Call networkSummary in EpiContactTrace.dll
-        contact_chain<- .Call("networkSummary",
-                              as.integer(factor(x$source, levels = levels(nodes))),
-                              as.integer(factor(x$destination, levels = levels(nodes))),
-                              as.integer(julian(x$t)),
-                              as.integer(factor(root, levels = levels(nodes))),
-                              as.integer(julian(inBegin)),
-                              as.integer(julian(inEnd)),
-                              as.integer(julian(outBegin)),
-                              as.integer(julian(outEnd)),
-                              length(nodes),
-                              PACKAGE = "EpiContactTrace")
+        contact_chain <- .Call(
+            "networkSummary",
+            as.integer(factor(x$source, levels = levels(nodes))),
+            as.integer(factor(x$destination, levels = levels(nodes))),
+            as.integer(julian(x$t)),
+            as.integer(factor(root, levels = levels(nodes))),
+            as.integer(julian(inBegin)),
+            as.integer(julian(inEnd)),
+            as.integer(julian(outBegin)),
+            as.integer(julian(outEnd)),
+            length(nodes),
+            PACKAGE = "EpiContactTrace")
 
-        data.frame(root = root,
-                   inBegin = inBegin,
-                   inEnd = inEnd,
-                   inDays = as.integer(inEnd - inBegin),
-                   outBegin = outBegin,
-                   outEnd = outEnd,
-                   outDays = as.integer(outEnd - outBegin),
-                   inDegree = contact_chain[["inDegree"]],
-                   outDegree = contact_chain[["outDegree"]],
-                   ingoingContactChain = contact_chain[["ingoingContactChain"]],
-                   outgoingContactChain = contact_chain[["outgoingContactChain"]],
-                   stringsAsFactors = FALSE)
+        data.frame(
+            root = root,
+            inBegin = inBegin,
+            inEnd = inEnd,
+            inDays = as.integer(inEnd - inBegin),
+            outBegin = outBegin,
+            outEnd = outEnd,
+            outDays = as.integer(outEnd - outBegin),
+            inDegree = contact_chain[["inDegree"]],
+            outDegree = contact_chain[["outDegree"]],
+            ingoingContactChain = contact_chain[["ingoingContactChain"]],
+            outgoingContactChain = contact_chain[["outgoingContactChain"]],
+            stringsAsFactors = FALSE)
     }
 )

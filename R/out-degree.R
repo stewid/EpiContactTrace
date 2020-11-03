@@ -64,7 +64,8 @@
 ##'   }
 ##'
 ##'   \item{category}{
-##'     an optional character or factor with category of the animal e.g. Cattle.
+##'     an optional character or factor with category of the animal
+##'     e.g. Cattle.
 ##'   }
 ##' }
 ##'
@@ -116,7 +117,8 @@
 ##'   }
 ##'
 ##'   \item{\code{signature(x = "data.frame")}}{
-##'     Get the OutDegree for a data.frame with movements, see details and examples.
+##'     Get the OutDegree for a data.frame with movements, see details
+##'     and examples.
 ##'   }
 ##' }
 ##' @references \itemize{
@@ -178,8 +180,8 @@ setGeneric(
 setMethod(
     "OutDegree",
     signature(x = "Contacts"),
-    function (x) {
-        if(!identical(x@direction, "out"))
+    function(x) {
+        if (!identical(x@direction, "out"))
             stop("Unable to determine OutDegree for ingoing contacts")
 
         length(unique(x@destination[x@source == x@root]))
@@ -191,7 +193,7 @@ setMethod(
 setMethod(
     "OutDegree",
     signature(x = "ContactTrace"),
-    function (x) {
+    function(x) {
         ns <- NetworkSummary(x)
         ns[, c("root", "outBegin", "outEnd", "outDays", "outDegree")]
     }
@@ -208,10 +210,10 @@ setMethod(
              days = NULL,
              outBegin = NULL,
              outEnd = NULL) {
-        if(missing(root))
+        if (missing(root))
             stop("Missing parameters in call to OutDegree")
 
-        if(all(is.null(tEnd), is.null(days))) {
+        if (all(is.null(tEnd), is.null(days))) {
             inBegin <- outBegin
             inEnd <- outBegin
         } else {
