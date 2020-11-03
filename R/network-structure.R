@@ -186,3 +186,23 @@ setMethod(
               NetworkStructure(object@outgoingContacts))
     }
 )
+
+##' @rdname NetworkStructure-methods
+##' @export
+setMethod(
+    "NetworkStructure",
+    signature(object = "list"),
+    function(object) {
+        if (!all(vapply(object,
+                        function(x) {
+                            inherits(x, "ContactTrace")
+                        },
+                        logical(1)))) {
+            stop("list must only contain 'ContactTrace' objects.")
+        }
+
+        ns <- do.call("rbind", lapply(object, NetworkStructure))
+        rownames(ns) <- NULL
+        ns
+    }
+)

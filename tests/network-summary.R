@@ -51,3 +51,4 @@ tEnd <- "2005-10-31"
 days <- 90
 contactTrace <- Trace(transfers, root, tEnd, days)
 NetworkSummary(contactTrace)
+NetworkStructure(contactTrace)

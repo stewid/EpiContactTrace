@@ -5,6 +5,7 @@
 \alias{NetworkStructure}
 \alias{NetworkStructure,Contacts-method}
 \alias{NetworkStructure,ContactTrace-method}
+\alias{NetworkStructure,list-method}
 \title{\code{NetworkStructure}}
 \usage{
 NetworkStructure(object)
@@ -12,6 +13,8 @@ NetworkStructure(object)
 \S4method{NetworkStructure}{Contacts}(object)
 
 \S4method{NetworkStructure}{ContactTrace}(object)
+
+\S4method{NetworkStructure}{list}(object)
 }
 \arguments{
 \item{object}{A \code{\linkS4class{Contacts}} or
