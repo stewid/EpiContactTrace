@@ -1,4 +1,4 @@
-# EpiContactTrace (development version)
+# EpiContactTrace 0.15.0 (2020-12-12)
 
 ## IMPROVEMENTS
 
