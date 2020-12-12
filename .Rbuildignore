@@ -1,4 +1,3 @@
 ^README.md$
-^\.travis\.yml$
 ^Makefile$
-^appveyor\.yml$
+^\.github$
