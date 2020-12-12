@@ -32,7 +32,8 @@ tree <- data.frame(
              "B", "C", "H", "I", "J", "K", "L"),
     parent = c(NA, "O", "O", "O", "E", "E", "N", "N",
                "D", "D", "M", "M", "M", "M", "M"),
-    level = c(0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3))
+    level = c(0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3),
+    stringsAsFactors = FALSE)
 
 tree_exp <- data.frame(
     node = c("O", "E",  "F", "N", "A", "D", "G", "M",
@@ -43,7 +44,8 @@ tree_exp <- data.frame(
     x =  c(0, -10.5, 0, 10.5, -13.5, -7.5, 7.5, 13.5, -10.5,
            -4.5, 1.5, 7.5, 13.5, 19.5, 25.5),
     y = c(0, -1, -1, -1, -2, -2, -2, -2, -3, -3, -3, -3, -3,
-          -3, -3))
+          -3, -3),
+    stringsAsFactors = FALSE)
 
 tree_obs <- EpiContactTrace:::position_tree(tree)
 tree_obs$level <- as.numeric(tree_obs$level)
