@@ -1,5 +1,13 @@
 # EpiContactTrace (development version)
 
+## IMPROVEMENTS
+
+* NetworkStructure: add a method that works on a list of ContactTrace
+  objects.
+
+* NetworkSummary: add a method that works on a list of ContactTrace
+  objects.
+
 # EpiContactTrace 0.14.0 (2020-09-09)
 
 ## IMPROVEMENTS
