@@ -121,10 +121,12 @@ identical(trace_1, trace_2)
 ## Show result of contact tracing
 trace_1
 
-## Create a network summary for all included herds
-## First extract all source and destination from the dataset
+## Create a network summary for 10 of the included herds
+## First extract all source and destination from the dataset,
+## then select the first ten.
 root <- sort(unique(c(transfers$source,
                       transfers$destination)))
+root <- root[1:10]
 
 ## Perform contact tracing using tEnd and days.
 trace_3 <- Trace(movements = transfers,
