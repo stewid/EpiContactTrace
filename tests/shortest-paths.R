@@ -54,7 +54,8 @@ stopifnot(identical(out_1, out_2))
 sp_in_exp <- data.frame(
     root = c("100", "100", "100", "100", "100"),
     source = c("54", "262", "356", "357", "358"),
-    distance = c(1L, 1L, 1L, 1L, 1L))
+    distance = c(1L, 1L, 1L, 1L, 1L),
+    stringsAsFactors = FALSE)
 
 sp_in <- ShortestPaths(Trace(movements = transfers,
                              root = 100,
@@ -70,7 +71,8 @@ sp_out_exp <- data.frame(
         "100", "100", "100", "100", "100", "100", "100", "100"),
     destination = c("101", "357", "358", "2508", "8239", "8243",
         "8327", "8356", "8388", "8420", "8991", "9003", "9087", "9110"),
-    distance = c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L))
+    distance = c(1L, 1L, 1L, 2L, 1L, 2L, 1L, 1L, 1L, 2L, 2L, 2L, 2L, 3L),
+    stringsAsFactors = FALSE)
 
 sp_out <- ShortestPaths(Trace(movements = transfers,
                               root = 100,
