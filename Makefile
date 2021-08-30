@@ -25,8 +25,8 @@ pdf: roxygen
 # Build and check package
 check: clean
 	cd .. && R CMD build --no-build-vignettes $(PKG_NAME)
-	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check --as-cran \
-        --no-manual --no-vignettes --no-build-vignettes $(PKG_TAR)
+	cd .. && _R_CHECK_CRAN_INCOMING_=FALSE R CMD check \
+          --as-cran --no-stop-on-test-error --run-dontrun $(PKG_TAR)
 
 # Build and check package on https://win-builder.r-project.org/
 .PHONY: winbuilder
