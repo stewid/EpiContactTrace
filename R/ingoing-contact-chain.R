@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2021 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -151,7 +151,7 @@
 ##' ic.1 <- IngoingContactChain(contactTrace)
 ##'
 ##' ## Calculate ingoing contact chain using tEnd and days
-##' ic.2 <- IngoingContactChain(movements = transfers,
+##' ic.2 <- IngoingContactChain(transfers,
 ##'                             root = 2645,
 ##'                             tEnd = "2005-10-31",
 ##'                             days = 91)
@@ -165,7 +165,7 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Calculate ingoing contact chain
-##' result <- IngoingContactChain(movements = transfers,
+##' result <- IngoingContactChain(transfers,
 ##'                               root = root,
 ##'                               tEnd = "2005-10-31",
 ##'                               days = 91)

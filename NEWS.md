@@ -1,5 +1,10 @@
 # EpiContactTrace (development version)
 
+## BUG FIXES
+
+* Fixed broken examples for InDegree, OutDegree and
+  IngoingContactChain.
+
 # EpiContactTrace 0.15.0 (2020-12-12)
 
 ## IMPROVEMENTS

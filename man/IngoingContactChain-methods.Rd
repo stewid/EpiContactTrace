@@ -150,7 +150,7 @@ contactTrace <- Trace(movements = transfers,
 ic.1 <- IngoingContactChain(contactTrace)
 
 ## Calculate ingoing contact chain using tEnd and days
-ic.2 <- IngoingContactChain(movements = transfers,
+ic.2 <- IngoingContactChain(transfers,
                             root = 2645,
                             tEnd = "2005-10-31",
                             days = 91)
@@ -164,7 +164,7 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate ingoing contact chain
-result <- IngoingContactChain(movements = transfers,
+result <- IngoingContactChain(transfers,
                               root = root,
                               tEnd = "2005-10-31",
                               days = 91)

@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2021 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -147,7 +147,7 @@
 ##' id.1 <- InDegree(contactTrace)
 ##'
 ##' ## Calculate indegree using tEnd and days
-##' id.2 <- InDegree(movements = transfers,
+##' id.2 <- InDegree(transfers,
 ##'                  root = 2645,
 ##'                  tEnd = "2005-10-31",
 ##'                  days = 91)
@@ -161,7 +161,7 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Calculate indegree
-##' result <- InDegree(movements = transfers,
+##' result <- InDegree(transfers,
 ##'                    root = root,
 ##'                    tEnd = "2005-10-31",
 ##'                    days = 91)

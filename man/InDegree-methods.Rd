@@ -139,7 +139,7 @@ contactTrace <- Trace(movements = transfers,
 id.1 <- InDegree(contactTrace)
 
 ## Calculate indegree using tEnd and days
-id.2 <- InDegree(movements = transfers,
+id.2 <- InDegree(transfers,
                  root = 2645,
                  tEnd = "2005-10-31",
                  days = 91)
@@ -153,7 +153,7 @@ root <- sort(unique(c(transfers$source,
                       transfers$destination)))
 
 ## Calculate indegree
-result <- InDegree(movements = transfers,
+result <- InDegree(transfers,
                    root = root,
                    tEnd = "2005-10-31",
                    days = 91)

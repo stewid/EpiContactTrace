@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2021 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -148,7 +148,7 @@
 ##' od.1 <- OutDegree(contactTrace)
 ##'
 ##' ## Calculate outdegree using tEnd and days
-##' od.2 <- OutDegree(movements = transfers,
+##' od.2 <- OutDegree(transfers,
 ##'                   root = 2645,
 ##'                   tEnd = "2005-10-31",
 ##'                   days = 91)
@@ -162,7 +162,7 @@
 ##'                       transfers$destination)))
 ##'
 ##' ## Calculate outdegree
-##' result <- OutDegree(movements = transfers,
+##' result <- OutDegree(transfers,
 ##'                     root = root,
 ##'                     tEnd = "2005-10-31",
 ##'                     days = 91)
