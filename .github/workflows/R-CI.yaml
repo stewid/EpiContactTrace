@@ -1,0 +1,27 @@
+name: R-CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  R-CI:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install R and required software
+        run: >
+          sudo dnf --assumeyes install
+          ansible
+          devscripts-checkbashisms
+          langpacks-en
+          R
+          tidy
+
+      - name: Check package
+        run: |
+          curl -OLs https://stewid.github.io/ansible-r-ci/r-ci.yml
+          ansible-playbook -i localhost, r-ci.yml
