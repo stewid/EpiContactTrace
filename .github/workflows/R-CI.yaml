@@ -15,5 +15,5 @@ jobs:
       - name: Check package
         run: |
           sudo dnf --assumeyes install ansible
-          curl -OLs https://stewid.github.io/ansible-r-ci/r-ci.yml
-          ansible-playbook -i localhost, r-ci.yml
+          curl -Ls https://stewid.github.io/ansible-r-ci/r-ci.yml -o ../r-ci.yml
+          ansible-playbook -i localhost, ../r-ci.yml
