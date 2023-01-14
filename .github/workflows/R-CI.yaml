@@ -12,8 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install ansible
+        run: sudo dnf --assumeyes install ansible
+
+      - name: Get ansible playbook to check package
+        run: curl -Ls https://stewid.github.io/ansible-r-ci/r-ci.yml -o ../r-ci.yml
+
       - name: Check package
-        run: |
-          sudo dnf --assumeyes install ansible git
-          git clone https://github.com/stewid/ansible-r-ci.git ../ansible-r-ci
-          ansible-playbook -i localhost, ../ansible-r-ci/r-ci.yml
+        run: ansible-playbook -i localhost, ../ansible-r-ci/r-ci.yml
