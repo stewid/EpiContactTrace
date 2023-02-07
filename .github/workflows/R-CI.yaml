@@ -7,7 +7,6 @@ on:
 jobs:
   R-CI:
     runs-on: ubuntu-latest
-    container: fedora:latest
 
     steps:
       - uses: actions/checkout@v3
