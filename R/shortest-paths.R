@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2023 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -168,6 +168,7 @@ setMethod(
 )
 
 ##' @rdname ShortestPaths-methods
+##' @useDynLib EpiContactTrace shortestPaths
 ##' @export
 setMethod(
     "ShortestPaths",
@@ -384,7 +385,7 @@ setMethod(
                                     x$destination,
                                     root)))
 
-        sp <- .Call("shortestPaths",
+        sp <- .Call(shortestPaths,
                     as.integer(factor(x$source, levels = levels(nodes))),
                     as.integer(factor(x$destination, levels = levels(nodes))),
                     as.integer(julian(x$t)),
@@ -393,8 +394,7 @@ setMethod(
                     as.integer(julian(inEnd)),
                     as.integer(julian(outBegin)),
                     as.integer(julian(outEnd)),
-                    length(nodes),
-                    PACKAGE = "EpiContactTrace")
+                    length(nodes))
 
         result <- NULL
         if (length(sp$inIndex)) {

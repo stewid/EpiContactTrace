@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2023 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -110,6 +110,7 @@ is_wholenumber <- function(x, tol = .Machine$double.eps^0.5) {
 ##'     disease control and riskbased surveillance.  Preventive Veterinary
 ##'     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 ##' }
+##' @useDynLib EpiContactTrace traceContacts
 ##' @export
 ##' @examples
 ##' ## Load data
@@ -457,7 +458,7 @@ Trace <- function(movements,
                                 root)))
 
 
-    trace_contacts <- .Call("traceContacts",
+    trace_contacts <- .Call(traceContacts,
                             as.integer(factor(movements$source,
                                               levels = levels(nodes))),
                             as.integer(factor(movements$destination,
@@ -470,8 +471,7 @@ Trace <- function(movements,
                             as.integer(julian(outBegin)),
                             as.integer(julian(outEnd)),
                             length(nodes),
-                            as.integer(maxDistance),
-                            PACKAGE = "EpiContactTrace")
+                            as.integer(maxDistance))
 
     result <- lapply(seq_len(length(root)), function(i) {
         j <- (i - 1) * 4

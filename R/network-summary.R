@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2023 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -292,6 +292,7 @@ setMethod(
 )
 
 ##' @rdname NetworkSummary-methods
+##' @useDynLib EpiContactTrace networkSummary
 ##' @export
 setMethod(
     "NetworkSummary",
@@ -510,7 +511,7 @@ setMethod(
 
         ## Call networkSummary in EpiContactTrace.dll
         contact_chain <- .Call(
-            "networkSummary",
+            networkSummary,
             as.integer(factor(x$source, levels = levels(nodes))),
             as.integer(factor(x$destination, levels = levels(nodes))),
             as.integer(julian(x$t)),
@@ -519,8 +520,7 @@ setMethod(
             as.integer(julian(inEnd)),
             as.integer(julian(outBegin)),
             as.integer(julian(outEnd)),
-            length(nodes),
-            PACKAGE = "EpiContactTrace")
+            length(nodes))
 
         data.frame(
             root = root,
