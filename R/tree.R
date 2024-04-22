@@ -53,7 +53,8 @@ build_tree <- function(network_structure) {
         for (lev in rev(seq_len(max(tree_in$level)))) {
             for (src in tree_in$node[tree_in$level == lev]) {
                 if (lev > 1) {
-                    i <- which(network_structure$direction == "in"
+                    i <- which(network_structure$source == src 
+                               & network_structure$direction == "in"
                                & network_structure$distance == lev)
                     dst <- network_structure$destination[i]
                     dst <- unique(dst)
@@ -83,7 +84,8 @@ build_tree <- function(network_structure) {
         for (lev in rev(seq_len(max(tree_out$level)))) {
             for (dst in tree_out$node[tree_out$level == lev]) {
                 if (lev > 1) {
-                    i <- which(network_structure$direction == "out"
+                    i <- which(network_structure$destination == dst
+                               & network_structure$direction == "out"
                                & network_structure$distance == lev)
                     src <- network_structure$source[i]
                     src <- unique(src)
