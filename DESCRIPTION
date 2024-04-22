@@ -6,7 +6,9 @@ Authors@R: c(
            comment = c(ORCID = "0000-0003-2555-8476")),
     person("Stefan", "Widgren", role = c("aut", "cre"),
            email = "stefan.widgren@gmail.com",
-           comment = c(ORCID = "0000-0001-5745-2284")))
+           comment = c(ORCID = "0000-0001-5745-2284")),
+    person("Carlijn", "Bogaardt", role = "ctb",
+           comment = c(ORCID = "0000-0002-9322-6978")))
 Description: Routines for epidemiological contact tracing
     and visualisation of network of contacts.
 License: EUPL
