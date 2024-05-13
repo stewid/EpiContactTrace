@@ -1,7 +1,7 @@
 citHeader("To cite EpiContactTrace in publications, please use:")
 
-citEntry(entry = "Article",
-  author       = personList(as.person("Maria Noremark"), as.person("Stefan Widgren")),
+bibentry(bibtype = "Article",
+  author       = c(as.person("Maria Noremark"), as.person("Stefan Widgren")),
   title        = "{EpiContactTrace}: an {R}-package for contact tracing during livestock disease outbreaks and for risk-based surveillance",
   journal      = "BMC Veterinary Research",
   year         = "2014",
