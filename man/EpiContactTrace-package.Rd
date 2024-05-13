@@ -2,6 +2,7 @@
 % Please edit documentation in R/EpiContactTrace-package.R
 \docType{package}
 \name{EpiContactTrace-package}
+\alias{EpiContactTrace}
 \alias{EpiContactTrace-package}
 \title{Epidemiological tool for contact tracing.}
 \description{
@@ -61,4 +62,21 @@ Report(contactTrace, dir = tempdir())
     disease control and riskbased surveillance.  Preventive Veterinary
     Medicine 99 (2011) 78-90, doi: 10.1016/j.prevetmed.2010.12.009
 }
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/stewid/EpiContactTrace}
+  \item Report bugs at \url{https://github.com/stewid/EpiContactTrace/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Stefan Widgren \email{stefan.widgren@gmail.com} (\href{https://orcid.org/0000-0001-5745-2284}{ORCID})
+
+Authors:
+\itemize{
+  \item Maria Noremark (\href{https://orcid.org/0000-0003-2555-8476}{ORCID})
+}
+
 }
