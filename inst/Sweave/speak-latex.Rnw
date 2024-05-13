@@ -20,7 +20,7 @@
 
 <<echo=false, results=tex>>=
     SummaryTable <- function(contacts, direction) {
-        if(identical(direction, "in")) {
+        if (identical(direction, "in")) {
             arrow <- "\\leftarrow"
         } else {
             arrow <- "\\rightarrow"
@@ -47,7 +47,7 @@
 
 <<echo=false, results=tex>>=
     DetailedTable <- function(contacts, direction) {
-        if(identical(direction, "in")) {
+        if (identical(direction, "in")) {
             arrow <- "\\leftarrow"
         } else {
             arrow <- "\\rightarrow"
@@ -127,7 +127,7 @@
 \end{tabular}
 
 <<echo=false, results=tex>>=
-    if(length(ReportObject()@ingoingContacts@source) > 0L) {
+    if (length(ReportObject()@ingoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
         df <- NetworkStructure(ReportObject()@ingoingContacts)
 
@@ -157,7 +157,7 @@
 \end{tabular}
 
 <<echo=false, results=tex>>=
-    if(length(ReportObject()@outgoingContacts@source) > 0L) {
+    if (length(ReportObject()@outgoingContacts@source) > 0L) {
         # Get network structure. The distance is used for indentation.
         df <- NetworkStructure(ReportObject()@outgoingContacts)
 
@@ -175,7 +175,7 @@
 @
 
 <<echo=false, results=tex>>=
-    if(length(ReportObject()@ingoingContacts@source) > 0L) {
+    if (length(ReportObject()@ingoingContacts@source) > 0L) {
         cat("\\clearpage\n")
         cat("\\section{Direct ingoing contacts}\n")
 
@@ -188,7 +188,7 @@
         DetailedTable(df[df$destination == df$root,], "in")
 
         df <- df[df$destination != df$root,]
-        if(nrow(df) > 0) {
+        if (nrow(df) > 0) {
             cat("\\clearpage\n")
             cat("\\section{Indirect ingoing contacts}\n")
 
@@ -198,7 +198,7 @@
 @
 
 <<echo=false, results=tex>>=
-    if(length(ReportObject()@outgoingContacts@source) > 0L) {
+    if (length(ReportObject()@outgoingContacts@source) > 0L) {
         cat("\\clearpage\n")
         cat("\\section{Direct outgoing contacts}\n")
 
@@ -211,7 +211,7 @@
         DetailedTable(df[df$source == df$root,], "out")
 
         df <- df[df$source != df$root,]
-        if(nrow(df) > 0) {
+        if (nrow(df) > 0) {
             cat("\\clearpage\n")
             cat("\\section{Indirect outgoing contacts}\n")
 
