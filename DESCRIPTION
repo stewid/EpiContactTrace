@@ -1,6 +1,6 @@
 Package: EpiContactTrace
 Title: Epidemiological Tool for Contact Tracing
-Version: 0.17.0
+Version: 0.17.0.9000
 Authors@R: c(
     person("Maria", "Noremark", role = c("aut"),
            comment = c(ORCID = "0000-0003-2555-8476")),

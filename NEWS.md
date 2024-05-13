@@ -1,3 +1,7 @@
+# EpiContactTrace (development version)
+
+## CHANGES OR IMPROVEMENTS
+
 # EpiContactTrace 0.17.0 (2023-04-02)
 
 ## IMPROVEMENTS
