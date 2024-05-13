@@ -29,7 +29,7 @@
         cat(sprintf("\\begin{longtable}[l]{r %s}\n", paste(rep("c r", max(contacts$distance-1L) + 1), collapse=" ")))
         cat("\\hline\n")
 
-        for(i in seq_len(nrow(contacts))) {
+        for (i in seq_len(nrow(contacts))) {
             # Pad with empty cells to the left
             cat(paste(rep("&", 2L*(contacts$distance[i]-1L)), collapse=""))
 
@@ -74,7 +74,7 @@
             cat("Date & Id & N & Category & Source & Destination\\\\\n")
             cat("\\hline\n")
 
-            for(i in seq_len(nrow(x))) {
+            for (i in seq_len(nrow(x))) {
                 cat(sprintf("%s & %s & %s & %s & %s & %s\\\\\n", x$t[i],
                                                                  x$id[i],
                                                                  x$n[i],
