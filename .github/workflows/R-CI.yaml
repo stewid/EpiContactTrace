@@ -1,0 +1,24 @@
+name: R-CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  R_LIBS_USER: /home/runner/work/R/library
+
+jobs:
+  R-CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup R library
+        run: mkdir -p $R_LIBS_USER
+
+      - name: Get ansible playbook to check package
+        run: curl -Ls https://stewid.github.io/ansible-r-ci/r-ci.yml -o ../r-ci.yml
+
+      - name: Check package
+        run: ansible-playbook -i localhost, --extra-vars "r_ci_covr=codecov r_ci_lintr=false" ../r-ci.yml
