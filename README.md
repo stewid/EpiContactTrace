@@ -1,6 +1,6 @@
 [![Build Status](https://github.com/stewid/EpiContactTrace/actions/workflows/R-CI.yaml/badge.svg)](https://github.com/stewid/EpiContactTrace/actions/workflows/R-CI.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/EpiContactTrace)](https://cran.r-project.org/package=EpiContactTrace)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/last-month/EpiContactTrace)](https://cran.r-project.org/package=EpiContactTrace)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/last-month/EpiContactTrace)](https://cran.r-project.org/package=EpiContactTrace)
 [![Coverage Status](https://coveralls.io/repos/github/stewid/EpiContactTrace/badge.svg?branch=master)](https://coveralls.io/github/stewid/EpiContactTrace?branch=master)
 
 # EpiContactTrace
