@@ -1,6 +1,10 @@
-# EpiContactTrace (development version)
+# EpiContactTrace 0.18.0 (2024-10-04)
 
-## CHANGES OR IMPROVEMENTS
+## IMPROVEMENTS
+
+* Updated to use roxygen2 version 7.3.2 to build the documentation.
+
+* Define 'R_NO_REMAP' and 'STRICT_R_HEADERS'.
 
 # EpiContactTrace 0.17.0 (2023-04-02)
 
