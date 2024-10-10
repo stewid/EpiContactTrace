@@ -27,12 +27,12 @@
         }
 
         cat(sprintf("\\begin{longtable}[l]{r %s}\n",
-            paste(rep("c r", max(contacts$distance-1L) + 1), collapse=" ")))
+            paste(rep("c r", max(contacts$distance - 1L) + 1), collapse=" ")))
         cat("\\hline\n")
 
         for (i in seq_len(nrow(contacts))) {
             # Pad with empty cells to the left
-            cat(paste(rep("&", 2L*(contacts$distance[i]-1L)), collapse=""))
+            cat(paste(rep("&", 2L*(contacts$distance[i] - 1L)), collapse=""))
 
             cat(sprintf("%s & $%s$ & %s", contacts$lhs[i], arrow, contacts$rhs[i]))
 
@@ -56,7 +56,9 @@
             arrow <- "\\rightarrow"
         }
 
-        contacts <- contacts[order(contacts$t, contacts$id, decreasing=FALSE), ]
+        contacts <- contacts[order(contacts$t,
+                                   contacts$id,
+                                   decreasing = FALSE), ]
 
         contacts$id <- as.character(contacts$id)
         contacts$id[is.na(contacts$id)] <- ""
