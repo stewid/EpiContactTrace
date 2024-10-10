@@ -1,4 +1,4 @@
-## Copyright 2013-2020 Stefan Widgren and Maria Noremark,
+## Copyright 2013-2024 Stefan Widgren and Maria Noremark,
 ## National Veterinary Institute, Sweden
 ##
 ## Licensed under the EUPL, Version 1.1 or - as soon they
@@ -109,7 +109,7 @@ setMethod(
         }
 
         if (!is.null(vertices)) {
-            plot(y~x, data = vertices, frame.plot = FALSE, axes = FALSE,
+            plot(y ~ x, data = vertices, frame.plot = FALSE, axes = FALSE,
                  ann = FALSE, type = "n")
 
             if (!is.null(edges_in)) {
